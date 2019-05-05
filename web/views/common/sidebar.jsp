@@ -43,8 +43,8 @@
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item">등록 요청 관리</a>
-            <a class="collapse-item" href="buttons.html">등록현황</a>
+            <a class="collapse-item" href="reqProduct.jsp">등록 요청 관리</a>
+            <a class="collapse-item" href="reqData.jsp">등록현황</a>
             <a class="collapse-item" href="cards.html">반품현황</a>
           </div>
         </div>
