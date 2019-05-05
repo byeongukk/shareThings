@@ -10,9 +10,9 @@
 	<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
-      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
+      <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/st/views/admin/adminMain.jsp">
         <div class="sidebar-brand-icon rotate-n-15">
-          <img src="<%= request.getContextPath() %>/resource/img/logoicon1.png">
+          <img src="<%= request.getContextPath() %>/resource/img/adminLogo1.png">
         </div>
         <div class="sidebar-brand-text mx-3">Share Things</div>
       </a>
@@ -125,8 +125,8 @@
         </a>
         <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item">회원정보관리</a>
-            <a class="collapse-item" href="utilities-color.html">회원등급관리</a>
+            <a class="collapse-item" href="/st/views/admin/memberList.jsp">회원정보관리</a>
+            <a class="collapse-item" href="/st/views/admin/memberGradeList.jsp">회원등급관리</a>
             <a class="collapse-item" href="utilities-border.html">블랙리스트관리</a>
           </div>
         </div>
