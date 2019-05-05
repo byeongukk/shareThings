@@ -10,28 +10,37 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <!-- Bootstrap core JavaScript-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <title>Share Things</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <style>
 html {
 	heigth: 100%
 }
+
 #content-wrapper {
 	min-height: 90%;
 }
 
-.card-body {
-	height: 200px;
+#pageName {
+	margin-left: 30px;
 }
-.card {
-	width: 80%; text-align : center;
-	margin-left: auto;
-	margin-right: auto;
+
+table {
+	border: 2px solid black;
 	text-align: center;
 }
-.row {
-	margin-top:50px;
+th, td {
+	border: 1px dashed black;
+	color:black;
+	height:50px;	
+}
+.tableArea {
+	height:400px;
+}
+
+.btnArea {
+	width: 650px;
+	margin: 0 auto;
 }
 </style>
 <!-- Custom fonts for this template-->
@@ -64,60 +73,54 @@ html {
 				<!-- 헤더 인클루드 -->
 				<%@ include file="../common/header.jsp"%>
 				<!-- 컨텐츠바디 영역 실제 작성 영역 -->
-				<div class="container-fluid">
-					<div>
-						<h1 align="center" style="color:black">오늘 하루도 열심히 코딩하는 사람이 되도록 노력합시다!!</h1>
+				<div id="pageName">
+					<h2 style="color: black">
+						<b>회원등급관리</b>
+					</h2>
+				</div>
+				<img src="/st/resource/img/adminHr.png">
+
+				<div class="table-responsive">
+					<br>
+					<h2 align="center"></h2>
+					<div class="tableArea">
+						<table id="listArea" align="center">
+							<tr>
+								<th width="300px" style="color:black">회원등급</th>
+								<th width="300px" style="color:black">기준</th>
+								<th width="300px" style="color:black">혜택</th>
+							</tr>
+							<tr>
+								<td>VVIP</td>
+								<td>00 ~ 00점</td>
+								<td>적립금 5% 적립</td>
+							</tr>
+							<tr>
+								<td>VIP</td>
+								<td>00 ~ 00점</td>
+								<td>적립금 4% 적립</td>
+							</tr>
+							<tr>
+								<td>Gold</td>
+								<td>00 ~ 00점</td>
+								<td>적립금 3% 적립</td>
+							</tr>
+							<tr>
+								<td>찌끄래기</td>
+								<td>00 ~ 00점</td>
+								<td>적립금 2% 적립</td>
+							</tr>
+						</table>
 					</div>
-					<hr>
-					<div class="row">
-						<div class="col-lg-6 mb-4">
-							<div class="card bg-primary text-white shadow">
-								<div class="card-body">
-									<b>등록관리</b>
-									<hr color="white">
-									<div class="text-white-50 small">등록요청 00건</div>
-									<div class="text-white-50 small">등록승인현황 00건</div>
-									<div class="text-white-50 small">미반품건 00건</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-6 mb-4">
-							<div class="card bg-success text-white shadow">
-								<div class="card-body">
-									<b>대여관리</b>
-									<hr color="white">
-									<div class="text-white-50 small">대여요청 00건</div>
-									<div class="text-white-50 small">대여 취소 요청 00건</div>
-									<div class="text-white-50 small">반품 요청 00건</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-6 mb-4">
-							<div class="card bg-info text-white shadow">
-								<div class="card-body">
-									<b>게시글 현황</b>
-									<hr color="white">
-									<div class="text-white-50 small">공지사항 00건</div>
-									<div class="text-white-50 small">1:1문의 00건</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-6 mb-4">
-							<div class="card bg-warning text-white shadow">
-								<div class="card-body">
-									<b>정산 현황</b>
-									<hr color="white">
-									<div class="text-white-50 small">회원 입금 대기 00건</div>
-									<div class="text-white-50 small">회원 환불 대기 00건</div>
-									<div class="text-white-50 small">기업 매출 50000원</div>
-								</div>
-							</div>
-						</div>
+
+					<div class="btnArea" align="center">
+						<button>수정하기</button>
 					</div>
 				</div>
+
 				<!-- 메인 콘텐트 영역 끝 -->
-				<!-- Footer 인클루드 -->
 			</div>
+			<!-- Footer 인클루드 -->
 			<%@ include file="../common/footer.jsp"%>
 			<!-- 메인 콘텐츠 영역 끝 -->
 		</div>
