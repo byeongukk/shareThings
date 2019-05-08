@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <title>Insert title here</title>
 </head>
 <body>
@@ -43,9 +44,9 @@
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="reqProduct.jsp">등록 요청 관리</a>
-            <a class="collapse-item" href="reqData.jsp">등록현황</a>
-            <a class="collapse-item" href="cards.html">반품현황</a>
+            <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/reqProduct.jsp">등록 요청 관리</a>
+            <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/reqData.jsp">등록현황</a>
+            <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/returnProduct.jsp">반품현황</a>
           </div>
         </div>
       </li>
@@ -58,8 +59,8 @@
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item">대여조회</a>
-            <a class="collapse-item" href="utilities-color.html">발송관리</a>
+            <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/rentalList.jsp">대여조회</a>
+            <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/sendList.jsp">발송관리</a>
             <a class="collapse-item" href="utilities-border.html">배송조회</a>
             <a class="collapse-item" href="utilities-animation.html">반품요청관리</a>
           </div>
@@ -90,7 +91,7 @@
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
-        <a class="nav-link collapsed" href="#">
+        <a class="nav-link collapsed" href="<%= request.getContextPath() %>/views/notice/noticeList.jsp">
           <i class="fas fa-fw fa-folder"></i>
           <span>공지사항 관리</span>
         </a>

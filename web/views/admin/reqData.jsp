@@ -81,21 +81,20 @@
 								&nbsp;&nbsp;&nbsp;&nbsp; <input type="date" id="secondDate">
 							</div>
 						</div>
-						&nbsp;&nbsp;&nbsp; <a href="#"
-							class="btn btn-success btn-icon-split"> <span
-							class="icon text-white-50"> <i class="fas fa-check"></i>
-						</span> <span class="text">검색</span>
-						</a>
 					</div>
+						<a href="#"
+							class="btn btn-success btn-icon-split"><span
+							class="icon text-white-50"> <i class="fas fa-check"></i></span> <span class="text">검색</span>
+						</a>
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
 							<h6 class="m-0 font-weight-bold text-primary">00건</h6>
 							<a href="#" class="btn btn-info btn-icon-split"> <span
 								class="icon text-white-50"> <i class="fas fa-info-circle"></i>
-							</span> <span class="text">등록 승인</span>
+							</span> <span class="text">검수 승인</span>
 							</a> <a href="#" class="btn btn-danger btn-icon-split"> <span
 								class="icon text-white-50"> <i class="fas fa-trash"></i>
-							</span> <span class="text">등록 거절</span>
+							</span> <span class="text">검수 거절</span>
 							</a>
 						</div>
 						<div class="card-body">
