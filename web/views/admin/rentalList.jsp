@@ -10,6 +10,8 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <!-- Bootstrap core JavaScript-->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <title>Share Things</title>
 
 <!-- Custom fonts for this template-->

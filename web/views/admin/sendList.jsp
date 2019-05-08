@@ -10,6 +10,8 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <!-- Bootstrap core JavaScript-->
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <title>Share Things</title>
 <style>
 	/*  input number 스피너 제거  */
