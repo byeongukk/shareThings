@@ -10,30 +10,8 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <!-- Bootstrap core JavaScript-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <title>Share Things</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-<style>
-html {
-	heigth: 100%
-}
-#content-wrapper {
-	min-height: 90%;
-}
 
-.card-body {
-	height: 200px;
-}
-.card {
-	width: 80%; text-align : center;
-	margin-left: auto;
-	margin-right: auto;
-	text-align: center;
-}
-.row {
-	margin-top:50px;
-}
-</style>
 <!-- Custom fonts for this template-->
 <link
 	href="<%=request.getContextPath()%>/resource/vendor/fontawesome-free/css/all.min.css"
@@ -46,7 +24,30 @@ html {
 <link
 	href="<%=request.getContextPath()%>/resource/css/sb-admin-2.min.css"
 	rel="stylesheet">
-
+<style>
+.card {
+	margin-right: center;
+	margin-left: center;
+	width: 100%;
+}
+/* .button {
+	margin-top:15%;
+} */
+.answer {
+	margin-top:5%;
+}
+#dataTable_wrapper {
+		overflow:hidden;
+}
+.card-body {
+	required:true;
+}
+textarea {
+	resize:none;
+	overflow:hidden;
+	border:0;
+}
+</style>
 </head>
 
 <body id="page-top">
@@ -54,7 +55,7 @@ html {
 	<div id="wrapper">
 
 		<!-- 사이드바 인클루드 -->
-		<%@ include file="common/sidebar.jsp"%>
+		<%@ include file="../common/sidebar.jsp"%>
 		<!-- End of Sidebar -->
 
 		<!--콘텐츠 영역 시작-->
@@ -62,73 +63,74 @@ html {
 			<!-- 메인 콘텐츠 영역 시작 -->
 			<div id="content">
 				<!-- 헤더 인클루드 -->
-				<%@ include file="common/header.jsp"%>
+				<%@ include file="../common/header.jsp"%>
 				<!-- 컨텐츠바디 영역 실제 작성 영역 -->
 				<div class="container-fluid">
-					<div>
-						<h1 align="center" style="color:black">오늘 하루도 열심히 코딩하는 사람이 되도록 노력합시다!!</h1>
+					<div
+						class="d-sm-flex align-items-center justify-content-between mb-4">
+						<h1 class="h3 mb-0 text-gray-800">1:1 문의</h1>
 					</div>
-					<hr>
+					<br>
+					<br>
 					<div class="row">
-						<div class="col-lg-6 mb-4">
-							<div class="card bg-primary text-white shadow">
+						<div class="col-lg-10">
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">user01/배송/처리대기</h6>
+								</div>
 								<div class="card-body">
-									<b>등록관리</b>
-									<hr color="white">
-									<div class="text-white-50 small">등록요청 00건</div>
-									<div class="text-white-50 small">등록승인현황 00건</div>
-									<div class="text-white-50 small">미반품건 00건</div>
+									어제 물품 도착한다고 했는데 왜 안와요?<br>
+									못쓴 기간만큼 환불해주세요<br>
+									어제 물품 도착한다고 했는데 왜 안와요?<br>
+									못쓴 기간만큼 환불해주세요<br>
+									어제 물품 도착한다고 했는데 왜 안와요?<br>
+									못쓴 기간만큼 환불해주세요<br>
+									어제 물품 도착한다고 했는데 왜 안와요?<br>
+									못쓴 기간만큼 환불해주세요<br>
 								</div>
 							</div>
 						</div>
-						<div class="col-lg-6 mb-4">
-							<div class="card bg-success text-white shadow">
+					</div>
+					<div class="row answer">
+						<div class="col-lg-4">
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">처리내용</h6>
+								</div>
 								<div class="card-body">
-									<b>대여관리</b>
-									<hr color="white">
-									<div class="text-white-50 small">대여요청 00건</div>
-									<div class="text-white-50 small">대여 취소 요청 00건</div>
-									<div class="text-white-50 small">반품 요청 00건</div>
+								<textarea class="col-lg-12" rows="5">쓰지마세요</textarea>
 								</div>
 							</div>
 						</div>
-						<div class="col-lg-6 mb-4">
-							<div class="card bg-info text-white shadow">
-								<div class="card-body">
-									<b>게시글 현황</b>
-									<hr color="white">
-									<div class="text-white-50 small">공지사항 00건</div>
-									<div class="text-white-50 small">1:1문의 00건</div>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-6 mb-4">
-							<div class="card bg-warning text-white shadow">
-								<div class="card-body">
-									<b>정산 현황</b>
-									<hr color="white">
-									<div class="text-white-50 small">회원 입금 대기 00건</div>
-									<div class="text-white-50 small">회원 환불 대기 00건</div>
-									<div class="text-white-50 small">기업 매출 50000원</div>
-								</div>
-							</div>
-						</div>
+					</div>
+					<div class="button">
+						<a href="<%= request.getContextPath() %>/views/notice/noticeList.jsp"
+							class="btn btn-success btn-icon-split"><span
+							class="icon text-white-50"> <i class="fas fa-check"></i></span> <span
+							class="text">돌아가기</span>
+						</a>
+						<%-- <% if(loginUser != null && 
+							loginUser.getUserId().equals("admin"))  { %> --%>
+						<a href="#" class="btn btn-info btn-icon-split"> <span
+								class="icon text-white-50"> <i class="fas fa-info-circle"></i>
+							</span> <span class="text">처리하기</span></a>
+						<%-- <% } %> --%>
 					</div>
 				</div>
 				<!-- 메인 콘텐트 영역 끝 -->
 				<!-- Footer 인클루드 -->
 			</div>
-			<%@ include file="common/footer.jsp"%>
+			<%@ include file="../common/footer.jsp"%>
 			<!-- 메인 콘텐츠 영역 끝 -->
 		</div>
 		<!-- 콘텐츠 영역 끝 -->
 	</div>
 
 	<!-- 맨위로-->
-	<%@ include file="common/toTop.jsp"%>
+	<%@ include file="../common/toTop.jsp"%>
 
 	<!-- 로그아웃 모달-->
-	<%@ include file="common/logoutModal.jsp"%>
+	<%@ include file="../common/logoutModal.jsp"%>
 
 
 	<script
