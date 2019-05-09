@@ -74,9 +74,9 @@
         </a>
         <div id="collapseThree" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item">물품조회</a>
-            <a class="collapse-item" href="utilities-color.html">검수기준</a>
-            <a class="collapse-item" href="utilities-border.html">검수관리</a>
+            <a class="collapse-item" href="<%= request.getContextPath() %>/views/product/productList.jsp">물품조회</a>
+            <a class="collapse-item" href="<%= request.getContextPath() %>/views/product/checkStandard.jsp">검수기준</a>
+            <a class="collapse-item" href="<%= request.getContextPath() %>/views/product/check.jsp">검수관리</a>
           </div>
         </div>
       </li>
@@ -99,7 +99,7 @@
 
       <!-- Nav Item - Charts -->
       <li class="nav-item">
-        <a class="nav-link" href="charts.html">
+        <a class="nav-link" href="<%= request.getContextPath() %>/views/qna/qnaList.jsp">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>1:1문의 관리</span></a>
       </li>
