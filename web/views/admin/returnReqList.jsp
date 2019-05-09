@@ -14,13 +14,12 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <title>Share Things</title>
 <style>
-	/*  input number 스피너 제거  */
-	input[type="number"]::-webkit-outer-spin-button,
-	input[type="number"]::-webkit-inner-spin-button {
-	    -webkit-appearance: none;
-	    margin: 0;
-	}
-
+/*  input number 스피너 제거  */
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button
+	{
+	-webkit-appearance: none;
+	margin: 0;
+}
 </style>
 
 <!-- Custom fonts for this template-->
@@ -57,24 +56,52 @@
 					<h1>대여 관리</h1>
 					<div class="container-fluid">
 						<hr>
-						
+
 						<!-- Page Heading -->
-						<h1 class="h3 mb-2 text-gray-800">배송 조회</h1>
+						<h1 class="h3 mb-2 text-gray-800">반품 요청 관리</h1>
 						<hr>
-						
+
 						<!-- 리스트 테이블  -->
 						<div class="card shadow mb-4">
 							<div class="card-header py-3">
 								<h6 class="m-0 font-weight-bold text-primary">00 건</h6>
 							</div>
 							<div class="card-body">
-							<div class="row">
-							</div>
-								<br>
+								<div class="row">
+									<div class="col-lg-6 mb-4">
+										<form class="form-inline">
+											<button class="btn btn-success btn-icon-split btn-sm">
+												<span class="icon text-white-50"> <i
+													class="fas fas fa-check"></i>
+												</span> <span class="text">반품승인</span>
+											</button>
+											&nbsp;&nbsp;&nbsp;
+											<button type="button"
+												class="btn btn-danger btn-icon-split btn-sm"
+												data-toggle="modal" data-target="#refusalModal">
+												<span class="icon text-white-50"> <i
+													class="fas fas fa-trash"></i>
+												</span> <span class="text">반품거부</span>
+											</button>
+											&nbsp;&nbsp;&nbsp;
+											<button class="btn btn-secondary btn-icon-split btn-sm">
+												<span class="icon text-white-50"> <i
+													class="fas fas fa-arrow-left"></i>
+												</span> <span class="text">수거처리</span>
+											</button>
+											&nbsp;&nbsp;&nbsp;
+											<button class="btn btn-success btn-icon-split btn-sm">
+												<span class="icon text-white-50"> <i
+													class="fas fas fa-check"></i>
+												</span> <span class="text">최종 처리</span>
+											</button>
+										</form>
+									</div>
+								</div>
 								<div class="table-responsive">
 									<div class="dataTables_wrapper dt-bootstrap4"
 										id="dataTable_wrapper">
-										
+
 										<div class="row">
 											<div class="col-sm-12">
 												<table width="100%" class="table table-bordered dataTable"
@@ -95,17 +122,11 @@
 																aria-sort="ascending" rowspan="1" colspan="1">물품번호</th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 50px;"
-																rowspan="1" colspan="1">택배사</th>
+																rowspan="1" colspan="1">대여 일시</th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 67px;"
-																rowspan="1" colspan="1">송장번호</th>
-															<th tabindex="0" class="sorting"
-																aria-controls="dataTable" style="width: 55px;"
-																rowspan="1" colspan="1">발송일</th>
-															
-															<th tabindex="0" class="sorting"
-																aria-controls="dataTable" style="width: 67px;"
-																rowspan="1" colspan="1">대여요청일시</th>
+																rowspan="1" colspan="1">반품 요청일시</th>
+
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 45px;"
 																rowspan="1" colspan="1">대여자 ID</th>
@@ -116,17 +137,36 @@
 																aria-controls="dataTable" style="width: 55px;"
 																rowspan="1" colspan="1">대여자 연락처</th>
 															<th tabindex="0" class="sorting"
-																aria-controls="dataTable" style="width: 68px;"
-																rowspan="1" colspan="1">배송지</th>
-															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 67px;"
-																rowspan="1" colspan="1">배송상태</th>
-						
+																rowspan="1" colspan="1">주문상태</th>
+															<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 68px;"
+																rowspan="1" colspan="1">택배사</th>
+															<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 68px;"
+																rowspan="1" colspan="1">송장번호</th>
+															<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 68px;"
+																rowspan="1" colspan="1">반품사유</th>
+															<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 68px;"
+																rowspan="1" colspan="1">반품승인상태</th>
+															<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 68px;"
+																rowspan="1" colspan="1">수거상태</th>
+															<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 68px;"
+																rowspan="1" colspan="1">최종처리상태</th>
+
+
 														</tr>
 													</thead>
 													<tbody>
 														<tr class="odd" role="row" align="center">
 															<td><input type="checkBox"></td>
+															<td></td>
+															<td></td>
+															<td></td>
 															<td></td>
 															<td></td>
 															<td></td>
@@ -144,7 +184,7 @@
 											</div>
 										</div>
 										<!-- 페이징 -->
-										<div class="row" >								
+										<div class="row">
 											<div class="col-sm-12 col-md-7" ailgn="center">
 												<div class="dataTables_paginate paging_simple_numbers"
 													id="dataTable_paginate">
@@ -190,30 +230,83 @@
 	<!-- 로그아웃 모달-->
 	<%@ include file="../common/logoutModal.jsp"%>
 
+	<!-- 반품취소  Modal -->
+	<div class="modal fade" id="refusalModal" role="dialog">
+		<div class="modal-dialog">
 
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">반품 거부처리</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="row">
+					<div class="col-md-12 col-lg-12">
+						<div class="modal-body">
+							<p>물품명과 주문번호, 반품사유를 확인하고 처리하세요</p>
+							<div class="panel-body">
+								<table width="100%"
+									class="table table-striped table-bordered table-hover"
+									id="dataTables-example">
+									<thead>
+										<tr>
+											<th style="width: 40px; text-align: center;"><input
+												type="checkBox"></th>
+											<th style="text-align: center;" class="text-black-50 small">대여주문번호</th>
+											<th style="text-align: center;" class="text-black-50 small">물품명</th>
+											<th style="text-align: center;" class="text-black-50 small">대여자</th>
+											<th style="text-align: center; width: 130px"
+												class="text-black-50 small">반품</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr class="odd gradeX">
+											<td><input type="checkBox"> <td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<h5>*거부상세사유</h5>		
+								<textarea rows="10" cols="55" placeholder="EX)사유부적합으로인한 거부~~~~~"></textarea>
+							
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-submit" data-dismiss="modal">거부처리</button>
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">닫기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<script
-		src="<%= request.getContextPath() %>/resource/vendor/jquery/jquery.min.js"></script>
-	<script
-		src="<%= request.getContextPath() %>/resource/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+													src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>
+												<script
+													src="<%=request.getContextPath()%>/resource/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 	<!-- Core plugin JavaScript-->
 	<script
-		src="<%= request.getContextPath() %>/resource/vendor/jquery-easing/jquery.easing.min.js"></script>
+													src="<%=request.getContextPath()%>/resource/vendor/jquery-easing/jquery.easing.min.js"></script>
 
 	<!-- Custom scripts for all pages-->
 	<script
-		src="<%= request.getContextPath() %>/resource/js/sb-admin-2.min.js"></script>
+													src="<%=request.getContextPath()%>/resource/js/sb-admin-2.min.js"></script>
 
 	<!-- Page level plugins -->
 	<script
-		src="<%= request.getContextPath() %>/resource/vendor/chart.js/Chart.min.js"></script>
+													src="<%=request.getContextPath()%>/resource/vendor/chart.js/Chart.min.js"></script>
 
 	<!-- Page level custom scripts -->
 	<script
-		src="<%= request.getContextPath() %>/resource/js/demo/chart-area-demo.js"></script>
+													src="<%=request.getContextPath()%>/resource/js/demo/chart-area-demo.js"></script>
 	<script
-		src="<%= request.getContextPath() %>/resource/js/demo/chart-pie-demo.js"></script>
-</body>
+													src="<%=request.getContextPath()%>/resource/js/demo/chart-pie-demo.js"></script>
+
+											</body>
 
 </html>
 
