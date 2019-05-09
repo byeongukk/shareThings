@@ -11,41 +11,7 @@
 <meta name="author" content="">
 <!-- Bootstrap core JavaScript-->
 <title>Share Things</title>
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-<style>
-html {
-	heigth: 100%
-}
 
-#content-wrapper {
-	min-height: 90%;
-}
-
-#pageName {
-	margin-left: 30px;
-}
-
-table {
-	border: 2px solid black;
-	text-align: center;
-}
-
-th, td {
-	border: 1px dashed black;
-	color: black;
-	height: 50px;
-}
-
-.tableArea {
-	height: 400px;
-}
-
-.btnArea {
-	width: 650px;
-	margin: 0 auto;
-}
-</style>
 <!-- Custom fonts for this template-->
 <link
 	href="<%=request.getContextPath()%>/resource/vendor/fontawesome-free/css/all.min.css"
@@ -58,7 +24,20 @@ th, td {
 <link
 	href="<%=request.getContextPath()%>/resource/css/sb-admin-2.min.css"
 	rel="stylesheet">
+<style>
+.card {
+	margin-right: center;
+	margin-left: center;
+	width: 100%;
+}
 
+.button {
+	margin-top:15%;
+}
+#dataTable_wrapper {
+		overflow:hidden;
+	}
+</style>
 </head>
 
 <body id="page-top">
@@ -76,56 +55,42 @@ th, td {
 				<!-- 헤더 인클루드 -->
 				<%@ include file="../common/header.jsp"%>
 				<!-- 컨텐츠바디 영역 실제 작성 영역 -->
-				<div id="pageName">
-					<h2 style="color: black">
-						<b>회원등급관리</b>
-					</h2>
-				</div>
-				<img src="/st/resource/img/adminHr.png" width="100%">
-
-				<div class="table-responsive">
+				<div class="container-fluid">
+					<div
+						class="d-sm-flex align-items-center justify-content-between mb-4">
+						<h1 class="h3 mb-0 text-gray-800">공지사항</h1>
+					</div>
 					<br>
-					<h2 align="center"></h2>
-					<div class="tableArea">
-						<table id="listArea" align="center">
-							<tr>
-								<th width="300px" style="color: black">회원등급</th>
-								<th width="300px" style="color: black">기준</th>
-								<th width="300px" style="color: black">혜택</th>
-							</tr>
-							<tr>
-								<td>VVIP</td>
-								<td>00 ~ 00점</td>
-								<td>적립금 5% 적립</td>
-							</tr>
-							<tr>
-								<td>VIP</td>
-								<td>00 ~ 00점</td>
-								<td>적립금 4% 적립</td>
-							</tr>
-							<tr>
-								<td>Gold</td>
-								<td>00 ~ 00점</td>
-								<td>적립금 3% 적립</td>
-							</tr>
-							<tr>
-								<td>찌끄래기</td>
-								<td>00 ~ 00점</td>
-								<td>적립금 2% 적립</td>
-							</tr>
-						</table>
-						<br>
-						<div class="btnArea" align="center">
-							<button>수정하기</button>
+					<br>
+					<div class="row">
+						<div class="col-lg-10">
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">이달의 업데이트(제목)</h6>
+								</div>
+								<div class="card-body">
+									안녕하세요 쉐어띵스입니다. 이달의 업데이트 내용 입니다<br> 1. <br> 2. <br>
+									3. <br> 4. <br>
+								</div>
+							</div>
 						</div>
 					</div>
-
-
+					<div class="button">
+						<a href="<%= request.getContextPath() %>/views/notice/noticeList.jsp"
+							class="btn btn-success btn-icon-split"><span
+							class="icon text-white-50"> <i class="fas fa-check"></i></span> <span
+							class="text">돌아가기</span> </a>
+						<%-- <% if(loginUser != null && 
+							loginUser.getUserId().equals("admin"))  { %> --%>
+						<a href="#" class="btn btn-info btn-icon-split"> <span
+								class="icon text-white-50"> <i class="fas fa-info-circle"></i>
+							</span> <span class="text">수정하기</span></a>
+						<%-- <% } %> --%>
+					</div>
 				</div>
-
 				<!-- 메인 콘텐트 영역 끝 -->
+				<!-- Footer 인클루드 -->
 			</div>
-			<!-- Footer 인클루드 -->
 			<%@ include file="../common/footer.jsp"%>
 			<!-- 메인 콘텐츠 영역 끝 -->
 		</div>

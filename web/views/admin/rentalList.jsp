@@ -27,6 +27,7 @@
 	href="<%=request.getContextPath()%>/resource/css/sb-admin-2.min.css"
 	rel="stylesheet">
 <style>
+
 html {
 	heigth: 100%
 }
