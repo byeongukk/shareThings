@@ -54,7 +54,7 @@ html {
 	<div id="wrapper">
 
 		<!-- 사이드바 인클루드 -->
-		<%@ include file="../common/sidebar.jsp"%>
+		<%@ include file="common/sidebar.jsp"%>
 		<!-- End of Sidebar -->
 
 		<!--콘텐츠 영역 시작-->
@@ -62,7 +62,7 @@ html {
 			<!-- 메인 콘텐츠 영역 시작 -->
 			<div id="content">
 				<!-- 헤더 인클루드 -->
-				<%@ include file="../common/header.jsp"%>
+				<%@ include file="common/header.jsp"%>
 				<!-- 컨텐츠바디 영역 실제 작성 영역 -->
 				<div class="container-fluid">
 					<div>
@@ -118,17 +118,17 @@ html {
 				<!-- 메인 콘텐트 영역 끝 -->
 				<!-- Footer 인클루드 -->
 			</div>
-			<%@ include file="../common/footer.jsp"%>
+			<%@ include file="common/footer.jsp"%>
 			<!-- 메인 콘텐츠 영역 끝 -->
 		</div>
 		<!-- 콘텐츠 영역 끝 -->
 	</div>
 
 	<!-- 맨위로-->
-	<%@ include file="../common/toTop.jsp"%>
+	<%@ include file="common/toTop.jsp"%>
 
 	<!-- 로그아웃 모달-->
-	<%@ include file="../common/logoutModal.jsp"%>
+	<%@ include file="common/logoutModal.jsp"%>
 
 
 	<script

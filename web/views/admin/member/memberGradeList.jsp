@@ -66,7 +66,7 @@ th, td {
 	<div id="wrapper">
 
 		<!-- 사이드바 인클루드 -->
-		<%@ include file="../common/sidebar.jsp"%>
+		<%@ include file = "../common/sidebar.jsp"%>
 		<!-- End of Sidebar -->
 
 		<!--콘텐츠 영역 시작-->
