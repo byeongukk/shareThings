@@ -39,7 +39,7 @@
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-          <i class="fas fa-fw fa-cog"></i>
+          <img src="<%=request.getContextPath()%>/resource/img/input.png">
           <span>등록관리</span>
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -54,7 +54,7 @@
       <!-- Nav Item - Utilities Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
-          <i class="fas fa-fw fa-wrench"></i>
+          <img src="<%=request.getContextPath()%>/resource/img/output.png">
           <span>대여관리</span>
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
@@ -69,7 +69,7 @@
       
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseThree" aria-expanded="true" aria-controls="collapseThree">
-          <i class="fas fa-fw fa-wrench"></i>
+          <img src="<%=request.getContextPath()%>/resource/img/check.png">
           <span>물품관리</span>
         </a>
         <div id="collapseThree" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
@@ -92,22 +92,24 @@
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
         <a class="nav-link collapsed" href="<%= request.getContextPath() %>/views/notice/noticeList.jsp">
-          <i class="fas fa-fw fa-folder"></i>
+          <img src="<%=request.getContextPath()%>/resource/img/notice.png">
           <span>공지사항 관리</span>
         </a>
       </li>
 
       <!-- Nav Item - Charts -->
       <li class="nav-item">
-        <a class="nav-link" href="<%= request.getContextPath() %>/views/qna/qnaList.jsp">
-          <i class="fas fa-fw fa-chart-area"></i>
+
+        <a class="nav-link" href="charts.html">
+          <img src="<%=request.getContextPath()%>/resource/img/qna.png">
+
           <span>1:1문의 관리</span></a>
       </li>
 
       <!-- Nav Item - Tables -->
       <li class="nav-item">
         <a class="nav-link" href="tables.html">
-          <i class="fas fa-fw fa-table"></i>
+          <img src="<%=request.getContextPath()%>/resource/img/lotqna.png">
           <span>자주 묻는 질문 관리</span></a>
       </li>
       
@@ -121,14 +123,14 @@
       
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUser" aria-expanded="true" aria-controls="collapseUser">
-          <i class="fas fa-fw fa-wrench"></i>
+          <img src="<%=request.getContextPath()%>/resource/img/member.png">
           <span>회원관리</span>
         </a>
         <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="/st/views/admin/memberList.jsp">회원정보관리</a>
-            <a class="collapse-item" href="/st/views/admin/memberGradeList.jsp">회원등급관리</a>
-            <a class="collapse-item" href="utilities-border.html">블랙리스트관리</a>
+            <a class="collapse-item" href="<%=request.getContextPath()%>/views/admin/memberList.jsp">회원정보관리</a>
+            <a class="collapse-item" href="<%=request.getContextPath()%>/views/admin/memberGradeList.jsp">회원등급관리</a>
+            <a class="collapse-item" href="<%=request.getContextPath()%>/views/admin/reportMember.jsp">신고이력관리</a>
           </div>
         </div>
       </li>
@@ -143,25 +145,25 @@
       
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUserM" aria-expanded="true" aria-controls="collapseUserM">
-          <i class="fas fa-fw fa-wrench"></i>
+          <img src="<%=request.getContextPath()%>/resource/img/memberM.png">
           <span>회원 정산</span>
         </a>
         <div id="collapseUserM" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="utilities-color.html">회원 입금</a>
-            <a class="collapse-item" href="utilities-border.html">회원 환불</a>
+            <a class="collapse-item" href="<%=request.getContextPath()%>/views/admin/depositMember.jsp">수익금 환급</a>
+            <a class="collapse-item" href="<%=request.getContextPath()%>/views/admin/refundMember.jsp">회원 환불</a>
           </div>
         </div>
       </li>
       
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseSTM" aria-expanded="true" aria-controls="collapseSTM">
-          <i class="fas fa-fw fa-wrench"></i>
+          <img src="<%=request.getContextPath()%>/resource/img/stM.png">
           <span>기업 매출</span>
         </a>
         <div id="collapseSTM" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="utilities-color.html">매출현황</a>
+            <a class="collapse-item" href="<%=request.getContextPath()%>/views/admin/salesST.jsp">매출현황</a>
           </div>
         </div>
       </li>

@@ -12,6 +12,7 @@
 <!-- Bootstrap core JavaScript-->
 <title>Share Things</title>
 <style>
+
 html {
 	heigth: 100%
 }
@@ -73,9 +74,10 @@ html {
 				<!-- 헤더 인클루드 -->
 				<%@ include file="../common/header.jsp"%>
 				<!-- 컨텐츠바디 영역 실제 작성 영역 -->
+				
 				<div id="pageName">
 					<h2 style="color: black">
-						<b>수익금 환급</b>
+						<b>신고이력관리</b>
 					</h2>
 				</div>
 				<img src="/st/resource/img/adminHr.png" width="100%">
@@ -96,22 +98,37 @@ html {
 												<td width="10%">
 													<input type="text" name="memberId">
 												</td>
-												<td width="5%">환급일</td>
-												<td width="25%">
-												<input type="date" name="startDate" style="width:140px"> &nbsp;
-												 ~ &nbsp;<input type="date" name="endDate" style="width:140px">
+												<td width="5%">회원명</td>
+												<td width="10%">
+													<input type="text" name="memberName">
 												</td>
-												<td width="5%">금액</td>
+												<td width="5%">분류</td>
+												<td width="5%">
+													<select>
+														<option value="A">전체</option>
+														<option value="10">파손</option>
+														<option value="20">분실</option>
+														<option value="30">욕설</option>
+														<option value="40">광고</option>
+														<option value="40">기타</option>
+													</select>
+												</td>
+												<td width="5%">벌점</td>
+												<td width="20%">
+												<input type="number" name="startPoint" style="width:100px"> 
+												 ~ <input type="number" name="endPoint" style="width:100px">
+												</td>
+												<td width="5%">신고일</td>
 												<td width="25%">
-												<input type="number" name="startMoney" style="width:140px"> &nbsp;
-												 ~ &nbsp;<input type="number" name="endMoney" style="width:140px">
-												</td>								
+												<input type="date" name="startDate" style="width:140px"> 
+												 ~ <input type="date" name="endDate" style="width:140px">
+												</td>
 												<td width="5%">상태</td>
 												<td width="5%">
 													<select>
 														<option value="A">전체</option>
-														<option value="N">환급대기</option>
-														<option value="Y">환급완료</option>
+														<option value="Y">적합</option>
+														<option value="N">부적합</option>
 													</select>
 												</td>
 											</tr>
@@ -133,7 +150,6 @@ html {
 										aria-describedby="dataTable_info" style="width: 100%;" style="height:100px;">
 										<thead>
 											<tr role="row">
-												<th width="3%"><input type="checkbox"></th>
 												<th class="sorting_asc" tabindex="0"
 													aria-controls="dataTable" rowspan="1" colspan="1"
 													aria-sort="ascending"
@@ -141,38 +157,32 @@ html {
 													style="width: 10%;">회원ID</th>
 												<th class="sorting" tabindex="0" aria-controls="dataTable"
 													rowspan="1" colspan="1"
+													aria-label="Position: activate to sort column ascending"
+													style="width: 10%;">회원명</th>
+												<th class="sorting" tabindex="0" aria-controls="dataTable"
+													rowspan="1" colspan="1"
 													aria-label="Office: activate to sort column ascending"
-													style="width: 20%;">신청일</th>
+													style="width: 8%;">신고분류</th>
 												<th class="sorting" tabindex="0" aria-controls="dataTable"
 													rowspan="1" colspan="1"
 													aria-label="Age: activate to sort column ascending"
-													style="width: 20%;">환급일</th>
+													style="width: 32%;">사유</th>
+												<th class="sorting" tabindex="0" aria-controls="dataTable"
+													rowspan="1" colspan="1"
+													aria-label="Start date: activate to sort column ascending"
+													style="width: 10%;">신고일</th>
 												<th class="sorting" tabindex="0" aria-controls="dataTable"
 													rowspan="1" colspan="1"
 													aria-label="Salary: activate to sort column ascending"
-													style="width: 10%;">금액</th>
+													style="width: 10%;">벌점</th>
 												<th class="sorting" tabindex="0" aria-controls="dataTable"
 													rowspan="1" colspan="1"
 													aria-label="Salary: activate to sort column ascending"
 													style="width: 10%;">상태</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTable"
-													rowspan="1" colspan="1"
-													aria-label="Salary: activate to sort column ascending"
-													style="width: 10%;">비고</th>
 											</tr>
 										</thead>
 										<tbody>
-											<tr>
-												<td><input type="checkbox"></td>
-												<td>user1</td>
-												<td>2019-05-01</td>
-												<td>2019-05-03</td>
-												<td>30000원</td>
-												<td>환급신청</td>
-												<td>
-													<button>처리완료</button>
-												</td>
-											</tr>
+											
 										</tbody>
 									</table>
 								</div>
@@ -188,6 +198,11 @@ html {
 						</div>
 					</div>
 				</div>
+				
+				
+				
+				
+				
 				<!-- 메인 콘텐트 영역 끝 -->
 			</div>
 			<!-- Footer 인클루드 -->
