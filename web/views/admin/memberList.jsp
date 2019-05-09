@@ -26,9 +26,8 @@ html {
 }
 
 #MemberFilter {
-	background: lightgray;
 	color: black;
-	border: 1px solid black;
+	
 }
 
 #MemberFilter label {
@@ -39,7 +38,14 @@ html {
 	width:100%;
 }
 #dataTable_wrapper {
-	height:500px;
+	height:600px;
+	text-align:center;
+}
+#filterArea {
+	text-align:center;
+}
+#dataTables_wrapper{
+	width:100%;
 }
 </style>
 <!-- Custom fonts for this template-->
@@ -77,7 +83,7 @@ html {
 						<b>회원정보관리</b>
 					</h2>
 				</div>
-				<img src="/st/resource/img/adminHr.png">
+				<img src="/st/resource/img/adminHr.png" width="100%">
 
 				<div class="card-body">
 					<div class="table-responsive">
@@ -85,23 +91,61 @@ html {
 							class="dataTables_wrapper dt-bootstrap4">
 							<div class="row">
 								<div class="col-sm-12 col-md-12" id="MemberFilter">
-										<label><b>회원ID:</b> <input type="search"
-											class="form-control form-control-sm" placeholder="ID필터"
-											aria-controls="dataTable"></label> <label><b>회원명:</b><input
-											type="search" class="form-control form-control-sm"
-											placeholder="이름필터" aria-controls="dataTable"></label> <label><b>회원등급:</b>
-											<select class="form-control form-control-sm">
-												<option>전체</option>
-												<option value="10">브론즈</option>
-												<option value="20">실버</option>
-												<option value="30">골드</option>
-												<option value="40">다이아</option>
-										</select> </label> <label><b>회원상태:</b> <select
-											class="form-control form-control-sm">
-												<option>전체</option>
-												<option value="Y">가입</option>
-												<option value="N">탈퇴</option>
-										</select> </label>
+									<form id="filterArea">
+										<table border="1" class="col-lg-12" id="filter">
+											<tr>
+												<th style="background:rgb(95, 149, 247);" height="15px;" colspan="8"></th>
+											</tr>
+											<tr>
+												<td width="10%">회원ID</td>
+												<td width="15%">
+													<input type="text" name="memberId">
+												</td>
+												<td width="10%">회원명</td>
+												<td width="15%">
+													<input type="text" name="memberName">
+												</td>
+												<td width="10%">회원등급</td>
+												<td width="15%">
+													<select>
+														<option value="0">전체</option>
+														<option value="10">찌그래기</option>
+														<option value="20">실버</option>
+														<option value="30">골드</option>
+														<option value="40">VIP</option>
+														<option value="50">VVIP</option>
+													</select>
+												</td>
+												<td width="10%">상태</td>
+												<td width="15%">
+													<select>
+														<option value="A">전체</option>
+														<option value="Y">가입</option>
+														<option value="N">탈퇴</option>
+													</select>
+												</td>
+											</tr>
+											<tr>
+												<td>적립금</td>
+												<td colspan="3">
+													<input type="text" name="start">&nbsp;&nbsp;
+													~
+													&nbsp;&nbsp;<input type="text" name="end">
+												</td>
+												<td>수익금</td>
+												<td colspan="3">
+													<input type="text" name="start">&nbsp;&nbsp;
+													~
+													&nbsp;&nbsp;<input type="text" name="end">
+												</td>
+											</tr>
+										</table>
+										<br>
+										<div align="center">
+											<button type="submit">조회하기</button>&nbsp;&nbsp;
+											<button type="reset">초기화</button>
+										</div>	
+									</form>
 								</div>
 							</div>
 							<br>
@@ -117,31 +161,35 @@ html {
 													aria-controls="dataTable" rowspan="1" colspan="1"
 													aria-sort="ascending"
 													aria-label="Name: activate to sort column descending"
-													style="width: 129px;">회원ID</th>
+													style="width: 10%;">회원ID</th>
 												<th class="sorting" tabindex="0" aria-controls="dataTable"
 													rowspan="1" colspan="1"
 													aria-label="Position: activate to sort column ascending"
-													style="width: 201px;">회원명</th>
+													style="width: 10%;">회원명</th>
 												<th class="sorting" tabindex="0" aria-controls="dataTable"
 													rowspan="1" colspan="1"
 													aria-label="Office: activate to sort column ascending"
-													style="width: 91px;">전화번호</th>
+													style="width: 15%;">전화번호</th>
 												<th class="sorting" tabindex="0" aria-controls="dataTable"
 													rowspan="1" colspan="1"
 													aria-label="Age: activate to sort column ascending"
-													style="width: 36px;">주소</th>
+													style="width: 25%;">주소</th>
 												<th class="sorting" tabindex="0" aria-controls="dataTable"
 													rowspan="1" colspan="1"
 													aria-label="Start date: activate to sort column ascending"
-													style="width: 84px;">회원등급</th>
+													style="width: 10%;">회원등급</th>
 												<th class="sorting" tabindex="0" aria-controls="dataTable"
 													rowspan="1" colspan="1"
 													aria-label="Salary: activate to sort column ascending"
-													style="width: 76px;">보유포인트</th>
+													style="width: 10%;">보유적립금</th>
 												<th class="sorting" tabindex="0" aria-controls="dataTable"
 													rowspan="1" colspan="1"
 													aria-label="Salary: activate to sort column ascending"
-													style="width: 76px;">상태</th>
+													style="width: 10%;">보유수익금</th>
+												<th class="sorting" tabindex="0" aria-controls="dataTable"
+													rowspan="1" colspan="1"
+													aria-label="Salary: activate to sort column ascending"
+													style="width: 10%;">상태</th>
 											</tr>
 										</thead>
 										<tbody>
