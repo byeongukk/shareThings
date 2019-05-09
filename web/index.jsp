@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-	<li><a href="views/admin/adminMain.jsp">관리자 페이지</a>
+	<li><a href="views/admin/adminMain.jsp">관리자 페이지</a></li>
 </body>
 </html>
