@@ -28,7 +28,9 @@
 	href="<%=request.getContextPath()%>/resource/css/sb-admin-2.min.css"
 	rel="stylesheet">
 <style>
-	
+	.even:hover {
+		cursor:pointer;
+	}
 </style>
 </head>
 
@@ -82,12 +84,6 @@
 								&nbsp;&nbsp;&nbsp;&nbsp; <input type="date" id="secondDate">
 							</div>
 						</div>
-					</div>
-						<a href="#"
-							class="btn btn-success btn-icon-split"><span
-							class="icon text-white-50"> <i class="fas fa-check"></i></span> <span class="text">검색</span>
-						</a>
-						<br><br>
 						<div class="col-sm-12 col-md-6">
 							<div class="detail" id="detailForm">
 								<label>송장정보 입력 <select name="detail"
@@ -100,7 +96,13 @@
 								</label> &nbsp;&nbsp;&nbsp;&nbsp; <input type="text" id="detailInput"
 									placeholder="송장번호">
 							</div>
+					</div>
 						</div>
+						<a href="#"
+							class="btn btn-success btn-icon-split"><span
+							class="icon text-white-50"> <i class="fas fa-check"></i></span> <span class="text">검색</span>
+						</a>
+						<br><br>
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
 							<h6 class="m-0 font-weight-bold text-primary">00건</h6>
@@ -174,7 +176,7 @@
 														<td>배송중</td>
 														<td>처리완료</td>
 													</tr>
-													<tr role="row" class="odd">
+													<tr role="row" class="even">
 														<td class="sorting_1"><input type="checkbox">01</td>
 														<td>user01</td>
 														<td>노트북</td>

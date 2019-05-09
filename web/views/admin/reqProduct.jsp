@@ -28,6 +28,10 @@
 	href="<%=request.getContextPath()%>/resource/css/sb-admin-2.min.css"
 	rel="stylesheet">
 <style>
+	
+	.even:hover {
+		cursor:pointer;
+	}
 </style>
 </head>
 
@@ -90,8 +94,8 @@
 							<h6 class="m-0 font-weight-bold text-primary">00건</h6>
 							<a href="#" class="btn btn-info btn-icon-split"> <span
 								class="icon text-white-50"> <i class="fas fa-info-circle"></i>
-							</span> <span class="text">등록 승인</span>
-							</a> <a href="#" class="btn btn-danger btn-icon-split"> <span
+							</span> <span class="text">등록 승인</span></a> 
+							<a href="#" class="btn btn-danger btn-icon-split"> <span
 								class="icon text-white-50"> <i class="fas fa-trash"></i>
 							</span> <span class="text">등록 거절</span>
 							</a>
@@ -145,7 +149,7 @@
 														<td>노트북 빌려드림</td>
 														<td>승인</td>
 													</tr>
-													<tr role="row" class="odd">
+													<tr role="row" class="even">
 														<td class="sorting_1"><input type="checkbox">01</td>
 														<td>user01</td>
 														<td>노트북</td>
@@ -221,7 +225,13 @@
 	<!-- 로그아웃 모달-->
 	<%@ include file="../common/logoutModal.jsp"%>
 
-
+	<script>
+		$(function() {
+			$(".even").click(function() {
+				location = "<%= request.getContextPath()%>/views/admin/reqProductDetail.jsp";
+			});
+		});
+	</script>
 	<script
 		src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>
 	<script

@@ -28,10 +28,13 @@
 	href="<%=request.getContextPath()%>/resource/css/sb-admin-2.min.css"
 	rel="stylesheet">
 <style>
-	
-	.even:hover {
-		cursor:pointer;
-	}
+#dataTable_wrapper {
+	overflow: hidden;
+}
+
+.even:hover {
+	cursor: pointer;
+}
 </style>
 </head>
 
@@ -51,56 +54,80 @@
 				<%@ include file="../common/header.jsp"%>
 				<!-- 컨텐츠바디 영역 실제 작성 영역 -->
 				<div class="container-fluid">
-					<h1 class="h3 mb-2 text-gray-800">등록관리</h1>
-					<p class="mb-4">등록 현황 관리</p>
+					<h1 class="h3 mb-2 text-gray-800">물품조회</h1>
 					<div class="row">
-						<div class="col-sm-12 col-md-6">
+						<div class="col-lg-4 col-sm-12 col-md-6">
 							<div class="okStatus" id="okStatusForm">
-								<label>검수상태 <select name="okStatus"
+								<label>대분류 <select name="okStatus"
 									aria-controls="dataTable"
 									class="custom-select custom-select-sm form-control form-control-sm">
-										<option value="ok">승인</option>
-										<option value="wait">승인대기</option>
-										<option value="no">거절</option>
+										<option value="ok">전자기기</option>
+										<option value="wait">유아동</option>
+										<option value="no">취미레져</option>
+										<option value="no">리빙</option>
+										<option value="no">반려동물</option>
 								</select>
 								</label>
 							</div>
 						</div>
-						<div class="col-sm-12 col-md-6">
+						<div class="col-lg-4 col-sm-12 col-md-6">
 							<div class="detail" id="detailForm">
-								<label>상세조건 <select name="detail"
+								<label>중분류 <select name="detail"
 									aria-controls="dataTable"
 									class="custom-select custom-select-sm form-control form-control-sm">
-										<option value="reqNumber">요청번호</option>
-										<option value="name">등록자명</option>
-										<option value="product">물품명</option>
+										<option value="reqNumber">디지털</option>
+										<option value="name">가전</option>
+										<option value="product">컴퓨터</option>
 								</select>
-								</label> &nbsp;&nbsp;&nbsp;&nbsp; <input type="text" id="detailInput"
-									placeholder="내용을 입력하세요">
+								</label>
 							</div>
 						</div>
-						<div class="col-sm-12 col-md-6">
+						<div class="col-lg-4 col-sm-12 col-md-6">
+							<div class="detail" id="detailForm">
+								<label>세분류 <select name="detail"
+									aria-controls="dataTable"
+									class="custom-select custom-select-sm form-control form-control-sm">
+										<option value="reqNumber">노트북</option>
+										<option value="name">데스크탑</option>
+								</select>
+								</label>
+							</div>
+						</div>
+						<div class="col-lg-2 col-sm-12 col-md-6">
 							<div class="dateForm" id="dateForm">
-								<label>등록 날짜</label> <input type="date" id="fristDate">
-								&nbsp;&nbsp;&nbsp;&nbsp; <input type="date" id="secondDate">
+								<label>등록 기간</label> <input
+									class="custom-date custom-date-lg form-control form-control-lg"
+									type="date" id="fristDate">
+							</div>
+						</div>
+						<div class="col-lg-2 col-sm-12 col-md-6">
+							<div class="dateForm" id="dateForm">
+								<label>&nbsp;</label><input
+									class="custom-date custom-date-lg form-control form-control-lg"
+									type="date" id="fristDate">
+							</div>
+						</div>
+						<div class="col-lg-2 col-sm-12 col-md-6">
+							<div class="dateForm" id="dateForm">
+								<label>등록자명</label> <input
+									class="custom-text custom-text-lg form-control form-control-lg"
+									type="text" id="fristDate">
+							</div>
+						</div>
+						<div class="col-lg-2 col-sm-12 col-md-6">
+							<div class="dateForm" id="dateForm">
+								<label>물품명</label> <input
+									class="custom-text custom-text-lg form-control form-control-lg"
+									type="text" id="fristDate">
 							</div>
 						</div>
 					</div>
-						<a href="#"
-							class="btn btn-success btn-icon-split"><span
-							class="icon text-white-50"> <i class="fas fa-check"></i></span> <span class="text">검색</span>
-						</a>
+					<br>
+					<br> <a href="#" class="btn btn-success btn-icon-split"><span
+						class="icon text-white-50"> <i class="fas fa-check"></i></span> <span
+						class="text">검색</span> </a><br>
+					<br>
 					<div class="card shadow mb-4">
-						<div class="card-header py-3">
-							<h6 class="m-0 font-weight-bold text-primary">00건</h6>
-							<a href="#" class="btn btn-info btn-icon-split"> <span
-								class="icon text-white-50"> <i class="fas fa-info-circle"></i>
-							</span> <span class="text">검수 승인</span>
-							</a> <a href="#" class="btn btn-danger btn-icon-split"> <span
-								class="icon text-white-50"> <i class="fas fa-trash"></i>
-							</span> <span class="text">검수 거절</span>
-							</a>
-						</div>
 						<div class="card-body">
 							<div class="table-responsive">
 								<div id="dataTable_wrapper"
@@ -116,9 +143,7 @@
 														<th class="sorting_asc" tabindex="0"
 															aria-controls="dataTable" rowspan="1" colspan="1"
 															aria-label="Name: activate to sort column descending"
-															aria-sort="ascending" style="width: 30px;">
-															<input type="checkbox">
-															요청번호</th>
+															aria-sort="ascending" style="width: 30px;">등록번호</th>
 														<th class="sorting" tabindex="0" aria-controls="dataTable"
 															rowspan="1" colspan="1"
 															aria-label="Position: activate to sort column ascending"
@@ -130,42 +155,35 @@
 														<th class="sorting" tabindex="0" aria-controls="dataTable"
 															rowspan="1" colspan="1"
 															aria-label="Age: activate to sort column ascending"
-															style="width: 30px;">요청날짜</th>
+															style="width: 30px;">등록기간</th>
 														<th class="sorting" tabindex="0" aria-controls="dataTable"
 															rowspan="1" colspan="1"
 															aria-label="Start date: activate to sort column ascending"
-															style="width: 30px;">글제목</th>
-														<th class="sorting" tabindex="0" aria-controls="dataTable"
-															rowspan="1" colspan="1"
-															aria-label="Salary: activate to sort column ascending"
-															style="width: 10px;">검수상태</th>
+															style="width: 30px;">상태</th>
 													</tr>
 												</thead>
 
 												<tbody>
 													<tr role="row" class="even">
-														<td class="sorting_1"><input type="checkbox">01</td>
+														<td class="sorting_1">20190508</td>
 														<td>user01</td>
 														<td>노트북</td>
-														<td>2019/05/05</td>
-														<td>노트북 빌려드림</td>
-														<td>승인</td>
+														<td>2019/05/10 ~ 2019/07/10</td>
+														<td>렌탈중</td>
 													</tr>
 													<tr role="row" class="even">
-														<td class="sorting_1"><input type="checkbox">01</td>
+														<td class="sorting_1">20190508</td>
 														<td>user01</td>
 														<td>노트북</td>
-														<td>2019/05/05</td>
-														<td>노트북 빌려드림</td>
-														<td>승인</td>
+														<td>2019/05/10 ~ 2019/07/10</td>
+														<td>렌탈중</td>
 													</tr>
 													<tr role="row" class="even">
-														<td class="sorting_1"><input type="checkbox">01</td>
+														<td class="sorting_1">20190508</td>
 														<td>user01</td>
 														<td>노트북</td>
-														<td>2019/05/05</td>
-														<td>노트북 빌려드림</td>
-														<td>승인</td>
+														<td>2019/05/10 ~ 2019/07/10</td>
+														<td>렌탈중</td>
 													</tr>
 												</tbody>
 											</table>
@@ -227,7 +245,13 @@
 	<!-- 로그아웃 모달-->
 	<%@ include file="../common/logoutModal.jsp"%>
 
-
+	<script>
+		$(function() {
+			$(".even").click(function() {
+				location = "<%=request.getContextPath()%>/views/admin/reqProductDetail.jsp";
+			});
+		});
+	</script>
 	<script
 		src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>
 	<script
