@@ -11,7 +11,9 @@
 	<ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
       <!-- Sidebar - Brand -->
+
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<%=request.getContextPath()%>/views/admin/adminMain.jsp">
+
         <div class="sidebar-brand-icon rotate-n-15">
           <img src="<%= request.getContextPath() %>/resource/img/adminLogo1.png">
         </div>
@@ -44,9 +46,11 @@
         </a>
         <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
+
             <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/request/reqProduct.jsp">등록 요청 관리</a>
             <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/request/reqData.jsp">등록현황</a>
             <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/request/returnProduct.jsp">반품현황</a>
+
           </div>
         </div>
       </li>
@@ -59,11 +63,13 @@
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
+
             <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/rental/rentalList.jsp">대여조회</a>
             <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/rental/sendList.jsp">발송관리</a>
             <a class="collapse-item" href="utilities-border.html">배송조회</a>
             <a class="collapse-item" href="utilities-animation.html">반품요청관리</a>
             <a class="collapse-item" href="utilities-animation.html">수거관리</a>
+
           </div>
         </div>
       </li>
@@ -75,9 +81,11 @@
         </a>
         <div id="collapseThree" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
+
             <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/product/productList.jsp">물품조회</a>
             <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/product/checkStandard.jsp">검수기준</a>
             <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/product/check.jsp">검수관리</a>
+
           </div>
         </div>
       </li>
@@ -92,7 +100,9 @@
 
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
+
         <a class="nav-link collapsed" href="<%= request.getContextPath() %>/views/admin/notice/noticeList.jsp">
+
           <img src="<%=request.getContextPath()%>/resource/img/notice.png">
           <span>공지사항 관리</span>
         </a>
@@ -100,14 +110,18 @@
 
       <!-- Nav Item - Charts -->
       <li class="nav-item">
+
         <a class="nav-link" href="<%=request.getContextPath()%>/views/admin/notice/qnaList.jsp">
           <img src="<%=request.getContextPath()%>/resource/img/qna.png">
+
           <span>1:1문의 관리</span></a>
       </li>
 
       <!-- Nav Item - Tables -->
       <li class="nav-item">
+
         <a class="nav-link" href="<%=request.getContextPath()%>/views/admin/notice/mostQna.jsp">
+
           <img src="<%=request.getContextPath()%>/resource/img/lotqna.png">
           <span>자주 묻는 질문 관리</span></a>
       </li>
@@ -127,9 +141,11 @@
         </a>
         <div id="collapseUser" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
+
             <a class="collapse-item" href="<%=request.getContextPath()%>/views/admin/member/memberList.jsp">회원정보관리</a>
             <a class="collapse-item" href="<%=request.getContextPath()%>/views/admin/member/memberGradeList.jsp">회원등급관리</a>
             <a class="collapse-item" href="<%=request.getContextPath()%>/views/admin/member/reportMember.jsp">신고이력관리</a>
+
           </div>
         </div>
       </li>
@@ -149,8 +165,10 @@
         </a>
         <div id="collapseUserM" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
+
             <a class="collapse-item" href="<%=request.getContextPath()%>/views/admin/money/depositMember.jsp">수익금 환급</a>
             <a class="collapse-item" href="<%=request.getContextPath()%>/views/admin/money/refundMember.jsp">회원 환불</a>
+
           </div>
         </div>
       </li>
@@ -162,6 +180,7 @@
         </a>
         <div id="collapseSTM" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
+
             <a class="collapse-item" href="<%=request.getContextPath()%>/views/admin/money/salesST.jsp">매출현황</a>
           </div>
         </div>
@@ -184,6 +203,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
             <a class="collapse-item" href="<%=request.getContextPath()%>">회원통계</a>
             <a class="collapse-item" href="<%=request.getContextPath()%>">매출통계</a>
+
           </div>
         </div>
       </li>
