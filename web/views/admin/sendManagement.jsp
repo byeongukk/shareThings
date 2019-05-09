@@ -12,15 +12,15 @@
 <!-- Bootstrap core JavaScript-->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
 <title>Share Things</title>
 <style>
-	/*  input number 스피너 제거  */
-	input[type="number"]::-webkit-outer-spin-button,
-	input[type="number"]::-webkit-inner-spin-button {
-	    -webkit-appearance: none;
-	    margin: 0;
-	}
-
+/*  input number 스피너 제거  */
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button
+	{
+	-webkit-appearance: none;
+	margin: 0;
+}
 </style>
 
 <!-- Custom fonts for this template-->
@@ -57,27 +57,67 @@
 					<h1>대여 관리</h1>
 					<div class="container-fluid">
 						<hr>
-						
+
 						<!-- Page Heading -->
-						<h1 class="h3 mb-2 text-gray-800">배송 조회</h1>
+						<h1 class="h3 mb-2 text-gray-800">발송 관리</h1>
 						<hr>
-						
+
 						<!-- 리스트 테이블  -->
 						<div class="card shadow mb-4">
 							<div class="card-header py-3">
 								<h6 class="m-0 font-weight-bold text-primary">00 건</h6>
 							</div>
 							<div class="card-body">
-							<div class="row">
-							</div>
+								<div class="row">
+									<div class="col-lg-6 mb-1">
+										<form class="form-inline">
+											<div class="form-group">
+												<span>송장 정보 입력 : </span>
+												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												<select class="form-control">
+													<option>택배사</option>
+													<option>대한통운</option>
+													<option>로젠택배</option>
+													<option>ㅁㄴㅇㄴㅁ</option>
+												</select> &nbsp;&nbsp;&nbsp;&nbsp; <span> <input type="number"
+													class="form-control" placeholder="송장번호">
+												</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												<button class="btn btn-success btn-icon-split btn-sm">
+													<span class="icon text-white-50"> <i
+														class="fas fas fa-check"></i>
+												
+													</span> <span class="text">적용하기</span>
+												</button>
+											</div>
+										</form>
+										<br>
+										<form>
+											<button class="btn btn-secondary btn-icon-split btn-sm">
+												<span class="icon text-white-50"> <i
+													class="fas fas fa-arrow-right"></i>
+												</span> <span class="text">발송처리</span>
+											</button>
+											&nbsp;&nbsp;&nbsp;
+											
+											<button type="button"
+												class="btn btn-danger btn-icon-split btn-sm"
+												data-toggle="modal" data-target="#cancelModal">
+												<span class="icon text-white-50"> <i
+													class="fas fas fa-trash"></i>
+												</span> <span class="text">대여취소</span>
+											</button>
+										</form>
+									</div>
+
+								</div>
 								<br>
 								<div class="table-responsive">
 									<div class="dataTables_wrapper dt-bootstrap4"
 										id="dataTable_wrapper">
-										
+
 										<div class="row">
 											<div class="col-sm-12">
-												<table width="100%" class="table table-bordered dataTable"
+												<table width="100%" class="table table-bordered dataTable table-hover"
 													id="dataTable" role="grid"
 													aria-describedby="dataTable_info" style="width: 100%;"
 													cellspacing="0">
@@ -102,7 +142,7 @@
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 55px;"
 																rowspan="1" colspan="1">발송일</th>
-															
+
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 67px;"
 																rowspan="1" colspan="1">대여요청일시</th>
@@ -120,8 +160,8 @@
 																rowspan="1" colspan="1">배송지</th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 67px;"
-																rowspan="1" colspan="1">배송상태</th>
-						
+																rowspan="1" colspan="1">주문상태</th>
+
 														</tr>
 													</thead>
 													<tbody>
@@ -144,7 +184,7 @@
 											</div>
 										</div>
 										<!-- 페이징 -->
-										<div class="row" >								
+										<div class="row">
 											<div class="col-sm-12 col-md-7" ailgn="center">
 												<div class="dataTables_paginate paging_simple_numbers"
 													id="dataTable_paginate">
@@ -183,7 +223,58 @@
 		</div>
 		<!-- 콘텐츠 영역 끝 -->
 	</div>
+	<!-- 대여취소  Modal -->
+	<div class="modal fade" id="cancelModal" role="dialog">
+		<div class="modal-dialog">
 
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">대여 취소처리</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="row">
+					<div class="col-md-12 col-lg-12">
+						<div class="modal-body">
+							<p>물품명과 주문상태를 확인하고 처리하세요</p>
+							<div class="panel-body">
+								<table width="100%"
+									class="table table-striped table-bordered table-hover"
+									id="dataTables-example">
+									<thead>
+										<tr>
+											<th style="width: 40px; text-align: center;"><input type="checkBox"></th>
+											<th style="text-align: center;" class="text-black-50 small">등록요청번호</th>
+											<th style="text-align: center;" class="text-black-50 small">물품명</th>
+											<th style="text-align: center;" class="text-black-50 small">대여자</th>
+											<th style="text-align: center; width: 130px" class="text-black-50 small">취소사유</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr class="odd gradeX">
+											<td><input type="checkBox">
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<h5>*취소상세사유</h5>		
+								<textarea rows="10" cols="55" placeholder="EX)고객요청으로 인한 취소"></textarea>
+							
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-default" data-dismiss="modal">취소처리</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
 	<!-- 맨위로-->
 	<%@ include file="../common/toTop.jsp"%>
 

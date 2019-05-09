@@ -27,12 +27,44 @@
 	href="<%=request.getContextPath()%>/resource/css/sb-admin-2.min.css"
 	rel="stylesheet">
 <style>
-		
+
+html {
+	heigth: 100%
+}
+
+#content-wrapper {
+	min-height: 90%;
+}
+
+#pageName {
+	margin-left: 30px;
+}
+
+#MemberFilter {
+	background: lightgray;
+	color: black;
+	border-top: 1px solid black;
+	border-bottom: 1px solid black;
+}
+
+#MemberFilter label {
+	padding-left: 3%;
+	padding-right: 3%;
+}
+
+.card-body {
+	width: 100%;
+}
+
+#dataTable_wrapper {
+	height: 200px;
+}
 </style>
 </head>
 
 <body id="page-top">
 	<!-- Page Wrapper -->
+
 	<div id="wrapper">
 
 		<!-- 사이드바 인클루드 -->
@@ -47,12 +79,44 @@
 				<%@ include file="../common/header.jsp"%>
 				<!-- 컨텐츠바디 영역 실제 작성 영역 -->
 				<div class="container-fluid">
-					<h1>대여 조회</h1>
+					<h1>대여 관리</h1>
 					<div class="container-fluid">
 
 						<!-- Page Heading -->
-						<h1 class="h3 mb-2 text-gray-800">등록요청</h1>
+						<h1 class="h3 mb-2 text-gray-800">대여 조회</h1>
 						<hr>
+						<div class="card-body">
+							<div id="dataTable_wrapper"
+								class="dataTables_wrapper dt-bootstrap4">
+								<div class="row">
+									<div class="col-sm-12 col-md-12" id="MemberFilter">
+										<label><b>회원ID:</b> 
+											<input type="search" class="form-control form-control-sm" placeholder="ID필터" aria-controls="dataTable">
+										</label> 
+										<label><b>회원명:</b>
+											<input type="search" class="form-control form-control-sm" placeholder="이름필터" aria-controls="dataTable">
+										</label> 
+										<label><b>회원등급:</b>
+											<select class="form-control form-control-sm">
+												<option>전체</option>
+												<option value="10">브론즈</option>
+												<option value="20">실버</option>
+												<option value="30">골드</option>
+												<option value="40">다이아</option>
+											</select> 
+										</label> 
+										<label><b>회원상태:</b> 
+											<select class="form-control form-control-sm">
+													<option>전체</option>
+													<option value="Y">가입</option>
+													<option value="N">탈퇴</option>
+											</select> 
+										</label>
+									</div>
+								</div>
+							</div>
+						</div>
+
 						<!-- 리스트 테이블  -->
 						<div class="card shadow mb-4">
 							<div class="card-header py-3">
@@ -62,7 +126,8 @@
 								<div class="table-responsive">
 									<div class="dataTables_wrapper dt-bootstrap4"
 										id="dataTable_wrapper">
-										
+
+
 										<div class="row">
 											<div class="col-sm-12">
 												<table width="100%" class="table table-bordered dataTable"
@@ -80,7 +145,6 @@
 																rowspan="1" colspan="1">대여주문번호</th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 61px;"
-																
 																rowspan="1" colspan="1">대여자</th>
 															<th tabindex="0" class="sorting_asc"
 																aria-controls="dataTable" style="width: 50px;"
@@ -111,7 +175,7 @@
 											</div>
 										</div>
 										<!-- 페이징 -->
-										<div class="row" >								
+										<div class="row">
 											<div class="col-sm-12 col-md-7" ailgn="center">
 												<div class="dataTables_paginate paging_simple_numbers"
 													id="dataTable_paginate">
