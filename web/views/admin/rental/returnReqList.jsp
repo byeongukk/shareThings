@@ -60,7 +60,89 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 						<!-- Page Heading -->
 						<h1 class="h3 mb-2 text-gray-800">반품 요청 관리</h1>
 						<hr>
-
+						<div class="card-body">
+							<div id="dataTable_wrapper"
+								class="dataTables_wrapper dt-bootstrap4">
+								<div class="row">
+								<div class="col-sm-12 col-md-12" id="rentalFilter">
+									<form id="filterArea">
+										<table border="1" class="col-lg-12" id="filter">
+											<tr>
+												<th style="background:rgb(95, 149, 247);" height="15px;" colspan="8"></th>
+											</tr>
+											<tr>
+												<td width="10%">반품승인상태</td>
+												<td width="15%">
+													<select class="form-control">
+														<option value="hidden">반품 승인상태</option>
+														<option value="0">승인</option>
+														<option value="10">승인대기</option>
+													</select>
+												</td>
+												<td width="10%">상세조건</td>
+												<td width="15%">
+													<select class="form-control">
+														<option >상세조건</option>
+														<option value="0">대여주문번호</option>
+														<option value="10">대여자이름</option>
+														<option value="20">물품명</option>
+														<option value="30">물품번호</option>
+													</select>
+												</td>
+												<td width="15%">
+													<input type="text"
+													class="form-control" placeholder="상세정보입력">
+												</td>
+												
+											</tr>
+											<tr>
+												<td width="10%">주문상태</td>
+												<td width="15%">
+													<select class="form-control">
+														<option value="hidden">주문상태</option>
+														<option value="0">배송중</option>
+														<option value="10">배송완료</option>
+													</select>
+												</td>
+												<td width="10%">수거상태</td>
+												<td width="15%">
+													<select class="form-control">
+														<option value="hidden">수거상태</option>
+														<option value="0">수거완료</option>
+														<option value="10">수거미완료</option>
+													</select>
+												</td>
+												<td>
+												</td>
+											</tr>
+											<tr>
+												<td width="10%">검수상태</td>
+												<td width="15%">
+													<select class="form-control">
+														<option value="hidden">검수상태</option>
+														<option value="0">검수대기</option>
+														<option value="10">검수완료</option>
+													</select>
+												</td>
+												<td>대여기간</td>
+												<td width="25%">
+												<input type="date" name="startDate" style="width:140px"> &nbsp;
+												 ~ &nbsp;<input type="date" name="endDate" style="width:140px">
+												</td>
+												<td>
+												</td>
+											</tr>
+										</table>
+										<br>
+										<div align="center">
+											<button type="submit">조회하기</button>&nbsp;&nbsp;
+											<button type="reset">초기화</button>
+										</div>	
+									</form>
+								</div>
+							</div>
+							</div>
+						</div>
 						<!-- 리스트 테이블  -->
 						<div class="card shadow mb-4">
 							<div class="card-header py-3">
@@ -69,20 +151,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 							<div class="card-body">
 								<div class="row">
 									<div class="col-lg-6 mb-4">
-										<form class="form-inline">
-											<button class="btn btn-success btn-icon-split btn-sm">
-												<span class="icon text-white-50"> <i
-													class="fas fas fa-check"></i>
-												</span> <span class="text">반품승인</span>
-											</button>
-											&nbsp;&nbsp;&nbsp;
-											<button type="button"
-												class="btn btn-danger btn-icon-split btn-sm"
-												data-toggle="modal" data-target="#refusalModal">
-												<span class="icon text-white-50"> <i
-													class="fas fas fa-trash"></i>
-												</span> <span class="text">반품거부</span>
-											</button>
+										<form class="form-inline">											
 											&nbsp;&nbsp;&nbsp;
 											<button class="btn btn-secondary btn-icon-split btn-sm">
 												<span class="icon text-white-50"> <i
@@ -93,7 +162,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 											<button class="btn btn-success btn-icon-split btn-sm">
 												<span class="icon text-white-50"> <i
 													class="fas fas fa-check"></i>
-												</span> <span class="text">최종 처리</span>
+												</span> <span class="text">검수처리</span>
 											</button>
 										</form>
 									</div>
@@ -226,7 +295,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 
 	<!-- 맨위로-->
 	<%@ include file="../common/toTop.jsp"%>
-
+	
 	<!-- 로그아웃 모달-->
 	<%@ include file="../common/logoutModal.jsp"%>
 
