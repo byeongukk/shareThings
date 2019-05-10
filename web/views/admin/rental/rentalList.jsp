@@ -27,40 +27,12 @@
 	href="<%=request.getContextPath()%>/resource/css/sb-admin-2.min.css"
 	rel="stylesheet">
 <style>
-
-html {
-	heigth: 100%
+#filter {
+	margin-top: 30px;
 }
 
-#content-wrapper {
-	min-height: 90%;
-}
-
-#pageName {
-	margin-left: 30px;
-}
-
-#rentalFilter {
-	color: black;
-	
-}
-
-#rentalFilter label {
-	padding-left: 3%;
-	padding-right: 3%;
-}
-.card-body {
-	width:100%;
-}
-#dataTable_wrapper {
-	height:250px;
-	text-align:center;
-}
-#filterArea {
-	text-align:center;
-}
-#dataTables_wrapper{
-	width:100%;
+#filterArea td {
+	padding: 20px;
 }
 </style>
 </head>
@@ -92,61 +64,54 @@ html {
 							<div id="dataTable_wrapper"
 								class="dataTables_wrapper dt-bootstrap4">
 								<div class="row">
-								<div class="col-sm-12 col-md-12" id="rentalFilter">
-									<form id="filterArea">
-										<table border="1" class="col-lg-12" id="filter">
-											<tr>
-												<th style="background:rgb(95, 149, 247);" height="15px;" colspan="8"></th>
-											</tr>
-											<tr>
-												<td width="10%">대여상태</td>
-												<td width="15%">
-													<select class="form-control">
-														<option value="hidden">대여상태</option>
-														<option value="0">대여요청</option>
-														<option value="10">대여중</option>
-														<option value="20">대여완료</option>
-													</select>
-												</td>
-												<td width="10%">상세조건</td>
-												<td width="15%">
-													<select class="form-control">
-														<option >상세조건</option>
-														<option value="0">대여주문번호</option>
-														<option value="10">대여자이름</option>
-														<option value="20">물품명</option>
-														<option value="30">물품번호</option>
-													</select>
-													
-												</td>
-												<td width="15%">
-													<input type="text"
-													class="form-control" placeholder="상세정보입력">
-												</td>
-												
-											</tr>
-											<tr>
-												<td>대여기간</td>
-												<td width="25%">
-												<input type="date" name="startDate" style="width:140px"> &nbsp;
-												 ~ &nbsp;<input type="date" name="endDate" style="width:140px">
-												</td>
-												<td>
-												</td>
-												<td>
-												</td>
-												<td>
-												</td>
-											</tr>
-										</table>
-										<br>
-										<div align="center">
-											<button type="submit">조회하기</button>&nbsp;&nbsp;
-											<button type="reset">초기화</button>
-										</div>	
-									</form>
+									<div class="col-sm-12 col-md-12" align="center">
+										<div class="card shadow mb-4">
+											<div class="card-header py-3">조회 필터</div>
+											<div class="card-body">
+												<form id="filterArea">
+													<table class="col-lg-12" id="filter">
+														<tr>
+															<td width="10%">배송상태</td>
+															<td width="15%"><select class="form-control">
+																	<option value="hidden">배송상태</option>
+																	<option value="0">배송중</option>
+																	<option value="10">배송완료</option>
+															</select></td>
+															<td width="10%">상세조건</td>
+															<td width="15%"><select class="form-control">
+																	<option>상세조건</option>
+																	<option value="0">대여주문번호</option>
+																	<option value="10">대여자이름</option>
+																	<option value="20">물품명</option>
+																	<option value="30">물품번호</option>
+															</select></td>
+															<td width="15%"><input type="text"
+																class="form-control" placeholder="상세정보입력"></td>
+
+														</tr>
+
+														<tr>
+															<td>대여기간</td>
+															<td width="25%"><input type="date" name="startDate"
+																style="width: 140px"> &nbsp; ~ &nbsp;<input
+																type="date" name="endDate" style="width: 140px">
+															</td>
+															<td></td>
+															<td></td>
+															<td></td>
+														</tr>
+													</table>
+													<br>
+													<div align="center">
+														<button type="submit">조회하기</button>
+														&nbsp;&nbsp;
+														<button type="reset">초기화</button>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
 								</div>
-							</div>
 							</div>
 						</div>
 

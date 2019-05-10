@@ -21,6 +21,14 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 	-webkit-appearance: none;
 	margin: 0;
 }
+
+#filter {
+	margin-top: 30px;
+}
+
+#filterArea td {
+	padding: 20px;
+}
 </style>
 
 <!-- Custom fonts for this template-->
@@ -65,61 +73,54 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 							<div id="dataTable_wrapper"
 								class="dataTables_wrapper dt-bootstrap4">
 								<div class="row">
-								<div class="col-sm-12 col-md-12" id="rentalFilter">
-									<form id="filterArea">
-										<table border="1" class="col-lg-12" id="filter">
-											<tr>
-												<th style="background:rgb(95, 149, 247);" height="15px;" colspan="8"></th>
-											</tr>
-											<tr>
-												<td width="10%">배송상태</td>
-												<td width="15%">
-													<select class="form-control">
-														<option value="hidden">배송상태</option>
-														<option value="0">배송중</option>
-														<option value="10">배송완료</option>
-													</select>
-												</td>
-												<td width="10%">상세조건</td>
-												<td width="15%">
-													<select class="form-control">
-														<option >상세조건</option>
-														<option value="0">대여주문번호</option>
-														<option value="10">대여자이름</option>
-														<option value="20">물품명</option>
-														<option value="30">물품번호</option>
-													</select>
-													
-												</td>
-												<td width="15%">
-													<input type="text"
-													class="form-control" placeholder="상세정보입력">
-												</td>
-												
-											</tr>
-											<tr>
-												<td>대여기간</td>
-												<td width="25%">
-												<input type="date" name="startDate" style="width:140px"> &nbsp;
-												 ~ &nbsp;<input type="date" name="endDate" style="width:140px">
-												</td>
-												</td>
-												<td>
-												</td>
-												<td>
-												</td>
-												<td>
-												</td>
-											</tr>
-										</table>
-										<br>
-										<div align="center">
-											<button type="submit">조회하기</button>&nbsp;&nbsp;
-											<button type="reset">초기화</button>
-										</div>	
-									</form>
+									<div class="col-sm-12 col-md-12" align="center">
+										<div class="card shadow mb-4">
+											<div class="card-header py-3">조회 필터</div>
+											<div class="card-body">
+												<form id="filterArea">
+													<table class="col-lg-12" id="filter">
+														<tr>
+															<td width="10%">배송상태</td>
+															<td width="15%"><select class="form-control">
+																	<option value="hidden">배송상태</option>
+																	<option value="0">배송중</option>
+																	<option value="10">배송완료</option>
+															</select></td>
+															<td width="10%">상세조건</td>
+															<td width="15%"><select class="form-control">
+																	<option>상세조건</option>
+																	<option value="0">대여주문번호</option>
+																	<option value="10">대여자이름</option>
+																	<option value="20">물품명</option>
+																	<option value="30">물품번호</option>
+															</select></td>
+															<td width="15%"><input type="text"
+																class="form-control" placeholder="상세정보입력"></td>
+
+														</tr>
+
+														<tr>
+															<td>대여기간</td>
+															<td width="35%">
+																<input type="date"  name="startDate" style="width: 150px"> &nbsp; ~ &nbsp;
+																<input type="date"  name="endDate" style="width: 150px">
+															</td>
+															<td></td>
+															<td></td>
+															<td></td>
+														</tr>
+													</table>
+													<br>
+													<div align="center">
+														<button type="submit">조회하기</button>
+														&nbsp;&nbsp;
+														<button type="reset">초기화</button>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
 								</div>
-							</div>
 							</div>
 						</div>
 						<!-- 리스트 테이블  -->
@@ -145,7 +146,6 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 												<button class="btn btn-success btn-icon-split btn-sm">
 													<span class="icon text-white-50"> <i
 														class="fas fas fa-check"></i>
-												
 													</span> <span class="text">적용하기</span>
 												</button>
 											</div>
@@ -158,7 +158,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 												</span> <span class="text">발송처리</span>
 											</button>
 											&nbsp;&nbsp;&nbsp;
-											
+
 											<button type="button"
 												class="btn btn-danger btn-icon-split btn-sm"
 												data-toggle="modal" data-target="#cancelModal">
@@ -177,7 +177,8 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 
 										<div class="row">
 											<div class="col-sm-12">
-												<table width="100%" class="table table-bordered dataTable table-hover"
+												<table width="100%"
+													class="table table-bordered dataTable table-hover"
 													id="dataTable" role="grid"
 													aria-describedby="dataTable_info" style="width: 100%;"
 													cellspacing="0">
@@ -303,11 +304,13 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									id="dataTables-example">
 									<thead>
 										<tr>
-											<th style="width: 40px; text-align: center;"><input type="checkBox"></th>
+											<th style="width: 40px; text-align: center;"><input
+												type="checkBox"></th>
 											<th style="text-align: center;" class="text-black-50 small">등록요청번호</th>
 											<th style="text-align: center;" class="text-black-50 small">물품명</th>
 											<th style="text-align: center;" class="text-black-50 small">대여자</th>
-											<th style="text-align: center; width: 130px" class="text-black-50 small">취소사유</th>
+											<th style="text-align: center; width: 130px"
+												class="text-black-50 small">취소사유</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -321,13 +324,15 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									</tbody>
 								</table>
 							</div>
-							<h5>*취소상세사유</h5>		
-								<textarea rows="10" cols="55" placeholder="EX)고객요청으로 인한 취소"></textarea>
-							
+							<h5>*취소상세사유</h5>
+							<textarea class="col-lg-12" placeholder="EX)고객요청으로 인한 취소"></textarea>
+
 						</div>
 						<div class="modal-footer">
-							<button type="submit" class="btn btn-default" data-dismiss="modal">취소처리</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+							<button type="submit" class="btn btn-default"
+								data-dismiss="modal">취소처리</button>
+							<button type="button" class="btn btn-default"
+								data-dismiss="modal">닫기</button>
 						</div>
 					</div>
 				</div>
