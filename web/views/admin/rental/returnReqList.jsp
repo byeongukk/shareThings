@@ -13,12 +13,21 @@
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <title>Share Things</title>
+
+
 <style>
 /*  input number 스피너 제거  */
 input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button
 	{
 	-webkit-appearance: none;
 	margin: 0;
+}
+#filter {
+	margin-top: 30px;
+}
+
+#filterArea td {
+	padding: 20px;
 }
 </style>
 
@@ -64,83 +73,72 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 							<div id="dataTable_wrapper"
 								class="dataTables_wrapper dt-bootstrap4">
 								<div class="row">
-								<div class="col-sm-12 col-md-12" id="rentalFilter">
-									<form id="filterArea">
-										<table border="1" class="col-lg-12" id="filter">
-											<tr>
-												<th style="background:rgb(95, 149, 247);" height="15px;" colspan="8"></th>
-											</tr>
-											<tr>
-												<td width="10%">반품승인상태</td>
-												<td width="15%">
-													<select class="form-control">
-														<option value="hidden">반품 승인상태</option>
-														<option value="0">승인</option>
-														<option value="10">승인대기</option>
-													</select>
-												</td>
-												<td width="10%">상세조건</td>
-												<td width="15%">
-													<select class="form-control">
-														<option >상세조건</option>
-														<option value="0">대여주문번호</option>
-														<option value="10">대여자이름</option>
-														<option value="20">물품명</option>
-														<option value="30">물품번호</option>
-													</select>
-												</td>
-												<td width="15%">
-													<input type="text"
-													class="form-control" placeholder="상세정보입력">
-												</td>
-												
-											</tr>
-											<tr>
-												<td width="10%">주문상태</td>
-												<td width="15%">
-													<select class="form-control">
-														<option value="hidden">주문상태</option>
-														<option value="0">배송중</option>
-														<option value="10">배송완료</option>
-													</select>
-												</td>
-												<td width="10%">수거상태</td>
-												<td width="15%">
-													<select class="form-control">
-														<option value="hidden">수거상태</option>
-														<option value="0">수거완료</option>
-														<option value="10">수거미완료</option>
-													</select>
-												</td>
-												<td>
-												</td>
-											</tr>
-											<tr>
-												<td width="10%">검수상태</td>
-												<td width="15%">
-													<select class="form-control">
-														<option value="hidden">검수상태</option>
-														<option value="0">검수대기</option>
-														<option value="10">검수완료</option>
-													</select>
-												</td>
-												<td>대여기간</td>
-												<td width="25%">
-												<input type="date" name="startDate" style="width:140px"> &nbsp;
-												 ~ &nbsp;<input type="date" name="endDate" style="width:140px">
-												</td>
-												<td>
-												</td>
-											</tr>
-										</table>
-										<br>
-										<div align="center">
-											<button type="submit">조회하기</button>&nbsp;&nbsp;
-											<button type="reset">초기화</button>
-										</div>	
-									</form>
+									<div class="col-sm-12 col-md-12" align="center">
+										<div class="card shadow mb-4">
+											<div class="card-header py-3">조회 필터</div>
+											<div class="card-body">
+												<form id="filterArea">
+													<table class="col-lg-12" id="filter">
+														<tr>
+															<td width="10%">반품승인상태</td>
+															<td width="15%"><select class="form-control">
+																	<option value="hidden">반품 승인상태</option>
+																	<option value="0">승인</option>
+																	<option value="10">승인대기</option>
+															</select></td>
+															<td width="10%">상세조건</td>
+															<td width="15%"><select class="form-control">
+																	<option>상세조건</option>
+																	<option value="0">대여주문번호</option>
+																	<option value="10">대여자이름</option>
+																	<option value="20">물품명</option>
+																	<option value="30">물품번호</option>
+															</select></td>
+															<td width="15%"><input type="text"
+																class="form-control" placeholder="상세정보입력"></td>
+
+														</tr>
+														<tr>
+															<td width="10%">주문상태</td>
+															<td width="15%"><select class="form-control">
+																	<option value="hidden">주문상태</option>
+																	<option value="0">배송중</option>
+																	<option value="10">배송완료</option>
+															</select></td>
+															<td width="10%">수거상태</td>
+															<td width="15%"><select class="form-control">
+																	<option value="hidden">수거상태</option>
+																	<option value="0">수거완료</option>
+																	<option value="10">수거미완료</option>
+															</select></td>
+															<td></td>
+														</tr>
+														<tr>
+															<td width="10%">검수상태</td>
+															<td width="15%"><select class="form-control">
+																	<option value="hidden">검수상태</option>
+																	<option value="0">검수대기</option>
+																	<option value="10">검수완료</option>
+															</select></td>
+															<td>대여기간</td>
+															<td width="25%"><input type="date" name="startDate"
+																style="width: 140px"> &nbsp; ~ &nbsp;<input
+																type="date" name="endDate" style="width: 140px">
+															</td>
+															<td></td>
+														</tr>
+													</table>
+													<br>
+													<div align="center">
+														<button type="submit">조회하기</button>
+														&nbsp;&nbsp;
+														<button type="reset">초기화</button>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
 								</div>
-							</div>
 							</div>
 						</div>
 						<!-- 리스트 테이블  -->
@@ -151,7 +149,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 							<div class="card-body">
 								<div class="row">
 									<div class="col-lg-6 mb-4">
-										<form class="form-inline">											
+										<form class="form-inline">
 											&nbsp;&nbsp;&nbsp;
 											<button class="btn btn-secondary btn-icon-split btn-sm">
 												<span class="icon text-white-50"> <i
@@ -295,7 +293,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 
 	<!-- 맨위로-->
 	<%@ include file="../common/toTop.jsp"%>
-	
+
 	<!-- 로그아웃 모달-->
 	<%@ include file="../common/logoutModal.jsp"%>
 
@@ -330,7 +328,8 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									</thead>
 									<tbody>
 										<tr class="odd gradeX">
-											<td><input type="checkBox"> <td></td>
+											<td><input type="checkBox">
+											<td></td>
 											<td></td>
 											<td></td>
 											<td></td>
@@ -338,9 +337,9 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									</tbody>
 								</table>
 							</div>
-							<h5>*거부상세사유</h5>		
-								<textarea rows="10" cols="55" placeholder="EX)사유부적합으로인한 거부~~~~~"></textarea>
-							
+							<h5>*거부상세사유</h5>
+							<textarea class="col-lg-12" placeholder="EX)사유부적합으로인한 거부~~~~~"></textarea>
+
 						</div>
 						<div class="modal-footer">
 							<button type="submit" class="btn btn-submit" data-dismiss="modal">거부처리</button>
@@ -353,29 +352,29 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 		</div>
 	</div>
 	<script
-													src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>
-												<script
-													src="<%=request.getContextPath()%>/resource/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+		src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>
+	<script
+		src="<%=request.getContextPath()%>/resource/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 	<!-- Core plugin JavaScript-->
 	<script
-													src="<%=request.getContextPath()%>/resource/vendor/jquery-easing/jquery.easing.min.js"></script>
+		src="<%=request.getContextPath()%>/resource/vendor/jquery-easing/jquery.easing.min.js"></script>
 
 	<!-- Custom scripts for all pages-->
 	<script
-													src="<%=request.getContextPath()%>/resource/js/sb-admin-2.min.js"></script>
+		src="<%=request.getContextPath()%>/resource/js/sb-admin-2.min.js"></script>
 
 	<!-- Page level plugins -->
 	<script
-													src="<%=request.getContextPath()%>/resource/vendor/chart.js/Chart.min.js"></script>
+		src="<%=request.getContextPath()%>/resource/vendor/chart.js/Chart.min.js"></script>
 
 	<!-- Page level custom scripts -->
 	<script
-													src="<%=request.getContextPath()%>/resource/js/demo/chart-area-demo.js"></script>
+		src="<%=request.getContextPath()%>/resource/js/demo/chart-area-demo.js"></script>
 	<script
-													src="<%=request.getContextPath()%>/resource/js/demo/chart-pie-demo.js"></script>
+		src="<%=request.getContextPath()%>/resource/js/demo/chart-pie-demo.js"></script>
 
-											</body>
+</body>
 
 </html>
 

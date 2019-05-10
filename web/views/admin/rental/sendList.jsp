@@ -14,13 +14,20 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <title>Share Things</title>
 <style>
-	/*  input number 스피너 제거  */
-	input[type="number"]::-webkit-outer-spin-button,
-	input[type="number"]::-webkit-inner-spin-button {
-	    -webkit-appearance: none;
-	    margin: 0;
-	}
+/*  input number 스피너 제거  */
+input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-inner-spin-button
+	{
+	-webkit-appearance: none;
+	margin: 0;
+}
 
+#filter {
+	margin-top: 30px;
+}
+
+#filterArea td {
+	padding: 20px;
+}
 </style>
 
 <!-- Custom fonts for this template-->
@@ -57,7 +64,7 @@
 					<h1>대여 관리</h1>
 					<div class="container-fluid">
 						<hr>
-						
+
 						<!-- Page Heading -->
 						<h1 class="h3 mb-2 text-gray-800">배송 조회</h1>
 						<hr>
@@ -65,62 +72,55 @@
 							<div id="dataTable_wrapper"
 								class="dataTables_wrapper dt-bootstrap4">
 								<div class="row">
-								<div class="col-sm-12 col-md-12" id="rentalFilter">
-									<form id="filterArea">
-										<table border="1" class="col-lg-12" id="filter">
-											<tr>
-												<th style="background:rgb(95, 149, 247);" height="15px;" colspan="8"></th>
-											</tr>
-											<tr>
-												<td width="10%">대여상태</td>
-												<td width="15%">
-													<select class="form-control">
-														<option value="hidden">대여상태</option>
-														<option value="0">대여요청</option>
-														<option value="10">대여중</option>
-														<option value="20">대여완료</option>
-													</select>
-												</td>
-												<td width="10%">상세조건</td>
-												<td width="15%">
-													<select class="form-control">
-														<option >상세조건</option>
-														<option value="0">대여주문번호</option>
-														<option value="10">대여자이름</option>
-														<option value="20">물품명</option>
-														<option value="30">물품번호</option>
-													</select>
-													
-												</td>
-												<td width="15%">
-													<input type="text"
-													class="form-control" placeholder="상세정보입력">
-												</td>
-												
-											</tr>
-											<tr>
-												<td>대여기간</td>
-												<td width="25%">
-												<input type="date" name="startDate" style="width:140px"> &nbsp;
-												 ~ &nbsp;<input type="date" name="endDate" style="width:140px">
-												</td>
-												</td>
-												<td>
-												</td>
-												<td>
-												</td>
-												<td>
-												</td>
-											</tr>
-										</table>
-										<br>
-										<div align="center">
-											<button type="submit">조회하기</button>&nbsp;&nbsp;
-											<button type="reset">초기화</button>
-										</div>	
-									</form>
+									<div class="col-sm-12 col-md-12" align="center">
+										<div class="card shadow mb-4">
+											<div class="card-header py-3">조회 필터</div>
+											<div class="card-body">
+												<form id="filterArea">
+													<table class="col-lg-12" id="filter">
+														<tr>
+															<td width="10%">대여상태</td>
+															<td width="15%"><select class="form-control">
+																	<option value="hidden">대여상태</option>
+																	<option value="0">대여요청</option>
+																	<option value="10">대여중</option>
+																	<option value="20">대여완료</option>
+															</select></td>
+															<td width="10%">상세조건</td>
+															<td width="15%"><select class="form-control">
+																	<option>상세조건</option>
+																	<option value="0">대여주문번호</option>
+																	<option value="10">대여자이름</option>
+																	<option value="20">물품명</option>
+																	<option value="30">물품번호</option>
+															</select></td>
+															<td width="15%"><input type="text"
+																class="form-control" placeholder="상세정보입력"></td>
+
+														</tr>
+														<tr>
+															<td>대여기간</td>
+															<td width="25%"><input type="date" name="startDate"
+																style="width: 140px"> &nbsp; ~ &nbsp;<input
+																type="date" name="endDate" style="width: 140px">
+															</td>
+															</td>
+															<td></td>
+															<td></td>
+															<td></td>
+														</tr>
+													</table>
+													<br>
+													<div align="center">
+														<button type="submit">조회하기</button>
+														&nbsp;&nbsp;
+														<button type="reset">초기화</button>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
 								</div>
-							</div>
 							</div>
 						</div>
 						<!-- 리스트 테이블  -->
@@ -129,13 +129,12 @@
 								<h6 class="m-0 font-weight-bold text-primary">00 건</h6>
 							</div>
 							<div class="card-body">
-							<div class="row">
-							</div>
+								<div class="row"></div>
 								<br>
 								<div class="table-responsive">
 									<div class="dataTables_wrapper dt-bootstrap4"
 										id="dataTable_wrapper">
-										
+
 										<div class="row">
 											<div class="col-sm-12">
 												<table width="100%" class="table table-bordered dataTable"
@@ -163,7 +162,7 @@
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 55px;"
 																rowspan="1" colspan="1">발송일</th>
-															
+
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 67px;"
 																rowspan="1" colspan="1">대여요청일시</th>
@@ -182,7 +181,7 @@
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 67px;"
 																rowspan="1" colspan="1">배송상태</th>
-						
+
 														</tr>
 													</thead>
 													<tbody>
@@ -205,7 +204,7 @@
 											</div>
 										</div>
 										<!-- 페이징 -->
-										<div class="row" >								
+										<div class="row">
 											<div class="col-sm-12 col-md-7" ailgn="center">
 												<div class="dataTables_paginate paging_simple_numbers"
 													id="dataTable_paginate">

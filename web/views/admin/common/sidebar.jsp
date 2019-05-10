@@ -120,7 +120,7 @@
       <!-- Nav Item - Tables -->
       <li class="nav-item">
 
-        <a class="nav-link" href="<%=request.getContextPath()%>/views/admin/notice/mostQna.jsp">
+        <a class="nav-link" href="<%=request.getContextPath()%>/views/admin/notice/faqList.jsp">
 
           <img src="<%=request.getContextPath()%>/resource/img/lotqna.png">
           <span>자주 묻는 질문 관리</span></a>
