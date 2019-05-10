@@ -5,92 +5,89 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+	/* hr {
+		border : 1px solid #F44A0C;
+	} */
+	.top {
+		display:block;
+	}
+	.col {
+		display:inline-block;
+	}
+	
+	#category {
+		background:#F44A0C;
+		border:1px solid black;
+		font-size:30px;
+	}
+	#logo {
+		background:#0CB6F4;
+		border:1px solid black;
+		font-size:30px;
+	}
+	#rent {
+		background:lightgray;
+		border:1px solid #F44A0C;
+		font-size:30px;
+	}
+	#menubar {
+		background:ligh-gray;
+		font-size:20px;
+		border-top:2px solid #F44A0C;
+		border-bottom:2px solid #F44A0C;
+	}
+	#menubar>table td{
+		height:70px;
+		width:100px;
+		vertical-align:middle;
+		text-align:center;
+		
+	}
+</style>
+<link rel="stylesheet" type="text/css" href="/st/css/semantic.min.css">
+<script src="/st/js/semantic.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <body>
-	<nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
-
-          <!-- Sidebar Toggle (Topbar) -->
-          <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-            <i class="fa fa-bars"></i>
-          </button>
-			
-          <!-- Topbar Search -->
-          <!-- <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
-            <div class="input-group">
-              <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-              <div class="input-group-append">
-                <button class="btn btn-primary" type="button">
-                  <i class="fas fa-search fa-sm"></i>
-                </button>
-              </div>
-            </div>
-          </form> -->
-
-          <!-- Topbar Navbar -->
-          <ul class="navbar-nav ml-auto">
-
-            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-            <!-- <li class="nav-item dropdown no-arrow d-sm-none">
-              <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-search fa-fw"></i>
-              </a>
-              Dropdown - Messages
-              <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
-                <form class="form-inline mr-auto w-100 navbar-search">
-                  <div class="input-group">
-                    <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                    <div class="input-group-append">
-                      <button class="btn btn-primary" type="button">
-                        <i class="fas fa-search fa-sm"></i>
-                      </button>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </li> -->
-
-            <!-- 사용자 페이지 -->
-            <li class="nav-item dropdown no-arrow mx-1">
-              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <img src="<%= request.getContextPath() %>/resource/img/registration.png" width="32" height="32">
-              
-              </a>  
-            </li>
-
-
-            <div class="topbar-divider d-none d-sm-block"></div>
-
-            <!-- Nav Item - User Information -->
-            <li class="nav-item dropdown no-arrow">
-              <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">조도연 관리자님<br>
-                                               환영합니다</span>
-                <img class="img-profile rounded-circle" src="<%= request.getContextPath() %>/resource/img/profile.png">
-              </a>
-              <!-- Dropdown - User Information -->
-              <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Profile
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Settings
-                </a>
-                <a class="dropdown-item" href="#">
-                  <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Activity Log
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                  <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                  Logout
-                </a>
-              </div>
-            </li>
-
-          </ul>
-
-        </nav>
+	<div class="row" align="right">
+		<a href="#">로그인</a>
+		<label>l</label>
+		<a href="#">회원가입</a>
+		<label>l</label>
+		<a href="#">고객센터</a>
+		<label>l</label>
+		<a href="#">이용안내</a>
+	</div>
+	<br>
+	<div class="row" align="center">
+		<div class="col col-lg-4">
+			<label id="category">카테고리</label>&nbsp;&nbsp;
+			<label id="logo">로고</label>
+		</div>
+		<div class="ui big icon input col-lg-4" align="center">
+  			<input type="text" placeholder="검색">
+  			<i class="search icon"></i>
+		</div>
+		<div class="col col-lg-4" align="center">
+			<label id="rent"><a href="#">물품등록하기</a></label>
+		</div>
+		
+	</div>
+	<br><br>
+	<div class="row" id="menubar">
+		<table>
+			<tr>
+				<td><label>전자기기</label></td>
+				<td><label>취미레저</label></td>
+				<td><label>패션뷰티</label></td>
+				<td><label>리빙</label></td>
+				<td><label>유아동</label></td>
+				<td><label>반려동물</label></td>
+			</tr>
+		</table>
+	</div>
+	<!-- <hr> -->
 </body>
 </html>

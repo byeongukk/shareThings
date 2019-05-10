@@ -5,14 +5,14 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+<style>
+	hr {
+		border : 1px solid #F44A0C;
+	}
+</style>
 </head>
 <body>
-	<footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Share Things @ 내래고조 2019</span>
-          </div>
-        </div>
-    </footer>
+	<hr>
+	<h1 align="center">footer</h1>
 </body>
 </html>
