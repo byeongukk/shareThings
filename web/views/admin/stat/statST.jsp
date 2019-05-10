@@ -15,33 +15,43 @@
 html {
 	heigth: 100%
 }
+
 #content-wrapper {
 	min-height: 90%;
 }
+
 #pageName {
 	margin-left: 30px;
 }
+
 #MemberFilter {
 	color: black;
 }
+
 #MemberFilter label {
 	padding-left: 3%;
 	padding-right: 3%;
 }
+
 .card-body {
-	width:100%;
+	width: 100%;
 }
+
 #dataTable_wrapper {
-	height:600px;
-	text-align:center;
-	width:100%;
-	overflow:hidden;
+	height: 600px;
+	text-align: center;
+	width: 100%;
+	overflow: hidden;
 }
+
 #filterArea {
-	text-align:center;
+	text-align: center;
 }
 
-
+.btnDate {
+	background: lightgray;
+	color: black;
+}
 </style>
 <!-- Custom fonts for this template-->
 <link
@@ -75,11 +85,11 @@ html {
 				<!-- 컨텐츠바디 영역 실제 작성 영역 -->
 				<div id="pageName">
 					<h2 style="color: black">
-						<b>수익금 환급</b>
+						<b>기업통계</b>
 					</h2>
 				</div>
 				<img src="/st/resource/img/adminHr.png" width="100%">
-				
+
 				<div class="card-body">
 					<div class="table-responsive">
 						<div id="dataTable_wrapper"
@@ -89,101 +99,57 @@ html {
 									<form id="filterArea">
 										<table border="1" class="col-lg-12" id="filter">
 											<tr>
-												<th style="background:lightgray" height="15px;" colspan="12"></th>
+												<th style="background: lightgray" height="15px;" colspan="4"></th>
 											</tr>
 											<tr>
-												<td width="5%">회원ID</td>
-												<td width="10%">
-													<input type="text" name="memberId">
+												<td width="5%">기간</td>
+												<td width="60%">&nbsp;<a href="#" class="btnDate"
+													period="0"><span>오늘</span></a> <a href="#" class="btnDate"
+													period="7"><span>7일</span></a> <a href="#" class="btnDate"
+													period="30"><span>1개월</span></a> <a href="#"
+													class="btnDate" period="90"><span>3개월</span></a> <a
+													href="#" class="btnDate" period="365"><span>1년</span></a> <a
+													href="#" class="btnDate" period="-1"><span>전체</span></a>
+													&nbsp;&nbsp; <input type="date" name="startDate"
+													style="width: 140px"> &nbsp; ~ &nbsp;<input
+													type="date" name="endDate" style="width: 140px">
 												</td>
-												<td width="5%">환급일</td>
-												<td width="25%">
-												<input type="date" name="startDate" style="width:140px"> &nbsp;
-												 ~ &nbsp;<input type="date" name="endDate" style="width:140px">
-												</td>
-												<td width="5%">금액</td>
-												<td width="25%">
-												<input type="number" name="startMoney" style="width:140px"> &nbsp;
-												 ~ &nbsp;<input type="number" name="endMoney" style="width:140px">
-												</td>								
-												<td width="5%">상태</td>
-												<td width="5%">
-													<select>
-														<option value="A">전체</option>
-														<option value="N">환급대기</option>
-														<option value="Y">환급완료</option>
-													</select>
-												</td>
+												<td width="10%">카테고리</td>
+												<td width="30%"><select>
+														<option>대분류</option>
+														<option>유아동</option>
+														<option>전자기기</option>
+														<option>취미/레저</option>
+														<option>리빙</option>
+														<option>반려동물</option>
+												</select> &nbsp;&nbsp;&nbsp; <select>
+														<option>중분류</option>
+												</select> &nbsp;&nbsp;&nbsp; <select>
+														<option>소분류</option>
+												</select></td>
+											</tr>
+											<tr>
+
 											</tr>
 										</table>
 										<br>
 										<div align="center">
-											<button type="submit">조회하기</button> &nbsp;&nbsp;
+											<button type="submit">조회하기</button>
+											&nbsp;&nbsp;
 											<button type="reset">초기화</button>
-										</div>	
+										</div>
 									</form>
 								</div>
 							</div>
-							<br>
-							<br>
+							<br> <br>
 							<div class="row">
-								<div class="col-sm-12">
-									<table class="table table-bordered dataTable" id="dataTable"
-										width="100%" cellspacing="0" role="grid"
-										aria-describedby="dataTable_info" style="width: 100%;" style="height:100px;">
-										<thead>
-											<tr role="row">
-												<th width="3%"><input type="checkbox"></th>
-												<th class="sorting_asc" tabindex="0"
-													aria-controls="dataTable" rowspan="1" colspan="1"
-													aria-sort="ascending"
-													aria-label="Name: activate to sort column descending"
-													style="width: 10%;">회원ID</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTable"
-													rowspan="1" colspan="1"
-													aria-label="Office: activate to sort column ascending"
-													style="width: 20%;">신청일</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTable"
-													rowspan="1" colspan="1"
-													aria-label="Age: activate to sort column ascending"
-													style="width: 20%;">환급일</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTable"
-													rowspan="1" colspan="1"
-													aria-label="Salary: activate to sort column ascending"
-													style="width: 10%;">금액</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTable"
-													rowspan="1" colspan="1"
-													aria-label="Salary: activate to sort column ascending"
-													style="width: 10%;">상태</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTable"
-													rowspan="1" colspan="1"
-													aria-label="Salary: activate to sort column ascending"
-													style="width: 10%;">비고</th>
-											</tr>
-										</thead>
-										<tbody>
-											<tr>
-												<td><input type="checkbox"></td>
-												<td>user1</td>
-												<td>2019-05-01</td>
-												<td>2019-05-03</td>
-												<td>30000원</td>
-												<td>환급신청</td>
-												<td>
-													<button>처리완료</button>
-												</td>
-											</tr>
-										</tbody>
-									</table>
+								<div align="center">
+									<h1>그래프 API 영역입니다.</h1>
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-sm-12 col-md-5">
-									
-								</div>
-								<div class="col-sm-12 col-md-7">
-	
-								</div>
+								<div class="col-sm-12 col-md-5"></div>
+								<div class="col-sm-12 col-md-7"></div>
 							</div>
 						</div>
 					</div>

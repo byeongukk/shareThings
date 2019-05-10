@@ -35,13 +35,13 @@ html {
 #dataTable_wrapper {
 	height:600px;
 	text-align:center;
+	overflow: hidden;
+	width:100%;
 }
 #filterArea {
 	text-align:center;
 }
-#dataTables_wrapper{
-	width:100%;
-}
+
 
 </style>
 <!-- Custom fonts for this template-->
