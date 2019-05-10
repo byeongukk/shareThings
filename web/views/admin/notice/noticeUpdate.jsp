@@ -37,6 +37,10 @@
 #dataTable_wrapper {
 		overflow:hidden;
 	}
+textarea {
+	border:0;
+	resize:none;
+}
 </style>
 </head>
 
@@ -66,11 +70,11 @@
 						<div class="col-lg-10">
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">이달의 업데이트(제목)</h6>
+									<h6 class="m-0 font-weight-bold text-primary"><textarea class="col-lg-12" cols="2">수정제목</textarea></h6>
 								</div>
 								<div class="card-body">
-									안녕하세요 쉐어띵스입니다. 이달의 업데이트 내용 입니다<br> 1. <br> 2. <br>
-									3. <br> 4. <br>
+									<textarea class="col-lg-12" rows="20">안녕하세요 쉐어띵스입니다. 이달의 업데이트 내용 입니다 
+									</textarea>
 								</div>
 							</div>
 						</div>
@@ -82,7 +86,7 @@
 							class="text">돌아가기</span> </a>
 						<%-- <% if(loginUser != null && 
 							loginUser.getUserId().equals("admin"))  { %> --%>
-						<a href="<%= request.getContextPath() %>/views/admin/notice/noticeUpdate.jsp" class="btn btn-info btn-icon-split"> <span
+						<a href="<%= request.getContextPath() %>/views/admin/notice/noticeList.jsp" class="btn btn-info btn-icon-split"> <span
 								class="icon text-white-50"> <i class="fas fa-info-circle"></i>
 							</span> <span class="text">수정하기</span></a>
 						<%-- <% } %> --%>

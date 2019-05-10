@@ -135,6 +135,10 @@
 											</table>
 										</div>
 									</div>
+									 <a href="<%= request.getContextPath() %>/views/admin/notice/noticeInsert.jsp";
+						class="btn btn-success btn-icon-split"><span
+						class="icon text-white-50"> <i class="fas fa-check"></i></span> <span
+						class="text">공지 등록</span> </a>
 									<%@ include file="../common/paging.jsp"%>
 								</div>
 							</div>
