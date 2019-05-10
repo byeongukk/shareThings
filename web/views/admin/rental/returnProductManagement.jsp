@@ -12,7 +12,6 @@
 <!-- Bootstrap core JavaScript-->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-
 <title>Share Things</title>
 <style>
 /*  input number 스피너 제거  */
@@ -59,67 +58,76 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 						<hr>
 
 						<!-- Page Heading -->
-						<h1 class="h3 mb-2 text-gray-800">발송 관리</h1>
+						<h1 class="h3 mb-2 text-gray-800">수거 관리</h1>
 						<hr>
 						<div class="card-body">
 							<div id="dataTable_wrapper"
 								class="dataTables_wrapper dt-bootstrap4">
 								<div class="row">
-								<div class="col-sm-12 col-md-12" id="rentalFilter">
-									<form id="filterArea">
-										<table border="1" class="col-lg-12" id="filter">
-											<tr>
-												<th style="background:rgb(95, 149, 247);" height="15px;" colspan="8"></th>
-											</tr>
-											<tr>
-												<td width="10%">배송상태</td>
-												<td width="15%">
-													<select class="form-control">
-														<option value="hidden">배송상태</option>
-														<option value="0">배송중</option>
-														<option value="10">배송완료</option>
-													</select>
-												</td>
-												<td width="10%">상세조건</td>
-												<td width="15%">
-													<select class="form-control">
-														<option >상세조건</option>
-														<option value="0">대여주문번호</option>
-														<option value="10">대여자이름</option>
-														<option value="20">물품명</option>
-														<option value="30">물품번호</option>
-													</select>
-													
-												</td>
-												<td width="15%">
-													<input type="text"
-													class="form-control" placeholder="상세정보입력">
-												</td>
-												
-											</tr>
-											<tr>
-												<td>대여기간</td>
-												<td width="25%">
-												<input type="date" name="startDate" style="width:140px"> &nbsp;
-												 ~ &nbsp;<input type="date" name="endDate" style="width:140px">
-												</td>
-												</td>
-												<td>
-												</td>
-												<td>
-												</td>
-												<td>
-												</td>
-											</tr>
-										</table>
-										<br>
-										<div align="center">
-											<button type="submit">조회하기</button>&nbsp;&nbsp;
-											<button type="reset">초기화</button>
-										</div>	
-									</form>
+									<div class="col-sm-12 col-md-12" id="rentalFilter">
+										<form id="filterArea">
+											<table class="col-lg-12" id="filter">
+												<tr>
+													<th style="background: rgb(95, 149, 247);" height="15px;"
+														colspan="8"></th>
+												</tr>
+												<tr>
+													<td width="10%">수거상태</td>
+													<td width="15%"><select class="form-control">
+															<option value="hidden">수거상태</option>
+															<option value="0">수거완료</option>
+															<option value="10">수거미완료</option>
+													</select></td>
+													<td width="10%">상세조건</td>
+													<td width="15%"><select class="form-control">
+															<option>상세조건</option>
+															<option value="0">대여주문번호</option>
+															<option value="10">대여자이름</option>
+															<option value="20">물품명</option>
+															<option value="30">물품번호</option>
+													</select></td>
+													<td width="15%"><input type="text"
+														class="form-control" placeholder="상세정보입력"></td>
+
+												</tr>
+												<tr>
+													<td width="10%">주문상태</td>
+													<td width="15%"><select class="form-control">
+															<option value="hidden">주문상태</option>
+															<option value="0">배송중</option>
+															<option value="10">배송완료</option>
+													</select></td>
+													<td width="10%">수거상태</td>
+													<td width="15%"><select class="form-control">
+															<option value="hidden">수거상태</option>
+															<option value="0">수거완료</option>
+															<option value="10">수거미완료</option>
+													</select></td>
+													<td></td>
+												</tr>
+												<tr>
+													<td width="10%">최종상태</td>
+													<td width="15%"><select class="form-control">
+															<option value="hidden">최종상태</option>
+															<option value="0">처리완료</option>
+															<option value="10">처리미완료</option>
+													</select></td>
+													<td>대여기간</td>
+													<td width="25%"><input type="date" name="startDate"
+														style="width: 140px"> &nbsp; ~ &nbsp;<input
+														type="date" name="endDate" style="width: 140px"></td>
+													<td></td>
+												</tr>
+											</table>
+											<br>
+											<div align="center">
+												<button type="submit">조회하기</button>
+												&nbsp;&nbsp;
+												<button type="reset">초기화</button>
+											</div>
+										</form>
+									</div>
 								</div>
-							</div>
 							</div>
 						</div>
 						<!-- 리스트 테이블  -->
@@ -129,55 +137,23 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 							</div>
 							<div class="card-body">
 								<div class="row">
-									<div class="col-lg-6 mb-1">
+									<div class="col-lg-6 mb-4">
 										<form class="form-inline">
-											<div class="form-group">
-												<span>송장 정보 입력 : </span>
-												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-												<select class="form-control">
-													<option>택배사</option>
-													<option>대한통운</option>
-													<option>로젠택배</option>
-													<option>ㅁㄴㅇㄴㅁ</option>
-												</select> &nbsp;&nbsp;&nbsp;&nbsp; <span> <input type="number"
-													class="form-control" placeholder="송장번호">
-												</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-												<button class="btn btn-success btn-icon-split btn-sm">
-													<span class="icon text-white-50"> <i
-														class="fas fas fa-check"></i>
-												
-													</span> <span class="text">적용하기</span>
-												</button>
-											</div>
-										</form>
-										<br>
-										<form>
-											<button class="btn btn-secondary btn-icon-split btn-sm">
+											<button type="button" class="btn btn-secondary btn-icon-split btn-sm">
 												<span class="icon text-white-50"> <i
-													class="fas fas fa-arrow-right"></i>
-												</span> <span class="text">발송처리</span>
-											</button>
-											&nbsp;&nbsp;&nbsp;
-											
-											<button type="button"
-												class="btn btn-danger btn-icon-split btn-sm"
-												data-toggle="modal" data-target="#cancelModal">
-												<span class="icon text-white-50"> <i
-													class="fas fas fa-trash"></i>
-												</span> <span class="text">대여취소</span>
+													class="fas fas fa-arrow-left"></i>
+												</span> <span class="text">수거요청</span>
 											</button>
 										</form>
 									</div>
-
 								</div>
-								<br>
 								<div class="table-responsive">
 									<div class="dataTables_wrapper dt-bootstrap4"
 										id="dataTable_wrapper">
 
 										<div class="row">
 											<div class="col-sm-12">
-												<table width="100%" class="table table-bordered dataTable table-hover"
+												<table width="100%" class="table table-bordered dataTable"
 													id="dataTable" role="grid"
 													aria-describedby="dataTable_info" style="width: 100%;"
 													cellspacing="0">
@@ -195,17 +171,11 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 																aria-sort="ascending" rowspan="1" colspan="1">물품번호</th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 50px;"
-																rowspan="1" colspan="1">택배사</th>
+																rowspan="1" colspan="1">대여 일시</th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 67px;"
-																rowspan="1" colspan="1">송장번호</th>
-															<th tabindex="0" class="sorting"
-																aria-controls="dataTable" style="width: 55px;"
-																rowspan="1" colspan="1">발송일</th>
+																rowspan="1" colspan="1">대여 만료일</th>
 
-															<th tabindex="0" class="sorting"
-																aria-controls="dataTable" style="width: 67px;"
-																rowspan="1" colspan="1">대여요청일시</th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 45px;"
 																rowspan="1" colspan="1">대여자 ID</th>
@@ -216,12 +186,20 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 																aria-controls="dataTable" style="width: 55px;"
 																rowspan="1" colspan="1">대여자 연락처</th>
 															<th tabindex="0" class="sorting"
-																aria-controls="dataTable" style="width: 68px;"
-																rowspan="1" colspan="1">배송지</th>
-															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 67px;"
 																rowspan="1" colspan="1">주문상태</th>
-
+															<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 68px;"
+																rowspan="1" colspan="1">택배사</th>
+															<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 68px;"
+																rowspan="1" colspan="1">송장번호</th>
+															<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 68px;"
+																rowspan="1" colspan="1">수거상태</th>
+															<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 68px;"
+																rowspan="1" colspan="1">수거처리</th>
 														</tr>
 													</thead>
 													<tbody>
@@ -238,6 +216,15 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 															<td></td>
 															<td></td>
 															<td></td>
+															<td>
+																<button type="button"
+																	class="btn btn-secondary btn-icon-split btn-sm"
+																	data-toggle="modal" data-target="#returnModal">
+																	<span class="icon text-white-50"> <i
+																		class="fas fas fa-arrow-left"></i>
+																	</span> <span class="text">수거처리</span>
+																</button>
+															</td>
 														</tr>
 													</tbody>
 												</table>
@@ -283,20 +270,27 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 		</div>
 		<!-- 콘텐츠 영역 끝 -->
 	</div>
-	<!-- 대여취소  Modal -->
-	<div class="modal fade" id="cancelModal" role="dialog">
+
+	<!-- 맨위로-->
+	<%@ include file="../common/toTop.jsp"%>
+
+	<!-- 로그아웃 모달-->
+	<%@ include file="../common/logoutModal.jsp"%>
+
+	<!-- 검수  Modal -->
+	<div class="modal fade" id="returnModal" role="dialog">
 		<div class="modal-dialog">
 
 			<!-- Modal content-->
 			<div class="modal-content">
 				<div class="modal-header">
-					<h4 class="modal-title">대여 취소처리</h4>
+					<h4 class="modal-title">검수완료 처리</h4>
 					<button type="button" class="close" data-dismiss="modal">&times;</button>
 				</div>
 				<div class="row">
 					<div class="col-md-12 col-lg-12">
 						<div class="modal-body">
-							<p>물품명과 주문상태를 확인하고 처리하세요</p>
+							<p>물품명을 확인하고 처리하세요</p>
 							<div class="panel-body">
 								<table width="100%"
 									class="table table-striped table-bordered table-hover"
@@ -304,10 +298,8 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									<thead>
 										<tr>
 											<th style="width: 40px; text-align: center;"><input type="checkBox"></th>
-											<th style="text-align: center;" class="text-black-50 small">등록요청번호</th>
 											<th style="text-align: center;" class="text-black-50 small">물품명</th>
 											<th style="text-align: center;" class="text-black-50 small">대여자</th>
-											<th style="text-align: center; width: 130px" class="text-black-50 small">취소사유</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -315,18 +307,24 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 											<td><input type="checkBox">
 											<td></td>
 											<td></td>
-											<td></td>
-											<td></td>
 										</tr>
 									</tbody>
 								</table>
 							</div>
-							<h5>*취소상세사유</h5>		
-								<textarea rows="10" cols="55" placeholder="EX)고객요청으로 인한 취소"></textarea>
-							
+							<hr>
+							<h5>*검수사진</h5>	
+							<div id="fileArea">
+								<input type="file" id="thumbnailImg1" name="thumbnailImg1" onchange=loadImg(this,1);>
+								<input type="file" id="thumbnailImg2" name="thumbnailImg2" onchange=loadImg(this,2);>
+								<input type="file" id="thumbnailImg3" name="thumbnailImg3" onchange=loadImg(this,3);> 
+								<input type="file" id="thumbnailImg4" name="thumbnailImg4" onchange=loadImg(this,4);>
+							</div>
+							<hr>
+							<h5>*검수내용</h5>	
+								<textarea rows="10" cols="55" placeholder="검수내용"></textarea>
 						</div>
 						<div class="modal-footer">
-							<button type="submit" class="btn btn-default" data-dismiss="modal">취소처리</button>
+							<button type="submit" class="btn btn-default" data-dismiss="modal">검수처리</button>
 							<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 						</div>
 					</div>
@@ -335,35 +333,29 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 
 		</div>
 	</div>
-	<!-- 맨위로-->
-	<%@ include file="../common/toTop.jsp"%>
-
-	<!-- 로그아웃 모달-->
-	<%@ include file="../common/logoutModal.jsp"%>
-
-
 	<script
-		src="<%= request.getContextPath() %>/resource/vendor/jquery/jquery.min.js"></script>
+		src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>
 	<script
-		src="<%= request.getContextPath() %>/resource/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+		src="<%=request.getContextPath()%>/resource/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 	<!-- Core plugin JavaScript-->
 	<script
-		src="<%= request.getContextPath() %>/resource/vendor/jquery-easing/jquery.easing.min.js"></script>
+		src="<%=request.getContextPath()%>/resource/vendor/jquery-easing/jquery.easing.min.js"></script>
 
 	<!-- Custom scripts for all pages-->
 	<script
-		src="<%= request.getContextPath() %>/resource/js/sb-admin-2.min.js"></script>
+		src="<%=request.getContextPath()%>/resource/js/sb-admin-2.min.js"></script>
 
 	<!-- Page level plugins -->
 	<script
-		src="<%= request.getContextPath() %>/resource/vendor/chart.js/Chart.min.js"></script>
+		src="<%=request.getContextPath()%>/resource/vendor/chart.js/Chart.min.js"></script>
 
 	<!-- Page level custom scripts -->
 	<script
-		src="<%= request.getContextPath() %>/resource/js/demo/chart-area-demo.js"></script>
+		src="<%=request.getContextPath()%>/resource/js/demo/chart-area-demo.js"></script>
 	<script
-		src="<%= request.getContextPath() %>/resource/js/demo/chart-pie-demo.js"></script>
+		src="<%=request.getContextPath()%>/resource/js/demo/chart-pie-demo.js"></script>
+
 </body>
 
 </html>
