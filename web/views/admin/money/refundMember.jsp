@@ -21,6 +21,25 @@ html {
 #pageName {
 	margin-left: 30px;
 }
+#MemberFilter {
+	color: black;
+}
+#MemberFilter label {
+	padding-left: 3%;
+	padding-right: 3%;
+}
+.card-body {
+	width:100%;
+}
+#dataTable_wrapper {
+	height:600px;
+	text-align:center;
+	width:100%;
+	overflow:hidden;
+}
+#filterArea {
+	text-align:center;
+}
 
 </style>
 <!-- Custom fonts for this template-->
@@ -60,7 +79,103 @@ html {
 				</div>
 				<img src="/st/resource/img/adminHr.png" width="100%">
 				
-				
+				<div class="card-body">
+					<div class="table-responsive">
+						<div id="dataTable_wrapper"
+							class="dataTables_wrapper dt-bootstrap4">
+							<div class="row">
+								<div class="col-sm-12 col-md-12" id="MemberFilter">
+									<form id="filterArea">
+										<table border="1" class="col-lg-12" id="filter">
+											<tr>
+												<th style="background:lightgray" height="15px;" colspan="12"></th>
+											</tr>
+											<tr>
+												<td width="5%">회원ID</td>
+												<td width="10%">
+													<input type="text" name="memberId">
+												</td>
+												<td width="5%">환급일</td>
+												<td width="25%">
+												<input type="date" name="startDate" style="width:140px"> &nbsp;
+												 ~ &nbsp;<input type="date" name="endDate" style="width:140px">
+												</td>
+												<td width="5%">금액</td>
+												<td width="25%">
+												<input type="number" name="startMoney" style="width:140px"> &nbsp;
+												 ~ &nbsp;<input type="number" name="endMoney" style="width:140px">
+												</td>								
+												<td width="5%">상태</td>
+												<td width="5%">
+													<select>
+														<option value="A">전체</option>
+														<option value="N">환급대기</option>
+														<option value="Y">환급완료</option>
+													</select>
+												</td>
+											</tr>
+										</table>
+										<br>
+										<div align="center">
+											<button type="submit">조회하기</button> &nbsp;&nbsp;
+											<button type="reset">초기화</button>
+										</div>	
+									</form>
+								</div>
+							</div>
+							<br>
+							<br>
+							<div class="row">
+								<div class="col-sm-12">
+									<table class="table table-bordered dataTable" id="dataTable"
+										width="100%" cellspacing="0" role="grid"
+										aria-describedby="dataTable_info" style="width: 100%;" style="height:100px;">
+										<thead>
+											<tr role="row">
+												<th class="sorting_asc" tabindex="0"
+													aria-controls="dataTable" rowspan="1" colspan="1"
+													aria-sort="ascending"
+													aria-label="Name: activate to sort column descending"
+													style="width: 10%;">회원ID</th>
+												<th class="sorting" tabindex="0" aria-controls="dataTable"
+													rowspan="1" colspan="1"
+													aria-label="Office: activate to sort column ascending"
+													style="width: 20%;">신청일</th>
+												<th class="sorting" tabindex="0" aria-controls="dataTable"
+													rowspan="1" colspan="1"
+													aria-label="Age: activate to sort column ascending"
+													style="width: 32%;">사유</th>
+												<th class="sorting" tabindex="0" aria-controls="dataTable"
+													rowspan="1" colspan="1"
+													aria-label="Salary: activate to sort column ascending"
+													style="width: 10%;">금액</th>
+												<th class="sorting" tabindex="0" aria-controls="dataTable"
+													rowspan="1" colspan="1"
+													aria-label="Age: activate to sort column ascending"
+													style="width: 20%;">환불처리일</th>
+												<th class="sorting" tabindex="0" aria-controls="dataTable"
+													rowspan="1" colspan="1"
+													aria-label="Salary: activate to sort column ascending"
+													style="width: 10%;">상태</th>
+											</tr>
+										</thead>
+										<tbody>
+											
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-sm-12 col-md-5">
+									
+								</div>
+								<div class="col-sm-12 col-md-7">
+	
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 				<!-- 메인 콘텐트 영역 끝 -->
 			</div>
 			<!-- Footer 인클루드 -->

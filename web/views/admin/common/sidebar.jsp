@@ -196,13 +196,13 @@
       
       <li class="nav-item">
         <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsestat" aria-expanded="true" aria-controls="collapsestat">
-          <img src="<%=request.getContextPath()%>/resource/img/memberM.png">
+          <img src="<%=request.getContextPath()%>/resource/img/stat.png">
           <span>통계</span>
         </a>
         <div id="collapsestat" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="<%=request.getContextPath()%>">회원통계</a>
-            <a class="collapse-item" href="<%=request.getContextPath()%>">매출통계</a>
+            <a class="collapse-item" href="<%=request.getContextPath()%>/views/admin/stat/statMember.jsp">회원통계</a>
+            <a class="collapse-item" href="<%=request.getContextPath()%>/views/admin/stat/statST.jsp">매출통계</a>
 
           </div>
         </div>

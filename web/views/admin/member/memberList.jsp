@@ -9,45 +9,12 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="">
 <meta name="author" content="">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
 <!-- Bootstrap core JavaScript-->
 <title>Share Things</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
-<style>
-html {
-	heigth: 100%
-}
 
-#content-wrapper {
-	min-height: 90%;
-}
-
-#pageName {
-	margin-left: 30px;
-}
-
-#MemberFilter {
-	color: black;
-	
-}
-
-#MemberFilter label {
-	padding-left: 3%;
-	padding-right: 3%;
-}
-.card-body {
-	width:100%;
-}
-#dataTable_wrapper {
-	height:600px;
-	text-align:center;
-}
-#filterArea {
-	text-align:center;
-}
-#dataTables_wrapper{
-	width:100%;
-}
-</style>
 <!-- Custom fonts for this template-->
 <link
 	href="<%=request.getContextPath()%>/resource/vendor/fontawesome-free/css/all.min.css"
@@ -60,7 +27,16 @@ html {
 <link
 	href="<%=request.getContextPath()%>/resource/css/sb-admin-2.min.css"
 	rel="stylesheet">
-
+<style>
+	
+	.even:hover {
+		cursor:pointer;
+	}
+	#filter {
+		margin-left:auto;
+		margin-right:auto;
+	}
+</style>
 </head>
 
 <body id="page-top">
@@ -78,142 +54,162 @@ html {
 				<!-- 헤더 인클루드 -->
 				<%@ include file="../common/header.jsp"%>
 				<!-- 컨텐츠바디 영역 실제 작성 영역 -->
-				<div id="pageName">
-					<h2 style="color: black">
-						<b>회원정보관리</b>
-					</h2>
-				</div>
-				<img src="/st/resource/img/adminHr.png" width="100%">
+				<div class="container-fluid">
+					<h1 class="h3 mb-2 text-gray-800">회원정보관리</h1>
+					<img src="<%=request.getContextPath()%>/resource/img/adminHr.png" width="100%">
+					<div class="row" id="filter" align="center" style="width:80%">
+						<div class="col-sm-12 col-md-6 col-lg-4">
+							<div class="okStatus" id="okStatusForm">
+								<label>회원ID : </label>
+								<input type="text" name="userId">
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-6 col-lg-4">
+							<div class="detail" id="detailForm">
+								<label>회원명 : </label>
+								<input type="text" name="userName">
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-6 col-lg-2">
+							<div class="dateForm" id="dateForm">
+								<label>회원등급 : </label>
+								<select>
+									<option>전체</option>
+									<option>브론즈</option>
+									<option>실버</option>
+									<option>골드</option>
+									<option>VIP</option>
+									<option>VVIP</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-sm-12 col-md-6 col-lg-2">
+							<div class="dateForm" id="dateForm">
+								<label>회원구분</label>
+								<select>
+									<option>전체</option>
+									<option>가입</option>
+									<option>탈퇴</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<a href="#" class="btn btn-success btn-icon-split"><span
+						class="icon text-white-50"> <i class="fas fa-check"></i></span> <span class="text">검색</span>
+					</a>
+					<div class="card shadow mb-4">
+						<div class="card-body">
+							<div class="table-responsive">
+								<div id="dataTable_wrapper"
+									class="dataTables_wrapper dt-bootstrap4">
+									<div class="row">
+										<div class="col-sm-12">
+											<table class="table table-bordered dataTable" id="dataTable"
+												width="100%" cellspacing="0" role="grid"
+												aria-describedby="dataTable_info" style="width: 100%;">
+												<thead>
+													<tr role="row">
+														<th class="sorting_asc" tabindex="0"
+															aria-controls="dataTable" rowspan="1" colspan="1"
+															aria-label="Name: activate to sort column descending"
+															aria-sort="ascending" 
+															style="width: 30px;">회원ID</th>
+														<th class="sorting" tabindex="0" aria-controls="dataTable"
+															rowspan="1" colspan="1"
+															aria-label="Position: activate to sort column ascending"
+															style="width: 30px;">회원명</th>
+														<th class="sorting" tabindex="0" aria-controls="dataTable"
+															rowspan="1" colspan="1"
+															aria-label="Office: activate to sort column ascending"
+															style="width: 30px;">전화번호</th>
+														<th class="sorting" tabindex="0" aria-controls="dataTable"
+															rowspan="1" colspan="1"
+															aria-label="Age: activate to sort column ascending"
+															style="width: 30px;">주소</th>
+														<th class="sorting" tabindex="0" aria-controls="dataTable"
+															rowspan="1" colspan="1"
+															aria-label="Start date: activate to sort column ascending"
+															style="width: 30px;">보유 수익금</th>
+														<th class="sorting" tabindex="0" aria-controls="dataTable"
+															rowspan="1" colspan="1"
+															aria-label="Salary: activate to sort column ascending"
+															style="width: 10px;">보유 적립금</th>
+													</tr>
+												</thead>
 
-				<div class="card-body">
-					<div class="table-responsive">
-						<div id="dataTable_wrapper"
-							class="dataTables_wrapper dt-bootstrap4">
-							<div class="row">
-								<div class="col-sm-12 col-md-12" id="MemberFilter">
-									<form id="filterArea">
-										<table border="1" class="col-lg-12" id="filter">
-											<tr>
-												<th style="background:rgb(95, 149, 247);" height="15px;" colspan="8"></th>
-											</tr>
-											<tr>
-												<td width="10%">회원ID</td>
-												<td width="15%">
-													<input type="text" name="memberId">
-												</td>
-												<td width="10%">회원명</td>
-												<td width="15%">
-													<input type="text" name="memberName">
-												</td>
-												<td width="10%">회원등급</td>
-												<td width="15%">
-													<select>
-														<option value="0">전체</option>
-														<option value="10">찌그래기</option>
-														<option value="20">실버</option>
-														<option value="30">골드</option>
-														<option value="40">VIP</option>
-														<option value="50">VVIP</option>
-													</select>
-												</td>
-												<td width="10%">상태</td>
-												<td width="15%">
-													<select>
-														<option value="A">전체</option>
-														<option value="Y">가입</option>
-														<option value="N">탈퇴</option>
-													</select>
-												</td>
-											</tr>
-											<tr>
-												<td>적립금</td>
-												<td colspan="3">
-													<input type="text" name="start">&nbsp;&nbsp;
-													~
-													&nbsp;&nbsp;<input type="text" name="end">
-												</td>
-												<td>수익금</td>
-												<td colspan="3">
-													<input type="text" name="start">&nbsp;&nbsp;
-													~
-													&nbsp;&nbsp;<input type="text" name="end">
-												</td>
-											</tr>
-										</table>
-										<br>
-										<div align="center">
-											<button type="submit">조회하기</button>&nbsp;&nbsp;
-											<button type="reset">초기화</button>
-										</div>	
-									</form>
-								</div>
-							</div>
-							<br>
-							<br>
-							<div class="row">
-								<div class="col-sm-12">
-									<table class="table table-bordered dataTable" id="dataTable"
-										width="100%" cellspacing="0" role="grid"
-										aria-describedby="dataTable_info" style="width: 100%;" style="height:100px;">
-										<thead>
-											<tr role="row">
-												<th class="sorting_asc" tabindex="0"
-													aria-controls="dataTable" rowspan="1" colspan="1"
-													aria-sort="ascending"
-													aria-label="Name: activate to sort column descending"
-													style="width: 10%;">회원ID</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTable"
-													rowspan="1" colspan="1"
-													aria-label="Position: activate to sort column ascending"
-													style="width: 10%;">회원명</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTable"
-													rowspan="1" colspan="1"
-													aria-label="Office: activate to sort column ascending"
-													style="width: 15%;">전화번호</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTable"
-													rowspan="1" colspan="1"
-													aria-label="Age: activate to sort column ascending"
-													style="width: 25%;">주소</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTable"
-													rowspan="1" colspan="1"
-													aria-label="Start date: activate to sort column ascending"
-													style="width: 10%;">회원등급</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTable"
-													rowspan="1" colspan="1"
-													aria-label="Salary: activate to sort column ascending"
-													style="width: 10%;">보유적립금</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTable"
-													rowspan="1" colspan="1"
-													aria-label="Salary: activate to sort column ascending"
-													style="width: 10%;">보유수익금</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTable"
-													rowspan="1" colspan="1"
-													aria-label="Salary: activate to sort column ascending"
-													style="width: 10%;">상태</th>
-											</tr>
-										</thead>
-										<tbody>
-											
-										</tbody>
-									</table>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-12 col-md-5">
-									
-								</div>
-								<div class="col-sm-12 col-md-7">
-	
+												<tbody>
+													<tr role="row" class="even">
+														<td class="sorting_1"><input type="checkbox">01</td>
+														<td>user01</td>
+														<td>노트북</td>
+														<td>2019/05/05</td>
+														<td>노트북 빌려드림</td>
+														<td>승인</td>
+													</tr>
+													<tr role="row" class="even">
+														<td class="sorting_1"><input type="checkbox">01</td>
+														<td>user01</td>
+														<td>노트북</td>
+														<td>2019/05/05</td>
+														<td>노트북 빌려드림</td>
+														<td>승인</td>
+													</tr>
+													<tr role="row" class="even">
+														<td class="sorting_1"><input type="checkbox">01</td>
+														<td>user01</td>
+														<td>노트북</td>
+														<td>2019/05/05</td>
+														<td>노트북 빌려드림</td>
+														<td>승인</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<div class="row">
+
+										<div class="col-sm-12 col-md-3">
+											<div class="dataTables_paginate paging_simple_numbers"
+												id="dataTable_paginate">
+												<ul class="pagination">
+													<li class="paginate_button page-item previous disabled"
+														id="dataTable_previous"><a href="#"
+														aria-controls="dataTable" data-dt-idx="0" tabindex="0"
+														class="page-link">Previous</a></li>
+													<li class="paginate_button page-item active"><a
+														href="#" aria-controls="dataTable" data-dt-idx="1"
+														tabindex="0" class="page-link">1</a></li>
+													<li class="paginate_button page-item "><a href="#"
+														aria-controls="dataTable" data-dt-idx="2" tabindex="0"
+														class="page-link">2</a></li>
+													<li class="paginate_button page-item "><a href="#"
+														aria-controls="dataTable" data-dt-idx="3" tabindex="0"
+														class="page-link">3</a></li>
+													<li class="paginate_button page-item "><a href="#"
+														aria-controls="dataTable" data-dt-idx="4" tabindex="0"
+														class="page-link">4</a></li>
+													<li class="paginate_button page-item "><a href="#"
+														aria-controls="dataTable" data-dt-idx="5" tabindex="0"
+														class="page-link">5</a></li>
+													<li class="paginate_button page-item "><a href="#"
+														aria-controls="dataTable" data-dt-idx="6" tabindex="0"
+														class="page-link">6</a></li>
+													<li class="paginate_button page-item next"
+														id="dataTable_next"><a href="#"
+														aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+														class="page-link">Next</a></li>
+												</ul>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-
-
 				<!-- 메인 콘텐트 영역 끝 -->
+				<!-- Footer 인클루드 -->
 			</div>
-			<!-- Footer 인클루드 -->
 			<%@ include file="../common/footer.jsp"%>
 			<!-- 메인 콘텐츠 영역 끝 -->
 		</div>
@@ -226,7 +222,13 @@ html {
 	<!-- 로그아웃 모달-->
 	<%@ include file="../common/logoutModal.jsp"%>
 
-
+	<script>
+		$(function() {
+			$(".even").click(function() {
+				location = "<%= request.getContextPath()%>/views/admin/reqProductDetail.jsp";
+			});
+		});
+	</script>
 	<script
 		src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>
 	<script
