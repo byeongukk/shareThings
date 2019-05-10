@@ -36,7 +36,9 @@
 } */
 
 
-
+td {
+	border:1px solid red;
+}
 .productPic {
 	width: 100%;
 	height: 100%;
