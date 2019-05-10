@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+.rentBtnArea {
+	display:none !important;
+}
+.rentBtnArea2 {
+	display:inline-block;
+}
+#menubarArea, #submenuArea {
+	font-size:70%;
+}
+#menubar td, #submenu td {
+	height: 40px;
+}
+#menubar td:first-of-type, #submenu td:first-of-type {
+	width:100px;
+}
