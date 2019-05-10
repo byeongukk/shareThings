@@ -9,6 +9,9 @@
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <meta name="description" content="">
 <meta name="author" content="">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+
 <!-- Bootstrap core JavaScript-->
 <title>Share Things</title>
 
@@ -25,27 +28,17 @@
 	href="<%=request.getContextPath()%>/resource/css/sb-admin-2.min.css"
 	rel="stylesheet">
 <style>
-.card {
-	margin-right: center;
-	margin-left: center;
-	width: 100%;
-}
-/* .button {
-	margin-top:15%;
-} */
-.answer {
-	margin-top:5%;
-}
 #dataTable_wrapper {
-		overflow:hidden;
+	overflow: hidden;
 }
-.card-body {
-	required:true;
+
+.card {
+	margin-left: auto;
+	margin-right: auto;
 }
-textarea {
-	resize:none;
-	overflow:hidden;
-	border:0;
+
+table {
+	text-align: center;
 }
 </style>
 </head>
@@ -66,55 +59,74 @@ textarea {
 				<%@ include file="../common/header.jsp"%>
 				<!-- 컨텐츠바디 영역 실제 작성 영역 -->
 				<div class="container-fluid">
-					<div
-						class="d-sm-flex align-items-center justify-content-between mb-4">
-						<h1 class="h3 mb-0 text-gray-800">1:1 문의</h1>
-					</div>
-					<br>
-					<br>
+					<h1 class="h3 mb-2 text-gray-800">검수 관리</h1>
 					<div class="row">
-						<div class="col-lg-10">
-							<div class="card shadow mb-4">
-								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">user01/배송/처리대기</h6>
-								</div>
-								<div class="card-body">
-									어제 물품 도착한다고 했는데 왜 안와요?<br>
-									못쓴 기간만큼 환불해주세요<br>
-									어제 물품 도착한다고 했는데 왜 안와요?<br>
-									못쓴 기간만큼 환불해주세요<br>
-									어제 물품 도착한다고 했는데 왜 안와요?<br>
-									못쓴 기간만큼 환불해주세요<br>
-									어제 물품 도착한다고 했는데 왜 안와요?<br>
-									못쓴 기간만큼 환불해주세요<br>
+						<div class="col-lg-4 col-sm-12 col-md-6">
+							<div class="okStatus" id="okStatusForm"></div>
+						</div>
+						<div class="col-lg-4 col-sm-12 col-md-6">
+							<div class="detail" id="detailForm"></div>
+						</div>
+						<div class="col-lg-4 col-sm-12 col-md-6">
+							<div class="detail" id="detailForm"></div>
+						</div>
+					</div>
+					<br> <br> <br> <br>
+					<div class="card shadow mb-4 col-lg-8">
+						<div class="card-header py-3">
+							<h6 class="m-0 font-weight-bold text-primary">
+								등록 번호 : 20190501<br>물품명 : 노트북
+							</h6>
+						</div>
+						<div class="card-body">
+							<div class="table-responsive">
+								<div id="dataTable_wrapper"
+									class="dataTables_wrapper dt-bootstrap4">
+									<div class="row">
+										<div class="col-sm-12">
+											<table class="table table-bordered dataTable" id="dataTable"
+												width="100%" cellspacing="0" role="grid"
+												aria-describedby="dataTable_info" style="width: 100%;">
+												<thead>
+													<tr role="row">
+														<th class="sorting_asc" tabindex="0"
+															aria-controls="dataTable" rowspan="1" colspan="1"
+															aria-label="Name: activate to sort column descending"
+															aria-sort="ascending" style="width: 10px;">NO.</th>
+														<th class="sorting" tabindex="0" aria-controls="dataTable"
+															rowspan="1" colspan="1"
+															aria-label="Position: activate to sort column ascending"
+															style="width: 30px;">기준</th>
+														<th class="sorting" tabindex="0" aria-controls="dataTable"
+															rowspan="1" colspan="1"
+															aria-label="Position: activate to sort column ascending"
+															style="width: 30px;">적합도</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr role="row" class="even">
+														<td class="sorting_1">01</td>
+														<td>전원이 켜지는가</td>
+														<td>3</td>
+													</tr>
+													<tr role="row" class="even">
+														<td class="sorting_1">02</td>
+														<td>어떤가</td>
+														<td>5</td>
+													</tr>
+													<tr role="row" class="even">
+														<td class="sorting_1">03</td>
+														<td>좋은가</td>
+														<td>4</td>
+													</tr>
+												</tbody>
+											</table>
+										</div>
+									</div>
+									<%@ include file="../common/paging.jsp"%>
 								</div>
 							</div>
 						</div>
-					</div>
-					<div class="row answer">
-						<div class="col-lg-4">
-							<div class="card shadow mb-4">
-								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">처리내용</h6>
-								</div>
-								<div class="card-body">
-								<textarea class="col-lg-12" rows="5">쓰지마세요</textarea>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="button">
-						<a href="<%= request.getContextPath() %>/views/notice/noticeList.jsp"
-							class="btn btn-success btn-icon-split"><span
-							class="icon text-white-50"> <i class="fas fa-check"></i></span> <span
-							class="text">돌아가기</span>
-						</a>
-						<%-- <% if(loginUser != null && 
-							loginUser.getUserId().equals("admin"))  { %> --%>
-						<a href="#" class="btn btn-info btn-icon-split"> <span
-								class="icon text-white-50"> <i class="fas fa-info-circle"></i>
-							</span> <span class="text">처리하기</span></a>
-						<%-- <% } %> --%>
 					</div>
 				</div>
 				<!-- 메인 콘텐트 영역 끝 -->
@@ -131,7 +143,6 @@ textarea {
 
 	<!-- 로그아웃 모달-->
 	<%@ include file="../common/logoutModal.jsp"%>
-
 
 	<script
 		src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>

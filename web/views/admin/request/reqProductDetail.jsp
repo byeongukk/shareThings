@@ -150,22 +150,71 @@ textarea {
 					</div>
 					<div class="button">
 						<a
-							href="<%=request.getContextPath()%>/views/notice/noticeList.jsp"
+							href="<%=request.getContextPath()%>/views/admin/request/reqProduct.jsp"
 							class="btn btn-success btn-icon-split"><span
 							class="icon text-white-50"> <i class="fas fa-check"></i></span> <span
 							class="text">돌아가기</span> </a>
 						<%-- <% if(loginUser != null && 
 							loginUser.getUserId().equals("admin"))  { %> --%>
-						<a href="#" class="btn btn-info btn-icon-split"> <span
+						<a href="#" class="btn btn-info btn-icon-split" onclick="ok();"> <span
 							class="icon text-white-50"> <i class="fas fa-info-circle"></i>
 						</span> <span class="text">승인하기</span></a> <a href="#"
-							class="btn btn-danger btn-icon-split"> <span
+							class="btn btn-danger btn-icon-split" data-toggle="modal" 
+							data-target="#cancelModal"> <span
 							class="icon text-white-50"> <i class="fas fa-trash"></i>
 						</span> <span class="text">거절하기</span>
 						</a>
 						<%-- <% } %> --%>
 					</div>
 				</div>
+				<div class="modal fade" id="cancelModal" role="dialog">
+		<div class="modal-dialog">
+
+			<!-- Modal content-->
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">요청 거절 처리</h4>
+					<button type="button" class="close" data-dismiss="modal">&times;</button>
+				</div>
+				<div class="row">
+					<div class="col-md-12 col-lg-12">
+						<div class="modal-body">
+							<p>물품명과 승인상태를 확인하고 처리하세요</p>
+							<div class="panel-body">
+								<table width="100%"
+									class="table table-striped table-bordered table-hover"
+									id="dataTables-example">
+									<thead>
+										<tr>
+											<th style="text-align: center;" class="text-black-50 small">등록요청번호</th>
+											<th style="text-align: center;" class="text-black-50 small">물품명</th>
+											<th style="text-align: center;" class="text-black-50 small">등록자</th>
+											<th style="text-align: center; width: 130px" class="text-black-50 small">거절사유</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr class="odd gradeX">
+											<td></td>
+											<td></td>
+											<td></td>
+											<td></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+							<h5>*거절상세사유</h5>	
+								<textarea rows="10" cols="55" placeholder="EX)거짓 정보 등록"></textarea>
+						</div>
+						<div class="modal-footer">
+							<button type="submit" class="btn btn-default" data-dismiss="modal">거절처리</button>
+							<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
 				<!-- 메인 콘텐트 영역 끝 -->
 				<!-- Footer 인클루드 -->
 			</div>
@@ -182,6 +231,12 @@ textarea {
 	<%@ include file="../common/logoutModal.jsp"%>
 
 
+	<script>
+		function ok() {
+			alert("정말 승인하시겠습니까?");
+			location = "<%= request.getContextPath()%>/views/admin/request/reqProduct.jsp";
+		}
+	</script>
 	<script
 		src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>
 	<script

@@ -28,10 +28,13 @@
 	href="<%=request.getContextPath()%>/resource/css/sb-admin-2.min.css"
 	rel="stylesheet">
 <style>
-	
-	.even:hover {
-		cursor:pointer;
-	}
+.even:hover {
+	cursor: pointer;
+}
+
+#dataTable_wrapper {
+	overflow: hidden;
+}
 </style>
 </head>
 
@@ -79,23 +82,34 @@
 									placeholder="내용을 입력하세요">
 							</div>
 						</div>
-						<div class="col-sm-12 col-md-6">
+						<div class="col-lg-2 col-sm-12 col-md-6">
 							<div class="dateForm" id="dateForm">
-								<label>요청 날짜</label> <input type="date" id="fristDate">
-								&nbsp;&nbsp;&nbsp;&nbsp; <input type="date" id="secondDate">
+								<label>등록 기간</label> <input
+									class="custom-date custom-date-lg form-control form-control-lg"
+									type="date" id="fristDate">
+							</div>
+						</div>
+						<div class="col-lg-2 col-sm-12 col-md-6">
+							<div class="dateForm" id="dateForm">
+								<label>&nbsp;</label><input
+									class="custom-date custom-date-lg form-control form-control-lg"
+									type="date" id="fristDate">
 							</div>
 						</div>
 					</div>
-					<a href="#" class="btn btn-success btn-icon-split"><span
-						class="icon text-white-50"> <i class="fas fa-check"></i></span> <span class="text">검색</span>
-					</a>
+					<br> <br> <a href="#"
+						class="btn btn-success btn-icon-split"><span
+						class="icon text-white-50"> <i class="fas fa-check"></i></span> <span
+						class="text">검색</span> </a><br> <br>
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
 							<h6 class="m-0 font-weight-bold text-primary">00건</h6>
-							<a href="#" class="btn btn-info btn-icon-split"> <span
-								class="icon text-white-50"> <i class="fas fa-info-circle"></i>
-							</span> <span class="text">등록 승인</span></a> 
-							<a href="#" class="btn btn-danger btn-icon-split"> <span
+							<a href="#" class="btn btn-info btn-icon-split" onclick="ok();">
+								<span class="icon text-white-50"> <i
+									class="fas fa-info-circle"></i>
+							</span> <span class="text">등록 승인</span>
+							</a> <a href="#" class="btn btn-danger btn-icon-split"
+								data-toggle="modal" data-target="#cancelModal"> <span
 								class="icon text-white-50"> <i class="fas fa-trash"></i>
 							</span> <span class="text">등록 거절</span>
 							</a>
@@ -111,12 +125,14 @@
 												aria-describedby="dataTable_info" style="width: 100%;">
 												<thead>
 													<tr role="row">
-
+														<th tabindex="0" class="sorting" aria-controls="dataTable"
+															style="width: 10px;"
+															aria-label="Name: activate to sort column ascending"
+															rowspan="1" colspan="1"><input type="checkBox"></th>
 														<th class="sorting_asc" tabindex="0"
 															aria-controls="dataTable" rowspan="1" colspan="1"
 															aria-label="Name: activate to sort column descending"
-															aria-sort="ascending" style="width: 30px;"><input
-															type="checkbox"> 요청번호</th>
+															aria-sort="ascending" style="width: 30px;">요청번호</th>
 														<th class="sorting" tabindex="0" aria-controls="dataTable"
 															rowspan="1" colspan="1"
 															aria-label="Position: activate to sort column ascending"
@@ -142,7 +158,8 @@
 
 												<tbody>
 													<tr role="row" class="even">
-														<td class="sorting_1"><input type="checkbox">01</td>
+														<td class="sorting_1"><input type="checkbox"></td>
+														<td>01</td>
 														<td>user01</td>
 														<td>노트북</td>
 														<td>2019/05/05</td>
@@ -150,7 +167,8 @@
 														<td>승인</td>
 													</tr>
 													<tr role="row" class="even">
-														<td class="sorting_1"><input type="checkbox">01</td>
+														<td class="sorting_1"><input type="checkbox"></td>
+														<td>01</td>
 														<td>user01</td>
 														<td>노트북</td>
 														<td>2019/05/05</td>
@@ -158,7 +176,8 @@
 														<td>승인</td>
 													</tr>
 													<tr role="row" class="even">
-														<td class="sorting_1"><input type="checkbox">01</td>
+														<td class="sorting_1"><input type="checkbox"></td>
+														<td>01</td>
 														<td>user01</td>
 														<td>노트북</td>
 														<td>2019/05/05</td>
@@ -169,45 +188,67 @@
 											</table>
 										</div>
 									</div>
-									<div class="row">
+									<%@ include file="../common/paging.jsp"%>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="modal fade" id="cancelModal" role="dialog">
+					<div class="modal-dialog">
 
-										<div class="col-sm-12 col-md-3">
-											<div class="dataTables_paginate paging_simple_numbers"
-												id="dataTable_paginate">
-												<ul class="pagination">
-													<li class="paginate_button page-item previous disabled"
-														id="dataTable_previous"><a href="#"
-														aria-controls="dataTable" data-dt-idx="0" tabindex="0"
-														class="page-link">Previous</a></li>
-													<li class="paginate_button page-item active"><a
-														href="#" aria-controls="dataTable" data-dt-idx="1"
-														tabindex="0" class="page-link">1</a></li>
-													<li class="paginate_button page-item "><a href="#"
-														aria-controls="dataTable" data-dt-idx="2" tabindex="0"
-														class="page-link">2</a></li>
-													<li class="paginate_button page-item "><a href="#"
-														aria-controls="dataTable" data-dt-idx="3" tabindex="0"
-														class="page-link">3</a></li>
-													<li class="paginate_button page-item "><a href="#"
-														aria-controls="dataTable" data-dt-idx="4" tabindex="0"
-														class="page-link">4</a></li>
-													<li class="paginate_button page-item "><a href="#"
-														aria-controls="dataTable" data-dt-idx="5" tabindex="0"
-														class="page-link">5</a></li>
-													<li class="paginate_button page-item "><a href="#"
-														aria-controls="dataTable" data-dt-idx="6" tabindex="0"
-														class="page-link">6</a></li>
-													<li class="paginate_button page-item next"
-														id="dataTable_next"><a href="#"
-														aria-controls="dataTable" data-dt-idx="7" tabindex="0"
-														class="page-link">Next</a></li>
-												</ul>
-											</div>
+						<!-- Modal content-->
+						<div class="modal-content">
+							<div class="modal-header">
+								<h4 class="modal-title">요청 거절 처리</h4>
+								<button type="button" class="close" data-dismiss="modal">&times;</button>
+							</div>
+							<div class="row">
+								<div class="col-md-12 col-lg-12">
+									<div class="modal-body">
+										<p>물품명과 승인상태를 확인하고 처리하세요</p>
+										<div class="panel-body">
+											<table width="100%"
+												class="table table-striped table-bordered table-hover"
+												id="dataTables-example">
+												<thead>
+													<tr>
+														<th style="width: 40px; text-align: center;"><input
+															type="checkBox"></th>
+														<th style="text-align: center;"
+															class="text-black-50 small">등록요청번호</th>
+														<th style="text-align: center;"
+															class="text-black-50 small">물품명</th>
+														<th style="text-align: center;"
+															class="text-black-50 small">등록자</th>
+														<th style="text-align: center; width: 130px"
+															class="text-black-50 small">거절사유</th>
+													</tr>
+												</thead>
+												<tbody>
+													<tr class="odd gradeX">
+														<td><input type="checkBox">
+														<td></td>
+														<td></td>
+														<td></td>
+														<td></td>
+													</tr>
+												</tbody>
+											</table>
 										</div>
+										<h5>*거절상세사유</h5>
+										<textarea rows="10" cols="55" placeholder="EX)거짓 정보 등록"></textarea>
+									</div>
+									<div class="modal-footer">
+										<button type="submit" class="btn btn-default"
+											data-dismiss="modal">거절처리</button>
+										<button type="button" class="btn btn-default"
+											data-dismiss="modal">닫기</button>
 									</div>
 								</div>
 							</div>
 						</div>
+
 					</div>
 				</div>
 				<!-- 메인 콘텐트 영역 끝 -->
@@ -228,9 +269,13 @@
 	<script>
 		$(function() {
 			$(".even").click(function() {
-				location = "<%= request.getContextPath()%>/views/admin/reqProductDetail.jsp";
-			});
+				location = "<%=request.getContextPath()%>/views/admin/request/reqProductDetail.jsp";
+							});
 		});
+
+		function ok() {
+			alert("정말 승인하시겠습니까?");
+		}
 	</script>
 	<script
 		src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>

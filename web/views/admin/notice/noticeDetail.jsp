@@ -76,7 +76,7 @@
 						</div>
 					</div>
 					<div class="button">
-						<a href="<%= request.getContextPath() %>/views/notice/noticeList.jsp"
+						<a href="<%= request.getContextPath() %>/views/admin/notice/noticeList.jsp"
 							class="btn btn-success btn-icon-split"><span
 							class="icon text-white-50"> <i class="fas fa-check"></i></span> <span
 							class="text">돌아가기</span> </a>
