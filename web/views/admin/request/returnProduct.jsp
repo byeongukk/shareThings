@@ -28,9 +28,13 @@
 	href="<%=request.getContextPath()%>/resource/css/sb-admin-2.min.css"
 	rel="stylesheet">
 <style>
-	.even:hover {
-		cursor:pointer;
-	}
+.even:hover {
+	cursor: pointer;
+}
+
+#dataTable_wrapper {
+	overflow: hidden;
+}
 </style>
 </head>
 
@@ -79,14 +83,8 @@
 							</div>
 						</div>
 						<div class="col-sm-12 col-md-6">
-							<div class="dateForm" id="dateForm">
-								<label>등록 날짜</label> <input type="date" id="fristDate">
-								&nbsp;&nbsp;&nbsp;&nbsp; <input type="date" id="secondDate">
-							</div>
-						</div>
-						<div class="col-sm-12 col-md-6">
 							<div class="detail" id="detailForm">
-								<label>송장정보 입력 <select name="detail"
+								<label><br>송장정보 입력 <select name="detail"
 									aria-controls="dataTable"
 									class="custom-select custom-select-sm form-control form-control-sm">
 										<option value="reqNumber">CJ대한통운</option>
@@ -96,17 +94,30 @@
 								</label> &nbsp;&nbsp;&nbsp;&nbsp; <input type="text" id="detailInput"
 									placeholder="송장번호">
 							</div>
-					</div>
 						</div>
-						<a href="#"
-							class="btn btn-success btn-icon-split"><span
-							class="icon text-white-50"> <i class="fas fa-check"></i></span> <span class="text">검색</span>
-						</a>
-						<br><br>
+						<div class="col-lg-2 col-sm-12 col-md-6">
+							<div class="dateForm" id="dateForm">
+								<label>등록 기간</label> <input
+									class="custom-date custom-date-lg form-control form-control-lg"
+									type="date" id="fristDate">
+							</div>
+						</div>
+						<div class="col-lg-2 col-sm-12 col-md-6">
+							<div class="dateForm" id="dateForm">
+								<label>&nbsp;</label><input
+									class="custom-date custom-date-lg form-control form-control-lg"
+									type="date" id="fristDate">
+							</div>
+						</div>
+					</div><br><br>
+					<a href="#" class="btn btn-success btn-icon-split"><span
+						class="icon text-white-50"> <i class="fas fa-check"></i></span> <span
+						class="text">검색</span> </a> <br>
+					<br>
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
 							<h6 class="m-0 font-weight-bold text-primary">00건</h6>
-							 <a href="#" class="btn btn-info btn-icon-split"> <span
+							<a href="#" class="btn btn-info btn-icon-split"> <span
 								class="icon text-white-50"> <i class="fas fa-info-circle"></i>
 							</span> <span class="text">발송 처리</span>
 							</a>
@@ -122,13 +133,14 @@
 												aria-describedby="dataTable_info" style="width: 100%;">
 												<thead>
 													<tr role="row">
-
+														<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 10px;"
+																aria-label="Name: activate to sort column ascending"
+																rowspan="1" colspan="1"><input type="checkBox"></th>
 														<th class="sorting_asc" tabindex="0"
 															aria-controls="dataTable" rowspan="1" colspan="1"
 															aria-label="Name: activate to sort column descending"
-															aria-sort="ascending" style="width: 50px;">
-															<input type="checkbox">
-															요청번호</th>
+															aria-sort="ascending" style="width:60px;">요청번호</th>
 														<th class="sorting" tabindex="0" aria-controls="dataTable"
 															rowspan="1" colspan="1"
 															aria-label="Position: activate to sort column ascending"
@@ -166,7 +178,8 @@
 
 												<tbody>
 													<tr role="row" class="even">
-														<td class="sorting_1"><input type="checkbox">01</td>
+														<td class="sorting_1"><input type="checkbox"></td>
+														<td>01</td>
 														<td>user01</td>
 														<td>노트북</td>
 														<td>2019/05/05</td>
@@ -177,7 +190,8 @@
 														<td>처리완료</td>
 													</tr>
 													<tr role="row" class="even">
-														<td class="sorting_1"><input type="checkbox">01</td>
+														<td class="sorting_1"><input type="checkbox"></td>
+														<td>01</td>
 														<td>user01</td>
 														<td>노트북</td>
 														<td>2019/05/05</td>
@@ -188,7 +202,8 @@
 														<td>처리완료</td>
 													</tr>
 													<tr role="row" class="even">
-														<td class="sorting_1"><input type="checkbox">01</td>
+														<td class="sorting_1"><input type="checkbox"></td>
+														<td>01</td>
 														<td>user01</td>
 														<td>노트북</td>
 														<td>2019/05/05</td>
@@ -202,42 +217,7 @@
 											</table>
 										</div>
 									</div>
-									<div class="row">
-
-										<div class="col-sm-12 col-md-3">
-											<div class="dataTables_paginate paging_simple_numbers"
-												id="dataTable_paginate">
-												<ul class="pagination">
-													<li class="paginate_button page-item previous disabled"
-														id="dataTable_previous"><a href="#"
-														aria-controls="dataTable" data-dt-idx="0" tabindex="0"
-														class="page-link">Previous</a></li>
-													<li class="paginate_button page-item active"><a
-														href="#" aria-controls="dataTable" data-dt-idx="1"
-														tabindex="0" class="page-link">1</a></li>
-													<li class="paginate_button page-item "><a href="#"
-														aria-controls="dataTable" data-dt-idx="2" tabindex="0"
-														class="page-link">2</a></li>
-													<li class="paginate_button page-item "><a href="#"
-														aria-controls="dataTable" data-dt-idx="3" tabindex="0"
-														class="page-link">3</a></li>
-													<li class="paginate_button page-item "><a href="#"
-														aria-controls="dataTable" data-dt-idx="4" tabindex="0"
-														class="page-link">4</a></li>
-													<li class="paginate_button page-item "><a href="#"
-														aria-controls="dataTable" data-dt-idx="5" tabindex="0"
-														class="page-link">5</a></li>
-													<li class="paginate_button page-item "><a href="#"
-														aria-controls="dataTable" data-dt-idx="6" tabindex="0"
-														class="page-link">6</a></li>
-													<li class="paginate_button page-item next"
-														id="dataTable_next"><a href="#"
-														aria-controls="dataTable" data-dt-idx="7" tabindex="0"
-														class="page-link">Next</a></li>
-												</ul>
-											</div>
-										</div>
-									</div>
+									<%@ include file="../common/paging.jsp"%>
 								</div>
 							</div>
 						</div>
