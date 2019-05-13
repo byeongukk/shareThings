@@ -64,7 +64,7 @@
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
 
-            <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/rental/rentalList.jsp">대여조회</a>
+            <a class="collapse-item" href="<%= request.getContextPath() %>/selectRantalList.pd">대여관리</a>
             <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/rental/sendManagement.jsp">발송관리</a>
             <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/rental/sendList.jsp">배송조회</a>
             <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/rental/returnReqList.jsp">반품요청관리</a>
