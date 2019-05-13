@@ -54,7 +54,7 @@
 				<%@ include file="../common/header.jsp"%>
 				<!-- 컨텐츠바디 영역 실제 작성 영역 -->
 				<div class="container-fluid">
-					<h1 class="h3 mb-2 text-gray-800">물품조회</h1>
+					<h1 class="h3 mb-2 text-gray-800">검수기준</h1>
 					<img src="<%=request.getContextPath()%>/resource/img/adminHr.png"
 						width="100%">
 					<div class="row" class="col-lg-12">
@@ -64,41 +64,26 @@
 								<div class="card-body">
 									<table class="col-lg-12" id="filterArea">
 										<tr style="height: 20px">
-											<td style="width: 90px">
-												대분류 :
-											</td>
-											<td>
-												<select style="heigth: 30px; width: 40%;">
+											<td style="width: 90px">대분류 :</td>
+											<td><select style="heigth: 30px; width: 40%;">
 													<option>전자기기</option>
 													<option>유아동</option>
 													<option>취미레져</option>
-												</select>
-												&nbsp;&nbsp;&nbsp;
-												<input type="text" name="userId" style="width: 40%">
-											</td>
-											<td style="width: 90px">
-												중분류 :
-											</td>
-											<td>
-												<select style="heigth: 30px; width: 40%;">
+											</select> &nbsp;&nbsp;&nbsp; <input type="text" name="userId"
+												style="width: 40%"></td>
+											<td style="width: 90px">중분류 :</td>
+											<td><select style="heigth: 30px; width: 40%;">
 													<option>디지털</option>
 													<option>가전</option>
 													<option>컴퓨터</option>
-											</select>
-											&nbsp;&nbsp;&nbsp;
-											<input type="text" name="userId" style="width: 40%">
-											</td>
-											<td style="width: 90px">
-												세분류 :
-											</td>
-											<td>
-												<select style="heigth: 30px; width: 40%;">
+											</select> &nbsp;&nbsp;&nbsp; <input type="text" name="userId"
+												style="width: 40%"></td>
+											<td style="width: 90px">세분류 :</td>
+											<td><select style="heigth: 30px; width: 40%;">
 													<option>노트북</option>
 													<option>데스크탑</option>
-											</select>
-											&nbsp;&nbsp;&nbsp;
-											<input type="text" name="userId" style="width: 40%">
-											</td>
+											</select> &nbsp;&nbsp;&nbsp; <input type="text" name="userId"
+												style="width: 40%"></td>
 										</tr>
 									</table>
 									<div>
@@ -108,53 +93,53 @@
 									</div>
 								</div>
 							</div>
-							<div class="card shadow mb-4 col-lg-8">
-                  <div class="card-header py-3">
-                     <h6 class="m-0 font-weight-bold text-primary">노트북 검수 기준</h6>
-                  </div>
-                  <div class="card-body">
-                     <div class="table-responsive">
-                        <div id="dataTable_wrapper"
-                           class="dataTables_wrapper dt-bootstrap4">
-                           <div class="row">
-                              <div class="col-sm-12">
-                                 <table class="table table-bordered dataTable" id="dataTable"
-                                    width="100%" cellspacing="0" role="grid"
-                                    aria-describedby="dataTable_info" style="width: 100%;">
-                                    <thead>
-                                       <tr role="row">
-                                          <th class="sorting_asc" tabindex="0"
-                                             aria-controls="dataTable" rowspan="1" colspan="1"
-                                             aria-label="Name: activate to sort column descending"
-                                             aria-sort="ascending" style="width: 10px;">NO.</th>
-                                          <th class="sorting" tabindex="0" aria-controls="dataTable"
-                                             rowspan="1" colspan="1"
-                                             aria-label="Position: activate to sort column ascending"
-                                             style="width: 30px;">기준</th>
-                                       </tr>
-                                    </thead>
-                                    <tbody>
-                                       <tr role="row" class="even">
-                                          <td class="sorting_1">01</td>
-                                          <td>전원이 켜지는가</td>
-                                       </tr>
-                                       <tr role="row" class="even">
-                                          <td class="sorting_1">02</td>
-                                          <td>어떤가</td>
-                                       </tr>
-                                       <tr role="row" class="even">
-                                          <td class="sorting_1">03</td>
-                                          <td>좋은가</td>
-                                       </tr>
-                                    </tbody>
-                                 </table>
-                              </div>
-                           </div>
-                        </div>
-                     </div>
-                  </div>
-               </div>
-			</div>
+							<div class="card shadow mb-4 col-lg-8" style="margin-left:auto; margin-right:auto;">
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">노트북 검수 기준</h6>
+								</div>
+								<div class="card-body">
+									<div class="table-responsive">
+										<div id="dataTable_wrapper"
+											class="dataTables_wrapper dt-bootstrap4">
+											<div class="row">
+												<div class="col-sm-12">
+													<table class="table table-bordered dataTable"
+														id="dataTable" width="100%" cellspacing="0" role="grid"
+														aria-describedby="dataTable_info" style="width: 100%;">
+														<thead>
+															<tr role="row">
+																<th class="sorting_asc" tabindex="0"
+																	aria-controls="dataTable" rowspan="1" colspan="1"
+																	aria-label="Name: activate to sort column descending"
+																	aria-sort="ascending" style="width: 10px;">NO.</th>
+																<th class="sorting" tabindex="0"
+																	aria-controls="dataTable" rowspan="1" colspan="1"
+																	aria-label="Position: activate to sort column ascending"
+																	style="width: 30px;">기준</th>
+															</tr>
+														</thead>
+														<tbody>
+															<tr role="row" class="even">
+																<td class="sorting_1">01</td>
+																<td>전원이 켜지는가</td>
+															</tr>
+															<tr role="row" class="even">
+																<td class="sorting_1">02</td>
+																<td>어떤가</td>
+															</tr>
+															<tr role="row" class="even">
+																<td class="sorting_1">03</td>
+																<td>좋은가</td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 						<div class="modal fade" id="cancelModal" role="dialog">
 							<div class="modal-dialog">
 

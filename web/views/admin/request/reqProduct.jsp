@@ -104,11 +104,11 @@
 									<a href="#" class="btn btn-info btn-icon-split" onclick="ok();">
 										<span class="icon text-white-50"> <i
 											class="fas fa-info-circle"></i>
-									</span> <span class="text">검수 승인</span>
+									</span> <span class="text">요청 승인</span>
 									</a> <a href="#" class="btn btn-danger btn-icon-split"
 										data-toggle="modal" data-target="#cancelModal"> <span
 										class="icon text-white-50"> <i class="fas fa-trash"></i>
-									</span> <span class="text">검수 거절</span>
+									</span> <span class="text">요청 거절</span>
 									</a>
 									<div class="table-responsive">
 										<div id="dataTable_wrapper"
