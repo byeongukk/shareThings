@@ -1,5 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import="java.util.*, com.kh.st.member.model.vo.*, com.kh.st.common.*"%>
+<%
+	ArrayList<Member> list = (ArrayList<Member>) request.getAttribute("list");
+	PageInfo pi = (PageInfo) request.getAttribute("pi");
+
+	int currentPage = pi.getCurrentPage();
+	int maxPage = pi.getMaxPage();
+	int startPage = pi.getStartPage();
+	int endPage = pi.getEndPage();
+%> 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -35,8 +44,9 @@
 #filter {
 	margin-top: 50px;
 }
-#filterArea td{
-	padding : 5px;
+
+#filterArea td {
+	padding: 5px;
 }
 </style>
 </head>
@@ -63,57 +73,54 @@
 					<div class="row" id="filter" align="center">
 						<div class="col-lg-12">
 							<div class="card shadow mb-4">
-								<div class="card-header py-3">
-									조회 필터
-								</div>
+								<div class="card-header py-3">조회 필터</div>
 								<div class="card-body">
 									<table class="col-lg-12" id="filterArea">
-											<tr style="height:20px">
-												<td style="width:70px">회원ID :</td>
-												<td><input type="text" name="userId" style="width:80%"></td>
-												<td style="width:70px">회원명 :</td>
-												<td><input type="text" name="userName" style="width:80%"></td>
-												<td style="width:90px">회원등급 :</td>
-												<td><select style="heigth:30px; width:80%;">
+										<tr style="height: 20px">
+											<td style="width: 70px">회원ID :</td>
+											<td><input type="text" name="userId" style="width: 80%"></td>
+											<td style="width: 70px">회원명 :</td>
+											<td><input type="text" name="userName"
+												style="width: 80%"></td>
+											<td style="width: 90px">회원등급 :</td>
+											<td><select style="heigth: 30px; width: 80%;">
 													<option>전체</option>
 													<option>브론즈</option>
 													<option>실버</option>
 													<option>골드</option>
 													<option>VIP</option>
 													<option>VVIP</option>
-												</select></td>
-												<td style="width:60px">상태 :</td>
-												<td><select style="heigth:30px; width:80%;">
+											</select></td>
+											<td style="width: 60px">상태 :</td>
+											<td><select style="heigth: 30px; width: 80%;">
 													<option>전체</option>
 													<option>가입</option>
 													<option>탈퇴</option>
-												</select></td>
-											</tr>	
-											<tr>
-												<td style="width:70px">수익금 : </td>
-												<td colspan="3">
-													<input type="number" name="startM" style="width:40%">&nbsp;&nbsp;&nbsp;
-													~ &nbsp;&nbsp;&nbsp;
-													<input type="number" name="endM" style="width:40%">
-												</td>
-												<td style="width:70px">적립금 : </td>
-												<td colspan="3">
-													<input type="number" name="startM" style="width:40%">&nbsp;&nbsp;&nbsp;
-													~ &nbsp;&nbsp;&nbsp;
-													<input type="number" name="endM" style="width:40%">
-												</td>
-											</tr>
-											<tr>
-												<td style="width:70px">가입일 : </td>
-												<td colspan="3">
-													<input type="date" name="startD" style="width:40%">&nbsp;&nbsp;&nbsp;
-													~ &nbsp;&nbsp;&nbsp;
-													<input type="date" name="endD" style="width:40%">
-												</td>
-											</tr>
+											</select></td>
+										</tr>
+										<tr>
+											<td style="width: 70px">수익금 :</td>
+											<td colspan="3"><input type="number" name="startM"
+												style="width: 40%">&nbsp;&nbsp;&nbsp; ~
+												&nbsp;&nbsp;&nbsp; <input type="number" name="endM"
+												style="width: 40%"></td>
+											<td style="width: 70px">적립금 :</td>
+											<td colspan="3"><input type="number" name="startM"
+												style="width: 40%">&nbsp;&nbsp;&nbsp; ~
+												&nbsp;&nbsp;&nbsp; <input type="number" name="endM"
+												style="width: 40%"></td>
+										</tr>
+										<tr>
+											<td style="width: 70px">가입일 :</td>
+											<td colspan="3"><input type="date" name="startD"
+												style="width: 40%">&nbsp;&nbsp;&nbsp; ~
+												&nbsp;&nbsp;&nbsp; <input type="date" name="endD"
+												style="width: 40%"></td>
+										</tr>
 									</table>
 									<div>
-										<button>조회하기</button>&nbsp;&nbsp;&nbsp;
+										<button>조회하기</button>
+										&nbsp;&nbsp;&nbsp;
 										<button>초기화</button>
 									</div>
 								</div>
@@ -125,11 +132,21 @@
 											class="dataTables_wrapper dt-bootstrap4">
 											<div class="row">
 												<div class="col-sm-12">
+													<div>
+														<p align="left">
+															표기된 회원 수 :
+															<%=list.size()%>명
+														</p>
+													</div>
 													<table class="table table-bordered dataTable"
 														id="dataTable" width="100%" cellspacing="0" role="grid"
 														aria-describedby="dataTable_info" style="width: 100%;">
 														<thead>
 															<tr role="row">
+																<th class="sorting_asc" tabindex="0"
+																	aria-controls="dataTable" rowspan="1" colspan="1"
+																	aria-label="Name: activate to sort column descending"
+																	aria-sort="ascending" style="width: 30px;">회원No</th>
 																<th class="sorting_asc" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Name: activate to sort column descending"
@@ -157,6 +174,10 @@
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Salary: activate to sort column ascending"
+																	style="width: 10px;">보유 벌점</th>
+																<th class="sorting" tabindex="0"
+																	aria-controls="dataTable" rowspan="1" colspan="1"
+																	aria-label="Salary: activate to sort column ascending"
 																	style="width: 10px;">가입일</th>
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
@@ -166,14 +187,82 @@
 														</thead>
 
 														<tbody>
-
+															<%
+																for (Member m : list) {
+															%>
+															<tr>
+																<td><%=m.getUno()%></td>
+																<td><%=m.getUserId()%></td>
+																<td><%=m.getUserName()%></td>
+																<td><%=m.getPhone()%></td>
+																<td><%=m.getAddress()%></td>
+																<td><%=m.getProfits()%></td>
+																<td><%=m.getPoint()%></td>
+																<td><%=m.getPenalty()%></td>
+																<td><%=m.getEnrollDate()%></td>
+																<td><%=m.getStatus()%></td>
+															</tr>
+															<%
+																}
+															%>
 														</tbody>
 													</table>
 												</div>
 											</div>
-											<div class="row">
+											<div class="row" align="center">
+												<button
+													onclick="location.href='<%=request.getContextPath()%>/selectList.me?currentPage=1'"><<</button>
 
-												
+												<%
+													if (currentPage <= 1) {
+												%>
+												<button disabled><</button>
+												<%
+													} else {
+												%>
+												<button
+													onclick="location.href='<%=request.getContextPath()%>/selectList.me?currentPage=<%=currentPage - 1%>'"><</button>
+												<%
+													}
+												%>
+
+
+												<%
+													for (int p = startPage; p <= endPage; p++) {
+														if (p == currentPage) {
+												%>
+												<button disabled><%=p%></button>
+												<%
+													} else {
+												%>
+												<button
+													onclick="location.href='<%=request.getContextPath()%>/selectList.me?currentPage=<%=p%>'"><%=p%></button>
+												<%
+													}
+												%>
+
+
+												<%
+													}
+												%>
+
+
+												<%
+													if (currentPage >= maxPage) {
+												%>
+												<button disabled>></button>
+												<%
+													} else {
+												%>
+												<button
+													onclick="location.href='<%=request.getContextPath()%>/selectList.me?currentPage=<%=currentPage + 1%>'">></button>
+												<%
+													}
+												%>
+
+												<button
+													onclick="location.href='<%=request.getContextPath()%>/selectList.me?currentPage=<%=maxPage%>'">>></button>
+
 											</div>
 										</div>
 									</div>
