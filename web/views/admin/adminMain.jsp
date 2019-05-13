@@ -10,9 +10,7 @@
 <meta name="description" content="">
 <meta name="author" content="">
 <!-- Bootstrap core JavaScript-->
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <title>Share Things</title>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
 <style>
 html {
 	heigth: 100%
@@ -46,7 +44,6 @@ html {
 <link
 	href="<%=request.getContextPath()%>/resource/css/sb-admin-2.min.css"
 	rel="stylesheet">
-
 </head>
 
 <body id="page-top">
@@ -145,14 +142,14 @@ html {
 		src="<%=request.getContextPath()%>/resource/js/sb-admin-2.min.js"></script>
 
 	<!-- Page level plugins -->
-	<script
-		src="<%=request.getContextPath()%>/resource/vendor/chart.js/Chart.min.js"></script>
+	<%-- <script
+		src="<%=request.getContextPath()%>/resource/vendor/chart.js/Chart.min.js"></script> --%>
 
 	<!-- Page level custom scripts -->
-	<script
+	<%-- <script
 		src="<%=request.getContextPath()%>/resource/js/demo/chart-area-demo.js"></script>
 	<script
-		src="<%=request.getContextPath()%>/resource/js/demo/chart-pie-demo.js"></script>
+		src="<%=request.getContextPath()%>/resource/js/demo/chart-pie-demo.js"></script> --%>
 </body>
 
 </html>
