@@ -82,10 +82,10 @@
 					<table id="loginBtnTable">
 						<tr height="50px">
 							<td colspan="2" align="center">
-								<button class="ui button" style="width:100%;">아이디 찾기</button>
+								<button class="ui button" style="width:100%;" id="findIdBtn">아이디 찾기</button>
 							</td>
 							<td colspan="2" align="center">
-								<button class="ui button" style="width:100%">비밀번호 찾기</button>
+								<button class="ui button" style="width:100%;" id="findPwdBtn">비밀번호 찾기</button>
 							
 							</td>
 						</tr>
@@ -133,7 +133,14 @@
 	
 	<script>
 		$("#joinBtn").click(function() {
-			location.href="memberJoinPage.jsp";
+			location.href="<%= request.getContextPath() %>/views/member/memberJoinPage.jsp";
+		});
+		$("#findIdBtn").click(function() {
+			/* window.open("localhost:8001/st/views/member/findId.jsp", "쉐어띵스-아이디찾기", "width=500, height=300, location=0"); */
+			location.href="<%= request.getContextPath() %>/views/member/findIdPwd.jsp";
+		});
+		$("#findPwdBtn").click(function() {
+			location.href="<%= request.getContextPath() %>/views/member/findIdPwd.jsp"
 		});
 	</script>
 </body>

@@ -15,20 +15,26 @@
 	.col {
 		display: inline-block;
 	}
-	.middle>div{
-		line-height:100px;
-		padding: 10px;
+	.middle {
+		display:relative;
 	}
 	.logoArea:hover {
 		cursor:pointer;
 	}
-	.rentBtnArea2 {
-		display:none;
+	.searchArea, .rentBtnArea {
+		display:absolute;
+		top:50%;
+		height:50px;
+		margin-top:3em;
+	}
+	.registerBtn {
+		background:#0CB6F4 !important; 
+		color:gary !important;
 	}
 	#menubarArea {
-		border-top: 2px solid #F44A0C;
-		border-bottom: 2px solid #F44A0C;
-		background: white;
+		border-top:2px solid #F44A0C;
+		border-bottom:2px solid #F44A0C;
+		background:white;
 	}
 	.sticky {
 		position:fixed;
@@ -36,7 +42,7 @@
 		z-index:100;
 	}
 	.sticky + #forPadding {
-		padding-top : 100px;
+		padding-top:100px;
 	}
 	#submenuArea {
 		font-size:70%;
@@ -46,8 +52,8 @@
 	}
 	
 	#menubar td, #submenu td {
-		height: 70px;
-		width: 150px;
+		height:70px;
+		width:175px;
 		vertical-align:middle;
 		text-align:center;
 	}
@@ -56,25 +62,53 @@
 	}
 	
 	#menubar td:first-of-type, #submenu td:first-of-type {
-		width: 160px;
-		background: #F44A0C;
-		color: white;
+		width:180px;
+		background:#F44A0C;
+		color:white;
 	}
 	#menubar td:hover {
 		background:#0CB6F4;
 		cursor:pointer;
 	}
 	.category {
-		margin: 0;
+		margin:0;
+		height:100%; 
+		font-weight:bold;		
+		line-height:70px;
 	}
 	#submenu ul {
 		list-style-type:none;
 		margin:0;
 		padding:0;
 	}
+	#submenu li {
+		height:30px;
+		line-height:30px;
+	}
+	#submenu li:hover {
+		background:white;
+		color:#F44A0C;
+	}
 	#submenu a {
 		text-decoration:none;
 		color:white;
+		font-weight:bold;
+	}
+	.dropdown-menu {
+		border:1px solid #F44A0C !important;
+	}
+	.dropdown-menu a:hover {
+		background: #F44A0C !important;
+		color:white !important;
+	}
+	.sideBtns {
+		z-index:1000;
+		height:120px;
+		display:none;
+	}
+	.affix {
+		top:100px;
+		right:30px;
 	}
 </style>
 <link rel="stylesheet" type="text/css" href="/st/css/semantic.min.css">
@@ -116,15 +150,17 @@
 		<div class="col col-lg-3 col-md-3 col-sm-3 col-xs-4 logoArea">
 			<img src="/st/images/newLogo.PNG" id="logo" style="width:100%">
 		</div>
-		<div class="col col-xs-4 rentBtnArea2" align="center">
-			<div class="ui button rentBtn" style="background:#F44A0C; color:white;">물품등록하기</div>
-		</div>
+		<!-- <div class="col col-xs-4 rentBtnArea2" align="center">
+			<div class="ui button rentBtn">물품등록하기</div>
+		</div> -->
 		<div class="ui fluid action input col col-lg-6 col-sm-6 col-xs-12 searchArea">
 			<input type="text" placeholder="찾는 물건이 있으신가요?" id="searchInput">
-			<div class="ui button searchBtn" style="background:#0CB6F4">검색</div>
+			<div class="ui button searchBtn" style="background:#0CB6F4">
+				<i class="search icon" style="font-size:15px; margin:0"></i>
+			</div>
 		</div>
 		<div class="col col-lg-3 col-md-3 col-sm-3 rentBtnArea" align="center">
-			<div class="ui button rentBtn" style="background:#F44A0C; color:white;">물품등록하기</div>
+			<div class="ui massive button registerBtn">물품등록하기</div>
 		</div>
 	</div>
 
@@ -133,13 +169,76 @@
 		<div class="row" id="menubarArea">
 			<table id="menubar">
 				<tr>
-					<td><label class="category all">CATEGORY</label></td>
-					<td><label class="category electronic">전자기기</label></td>
-					<td><label class="category hobby">취미레저</label></td>
-					<td><label class="category fashion">패션뷰티</label></td>
-					<td><label class="category living">리빙</label></td>
-					<td><label class="category baby">유아동</label></td>
-					<td><label class="category pet">반려동물</label></td>
+					<td><label class="category all" >CATEGORY</label></td>
+					<td>
+						<div class="dropdown" style="height:100%">
+							<div class="category electronic dropdown-toggle" 
+							data-toggle="dropdown">전자기기</div>
+					
+							<ul class="dropdown-menu">
+								<li><a href="#">카메라</a></li>
+			      				<li><a href="#">컴퓨터/주변기기</a></li>
+			      				<li><a href="#">휴대폰/태블릿</a></li>
+			      				<li><a href="#">게임기</a></li>
+			      				<li><a href="#">영상/음향가전</a></li>
+			      				<li><a href="#">생활가전</a></li>
+			      				<li><a href="#">주방가전</a></li>
+							</ul>
+						</div>
+					</td>
+					<td>
+						<div class="dropdown" style="height:100%">
+							<div class="category hobby dropdown-toggle" 
+							data-toggle="dropdown">취미레저</div>
+					
+							<ul class="dropdown-menu">
+								<li><a href="#">캠핑/낚시</a></li>
+			      				<li><a href="#">등산</a></li>
+			      				<li><a href="#">자전거/킥보드</a></li>
+			      				<li><a href="#">헬스</a></li>
+			      				<li><a href="#">서핑/스키/보드</a></li>
+			      				<li><a href="#">악기/기타</a></li>
+							</ul>
+						</div>
+					
+					</td>
+					<td>
+						<div class="dropdown" style="height:100%">
+							<div class="category fashion dropdown-toggle" 
+							data-toggle="dropdown">패션뷰티</div>
+					
+							<ul class="dropdown-menu">
+								<li><a href="#">명품</a></li>
+			      				<li><a href="#">뷰티기기</a></li>
+			      				<li><a href="#">이벤트의류</a></li>
+							</ul>
+						</div>
+					</td>
+					<td>
+						<div class="dropdown" style="height:100%">
+							<div class="category baby dropdown-toggle" 
+							data-toggle="dropdown">유아동</div>
+					
+							<ul class="dropdown-menu">
+								<li><a href="#">실외용품</a></li>
+			      				<li><a href="#">육아용품</a></li>
+			      				<li><a href="#">아동서적</a></li>
+			      				<li><a href="#">아동완구</a></li>
+							</ul>
+						</div>
+					</td>
+					<td>
+						<div class="dropdown" style="height:100%">
+							<div class="category pet dropdown-toggle" 
+							data-toggle="dropdown">반려동물</div>
+					
+							<ul class="dropdown-menu">
+								<li><a href="#">강아지</a></li>
+			      				<li><a href="#">고양이</a></li>
+			      				<li><a href="#">기타 반려동물</a></li>
+							</ul>
+						</div>
+					</td>
 				</tr>
 			</table>
 		</div>
@@ -149,53 +248,38 @@
 					<td><label>전체보기</label></td>
 					<td>
 						<ul>
-							<li><a href="/st/views/main/productList.jsp">tv/모니터</a></li>
-							<li><a href="#">영상가전</a></li>
-							<li><a href="#">컴퓨터</a></li>
-							<li><a href="#">태블릿/소형기기</a></li>
-							<li><a href="#">프린터</a></li>
-							<li><a href="#">음향가전</a></li>
-							<li><a href="#">계절가전</a></li>
-							<li><a href="#">주방가전</a></li>
+							<li><a href="/st/views/main/productList.jsp">카메라</a></li>
+							<li><a href="#">컴퓨터/주변기기</a></li>
+							<li><a href="#">휴대폰/태블릿</a></li>
+							<li><a href="#">게임기</a></li>
+							<li><a href="#">영상/음향가전</a></li>
 							<li><a href="#">생활가전</a></li>
+							<li><a href="#">주방가전</a></li>
 						</ul>
 					</td>
 					<td>
 						<ul>
-							<li><a href="#">카메라</a></li>
-							<li><a href="#">캠핑용품</a></li>
-							<li><a href="#">스키/보드용품</a></li>
-							<li><a href="#">헬스용품</a></li>
-							<li><a href="#">자전거용품</a></li>
-							<li><a href="#">스포츠용품</a></li>
-							<li><a href="#">악기</a></li>
-							<li><a href="#">보드게임</a></li>
-							<li><a href="#">파티용품</a></li>
+							<li><a href="#">캠핑/낚시</a></li>
+							<li><a href="#">등산</a></li>
+							<li><a href="#">자전거/킥보드</a></li>
+							<li><a href="#">헬스</a></li>
+							<li><a href="#">서핑/스키/보드</a></li>
+							<li><a href="#">악기/기타</a></li>
 						</ul>
 					</td>
 					<td>
 						<ul>
-							<li><a href="#">명품가방</a></li>
+							<li><a href="#">명품</a></li>
 							<li><a href="#">뷰티기기</a></li>
 							<li><a href="#">이벤트의류</a></li>
 						</ul>
 					</td>
 					<td>
 						<ul>
-							<li><a href="#">생활용품</a></li>
-							<li><a href="#">주방용품</a></li>
-							<li><a href="#">욕실용품</a></li>
-							<li><a href="#">건강용품</a></li>
-						</ul>
-					</td>
-					<td>
-						<ul>
-							<li><a href="#">유아용품</a></li>
-							<li><a href="#">카시트</a></li>
-							<li><a href="#">유모차</a></li>
-							<li><a href="#">유아동 가구/생활</a></li>
-							<li><a href="#">아동 완구</a></li>
-							<li><a href="#">아동 서적</a></li>
+							<li><a href="#">실외용품</a></li>
+							<li><a href="#">육아용품</a></li>
+							<li><a href="#">아동서적</a></li>
+							<li><a href="#">아동완구</a></li>
 						</ul>
 					</td>
 					<td>
@@ -209,27 +293,71 @@
 			</table>
 		</div>
 	</div>
-	<div id="forPadding"></div>
+	<div id="forPadding">
+		<div class="ui vertical buttons sideBtns" data-spy="affix" data-offset-top="150">
+			<button class="ui positive icon button" id="sideUpBtn">
+				<i class="arrow up icon"></i>
+			</button>
+			<button class="ui primary button" id="sideMyBtn">MY</button>
+			<button class="ui negative icon button" id="sideCartBtn">
+				<i class="shop icon"></i>
+			</button>
+		</div>
+	</div>
 	<!-- <hr> -->
 	
 	
 	<script>
+		$(function() {
+			$(".sideBtns").hide();
+		});
 		$(".category.all").parent().click(function() {
 			$("#submenuArea").slideToggle();
 		});
 		$(".logoArea").click(function() {
 			location.href="/st/views/main/main.jsp";
 		});
+		$(".dropdown-toggle").hover(function() {
+			$(this).next().show();
+			$(".dropdown-menu").hover(function() {
+				$(this).show();
+			}, function() {
+				$(this).hide();
+			});
+		}, function() {
+			$(".dropdown-menu").hover(function() {
+				$(this).show();
+			}, function() {
+				$(this).hide();
+			});
+			$(this).next().hide();
+		});
+		
+		$("#submenu li").mouseover(function() {
+			$(this).css("background", "orange");
+			$(this).children("a").css("color", "black");
+		}).mouseout(function() {
+			$(this).css("background", "#F44A0C");
+			$(this).children("a").css("color", "white");
+		});
+		
 		var menubar = document.getElementById("menu");
 		var sticky = menubar.offsetTop;
 		window.onscroll = function() {
 			
 			if(window.pageYOffset >= sticky) {
 				menubar.classList.add("sticky");
+				$(".sideBtns").show();
 			}else {
 				menubar.classList.remove("sticky");
+				$(".sideBtns").hide();
+				
 			}
+			
 		}
+		$("#sideUpBtn").click(function() {
+			window.scrollTo(0, 0);
+		});
 	</script>
 </body>
 </html>

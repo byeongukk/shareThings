@@ -1,11 +1,6 @@
 @charset "UTF-8";
 
-.rentBtnArea {
-	display:none !important;
-}
-.rentBtnArea2 {
-	display:inline-block;
-}
+
 #menubarArea, #submenuArea {
 	font-size:70%;
 }
@@ -14,4 +9,10 @@
 }
 #menubar td:first-of-type, #submenu td:first-of-type {
 	width:100px;
+}
+#submenu a {
+	font-size:70%;
+}
+.category {
+	line-height:40px;
 }
