@@ -168,8 +168,19 @@ table {
 	.as3{
 	margin-left:2.5%;
 	}
+	#rentPrice2{
+	height:100px;
 	
-	
+	}
+	.rentPrice3 {
+	margin-left:2.5%;
+	}
+	#deposit2{
+	height:100px;
+	}
+	.deposit3{
+	margin-left:2.5%;
+	}
 </style>
 </head>
 <body>
@@ -183,7 +194,9 @@ table {
 		</div>
 		<div id="main">
 		
-<h2 align="center">물품등록양식</h2>
+<!-- <label>※ </label> -->
+
+
 <hr>
 <div id="photo">
 <form>
@@ -411,6 +424,33 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 <td colspan="1"></td>
 </tr>
 
+<tr>
+<td colspan="1"></td>
+<td colspan="3" id="rentPrice1" style="text-align:center">희망 렌탈비(월)</td>
+<td colspan="7" id="rentPrice2">
+<input class="rentPrice3" type="text" name="textfield" style="width:200px; 
+height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
+<label style="margin-left:2.5%; margin-top:2%;">※ 등록 물품 대비 금액이 너무 높으면 렌탈이 어려울 수 있음을 주의하십시오!</label>
+
+
+</td>
+<td colspan="1"></td>
+</tr>
+
+
+
+<tr>
+<td colspan="1"></td>
+<td colspan="3" id="deposit1" style="text-align:center">보증금</td>
+<td colspan="7" id="deposit2">
+<input class="deposit3" type="text" name="textfield" style="width:200px; 
+height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
+<label style="margin-left:2.5%; margin-top:2%;">※ 희망 렌탈비 대비 보증금이 너무 높으면 렌탈이 어려울 수 있음을 주의하십시오!</label>
+
+</td>
+<td colspan="1"></td>
+</tr>
+
 
 
 
@@ -424,10 +464,10 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 		<div>
 		
 		<ul class="pager">
-    <li><a href="">이전</a></li>
-    <li><a href="pay.jsp">다음</a></li>
+    <li><a href="" style="color:#F44A0C">이전</a></li>
+    <li><a href="confirm.jsp" style="color:#0CB6F4">다음</a></li>
   </ul>
-</div>
+</div> <!-- 이전, 다음 버튼 -->
 
 </form>
 
