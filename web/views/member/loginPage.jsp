@@ -54,7 +54,7 @@
 			<!-- <h2 align="center">회원 로그인</h2> -->
 			<div id="loginArea">
 				<br><br>
-				<form action="" method="post">
+				<!-- <form action="" method="post"> -->
 					<table id="loginTable">
 						<tr height="50px">
 							<td><b>ID</b></td>
@@ -78,47 +78,48 @@
 							</td>
 						</tr>
 					</table>
-				</form>
-					<table id="loginBtnTable">
-						<tr height="50px">
-							<td colspan="2" align="center">
-								<button class="ui button" style="width:100%;" id="findIdBtn">아이디 찾기</button>
-							</td>
-							<td colspan="2" align="center">
-								<button class="ui button" style="width:100%;" id="findPwdBtn">비밀번호 찾기</button>
+				<!-- </form> -->
+				<div id="loginFail" style="font-size:0.8em; color:red; display:none;">아이디, 비밀번호가 일치하지 않습니다.</div>
+				<table id="loginBtnTable">
+					<tr height="50px">
+						<td colspan="2" align="center">
+							<button class="ui button" style="width:100%;" id="findIdBtn">아이디 찾기</button>
+						</td>
+						<td colspan="2" align="center">
+							<button class="ui button" style="width:100%;" id="findPwdBtn">비밀번호 찾기</button>
 							
-							</td>
-						</tr>
-						<tr style="border-top:2px solid lightgray" height="70px">
-							<td colspan="2" style="font-size:80%; color:gray;">아직 회원이 아니신가요?  </td>
-							<td colspan="2">
-								<button class="ui inverted orange button" style="width:100%" id="joinBtn">쉐어띵스 회원 가입하기</button>
-							</td>
-						</tr>
-						<tr height="80px" style="border-bottom:2px solid lightgray">
-							<td style="font-size:50%; color:gray;">타계정으로 시작하기</td>
-							<td>
+						</td>
+					</tr>
+					<tr style="border-top:2px solid lightgray" height="70px">
+						<td colspan="2" style="font-size:80%; color:gray;">아직 회원이 아니신가요?  </td>
+						<td colspan="2">
+							<button class="ui inverted orange button" style="width:100%" id="joinBtn">쉐어띵스 회원 가입하기</button>
+						</td>
+					</tr>
+					<tr height="80px" style="border-bottom:2px solid lightgray">
+						<td style="font-size:50%; color:gray;">타계정으로 시작하기</td>
+						<td>
 								<!-- <button class="ui circular google plus icon button otherJoinBtn" id="googleJoin">
 									<i class="google plus icon"></i>
 								</button> -->
-								<div class="otherJoinBtn" id="googleJoinBtn" align="center">
-									<img src="/st/images/googleIcon.jpg" width="100%" height="100%">
-								</div>
-							</td>
-							<td>
+							<div class="otherJoinBtn" id="googleJoinBtn" align="center">
+								<img src="/st/images/googleIcon.jpg" width="100%" height="100%">
+							</div>
+						</td>
+						<td>
 								<!-- <button class="ui circular green icon button otherJoinBtn" id="naverJoin">N</button> -->
-								<div class="otherJoinBtn" id="googleJoinBtn" align="center">
-									<img src="/st/images/naverIcon.jpg" width="100%" height="100%">
+							<div class="otherJoinBtn" id="googleJoinBtn" align="center">
+								<img src="/st/images/naverIcon.jpg" width="100%" height="100%">
 								</div>
-							</td>
-							<td>
-								<!-- <button class="ui circular yellow icon button otherJoinBtn" id="kakaoJoin">K</button> -->
-								<div class="otherJoinBtn" id="googleJoinBtn" align="center">
-									<img src="/st/images/kakaoIcon.jpg" width="100%" height="100%">
-								</div>
-							</td>
-						</tr>
-					</table>
+						</td>
+						<td>
+							<!-- <button class="ui circular yellow icon button otherJoinBtn" id="kakaoJoin">K</button> -->
+							<div class="otherJoinBtn" id="googleJoinBtn" align="center">
+								<img src="/st/images/kakaoIcon.jpg" width="100%" height="100%">
+							</div>
+						</td>
+					</tr>
+				</table>
 			</div>
 			<br><br><br>
 		</div>
@@ -136,11 +137,31 @@
 			location.href="<%= request.getContextPath() %>/views/member/memberJoinPage.jsp";
 		});
 		$("#findIdBtn").click(function() {
-			/* window.open("localhost:8001/st/views/member/findId.jsp", "쉐어띵스-아이디찾기", "width=500, height=300, location=0"); */
 			location.href="<%= request.getContextPath() %>/views/member/findIdPwd.jsp";
 		});
 		$("#findPwdBtn").click(function() {
 			location.href="<%= request.getContextPath() %>/views/member/findIdPwd.jsp"
+		});
+		$("#loginBtn").click(function() {
+			var userId = $("input[name=userId]").val();
+			var userPwd = $("input[name=userPwd]").val();
+			$.ajax({
+				url:"<%= request.getContextPath() %>/login.me",
+				data:{userId:userId, userPwd:userPwd},
+				type:"post",
+				success:function(data) {
+					if(data == "fail") {
+						$("#loginFail").show();
+					}else {
+						$("#loginFail").hide();
+							location.href="<%= request.getContextPath() %>/views/main/main.jsp";
+						<%-- <% request.getRequestDispatcher(request.getContextPath() + "/views/main/main.jsp").forward(request, response); %>
+					  --%>
+					}
+				}, error:function(data) {
+					alert("서버전송 실패!");
+				}
+			});
 		});
 	</script>
 </body>
