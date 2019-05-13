@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="com.kh.st.member.model.vo.Member"%>
+<%
+	Member loginUser = (Member)session.getAttribute("loginUser");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,9 +12,6 @@
 	hr {
 		border: 1px solid #F44A0C;
 	}
-	#afterLogin {
-		display:none;
-	}	
 	.col {
 		display: inline-block;
 	}
@@ -121,31 +121,33 @@
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 </head>
 <body>
+	<% if(loginUser == null) { %>
 	<div class="row top" align="right" id="beforeLogin">
 		<a href="../member/loginPage.jsp">로그인</a> 
 		<label>l</label> 
 		<a href="../member/memberJoinPage.jsp">회원가입</a> 
 		<label>l</label>
-		<a href="#">고객센터</a> 
+		<a href="/st/views/customerService/cs.jsp">고객센터</a> 
 		<label>l</label> 
 		<a href="/st/views/main/noticeList.jsp">공지사항</a>
 		<label>l</label> 
 		<a href="#">이용안내</a>
-		
 	</div>
+	<% }else { %>
 	<div class="row top" align="right" id="afterLogin">
-		<i class="user icon"></i>
-		<a href="#">마이페이지</a> 
-		<label>l</label> 
-		<a href="#">장바구니</a> 
+		<label style="color:gray; font-size:0.8em;"><%= loginUser.getUserName() %>님, 환영합니다!</label>
+		<i class="user outline icon"></i>
+		<a href="/st/views/mypage/mypgMain.jsp">마이페이지</a> 
+		<label>l</label/> 
+		<a href="/st/views/product/cart.jsp">장바구니</a> 
 		<label>l</label>
-		<a href="#">고객센터</a>
+		<a href="/st/views/customerService/cs.jsp">고객센터</a>
 		<label>l</label> 
 		<a href="/st/views/main/noticeList.jsp">공지사항</a> 
 		<label>l</label> 
-		<a href="#">로그아웃</a>
+		<button class="ui basic button" onclick="location.href='<%= request.getContextPath() %>/logout.me'">로그아웃</button>
 	</div>
-
+	<% } %>
 	<div class="row middle" align="center">
 		<div class="col col-lg-3 col-md-3 col-sm-3 col-xs-4 logoArea">
 			<img src="/st/images/newLogo.PNG" id="logo" style="width:100%">
@@ -160,7 +162,7 @@
 			</div>
 		</div>
 		<div class="col col-lg-3 col-md-3 col-sm-3 rentBtnArea" align="center">
-			<div class="ui massive button registerBtn">물품등록하기</div>
+			<div class="ui massive button registerBtn" id="registerProductBtn">물품등록하기</div>
 		</div>
 	</div>
 
@@ -311,12 +313,19 @@
 		$(function() {
 			$(".sideBtns").hide();
 		});
+		
 		$(".category.all").parent().click(function() {
 			$("#submenuArea").slideToggle();
 		});
 		$(".logoArea").click(function() {
 			location.href="/st/views/main/main.jsp";
 		});
+		$("#registerProductBtn").click(function() {
+			location.href="/st/views/product/productInsertPage.jsp"
+		});
+		
+		
+		//메뉴바 드롭다운 구성
 		$(".dropdown-toggle").hover(function() {
 			$(this).next().show();
 			$(".dropdown-menu").hover(function() {
@@ -332,7 +341,7 @@
 			});
 			$(this).next().hide();
 		});
-		
+		//서브메뉴 css 설정
 		$("#submenu li").mouseover(function() {
 			$(this).css("background", "orange");
 			$(this).children("a").css("color", "black");
@@ -341,23 +350,61 @@
 			$(this).children("a").css("color", "white");
 		});
 		
+		//sticky메뉴 
 		var menubar = document.getElementById("menu");
 		var sticky = menubar.offsetTop;
 		window.onscroll = function() {
-			
 			if(window.pageYOffset >= sticky) {
 				menubar.classList.add("sticky");
 				$(".sideBtns").show();
 			}else {
 				menubar.classList.remove("sticky");
 				$(".sideBtns").hide();
-				
 			}
-			
 		}
+		
+		//사이드 버튼 이벤트
 		$("#sideUpBtn").click(function() {
 			window.scrollTo(0, 0);
+		});
+		
+		$("#sideMyBtn").click(function() {
+			<% if(loginUser == null) {%>
+			location.href="<%= request.getContextPath() %>/views/member/loginPage.jsp";
+			<% }else {%>
+			location.href="/st/views/mypage/mypgMain.jsp";
+			<% } %>
+		});
+		$("#sideCartBtn").click(function() {
+			<% if(loginUser == null) {%>
+			location.href="<%= request.getContextPath() %>/views/member/loginPage.jsp";
+			<% }else {%>
+			location.href="/st/views/product/cart.jsp";
+			<% } %>
+		});
+		
+		$("#registerProductBtn").click(function() {
+			<% if(loginUser == null) {%>
+			location.href="<%= request.getContextPath() %>/views/member/loginPage.jsp";
+			<% }else {%>
+			location.href="/st/views/product/productInsertPage.jsp";
+			<% } %>
 		});
 	</script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
