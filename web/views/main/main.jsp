@@ -155,7 +155,8 @@
 					<table class="table table-hover"
 						style="width: 100%;">
 						<caption style="font-size:1.5em">공지사항
-							<button class="ui button" onclick="goToNotice();">전체보기</button>
+							<button class="ui button" onclick="goToNotice();"
+							style="float:right">전체보기</button>
 						</caption>
 						<tr>
 							<th width="10%">No.</th>
@@ -201,7 +202,6 @@
 						<li class="active"><a data-toggle="tab" href="#electronic">전자기기</a></li>
 						<li><a data-toggle="tab" href="#hobby">취미레저</a></li>
 						<li><a data-toggle="tab" href="#fashion">패션뷰티</a></li>
-						<li><a data-toggle="tab" href="#living">리빙</a></li>
 						<li><a data-toggle="tab" href="#baby">유아동</a></li>
 						<li><a data-toggle="tab" href="#pet">반려동물</a></li>
 					</ul>
@@ -226,13 +226,6 @@
 							<img src="/st/images/man.jpg" class="categoryTop5">
 							<img src="/st/images/man.jpg" class="categoryTop5">
 							<img src="/st/images/man.jpg" class="categoryTop5">
-						</div>
-						<div id="living" class="tab-pane fade" align="center">
-							<img src="/st/images/airfrier.jpg" class="categoryTop5">
-							<img src="/st/images/airfrier.jpg" class="categoryTop5">
-							<img src="/st/images/airfrier.jpg" class="categoryTop5">
-							<img src="/st/images/airfrier.jpg" class="categoryTop5">
-							<img src="/st/images/airfrier.jpg" class="categoryTop5">
 						</div>
 						<div id="baby" class="tab-pane fade" align="center">
 							<img src="/st/images/croller.jpg" class="categoryTop5">
@@ -270,14 +263,14 @@
 	
 	
 	<script>
-		$(document).ready(function(){
+		/* $(document).ready(function(){
 	   		$('.menu .item').tab();
 	   		$('.ui .item').on('click', function() {
 	   		   $('.ui .item').removeClass('active');
 	   		   $(this).addClass('active');
 
 	   		});
-		});
+		}); */
 		function goToNotice() {
 			location.href="/st/views/main/noticeList.jsp";
 		}

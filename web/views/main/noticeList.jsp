@@ -18,7 +18,13 @@
 	}
 	.footer {
 		padding:0;
-	
+	}
+	.noticeTable tr:last-child {
+		border-bottom:2px solid red;
+	}
+	.noticeTable>tbody tr:hover {
+		cursor:pointer;
+	}
 	
 </style>
 </head>
@@ -37,45 +43,60 @@
 
 			
 			<div class="row noticeArea">
-				<h1 class="ui center aligned icon header">공지사항
-					<i class=""></i>
+				<br><br>
+				<h1 class="ui center aligned icon header">
+					<i class="clipboard list icon"></i>
+					공지사항
 				</h1>
-				<table class="ui red table">
-					<thead>
-						<tr>
-							<th>Food</th>
-							<th>Calories</th>
-							<th>Protein</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td>Apples</td>
-							<td>200</td>
-							<td>0g</td>
-						</tr>
-						<tr>
-							<td>Orange</td>
-							<td>310</td>
-							<td>0g</td>
-						</tr>
-					</tbody>
-				</table>
-
-			</div> <!-- end of filterArea -->
-			<br><br>
-			
-			<div class="row thumbnailArea">
-				<div class="col col-lg-3 col-md-3 col-sm-6 col-xs-6">
-					
-					
-					
-					
-					
+				<br><br>
+				<div class="col col-lg-1 col-md-1"></div>
+				<div class="col col-lg-10 col-md-10 col-sm-12 col-xs-12">
+					<table class="table table-hover noticeTable">
+						<thead>
+							<tr style="border-top:2px solid red; background:whitesmoke">
+								<th width="15%">번호</th>
+								<th width="45%">제목</th>
+								<th width="20%">작성자</th>
+								<th width="20%">작성일</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>1</td>
+								<td>(필독)이용약관</td>
+								<td>관리자</td>
+								<td>2019-05-11</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>(필독)이용약관</td>
+								<td>관리자</td>
+								<td>2019-05-11</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>(필독)이용약관</td>
+								<td>관리자</td>
+								<td>2019-05-11</td>
+							</tr>
+							<tr>
+								<td>4</td>
+								<td>(필독)이용약관</td>
+								<td>관리자</td>
+								<td>2019-05-11</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>(필독)이용약관</td>
+								<td>관리자</td>
+								<td>2019-05-11</td>
+							</tr>
+						</tbody>
+					</table>
 				</div>
-				
-
-			</div>
+			</div> <!-- end of noticeArea -->
+			<br><br><br><br>
+			
 			
 
 
@@ -92,7 +113,9 @@
 	
 	
 	<script>
-		
+		$(".noticeTable").children("tbody").children("tr").click(function() {
+			location.href="<%= request.getContextPath() %>/views/main/noticeDetail.jsp";
+		});
 		
 	</script>
 </body>
