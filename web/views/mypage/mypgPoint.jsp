@@ -93,6 +93,11 @@
 		width:1000px;
 	}
 	#mlogo { width:100%;}
+	
+	.btn{
+		background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none;
+		font-size:5;
+	}
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -144,6 +149,31 @@
 				</tr>
 			</table>
 			<hr />
+			
+			<h3 style="float:right;">나의 적립금 | <label style="color:#F44A0C">5,000,000 point</label></h3> <label></label>
+			<br>	
+			
+			<label>적립금 적립 내역</label> <button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none; font-size:10px;">지난 날짜 검색</button>
+			<table align="center" width="100%">
+				<tr class="titletb">
+					<td >날짜</td>
+					<td  width="60%">상품정보</td>
+					<td >상태</td>
+					<td>등록/대여</td>
+				</tr>
+				<tr>
+					<td colspan=12 style="text-align:center; padding:50px; height:500px">대여한 상품이 없습니다.</td>
+				</tr>
+			<%-- 	<% for(no n : list){ %>
+				<tr>
+					<td><%= n.getNno() %></td>
+					<td><%= n.getnTitle() %></td>
+					<td><%= n.getnWriter() %></td>
+					<td><%= n.getnCount() %></td>
+					<td><%= n.getnDate() %></td>
+				</tr>
+				<% } %> --%>
+			</table>
 			
 			
 			</div>
