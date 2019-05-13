@@ -16,11 +16,11 @@ import com.kh.st.common.PageInfo;
 
  
 @WebServlet("/selectList.me")
-public class SelectMemberList extends HttpServlet {
+public class SelectMemberListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
 
-    public SelectMemberList() {
+    public SelectMemberListServlet() {
         super();
     }
 
