@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import="java.util.*" %>
+<% 
+	ArrayList<HashMap<String, Object>> list =
+		(ArrayList<HashMap<String, Object>>) request.getAttribute("list");
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -153,33 +157,20 @@
 														</thead>
 
 														<tbody>
+														<% for(int i = 0; i <list.size(); i++)  {
+															HashMap<String, Object> hmap = list.get(i);
+															
+														%>
 															<tr role="row" class="even">
 																<td class="sorting_1"><input type="checkbox"></td>
-																<td>01</td>
-																<td>user01</td>
-																<td>노트북</td>
-																<td>2019/05/05</td>
-																<td>노트북 빌려드림</td>
-																<td>승인</td>
+																<td><%= hmap.get("upNo") %></td>
+																<td><%= hmap.get("bWriter") %></td>
+																<td><%= hmap.get("model") %></td>
+																<td><%= hmap.get("reqDate") %></td>
+																<td><%= hmap.get("bTitle") %></td>
+																<td><%= hmap.get("acceptResult") %></td>
 															</tr>
-															<tr role="row" class="even">
-																<td class="sorting_1"><input type="checkbox"></td>
-																<td>01</td>
-																<td>user01</td>
-																<td>노트북</td>
-																<td>2019/05/05</td>
-																<td>노트북 빌려드림</td>
-																<td>승인</td>
-															</tr>
-															<tr role="row" class="even">
-																<td class="sorting_1"><input type="checkbox"></td>
-																<td>01</td>
-																<td>user01</td>
-																<td>노트북</td>
-																<td>2019/05/05</td>
-																<td>노트북 빌려드림</td>
-																<td>승인</td>
-															</tr>
+															<% } %>
 														</tbody>
 													</table>
 												</div>
