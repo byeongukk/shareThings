@@ -54,7 +54,7 @@
 				<%@ include file="../common/header.jsp"%>
 				<!-- 컨텐츠바디 영역 실제 작성 영역 -->
 				<div class="container-fluid">
-					<h1 class="h3 mb-2 text-gray-800">물품조회</h1>
+					<h1 class="h3 mb-2 text-gray-800">검수관리</h1>
 					<img src="<%=request.getContextPath()%>/resource/img/adminHr.png"
 						width="100%">
 					<div class="row" class="col-lg-12">
