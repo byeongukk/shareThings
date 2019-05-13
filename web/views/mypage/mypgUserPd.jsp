@@ -127,14 +127,14 @@
 						<td colspan=6 style="width:50%; text-align:center"><img src="../../resource/img/mypage/userPd.png" class="icon1"></td>
 					</tr>
 					<tr>
-						<td colspan=6 style="width:50%; text-align:center"><button>관심상품</button></td>
-						<td colspan=6 style="width:50%; text-align:center"><button>최근 본 상품</button></td>
+						<td colspan=6 style="width:50%; text-align:center"><button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none;">관심상품</button></td>
+						<td colspan=6 style="width:50%; text-align:center"><button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none;">최근 본 상품</button></td>
 					</tr>
 					
 				</table>
 				</div>
 			
-			<label style="margin-top:70px;">관심 상품 </label> <button style="">?</button>
+			<label style="margin-top:70px;">관심 상품 </label> <button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none;">?</button>
 			<table align="center" style="width:100%;">
 				<tr class="titletb" style="">
 					<td><input type="checkbox" checked></td>
@@ -162,7 +162,7 @@
 				</tr>
 				
 			</table>
-			
+			<hr>
 			</div>
 	
 	</div>

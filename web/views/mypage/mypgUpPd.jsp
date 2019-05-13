@@ -112,7 +112,7 @@
 		
 			<div class="detail">
 				
-				<label>나의 등록 내역 </label> <button style="">?</button>
+				<label>나의 등록 내역 </label> <button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none;">?</button>
 			<table align="center" width="100%">
 				<tr class="titletb">
 					<td >날짜</td>
