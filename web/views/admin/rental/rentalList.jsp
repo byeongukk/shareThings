@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import="java.util.*"%>
+<%
+	ArrayList<HashMap<String, Object>> list = 
+		(ArrayList<HashMap<String, Object>>) request.getAttribute("list");
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -68,14 +72,14 @@
 										<div class="card shadow mb-4">
 											<div class="card-header py-3">조회 필터</div>
 											<div class="card-body">
-												<form id="filterArea">
+												<form id="filterArea" action="<%=request.getContextPath()%>/selectRentalListfilter.pd">
 													<table class="col-lg-12" id="filter">
 														<tr>
-															<td width="10%">배송상태</td>
+															<td width="10%">대여상태</td>
 															<td width="15%"><select class="form-control">
-																	<option value="hidden">배송상태</option>
-																	<option value="0">배송중</option>
-																	<option value="10">배송완료</option>
+																	<option value="hidden">대여상태</option>
+																	<option value="0">대여중</option> 
+																	<option value="10">대여완료</option>
 															</select></td>
 															<td width="10%">상세조건</td>
 															<td width="15%"><select class="form-control">
@@ -118,7 +122,7 @@
 						<!-- 리스트 테이블  -->
 						<div class="card shadow mb-4">
 							<div class="card-header py-3">
-								<h6 class="m-0 font-weight-bold text-primary">00 건</h6>
+								<h5 class="m-0 font-weight-bold text-primary"><%= list.size()%>건</h5>
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
@@ -128,7 +132,7 @@
 
 										<div class="row">
 											<div class="col-sm-12">
-												<table width="100%" class="table table-bordered dataTable"
+												<table width="100%" class="table table-bordered dataTable table-hover"
 													id="dataTable" role="grid"
 													aria-describedby="dataTable_info" style="width: 100%;"
 													cellspacing="0">
@@ -159,22 +163,33 @@
 														</tr>
 													</thead>
 													<tbody>
+														<% for(int i = 0; i<list.size(); i++){
+															HashMap<String, Object> hmap = list.get(i);	
+														
+														%> 
+														
 														<tr class="odd" role="row" align="center">
 															<td><input type="checkBox"></td>
-															<td>011</td>
-															<td>최병욱</td>
-															<td>노트북입니다</td>
-															<td>mm01</td>
-															<td>2011/04/25</td>
-															<td>렌탈중</td>
+															<td><%= hmap.get("rno") %></td>
+															<td><%= hmap.get("userName")%></td>
+															<td><%= hmap.get("pno")%></td>
+															<td><%= hmap.get("model")%></td>
+															<td><%= hmap.get("rentalDate")%></td>
+															<td><%= hmap.get("pStatus")%></td>
 														</tr>
+														<% } %>
 													</tbody>
 												</table>
+												<% if(list.size() <= 0){ %>
+													<br><br><br><br><br><br>
+													<h3 align="center"> 조회 결과가 없습니다.</h3>
+													<br><br><br><br><br><br>
+												<% } %>
 											</div>
 										</div>
 										<!-- 페이징 -->
 										<div class="row">
-											<div class="col-sm-12 col-md-7" ailgn="center">
+											<div class="col-sm-12 col-md-7">
 												<div class="dataTables_paginate paging_simple_numbers"
 													id="dataTable_paginate">
 													<ul class="pagination">
@@ -185,9 +200,6 @@
 														<li class="paginate_button page-item active"><a
 															tabindex="0" class="page-link" aria-controls="dataTable"
 															href="#" data-dt-idx="1">1</a></li>
-														<li class="paginate_button page-item "><a
-															tabindex="0" class="page-link" aria-controls="dataTable"
-															href="#" data-dt-idx="2">2</a></li>
 														<li class="paginate_button page-item next"
 															id="dataTable_next"><a tabindex="0"
 															class="page-link" aria-controls="dataTable" href="#"
@@ -219,7 +231,7 @@
 	<!-- 로그아웃 모달-->
 	<%@ include file="../common/logoutModal.jsp"%>
 
-
+	
 	<script
 		src="<%= request.getContextPath() %>/resource/vendor/jquery/jquery.min.js"></script>
 	<script

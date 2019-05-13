@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import="java.util.*, com.kh.st.member.model.vo.*"%>
+<%
+	ArrayList<Mlevel> list = (ArrayList<Mlevel>) request.getAttribute("list");
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -28,16 +31,13 @@
 	href="<%=request.getContextPath()%>/resource/css/sb-admin-2.min.css"
 	rel="stylesheet">
 <style>
-.even:hover {
-	cursor: pointer;
-}
-
 #filter {
 	margin-top: 50px;
 }
-#filterArea td{
+#filterArea td, #allList td, #alterList td{
 	padding : 10px;
 }
+
 </style>
 </head>
 
@@ -73,37 +73,32 @@
 									</table>
 								</div>
 								<div class="card-body">
-									<table class="col-lg-12" id="filterArea">
+									<table class="col-lg-12" id="allList">
+										<% for(Mlevel ml : list){ %>
 										<tr align="center">
-											<td style="width:33%">VVIP</td>
-											<td style="width:33%">00~00점</td>
-											<td style="width:33%">적립금 %</td>
+											<td style="width:33%"><%= ml.getLevelName() %></td>
+											<td style="width:33%">대여 <%= ml.getLevelStd() %>원 이상</td>
+											<td style="width:33%">대여시 <%= ml.getPerPoint() %>% 적립</td>
 										</tr>
+										<% } %>
+									</table>
+									<table class="col-lg-12" id="alterList" >
+										<% for(Mlevel ml : list){ %>
 										<tr align="center">
-											<td style="width:33%">VIP</td>
-											<td style="width:33%">00~00점</td>
-											<td style="width:33%">적립금 %</td>
+											<td style="width:1%"><input type="checkbox"><input type="text" value="<%= ml.getLevelCode()%>" hidden></td>
+											<td style="width:33%"><input type="text" value="<%= ml.getLevelName() %>" name="levelName"></td>
+											<td style="width:33%">대여 <input type="text" value="<%= ml.getLevelStd() %>" name="levelStd">원 이상</td>
+											<td style="width:33%">대여 시 <input type="text" value="<%= ml.getPerPoint() %>" name="perPoint">% 적립</td>
 										</tr>
-										<tr align="center">
-											<td style="width:33%">GOLD</td>
-											<td style="width:33%">00~00점</td>
-											<td style="width:33%">적립금 %</td>
-										</tr>
-										<tr align="center">
-											<td style="width:33%">SILVER</td>
-											<td style="width:33%">00~00점</td>
-											<td style="width:33%">적립금 %</td>
-										</tr>
-										<tr align="center">
-											<td style="width:33%">BROWNS</td>
-											<td style="width:33%">00~00점</td>
-											<td style="width:33%">적립금 %</td>
-										</tr>
+										<% } %>
 									</table>
 									<br><br><br><br>
 									<div>
-										<button>조회하기</button>&nbsp;&nbsp;&nbsp;
-										<button>초기화</button>
+										<button id="changeLevel">수정하기</button>
+										
+										<button class="alterBtn" id="insertRow">행 추가</button>&nbsp;&nbsp;&nbsp;
+										<button class="alterBtn" id="deleteRow">행 삭제</button>&nbsp;&nbsp;&nbsp;
+										<button class="alterBtn" id="complate">수정완료</button>
 									</div>
 								</div>
 							</div>
@@ -124,12 +119,27 @@
 			<%@ include file="../common/logoutModal.jsp"%>
 
 			<script>
-		$(function() {
-			$(".even").click(function() {
-				location = "<%=request.getContextPath()%>
-				/views/admin/reqProductDetail.jsp";
-									});
+				$(function(){
+					$("#alterList").hide();
+					$(".alterBtn").hide();
 				});
+			
+				$("#changeLevel").click(function(){
+					$("#alterList").show();
+					$("#allList").hide();
+					$(".alterBtn").show();
+					$("#changeLevel").hide();
+				});
+				
+				$("#complate").click(function(){
+					
+					location.href="<%=request.getContextPath()%>/selectMlevelList.me";
+				});
+				
+				$("#insertRow").click(function(){
+					
+				});
+				
 			</script>
 			<script
 				src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>

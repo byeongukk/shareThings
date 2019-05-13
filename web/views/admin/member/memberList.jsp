@@ -2,12 +2,12 @@
 	pageEncoding="UTF-8" import="java.util.*, com.kh.st.member.model.vo.*, com.kh.st.common.*"%>
 <%
 	ArrayList<Member> list = (ArrayList<Member>) request.getAttribute("list");
-	PageInfo pi = (PageInfo) request.getAttribute("pi");
+	/* PageInfo pi = (PageInfo) request.getAttribute("pi");
 
 	int currentPage = pi.getCurrentPage();
 	int maxPage = pi.getMaxPage();
 	int startPage = pi.getStartPage();
-	int endPage = pi.getEndPage();
+	int endPage = pi.getEndPage(); */
 %> 
 <!DOCTYPE html>
 <html lang="ko">
@@ -209,61 +209,7 @@
 													</table>
 												</div>
 											</div>
-											<div class="row" align="center">
-												<button
-													onclick="location.href='<%=request.getContextPath()%>/selectList.me?currentPage=1'"><<</button>
-
-												<%
-													if (currentPage <= 1) {
-												%>
-												<button disabled><</button>
-												<%
-													} else {
-												%>
-												<button
-													onclick="location.href='<%=request.getContextPath()%>/selectList.me?currentPage=<%=currentPage - 1%>'"><</button>
-												<%
-													}
-												%>
-
-
-												<%
-													for (int p = startPage; p <= endPage; p++) {
-														if (p == currentPage) {
-												%>
-												<button disabled><%=p%></button>
-												<%
-													} else {
-												%>
-												<button
-													onclick="location.href='<%=request.getContextPath()%>/selectList.me?currentPage=<%=p%>'"><%=p%></button>
-												<%
-													}
-												%>
-
-
-												<%
-													}
-												%>
-
-
-												<%
-													if (currentPage >= maxPage) {
-												%>
-												<button disabled>></button>
-												<%
-													} else {
-												%>
-												<button
-													onclick="location.href='<%=request.getContextPath()%>/selectList.me?currentPage=<%=currentPage + 1%>'">></button>
-												<%
-													}
-												%>
-
-												<button
-													onclick="location.href='<%=request.getContextPath()%>/selectList.me?currentPage=<%=maxPage%>'">>></button>
-
-											</div>
+											<%@ include file = "../common/paging.jsp" %>
 										</div>
 									</div>
 								</div>
@@ -285,12 +231,7 @@
 			<%@ include file="../common/logoutModal.jsp"%>
 
 			<script>
-		$(function() {
-			$(".even").click(function() {
-				location = "<%=request.getContextPath()%>
-				/views/admin/reqProductDetail.jsp";
-									});
-				});
+				
 			</script>
 			<script
 				src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>
