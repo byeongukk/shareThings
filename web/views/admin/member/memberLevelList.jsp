@@ -73,6 +73,7 @@
 									</table>
 								</div>
 								<div class="card-body">
+								
 									<table class="col-lg-12" id="allList">
 										<% for(Mlevel ml : list){ %>
 										<tr align="center">
@@ -82,25 +83,46 @@
 										</tr>
 										<% } %>
 									</table>
-									<table class="col-lg-12" id="alterList" >
+									<form id="updateForm" method="post" action="<%=request.getContextPath()%>/updateMlevel.me">
+									<table class="col-lg-12" id="alterList">
 										<% for(Mlevel ml : list){ %>
 										<tr align="center">
-											<td style="width:1%"><input type="checkbox"><input type="text" value="<%= ml.getLevelCode()%>" hidden></td>
-											<td style="width:33%"><input type="text" value="<%= ml.getLevelName() %>" name="levelName"></td>
-											<td style="width:33%">대여 <input type="text" value="<%= ml.getLevelStd() %>" name="levelStd">원 이상</td>
-											<td style="width:33%">대여 시 <input type="text" value="<%= ml.getPerPoint() %>" name="perPoint">% 적립</td>
+											<td style="width:33%"><input type="hidden" value="<%= ml.getLevelCode()%>" name="levelCode" id="levelCode">
+																  <input type="text" value="<%= ml.getLevelName() %>" name="levelName" id="levelName">
+																  </td> 
+											<td style="width:33%">대여 <input type="text" value="<%= ml.getLevelStd() %>" name="levelStd" id="levelStd">원 이상</td>
+											<td style="width:33%">대여 시 <input type="text" value="<%= ml.getPerPoint() %>" name="perPoint" id="perPoint">% 적립</td>
 										</tr>
 										<% } %>
 									</table>
+									
 									<br><br><br><br>
-									<div>
-										<button id="changeLevel">수정하기</button>
-										
-										<button class="alterBtn" id="insertRow">행 추가</button>&nbsp;&nbsp;&nbsp;
-										<button class="alterBtn" id="deleteRow">행 삭제</button>&nbsp;&nbsp;&nbsp;
-										<button class="alterBtn" id="complate">수정완료</button>
-									</div>
+								</form>
+								<div>
+									<button id="changeLevel" onclick="changeLevel();">수정하기</button>
+									<button id="complate" type="button" onclick="complate();">수정완료</button>
 								</div>
+								</div>
+								<script>
+									$(function(){
+										$("#alterList").hide();
+										$("#complate").hide();
+									})
+				
+									function changeLevel(){
+										$("#allList").remove();
+										$("#changeLevel").remove();
+										$("#alterList").show();
+										$("#complate").show();
+										return false;
+									};
+									
+									function complate(){
+					            		$("#updateForm").submit();
+					            	}
+									 
+								</script>
+								
 							</div>
 						</div>
 						<!-- 메인 콘텐트 영역 끝 -->
@@ -118,29 +140,7 @@
 			<!-- 로그아웃 모달-->
 			<%@ include file="../common/logoutModal.jsp"%>
 
-			<script>
-				$(function(){
-					$("#alterList").hide();
-					$(".alterBtn").hide();
-				});
 			
-				$("#changeLevel").click(function(){
-					$("#alterList").show();
-					$("#allList").hide();
-					$(".alterBtn").show();
-					$("#changeLevel").hide();
-				});
-				
-				$("#complate").click(function(){
-					
-					location.href="<%=request.getContextPath()%>/selectMlevelList.me";
-				});
-				
-				$("#insertRow").click(function(){
-					
-				});
-				
-			</script>
 			<script
 				src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>
 			<script

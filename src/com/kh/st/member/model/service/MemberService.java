@@ -5,14 +5,15 @@ import java.sql.*;
 import java.util.*;
 import com.kh.st.member.model.dao.MemberDao;
 import com.kh.st.member.model.vo.Member;
+import com.kh.st.member.model.vo.Mlevel;
 import com.kh.st.common.PageInfo;
 
 public class MemberService {
 
 	
-//도연이꺼
+    //도연이꺼
 	//전체 회원수 리턴
-	/*public int getListCount() {
+	public int getListCount() {
 		Connection con = getConnection();
 
 		int listCount = new MemberDao().getListCount(con);
@@ -42,17 +43,34 @@ public class MemberService {
 		close(con);
 
 		return list;
-	}*/
+	}
 
+	//회원등급 수정 
+	public int updateMlevel(ArrayList<Mlevel> list) {
+		Connection con = getConnection();
+		
+		int result = new MemberDao().updateMlevel(con, list);
+		
+		if(result > 0) {
+			commit(con);
+		}else {
+			rollback(con);
+		}
+		
+		close(con);
+		
+		return result;
+	}
 	
 	
-	
-//민지
+	//민지
 	public Member login(String userId, String userPwd) {
 		Connection con = getConnection();
 		Member loginUser = new MemberDao().login(con, userId, userPwd);
 		close(con);
 		return loginUser;
 	}
+
+	
 
 }

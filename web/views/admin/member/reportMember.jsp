@@ -1,5 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import="java.util.*, com.kh.st.member.model.vo.*, com.kh.st.common.*"%>
+<%
+	
+	PageInfo pi = (PageInfo) request.getAttribute("pi");
+	
+	int currentPage = pi.getCurrentPage();
+	int maxPage = pi.getMaxPage();
+	int startPage = pi.getStartPage();
+	int endPage = pi.getEndPage();
+%> 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -35,8 +44,9 @@
 #filter {
 	margin-top: 50px;
 }
-#filterArea td{
-	padding : 5px;
+
+#filterArea td {
+	padding: 5px;
 }
 </style>
 </head>
@@ -67,16 +77,14 @@
 								<div class="card-body">
 									<table class="col-lg-12" id="filterArea">
 										<tr>
-											<td width="6%">회원ID : </td>
-											<td>
-												<input type="text" name="memberId" style="width:80%">
-											</td>
-											<td width="6%">회원명 : </td>
-											<td>
-												<input type="text" name="memberName" style="width:80%">
-											</td>
+											<td width="6%">회원ID :</td>
+											<td><input type="text" name="memberId"
+												style="width: 80%"></td>
+											<td width="6%">회원명 :</td>
+											<td><input type="text" name="memberName"
+												style="width: 80%"></td>
 											<td width="6%">분류 :</td>
-											<td><select style="heigth:30px; width:80%;">
+											<td><select style="heigth: 30px; width: 80%;">
 													<option value="A">전체</option>
 													<option value="10">파손</option>
 													<option value="20">분실</option>
@@ -84,26 +92,24 @@
 													<option value="40">광고</option>
 													<option value="40">기타</option>
 											</select></td>
-											<td width="5%">상태 : </td>
-											<td><select style="heigth:30px; width:80%;">
+											<td width="5%">상태 :</td>
+											<td><select style="heigth: 30px; width: 80%;">
 													<option value="A">전체</option>
 													<option value="Y">적합</option>
 													<option value="N">부적합</option>
 											</select></td>
 										</tr>
 										<tr>
-											<td width="5%">벌점 : </td>
-											<td colspan="3">
-												<input type="number" name="startP" style="width:40%"> &nbsp;&nbsp;&nbsp;
-												~ &nbsp;&nbsp;&nbsp;
-												<input type="number" name="endP" style="width:40%">
-											</td>
-											<td width="6%">신고일 : </td>
-											<td colspan="3">
-												<input type="date" name="startD" style="width:40%"> &nbsp;&nbsp;&nbsp;
-												~ &nbsp;&nbsp;&nbsp;
-												<input type="date" name="endD" style="width:40%">
-											</td>
+											<td width="5%">벌점 :</td>
+											<td colspan="3"><input type="number" name="startP"
+												style="width: 40%"> &nbsp;&nbsp;&nbsp; ~
+												&nbsp;&nbsp;&nbsp; <input type="number" name="endP"
+												style="width: 40%"></td>
+											<td width="6%">신고일 :</td>
+											<td colspan="3"><input type="date" name="startD"
+												style="width: 40%"> &nbsp;&nbsp;&nbsp; ~
+												&nbsp;&nbsp;&nbsp; <input type="date" name="endD"
+												style="width: 40%"></td>
 										</tr>
 									</table>
 									<div>
@@ -120,49 +126,129 @@
 											class="dataTables_wrapper dt-bootstrap4">
 											<div class="row">
 												<div class="col-sm-12">
-													<table class="table table-bordered dataTable" id="dataTable"
-										width="100%" cellspacing="0" role="grid"
-										aria-describedby="dataTable_info" style="width: 100%;" style="height:100px;">
-										<thead>
-											<tr role="row">
-												<th class="sorting_asc" tabindex="0"
-													aria-controls="dataTable" rowspan="1" colspan="1"
-													aria-sort="ascending"
-													aria-label="Name: activate to sort column descending"
-													style="width: 10%;">회원ID</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTable"
-													rowspan="1" colspan="1"
-													aria-label="Position: activate to sort column ascending"
-													style="width: 10%;">회원명</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTable"
-													rowspan="1" colspan="1"
-													aria-label="Office: activate to sort column ascending"
-													style="width: 8%;">신고분류</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTable"
-													rowspan="1" colspan="1"
-													aria-label="Age: activate to sort column ascending"
-													style="width: 32%;">사유</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTable"
-													rowspan="1" colspan="1"
-													aria-label="Start date: activate to sort column ascending"
-													style="width: 10%;">신고일</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTable"
-													rowspan="1" colspan="1"
-													aria-label="Salary: activate to sort column ascending"
-													style="width: 10%;">벌점</th>
-												<th class="sorting" tabindex="0" aria-controls="dataTable"
-													rowspan="1" colspan="1"
-													aria-label="Salary: activate to sort column ascending"
-													style="width: 10%;">상태</th>
-											</tr>
-										</thead>
-										<tbody>
-											
-										</tbody>
-									</table>
+													<table class="table table-bordered dataTable"
+														id="dataTable" width="100%" cellspacing="0" role="grid"
+														aria-describedby="dataTable_info" style="width: 100%;"
+														style="height:100px;">
+														<thead>
+															<tr role="row" align="center">
+																<th class="sorting_asc" tabindex="0"
+																	aria-controls="dataTable" rowspan="1" colspan="1"
+																	aria-sort="ascending"
+																	aria-label="Name: activate to sort column descending"
+																	style="width: 1%;"><input type="checkbox"></th>
+																<th class="sorting_asc" tabindex="0"
+																	aria-controls="dataTable" rowspan="1" colspan="1"
+																	aria-sort="ascending"
+																	aria-label="Name: activate to sort column descending"
+																	style="width: 10%;">회원ID(회원명)</th>
+																<th class="sorting" tabindex="0"
+																	aria-controls="dataTable" rowspan="1" colspan="1"
+																	aria-label="Office: activate to sort column ascending"
+																	style="width: 8%;">신고분류</th>
+																<th class="sorting_asc" tabindex="0"
+																	aria-controls="dataTable" rowspan="1" colspan="1"
+																	aria-sort="ascending"
+																	aria-label="Name: activate to sort column descending"
+																	style="width: 10%;">신고인ID(회원명)</th>
+																<th class="sorting" tabindex="0"
+																	aria-controls="dataTable" rowspan="1" colspan="1"
+																	aria-label="Age: activate to sort column ascending"
+																	style="width: 32%;">사유</th>
+																<th class="sorting" tabindex="0"
+																	aria-controls="dataTable" rowspan="1" colspan="1"
+																	aria-label="Start date: activate to sort column ascending"
+																	style="width: 10%;">신고일</th>
+																<th class="sorting" tabindex="0"
+																	aria-controls="dataTable" rowspan="1" colspan="1"
+																	aria-label="Salary: activate to sort column ascending"
+																	style="width: 5%;">벌점</th>
+																<th class="sorting" tabindex="0"
+																	aria-controls="dataTable" rowspan="1" colspan="1"
+																	aria-label="Salary: activate to sort column ascending"
+																	style="width: 8%;">상태</th>
+															</tr>
+														</thead>
+														<tbody>
+
+														</tbody>
+													</table>
 												</div>
 											</div>
-											<div class="row"></div>
+											<div class="row">
+												<div class="paging">
+			<%-- <div class="col-lg-12">
+				<div class="dataTables_paginate paging_simple_numbers"
+					id="dataTable_paginate">
+					<ul class="pagination">
+						<li class="paginate_button page-item"
+							id="dataTable_first"><a
+							href="<%=request.getContextPath()%>/selectReport.me?currentPage=1"
+							aria-controls="dataTable" data-dt-idx="0" tabindex="0"
+							class="page-link">First</a></li>
+
+						<%
+								if (currentPage <= 1) {
+						%>
+						<li class="paginate_button page-item disabled"
+							id="dataTable_previous"><a
+							href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=currentPage - 1%>"
+							aria-controls="dataTable" data-dt-idx="0" tabindex="0"
+							class="page-link">Previous</a></li>
+						<%
+								} else {
+						%>
+						<li class="paginate_button page-item"
+							id="dataTable_previous"><a
+							href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=currentPage - 1%>"
+							aria-controls="dataTable" data-dt-idx="0" tabindex="0"
+							class="page-link">Previous</a></li>
+						<%
+								}
+						%>
+						<%
+								for (int p = startPage; p <= endPage; p++) {
+								    if (p == currentPage) {
+						%>
+						<li class="paginate_button page-item disabled"><a href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=p%>"
+							aria-controls="dataTable" data-dt-idx="1" tabindex="0"
+							class="page-link"><%=p%></a></li>
+						<%
+								} else {
+						%>
+						<li class="paginate_button page-item active"><a href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=p%>"
+							aria-controls="dataTable" data-dt-idx="1" tabindex="0"
+							class="page-link"><%=p%></a></li>
+						<%
+								}
+						%>
+
+
+						<%
+								}
+						%>
+						
+						<%
+								if (currentPage >= maxPage) {
+						%>
+						<li class="paginate_button page-item disabled" id="dataTable_next"><a
+							href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=currentPage + 1%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+							class="page-link">Next</a></li>
+						<%
+								} else {
+						%>
+						<li class="paginate_button page-item next" id="dataTable_next"><a
+							href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=currentPage + 1%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+							class="page-link">Next</a></li>
+						<%      }     %>
+						<li class="paginate_button page-item next" id="dataTable_end"><a
+							href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=maxPage%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+							class="page-link">End</a></li>
+					</ul>
+				</div>
+			</div>
+		</div> --%>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -184,12 +270,7 @@
 			<%@ include file="../common/logoutModal.jsp"%>
 
 			<script>
-		$(function() {
-			$(".even").click(function() {
-				location = "<%=request.getContextPath()%>
-				/views/admin/reqProductDetail.jsp";
-									});
-				});
+				
 			</script>
 			<script
 				src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>

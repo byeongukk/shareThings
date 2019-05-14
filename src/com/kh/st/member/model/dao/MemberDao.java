@@ -8,6 +8,7 @@ import java.sql.Date;
 import java.util.*;
 
 import com.kh.st.member.model.vo.Member;
+import com.kh.st.member.model.vo.Mlevel;
 import com.kh.st.common.PageInfo;
 
 public class MemberDao {
@@ -25,8 +26,7 @@ public class MemberDao {
 		}
 	}
 
-//도연이꺼
-	/*
+	//도연이꺼
 	//전체 회원 수 리턴
 	public int getListCount(Connection con) {
 		Statement stmt = null;
@@ -81,7 +81,7 @@ public class MemberDao {
 				m.setAddress(rset.getString("ADDRESS"));
 				m.setProfits(rset.getInt("PROFITS"));
 				m.setPoint(rset.getInt("POINT"));
-				m.setPenalty(rset.getInt("PENALTY"));
+				m.setPenaltyPoint(rset.getInt("PENALTY_POINT"));
 				//m.setEnrollDate(rset.getDate("ENROLL_DATE"));
 				System.out.println(rset.getString("STATUS"));
 				if(rset.getString("STATUS") == "Y") {
@@ -135,7 +135,39 @@ public class MemberDao {
 		}
 		
 		return list;
-	}*/
+	}
+	
+	//회원등급 수정용
+	public int updateMlevel(Connection con, ArrayList<Mlevel> list) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("updateMlevel");
+		
+		try {
+			for(int i = 0; i < list.size(); i++) {
+				pstmt = con.prepareStatement(query);
+				pstmt.setString(1, list.get(i).getLevelName());
+				pstmt.setInt(2, list.get(i).getLevelStd());
+				pstmt.setInt(3, list.get(i).getPerPoint());
+				pstmt.setInt(4, list.get(i).getLevelCode());
+				
+				result += pstmt.executeUpdate();
+			}
+			
+			if(result == list.size()) {
+				result = 1;
+			}else{
+				result = 0;
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
 	
 	
 //민지
@@ -182,6 +214,8 @@ public class MemberDao {
 		}
 		return loginUser;
 	}
+
+	
 
 }
 
