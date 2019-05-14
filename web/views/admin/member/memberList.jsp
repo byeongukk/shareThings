@@ -138,8 +138,7 @@
 												<div class="col-sm-12">
 													<div>
 														<p align="left">
-															표기된 회원 수 :
-															<%=list.size()%>명
+															
 														</p>
 													</div>
 													<table class="table table-bordered dataTable"
@@ -150,43 +149,43 @@
 																<th class="sorting_asc" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Name: activate to sort column descending"
-																	aria-sort="ascending" style="width: 30px;">회원No</th>
+																	aria-sort="ascending" style="width:2%;">No</th>
 																<th class="sorting_asc" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Name: activate to sort column descending"
-																	aria-sort="ascending" style="width: 30px;">회원ID</th>
+																	aria-sort="ascending" style="width: 10%;">회원ID</th>
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Position: activate to sort column ascending"
-																	style="width: 30px;">회원명</th>
+																	style="width:10%;">회원명</th>
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Office: activate to sort column ascending"
-																	style="width: 30px;">전화번호</th>
+																	style="width:15%;">전화번호</th>
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Age: activate to sort column ascending"
-																	style="width: 30px;">주소</th>
+																	style="width:15%;">주소</th>
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Start date: activate to sort column ascending"
-																	style="width: 30px;">보유 수익금</th>
+																	style="width: 10%;">보유 수익금</th>
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Salary: activate to sort column ascending"
-																	style="width: 10px;">보유 적립금</th>
+																	style="width: 10%;">보유 적립금</th>
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Salary: activate to sort column ascending"
-																	style="width: 10px;">보유 벌점</th>
+																	style="width: 10%;">보유 벌점</th>
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Salary: activate to sort column ascending"
-																	style="width: 10px;">가입일</th>
+																	style="width: 10%;">가입일</th>
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Salary: activate to sort column ascending"
-																	style="width: 10px;">상태</th>
+																	style="width: 8%;">상태</th>
 															</tr>
 														</thead>
 
@@ -308,7 +307,7 @@
 			<%@ include file="../common/logoutModal.jsp"%>
 
 			<script>
-				
+			
 			</script>
 			<script
 				src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>

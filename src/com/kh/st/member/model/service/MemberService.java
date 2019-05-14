@@ -6,6 +6,7 @@ import java.util.*;
 import com.kh.st.member.model.dao.MemberDao;
 import com.kh.st.member.model.vo.Member;
 import com.kh.st.member.model.vo.Mlevel;
+import com.kh.st.member.model.vo.Report;
 import com.kh.st.common.PageInfo;
 
 public class MemberService {
@@ -62,6 +63,27 @@ public class MemberService {
 		return result;
 	}
 	
+	public int getReportListCount() {
+		Connection con = getConnection();
+		
+		int listCount = new MemberDao().getReportListCount(con);
+
+		close(con);
+
+		return listCount;
+	}
+	
+	//신고이력 전체 조회용
+	public ArrayList<Report> selectReportList(PageInfo pi) {
+		Connection con = getConnection();
+		
+		ArrayList<Report> list = new MemberDao().selectReportList(con, pi);
+		
+		close(con);
+		
+		return list;
+	}
+	
 	
 	//민지
 	public Member login(String userId, String userPwd) {
@@ -70,6 +92,10 @@ public class MemberService {
 		close(con);
 		return loginUser;
 	}
+
+	
+
+	
 
 	
 
