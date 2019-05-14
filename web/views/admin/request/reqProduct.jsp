@@ -1,8 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8" import="java.util.*" %>
+	pageEncoding="UTF-8" import="java.util.*, com.kh.st.request.model.vo.ReqProduct, 
+	com.kh.st.common.*"%>
 <% 
-	ArrayList<HashMap<String, Object>> list =
-		(ArrayList<HashMap<String, Object>>) request.getAttribute("list");
+	ArrayList<ReqProduct> list =
+		(ArrayList<ReqProduct>) request.getAttribute("list");
+	PageInfo pi = (PageInfo) request.getAttribute("pi");
+
+	int currentPage = pi.getCurrentPage();
+	int maxPage = pi.getMaxPage();
+	int startPage = pi.getStartPage();
+	int endPage = pi.getEndPage();
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -38,6 +45,10 @@
 
 #dataTable_wrapper {
 	overflow: hidden;
+}
+.paging {
+	margin-left: auto;
+	margin-right: auto;
 }
 </style>
 </head>
@@ -157,25 +168,95 @@
 														</thead>
 
 														<tbody>
-														<% for(int i = 0; i <list.size(); i++)  {
-															HashMap<String, Object> hmap = list.get(i);
-															
-														%>
+														<% for(ReqProduct rp : list) { %>
 															<tr role="row" class="even">
 																<td class="sorting_1"><input type="checkbox"></td>
-																<td><%= hmap.get("upNo") %></td>
-																<td><%= hmap.get("bWriter") %></td>
-																<td><%= hmap.get("model") %></td>
-																<td><%= hmap.get("reqDate") %></td>
-																<td><%= hmap.get("bTitle") %></td>
-																<td><%= hmap.get("acceptResult") %></td>
+																<td><%= rp.getUpNo() %></td>
+																<td><%= rp.getbWriter() %></td>
+																<td><%= rp.getProductName() %></td>
+																<td><%= rp.getReqDate() %></td>
+																<td><%= rp.getbTitle() %></td>
+																<td><%= rp.getAcceptResult() %></td>
 															</tr>
 															<% } %>
 														</tbody>
 													</table>
 												</div>
 											</div>
-											<%@ include file="../common/paging.jsp"%>
+											<div class="row">
+		<div class="paging">
+			<div class="col-sm-12 col-md-3">
+				<div class="dataTables_paginate paging_simple_numbers"
+					id="dataTable_paginate">
+					<ul class="pagination">
+						<li class="paginate_button page-item"
+							id="dataTable_first"><a
+							href="<%=request.getContextPath()%>/reqProduct.bo?currentPage=1"
+							aria-controls="dataTable" data-dt-idx="0" tabindex="0"
+							class="page-link">First</a></li>
+
+						<%
+								if (currentPage <= 1) {
+						%>
+						<li class="paginate_button page-item disabled"
+							id="dataTable_previous"><a
+							href="<%=request.getContextPath()%>/reqProduct.bo?currentPage=<%=currentPage - 1%>"
+							aria-controls="dataTable" data-dt-idx="0" tabindex="0"
+							class="page-link">Previous</a></li>
+						<%
+								} else {
+						%>
+						<li class="paginate_button page-item"
+							id="dataTable_previous"><a
+							href="<%=request.getContextPath()%>/reqProduct.bo?currentPage=<%=currentPage - 1%>"
+							aria-controls="dataTable" data-dt-idx="0" tabindex="0"
+							class="page-link">Previous</a></li>
+						<%
+								}
+						%>
+						<%
+								for (int p = startPage; p <= endPage; p++) {
+								    if (p == currentPage) {
+						%>
+						<li class="paginate_button page-item disabled"><a href="<%=request.getContextPath()%>/reqProduct.bo?currentPage=<%=p%>"
+							aria-controls="dataTable" data-dt-idx="1" tabindex="0"
+							class="page-link"><%=p%></a></li>
+						<%
+								} else {
+						%>
+						<li class="paginate_button page-item active"><a href="<%=request.getContextPath()%>/reqProduct.bo?currentPage=<%=p%>"
+							aria-controls="dataTable" data-dt-idx="1" tabindex="0"
+							class="page-link"><%=p%></a></li>
+						<%
+								}
+						%>
+
+
+						<%
+								}
+						%>
+						
+						<%
+								if (currentPage >= maxPage) {
+						%>
+						<li class="paginate_button page-item disabled" id="dataTable_next"><a
+							href="<%=request.getContextPath()%>/reqProduct.bo?currentPage=<%=currentPage + 1%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+							class="page-link">Next</a></li>
+						<%
+								} else {
+						%>
+						<li class="paginate_button page-item next" id="dataTable_next"><a
+							href="<%=request.getContextPath()%>/reqProduct.bo?currentPage=<%=currentPage + 1%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+							class="page-link">Next</a></li>
+						<%      }     %>
+						<li class="paginate_button page-item next" id="dataTable_end"><a
+							href="<%=request.getContextPath()%>/reqProduct.bo?currentPage=<%=maxPage%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+							class="page-link">End</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
 										</div>
 									</div>
 								</div>

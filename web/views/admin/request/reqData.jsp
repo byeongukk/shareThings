@@ -181,7 +181,7 @@
 												</table>
 											</div>
 										</div>
-										<%@ include file="../common/paging.jsp"%>
+										<%-- <%@ include file="../common/paging.jsp"%> --%>
 									</div>
 								</div>
 							</div>
