@@ -1,9 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="com.kh.st.member.Member"%>
+    pageEncoding="UTF-8" %>
     
 <%
-	Member loginUser = new Member();
-	loginUser.setLevel(4);
+	
 	
 %>
 <!DOCTYPE html>
@@ -125,21 +124,21 @@
 				
 				<table align="center" style="text-align:center">
 				<tr>
-					<td><img src="../../resource/img/mypage/level-<%= loginUser.getLevel() %>.png" alt="" style="width:150px; height:150px;"/></td>
+					<td><img src="../../resource/img/mypage/level-1.png" alt="" style="width:150px; height:150px;"/></td>
 				</tr>
 				<tr>
 				<%
-				int level = loginUser.getLevel();
+				/* int level = loginUser.getLevel();
 				
 				switch(loginUser.getLevel()){
 				case 1 : loginUser.setRank("바보"); break;
 				case 2 : loginUser.setRank("공"); break;
 				case 3 : loginUser.setRank("멍게"); break;
 				case 4 : loginUser.setRank("렌탈킹"); break;
-				}
+				} */
 				
 				%>
-					<td style="padding:10px"><h5>현재 고객님의 회원 등급은  "<%= loginUser.getRank() %>" 입니다.</h5></td>
+					<td style="padding:10px"><h5>현재 고객님의 회원 등급은  "임시" 입니다.</h5></td>
 				</tr>
 			
 				<tr>
@@ -158,11 +157,10 @@
 				<tr class="titletb">
 					<td >날짜</td>
 					<td  width="60%">상품정보</td>
-					<td >상태</td>
-					<td>등록/대여</td>
+					<td>증감</td>
 				</tr>
 				<tr>
-					<td colspan=12 style="text-align:center; padding:50px; height:500px">대여한 상품이 없습니다.</td>
+					<td colspan=12 style="text-align:center; padding:50px; height:200px">적립한 내역이 없습니다.</td>
 				</tr>
 			<%-- 	<% for(no n : list){ %>
 				<tr>
@@ -174,7 +172,27 @@
 				</tr>
 				<% } %> --%>
 			</table>
-			
+			<hr>
+			<label>적립금 사용 내역</label> <button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none; font-size:10px;">지난 날짜 검색</button>
+			<table align="center" width="100%">
+				<tr class="titletb">
+					<td >날짜</td>
+					<td  width="60%">상품정보</td>
+					<td>증감</td>
+				</tr>
+				<tr>
+					<td colspan=12 style="text-align:center; padding:50px; height:200px">사용한 내역이 없습니다.</td>
+				</tr>
+			<%-- 	<% for(no n : list){ %>
+				<tr>
+					<td><%= n.getNno() %></td>
+					<td><%= n.getnTitle() %></td>
+					<td><%= n.getnWriter() %></td>
+					<td><%= n.getnCount() %></td>
+					<td><%= n.getnDate() %></td>
+				</tr>
+				<% } %> --%>
+			</table>
 			
 			</div>
 	

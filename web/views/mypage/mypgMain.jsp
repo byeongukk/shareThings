@@ -1,11 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="com.kh.st.member.Member"%>
+    pageEncoding="UTF-8" %>
     
-<%
-	Member loginUser = new Member();
-	loginUser.setLevel(4);
-	
-%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -141,21 +137,21 @@
 			<hr />
 			<table align="center" style="text-align:center">
 				<tr>
-					<td><img src="../../resource/img/mypage/level-<%= loginUser.getLevel() %>.png" alt="" style="width:150px; height:150px;"/></td>
+					<td><img src="../../resource/img/mypage/level-1.png" alt="" style="width:150px; height:150px;"/></td>
 				</tr>
 				<tr>
 				<%
-				int level = loginUser.getLevel();
+				/* int level = loginUser.getLevel();
 				
 				switch(loginUser.getLevel()){
 				case 1 : loginUser.setRank("바보"); break;
 				case 2 : loginUser.setRank("공"); break;
 				case 3 : loginUser.setRank("멍게"); break;
 				case 4 : loginUser.setRank("렌탈킹"); break;
-				}
+				} */
 				
 				%>
-					<td style="padding:10px"><h5>현재 고객님의 회원 등급은  "<%= loginUser.getRank() %>" 입니다.</h5></td>
+					<td style="padding:10px"><h5>현재 고객님의 회원 등급은  "임시" 입니다.</h5></td>
 				</tr>
 			
 				<tr>
