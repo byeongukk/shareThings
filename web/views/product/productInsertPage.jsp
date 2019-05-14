@@ -4,7 +4,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
 <title>Insert title here</title>
+<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <style>
 table {
 	
@@ -82,7 +85,7 @@ table {
 	text-align:center;
 	}
 	#address1 {
-	height:100px;
+	
 	text-align:center;
 	}
 	#time1 {
@@ -181,6 +184,10 @@ table {
 	.deposit3{
 	margin-left:2.5%;
 	}
+	#zipCode{
+	margin:14px;
+	
+	}
 </style>
 </head>
 <body>
@@ -199,7 +206,7 @@ table {
 
 <hr>
 <div id="photo">
-<form>
+<form action="<%=request.getContextPath() %>/insert.tn">
 <table align="center">
 
 <tr>
@@ -208,21 +215,36 @@ table {
 <td colspan="7" id="pic2">
 
 <div class="pho0">
-
-<div class="pho2">1</div>
-<div class="pho1">2</div>
-<div class="pho1">3</div>
-
+<!--  -->
+<div class="pho2" id="img1Area">
+<img id="img1" style="width:100%; height:220px;">
 </div>
+
+<div class="pho1" id="img2Area">
+<img id="img2" style="width:100%; height:220px;">
+</div>
+
+
+<div class="pho1" id="img3Area">
+<img id="img3" style="width:100%; height:220px;">
+</div>
+
+</div> <!-- pho0 -->
 
 <div class="pho0">
 
-<div class="pho2">4</div>
-<div class="pho1">5</div>
-<div class="pho1">6</div>
-
-
+<div class="pho2" id="img4Area">
+<img id="img4" style="width:100%; height:220px;">
 </div>
+<div class="pho1" id="img5Area">
+<img id="img5" style="width:100%; height:220px;">
+</div>
+<div class="pho1" id="img6Area">
+<img id="img6" style="width:100%; height:220px;">
+</div>
+
+
+</div> <!-- pho0 -->
 
 
 
@@ -290,7 +312,17 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 <td colspan="1"></td>
 <td colspan="3" id="lental1">렌탈 가능 기간</td>
 
-<td colspan="7" id="lental2">에에</td>
+<td colspan="7" id="lental2">
+	<div class="ui left icon fluid input datePicker" style="margin-left:2.5%; width:30%; float:left;">
+											<input type="text" name="endDay" id="startDay" placeholder="대여 시작일">
+											<i class="calendar alternate outline icon"></i>
+										</div>
+										
+										<div class="ui left icon fluid input datePicker" style="margin-left:2.5%; width:30%; float:left;">
+											<input type="text" name="endDay" id="endDay" placeholder="대여 종료일">
+											<i class="calendar alternate outline icon"></i>
+										</div>
+</td>
 <td colspan="1"></td>
 </tr>
 
@@ -306,18 +338,7 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 <td colspan="1"></td>
 </tr>
 
-<tr>
-<td colspan="1"></td>
-<td colspan="3" id="tag1">태그</td>
-<td colspan="7" id="tag2">
 
-
-
-
-
-</td>
-<td colspan="1"></td>
-</tr>
 
 <tr>
 <td colspan="1"></td>
@@ -336,7 +357,7 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 <td colspan="1"></td>
 <td colspan="3" id="phone1">전화번호</td>
 <td colspan="7" id="phone2">
-<input class="p"type="text" name="hp1" style="width:30%; height:30px; " placeholder="  hp"><br>
+<input class="p"type="text" name="hp1" style="width:30%; height:30px; margin-bottom:5px; " placeholder="  hp"><br>
 
 <input class="p"type="text" name="em1" style="width:30%; height:30px; " placeholder="  비상연락망">
 
@@ -348,6 +369,28 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 </tr>
 
 <tr>
+					
+					
+					<td colspan="1"></td>
+					<td colspan="3" rowspan="2" style="text-align:center;">주소지</td>
+					<td colspan="7">
+					    <input type="hidden" id="confmKey" name="confmKey" value=""  >
+						<input type="text" id="zipCode" name="zipNo" readonly style="width:100px;  text-align:center; margin-left:2.5%;">
+						<input type="button"  value="주소검색" id="addressSearch">
+					</td>
+					<td colspan="1"></td>
+				</tr>
+				
+				
+				<tr>
+					<td colspan="1"></td>
+						<td colspan="7">
+							<input type="text" id="address1" style="width:40%; margin:2%; margin-left:2.5%;" value="">
+							<input type="text" id="address2"  style="width:40%; text-align:center;" value="">
+						</td>
+							<td colspan="1"></td>
+				</tr>
+<!-- <tr>
 <td colspan="1"></td>
 <td colspan="3" id="address1">주소지</td>
 <td colspan="7" id="address2">
@@ -364,7 +407,7 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 
 </td>
 <td colspan="1"></td>
-</tr>
+</tr> -->
 
 <tr>
 <td colspan="1"></td>
@@ -496,8 +539,140 @@ height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
 	</div>
 	</div>
 	
+	<div  id="fileArea" style="display: none;">
+		<input type="file" id="fileimg1" name="fileimg1" onchange="loadImg(this,1)">
+		<input type="file" id="fileimg2" name="fileimg2" onchange="loadImg(this,2)">
+		<input type="file" id="fileimg3" name="fileimg3" onchange="loadImg(this,3)">
+		<input type="file" id="fileimg4" name="fileimg4" onchange="loadImg(this,4)">
+		<input type="file" id="fileimg5" name="fileimg5" onchange="loadImg(this,5)">
+		<input type="file" id="fileimg6" name="fileimg6" onchange="loadImg(this,6)">
 	
+		</div> 
+	<script>
+	 	$(function() {
+		    $("#startDay").datepicker();
+		    $("#endDay").datepicker();
+		
+		});
+	 	
 	
+	</script>
+	<script>
+		$("#addressSearch").click(function() {
+			new daum.Postcode({
+		    	oncomplete: function(data) {
+		    		// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+	                // 각 주소의 노출 규칙에 따라 주소를 조합한다.
+	                // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+	                var addr = ''; // 주소 변수
+	                var extraAddr = ''; // 참고항목 변수
+
+	                //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+	                if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+	                    addr = data.roadAddress;
+	                } else { // 사용자가 지번 주소를 선택했을 경우(J)
+	                    addr = data.jibunAddress;
+	                }
+
+	                // 사용자가 선택한 주소가 도로명 타입일때 참고항목을 조합한다.
+	                if(data.userSelectedType === 'R'){
+	                    // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+	                    // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+	                    if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+	                        extraAddr += data.bname;
+	                    }
+	                    // 건물명이 있고, 공동주택일 경우 추가한다.
+	                    if(data.buildingName !== '' && data.apartment === 'Y'){
+	                        extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+	                    }
+	                    // 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+	                    if(extraAddr !== ''){
+	                        extraAddr = ' (' + extraAddr + ')';
+	                    }
+	                    // 조합된 참고항목을 해당 필드에 넣는다.
+	                    //document.getElementById("sample6_extraAddress").value = extraAddr;
+	                    document.getElementById("address1").value += "(" + extraAddr + ")";
+	                	
+	                } else {
+	                    //document.getElementById("sample6_extraAddress").value = '';
+	                    document.getElementById("address1").value += "(" + extraAddr + ")";
+	                }
+
+	                // 우편번호와 주소 정보를 해당 필드에 넣는다.
+	                document.getElementById("zipCode").value = data.zonecode;
+	                document.getElementById("address1").value = addr;
+	                // 커서를 상세주소 필드로 이동한다.
+	                document.getElementById("address2").focus();
+		        }
+		    }).open();
+		           
+			
+			
+		})
+		</script>
+		
+		<script>
+		$(function(){
+			
+			$("#fileArea").hide();
+			 $("#img1Area").click(function(){
+				 $("#fileimg1").click();
+			 })
+			  $("#img2Area").click(function(){
+				 $("#fileimg2").click();
+			 })
+			  $("#img3Area").click(function(){
+				 $("#fileimg3").click();
+			 })
+			  $("#img4Area").click(function(){
+				 $("#fileimg4").click();
+			 })
+			  $("#img5Area").click(function(){
+				 $("#fileimg5").click();
+			 })
+			  $("#img6Area").click(function(){
+				 $("#fileimg6").click();
+			 })
+			
+		})
+		
+		function loadImg(value, num) {
+			if(value.files && value.files[0]){
+				var reader = new FileReader();
+				reader.onload = function(e){
+					switch(num){
+					case 1 : 
+						$("#img1").attr("src",e.target.result);
+						break;
+					case 2 : 
+						$("#img2").attr("src",e.target.result);
+						break;
+					case 3 : 
+						$("#img3").attr("src",e.target.result);
+						break;
+					case 4 : 
+						$("#img4").attr("src",e.target.result);
+						break;
+					case 5 : 
+						$("#img5").attr("src",e.target.result);
+						break;
+					case 6 : 
+						$("#img6").attr("src",e.target.result);
+						break;
+					}
+				}
+				reader.readAsDataURL(value.files[0]);
+			}
+		}
+		
+		</script>
 	
+		
+		
+		
+		
+		
+		
 </body>
 </html>
