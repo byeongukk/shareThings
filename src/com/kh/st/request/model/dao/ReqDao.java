@@ -76,11 +76,11 @@ public class ReqDao {
 				ReqProduct rp = new ReqProduct();
 				
 				rp.setUpNo(rset.getInt("UP_NO"));
-				rp.setbWriter(rset.getString("BWRITER"));
+				rp.setbWriter(rset.getString("USER_NAME"));
 				rp.setProductName(rset.getString("CID"));
 				rp.setReqDate(rset.getDate("REQ_DATE"));
 				rp.setbTitle(rset.getString("BTITLE"));
-				rp.setAcceptResult(rset.getString("ACCEPT_RESULT"));
+				rp.setStatus(rset.getString("STATUS"));
 				
 				list.add(rp);
 			}
