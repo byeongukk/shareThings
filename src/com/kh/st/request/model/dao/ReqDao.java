@@ -1,63 +1,95 @@
 package com.kh.st.request.model.dao;
 
+import static com.kh.st.common.JDBCTemplate.close;
+
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Properties;
 
-
-import static com.kh.st.common.JDBCTemplate.*;
-
+import com.kh.st.common.PageInfo;
+import com.kh.st.request.model.vo.ReqProduct;
 
 public class ReqDao {
 	private Properties prop = new Properties();
-
-	// properties 연결
+	
 	public ReqDao() {
-		String fileName = ReqDao.class.getResource("/sql/request/request-query.properties").getPath();
+		String fileName = ReqDao
+							.class
+							.getResource("/sql/request/request-query.properties")
+							.getPath();
 		try {
 			prop.load(new FileReader(fileName));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
-	public ArrayList<HashMap<String, Object>> reqProduct(Connection con) {
+	public int getListCount(Connection con) {
 		Statement stmt = null;
 		ResultSet rset = null;
-		ArrayList<HashMap<String, Object>> list = null;
-		HashMap<String, Object> hmap = null;
+		int listCount = 0;
 		
-		String query = prop.getProperty("reqProduct");
+		String query = prop.getProperty("listCount");
 		try {
 			stmt = con.createStatement();
 			rset = stmt.executeQuery(query);
 			
-			list = new ArrayList<HashMap<String, Object>>();
-			while(rset.next()) {
-				hmap = new HashMap<String, Object>();
-				
-				hmap.put("upNo", rset.getInt("UP_NO"));
-				hmap.put("bWriter", String.valueOf(rset.getInt("BWRITER")));
-				hmap.put("model", rset.getString("CID"));
-				hmap.put("reqDate", rset.getDate("REQ_DATE"));
-				hmap.put("bTitle", rset.getString("BTITLE"));
-				hmap.put("acceptResult", rset.getString("ACCEPT_RESULT"));
-				
-				list.add(hmap);
+			if(rset.next()) {
+				listCount = rset.getInt(1);
 			}
-			System.out.println(list.size());
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			close(stmt);
 			close(rset);
 		}
+		return listCount;
+	}
+	public ArrayList<ReqProduct> reqList(Connection con, PageInfo pi) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<ReqProduct> list = null;
+		
+		String qeury = prop.getProperty("reqList");
+		
+		int startRow = (pi.getCurrentPage() - 1) * pi.getLimit() + 1;
+		int endRow = startRow + pi.getLimit() - 1;
+		
+		try {
+			pstmt = con.prepareStatement(qeury);
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+			
+			rset = pstmt.executeQuery();
+			
+			list = new ArrayList<ReqProduct>();
+			
+			while(rset.next()) {
+				ReqProduct rp = new ReqProduct();
+				
+				rp.setUpNo(rset.getInt("UP_NO"));
+				rp.setbWriter(rset.getString("BWRITER"));
+				rp.setProductName(rset.getString("CID"));
+				rp.setReqDate(rset.getDate("REQ_DATE"));
+				rp.setbTitle(rset.getString("BTITLE"));
+				rp.setAcceptResult(rset.getString("ACCEPT_RESULT"));
+				
+				list.add(rp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
 		return list;
 	}
+
 }
