@@ -32,6 +32,7 @@
 	.telInput {
 		height:30px;
 	}
+	
 </style>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 </head>
@@ -61,15 +62,17 @@
 								<td width="150px"><b>아이디 * </b></td>
 								<td colspan="2">
 									<div class="ui fluid input">
-										<input type="text" placeholder="아이디 입력" name="userId">
+										<input type="text" placeholder="아이디 입력" name="userId" id="userId"
+										class="mandatory" >
 									</div>
 								</td>
 								<td>
 									<div class="ui blue button" id="idCheck" style="height:35px">중복확인</div>
 								</td>
-								<td width="200px">
-									<div class="ui left pointing red basic label fluid">
-	      								아이디를 다시 확인해주세요!
+								<td colspan="2" width="200px">
+									<div class="ui left pointing red basic label fluid wrongmsg" id="idWrongMsg"
+									style="display:none;">
+	      								아이디는 한글 및 특수문자 포함할 수 없습니다!
 	    							</div>
 								</td>
 							</tr>
@@ -77,12 +80,14 @@
 								<td><b>비밀번호 *</b></td>
 								<td colspan="3">
 									<div class="ui fluid input">
-										<input type="password" placeholder="비밀번호 입력" name="userPwd">
+										<input type="password" placeholder="비밀번호 입력" name="userPwd" id="userPwd"
+										class="mandatory">
 									</div>
 								</td>
-								<td width="200px">
-									<div class="ui left pointing red basic label fluid">
-	      								비밀번호가 올바르지 않습니다!
+								<td colspan="2" width="200px">
+									<div class="ui left pointing red basic label fluid wrongmsg" id="pwdWrongMsg"
+									style="display:none;">
+	      								비밀번호를 다시 확인해주세요!<br>(영문, 숫자 각 1자이상 포함 총 6자 이상)
 	    							</div>
 								</td>
 							</tr>
@@ -90,35 +95,39 @@
 								<td><b>비밀번호 재확인 *</b></td>
 								<td colspan="3">
 									<div class="ui fluid input">
-										<input type="password" placeholder="비밀번호 재입력" name="userPwd2">
+										<input type="password" placeholder="비밀번호 재입력" name="userPwd2" id="userPwd2"
+										class="mandatory">
 									</div>
 								</td>
-								<td width="200px">
-									<div class="ui left pointing red basic label fluid">
-	      								비밀번호를 다시 확인해주세요!
+								<td colspan="2" width="200px">
+									<div class="ui left pointing red basic label fluid wrongmsg" id="pwdDismatchMsg"
+									style="display:none;">
+	      								비밀번호가 일치하지 않습니다!
 	    							</div>
 								</td>
 							</tr>
 							<tr>
 								<td><b>이름(실명) *</b></td>
-								<td colspan="2">
+								<td colspan="3">
 									<div class="ui fluid input">
-										<input type="text" placeholder="이름" name="userName">
+										<input type="text" placeholder="이름" name="userName" id="userName"
+										class="mandatory">
 									</div>
 								</td>
-								<td>
+								<!-- <td>
 									<div class="ui blue button" id="idCheck" style="height:35px">본인인증</div>
-								</td>
-								<td width="200px">
-									<div class="ui left pointing red basic label fluid">
-	      								유효하지 않은 이름입니다!
+								</td> -->
+								<td colspan="3" width="200px">
+									<div class="ui left pointing red basic label fluid wrongmsg" id="nameWrongMsg"
+									style="display:none;">
+	      								유효하지 않은 이름입니다!<br>(한글로만 입력가능)
 	    							</div>
 								</td>
 							</tr>
 							<tr>
 								<td><b>성별 *</b></td>
 								<td colspan="2">
-									<input type="radio" name="gender" id="male" value="M">
+									<input type="radio" name="gender" id="male" value="M" checked>
 									<i class="male icon"></i>
 									<label for="male">남</label>&nbsp;&nbsp;&nbsp;
 									<input type="radio" name="gender" id="female" value="F">
@@ -161,17 +170,28 @@
 								</td>
 								<td>
 									<div class="ui input telInput">
-										<input type="tel" placeholder="010" name="phone1" size="3">
+										<input type="tel" placeholder="010" name="phone1" size="3" class="mandatory">
 									</div>
 								</td>
 								<td>
 									<div class="ui input telInput">
-										<input type="tel" placeholder="0000" name="phone2" size="4">
+										<input type="tel" placeholder="0000" name="phone2" size="4" class="mandatory">
 									</div>
 								</td>
 								<td>
 									<div class="ui input telInput">
-										<input type="tel" placeholder="0000" name="phone3" size="4">
+										<input type="tel" placeholder="0000" name="phone3" size="4" class="mandatory">
+									</div>
+								</td>
+								<td>
+									<div class="ui blue button" id="idCheck" style="height:35px">인증번호 발송</div>
+								</td>
+							</tr>
+							<tr>
+								<td></td>
+								<td colspan="3">
+									<div class="ui fluid input">
+										<input type="text" placeholder="인증번호 입력" name="verifyNum" id="verifyNum">
 									</div>
 								</td>
 							</tr>
@@ -179,15 +199,17 @@
 								<td><b>이메일 주소 *</b></td>
 								<td colspan="3">
 									<div class="ui fluid input">
-										<input type="email" placeholder="이메일 " name="userName">
+										<input type="email" placeholder="이메일 " name="email" id="email"
+										class="mandatory">
 									</div>
 								</td>
-								<!-- <td>
-									<div class="ui blue button" id="idCheck" style="height:35px">본인인증</div>
-								</td> -->
-								<td width="200px">
-									<div class="ui left pointing red basic label fluid">
-	      								유효하지 않은 이메일 입니다!
+								<td>
+									<div class="ui blue button" id="emailCheck" style="height:35px">중복확인</div>
+								</td>
+								<td>
+									<div class="ui left pointing red basic label fluid wrongmsg" id="emailWrongMsg"
+									style="display:none;">
+	      								유효하지 않은 <br>이메일 입니다!
 	      							</div>
 								</td>
 							</tr>
@@ -202,25 +224,27 @@
 								</td>
 								<td>
 									<div class="ui input telInput">
-										<input type="text" placeholder="010" name="subPhone1" size="3">
+										<input type="tel" placeholder="010" name="subPhone1" size="3">
 									</div>
 								</td>
 								<td>
 									<div class="ui input telInput">
-										<input type="text" placeholder="0000" name="subPhone2" size="4">
+										<input type="tel" placeholder="0000" name="subPhone2" size="4">
 									</div>
 								</td>
 								<td>
 									<div class="ui input telInput">
-										<input type="text" placeholder="0000" name="subPhone3" size="4">
+										<input type="tel" placeholder="0000" name="subPhone3" size="4">
 									</div>
 								</td>
+								
 							</tr>
 							<tr>
-								<td rowspan="3"><b>주소</b></td>
+								<td rowspan="3"><b>주소 *</b></td>
 								<td colspan="2">
 									<div class="ui fluid input">
-										<input type="text" placeholder="우편번호" name="zipCode" id="zipCode">
+										<input type="text" placeholder="우편번호" name="zipCode" id="zipCode"
+										class="mandatory">
 									</div>
 								</td>
 								<td>
@@ -228,16 +252,18 @@
 								</td>
 							</tr>
 							<tr>
-								<td colspan="5">
+								<td colspan="6">
 									<div class="ui fluid input">
-										<input type="text" placeholder="기본주소" name="address1" id="address1">
+										<input type="text" placeholder="기본주소" name="address1" id="address1"
+										class="mandatory">
 									</div>
 								</td>
 							</tr>
 							<tr>
-								<td colspan="5">
+								<td colspan="6">
 									<div class="ui fluid input">
-										<input type="text" placeholder="상세주소" name="address2" id="address2">
+										<input type="text" placeholder="상세주소" name="address2" id="address2"
+										class="mandatory">
 									</div>
 								</td>
 							</tr>
@@ -310,6 +336,103 @@
 	</div>
 	
 	<script>
+		$(function() {
+			//$(".wrongmsg").hide();
+		});
+		var koreanCheck = /[^a-z|0-9]/gi;
+		var koreanCheck2 = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/gi;
+		var blankCheck = /\w+/g;
+		var engAtLeastOneCheck = /[a-z]+/i;
+		var numAtLeastOneCheck = /[0-9]+/;
+		$("#userId").change(function() {
+			if(koreanCheck.test($(this).val())) {
+				$("#idWrongMsg").show();
+			}else {
+				$("#idWrongMsg").hide();
+			}
+		});
+		$("#userPwd").change(function() {
+			var pwdLengthCheck = /\w{6}/;
+			if(!pwdLengthCheck.test($(this).val())) {
+				$("#pwdWrongMsg").show();
+			}else if(koreanCheck2.test($(this).val())) {
+				$("#pwdWrongMsg").show();
+			}else if(!engAtLeastOneCheck.test($(this).val())) {
+				$("#pwdWrongMsg").show();
+			}else if(!numAtLeastOneCheck.test($(this).val())) {
+				$("#pwdWrongMsg").show();
+			}else if($(this).val() == $("#userId").val()) {
+				$("#pwdWrongMsg").show();
+			}else {
+				$("#pwdWrongMsg").hide();
+			}
+		});
+		$("#userPwd2").change(function() {
+			if($(this).val() != $("#userPwd").val()) {
+				$("#pwdDismatchMsg").show();
+			}else {
+				$("#pwdDismatchMsg").hide();
+			}
+		});
+		$("#userName").change(function() {
+			var nameCheck = /[^가-힣]/g;
+			if(nameCheck.test($(this).val())) {
+				$("#nameWrongMsg").show();
+			}else {
+				$("#nameWrongMsg").hide();
+			}
+		});
+		$("#email").change(function() {
+			var atCheck = /@+/;
+			if(koreanCheck2.test($(this).val())) {
+				$("#emailWrongMsg").show();
+			}else if(!atCheck.test($(this).val())) {
+				$("#emailWrongMsg").show();
+			}else {
+				$("#emaiWrongMsg").hide();
+			}
+		});
+		var idCheckCtn = 0;
+		$("#idCheck").click(function() {
+			idCheckCtn = 1;
+			$.ajax({
+				url:"<%= request.getContextPath() %>/idCheck.me",
+				data: {userId:$("#userId").val()},
+				type:"post",
+				success:function(data) {
+					if(data == "fail") {
+						alert("이미 존재하는 아이디입니다.");
+						$("#userId").val("");
+					}else {
+						alert("사용 가능한 아이디입니다.");
+						$("#userPwd").focus();
+					}
+				}, error:function(data) {
+					alert("서버전송실패");
+				}
+			});
+		});
+		var emailCheckCtn = 0;
+		$("#emailCheck").click(function() {
+			emailCheckCtn = 1;
+			$.ajax({
+				url:"<%= request.getContextPath() %>/emailCheck.me",
+				data: {email:$("#email").val()},
+				type:"post",
+				success:function(data) {
+					if(data == "fail") {
+						alert("이미 가입된 이메일입니다.");
+						$("#email").val("");
+					}else {
+						alert("사용 가능합니다.");
+						
+					}
+				}, error:function(data) {
+					alert("서버전송실패");
+				}
+			});
+		});
+		
 		$("#addressSearch").click(function() {
 			new daum.Postcode({
 		    	oncomplete: function(data) {
@@ -363,7 +486,20 @@
 			
 		})
 		function join() {
-			$("#joinForm").submit();
+					
+			if(!blankCheck.test($(".mandatory").val())) {
+				alert("필수입력란을 모두 입력해주세요");
+			}else if(idCheckCtn == 0) {
+				alert("아이디 중복확인을 해주세요");
+			}else if(emailCtn == 0) {	
+				alert("이메일 중복확인을 해주세요");
+			}else if(!$("#check1").prop("checked") || !$("#check2").prop("checked")) {
+				alert("약관에 체크해주세요");
+			}else {
+				$("#joinForm").submit();
+			}
+			
+			
 		}
 	</script>
 </body>

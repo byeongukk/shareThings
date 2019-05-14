@@ -296,7 +296,7 @@
 		</div>
 	</div>
 	<div id="forPadding">
-		<div class="ui vertical buttons sideBtns" data-spy="affix" data-offset-top="150">
+		<div class="ui vertical buttons sideBtns" data-spy="affix" data-offset-top="150" style="display:none;">
 			<button class="ui positive icon button" id="sideUpBtn">
 				<i class="arrow up icon"></i>
 			</button>
@@ -311,7 +311,7 @@
 	
 	<script>
 		$(function() {
-			$(".sideBtns").hide();
+			//$(".sideBtns").hide();
 		});
 		
 		$(".category.all").parent().click(function() {

@@ -9,6 +9,7 @@ import java.util.*;
 
 import com.kh.st.member.model.vo.Member;
 import com.kh.st.member.model.vo.Mlevel;
+import com.kh.st.member.model.vo.Report;
 import com.kh.st.common.PageInfo;
 
 public class MemberDao {
@@ -169,6 +170,86 @@ public class MemberDao {
 		return result;
 	}
 	
+	//신고이력 전체 카운트용
+	public int getReportListCount(Connection con) {
+		Statement stmt = null;
+		ResultSet rset = null;
+		int listCount = 0;
+		
+		String query = prop.getProperty("reportListCount");
+		
+		try {
+			stmt = con.createStatement();
+			rset = stmt.executeQuery(query);
+			
+			while(rset.next()) {
+				listCount = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(stmt);
+			close(rset);
+		}
+		
+		return listCount;
+	}
+	
+	//신고이력 전체 조회용
+	public ArrayList<Report> selectReportList(Connection con, PageInfo pi) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<Report> list = null;
+		
+		String query = prop.getProperty("selectReportList");
+		
+		int startRow = (pi.getCurrentPage() - 1) * pi.getLimit() + 1;
+		int endRow = startRow + pi.getLimit() - 1;
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+			
+			rset = pstmt.executeQuery();
+			
+			list = new ArrayList<Report>();
+			
+			while(rset.next()) {
+				Report r = new Report();
+				
+				r.setReportNo(rset.getInt("REPORT_NO"));
+				r.setTargetUser(rset.getString("USER1"));
+				r.setReportName(rset.getString("REPORT_NAME"));
+				r.setReportInsert(rset.getString("REPORT_INSERT"));
+				r.setReportUser(rset.getString("USER2"));
+				r.setReportDate(rset.getDate("REPORT_DATE"));
+				r.setStatus(rset.getString("STATUS"));
+				r.setComplateDate(rset.getDate("COMPLETE_DATE"));
+				r.setReportResult(rset.getString("REPORT_RESULT"));
+				r.setSumPenalty(rset.getInt("PENALTY_POINT"));
+				r.setReject(rset.getString("REJECT"));
+				r.setPenalty(rset.getInt("PENALTY"));
+				
+				list.add(r);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		
+		return list;
+	}
+	
+
+
+
+
+
+
+	
 	
 //민지
 	public Member login(Connection con, String userId, String userPwd) {
@@ -213,6 +294,53 @@ public class MemberDao {
 			close(rset);
 		}
 		return loginUser;
+	}
+
+	public int idCheck(Connection con, String userId) {
+
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = 0;
+		String query = prop.getProperty("idCheck");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, userId);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				result = rset.getInt(1);
+			}
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		
+		return result;
+	}
+
+	public int emailCheck(Connection con, String email) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = 0;
+		String query = prop.getProperty("emailCheck");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, email);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				result = rset.getInt(1);
+			}
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		
+		return result;
 	}
 
 	

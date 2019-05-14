@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -152,11 +153,12 @@
 				success:function(data) {
 					if(data == "fail") {
 						$("#loginFail").show();
+					}else if (data == "admin"){
+						$("#loginFail").hide();
+						location.href="<%= request.getContextPath() %>/views/admin/adminMain.jsp";
 					}else {
 						$("#loginFail").hide();
-							location.href="<%= request.getContextPath() %>/views/main/main.jsp";
-						<%-- <% request.getRequestDispatcher(request.getContextPath() + "/views/main/main.jsp").forward(request, response); %>
-					  --%>
+						location.href="<%= request.getContextPath() %>/views/main/main.jsp";
 					}
 				}, error:function(data) {
 					alert("서버전송 실패!");
