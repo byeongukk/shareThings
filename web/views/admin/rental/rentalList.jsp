@@ -72,42 +72,50 @@
 										<div class="card shadow mb-4">
 											<div class="card-header py-3">조회 필터</div>
 											<div class="card-body">
-												<form id="filterArea" action="<%=request.getContextPath()%>/selectRentalListfilter.pd">
+												<form id="filterArea">
 													<table class="col-lg-12" id="filter">
 														<tr>
 															<td width="10%">대여상태</td>
-															<td width="15%"><select class="form-control">
-																	<option value="hidden">대여상태</option>
-																	<option value="0">대여중</option> 
-																	<option value="10">대여완료</option>
+															<td width="15%"><select class="form-control" id="rentalStatus" name="rentalStatus">
+																	<option disabled>대여상태</option>
+																	<option value="0">전체</option>
+																	<option value="SID1">대여대기</option>
+																	<option value="SID2">대여중</option> 
+																	<option value="SID3">대여완료</option>
+																	
 															</select></td>
 															<td width="10%">상세조건</td>
-															<td width="15%"><select class="form-control">
-																	<option>상세조건</option>
-																	<option value="0">대여주문번호</option>
-																	<option value="10">대여자이름</option>
-																	<option value="20">물품명</option>
-																	<option value="30">물품번호</option>
+															<td width="15%"><select class="form-control" id="details" name="details" onchange = detailsChg();>
+																	<option disabled>상세조건</option>
+																	<option value="10">전체</option>
+																	<option value="20">대여주문번호</option>
+																	<option value="30">대여자이름</option>
+																	<option value="40">물품명</option>
+																	<option value="50">물품번호</option>
 															</select></td>
-															<td width="15%"><input type="text"
-																class="form-control" placeholder="상세정보입력"></td>
-
+															<td width="15%">
+																<input type="text" class="form-control" placeholder="상세정보입력" disabled id="filterContent" name="filterContent">
+															</td>
+															<td>
+															</td>
 														</tr>
 
 														<tr>
 															<td>대여기간</td>
-															<td width="25%"><input type="date" name="startDate"
+															<td width="25%"><input type="date" value="19/05/05" id="startDate" name="startDate"
 																style="width: 140px"> &nbsp; ~ &nbsp;<input
-																type="date" name="endDate" style="width: 140px">
+																type="date" id="endDate" name="endDate" style="width: 140px">
 															</td>
 															<td></td>
 															<td></td>
 															<td></td>
 														</tr>
+														<tr>
+              
 													</table>
 													<br>
 													<div align="center">
-														<button type="submit">조회하기</button>
+														<button type="button" id="inquiry">조회하기</button>
 														&nbsp;&nbsp;
 														<button type="reset">초기화</button>
 													</div>
@@ -231,7 +239,69 @@
 	<!-- 로그아웃 모달-->
 	<%@ include file="../common/logoutModal.jsp"%>
 
-	
+	<script>
+		<!-- 조회필터 ajax -->
+		$(function(){
+			$("#inquiry").click(function(){
+				var rentalStatus = $("#rentalStatus").val();
+				var details = $("#details").val();
+				var filterContent = $("#filterContent").val();
+				var startDate = $("#startDate").val();
+				var endDate = $("#endDate").val();
+				
+				console.log($("#startDate"));
+				/* 조회기간을 한쪽만 설정하거나 시작일이 더 클 때 alert 창 띄운후 리턴 */
+				if(startDate>endDate || (endDate!="" && startDate=="")){
+					alert("기간이 잘못 되었습니다");
+					return;
+				}
+				
+				$.ajax({
+					url:"<%=request.getContextPath()%>/selectFilter.rt",
+					type:"get",
+					data:{rentalStatus:rentalStatus,
+						details:details,
+						filterContent:filterContent,
+						startDate:startDate,
+						endDate:endDate
+					},
+					success:function(data){
+						
+						console.log($tr);
+						$("#dataTable > tbody > tr").remove();
+						
+						for(var key in data){
+							var $tr = $("<tr>");
+							var $rtNoTd =  $("<td>").text(data[key].rno).css("width","100px");;
+							/* var $pnoTd = ;
+							var $modelTd = ;
+							var $userNameTd = ;
+							var $stdateTd = ;
+							var $status = ; */
+							console.log($rtNoTd);
+							console.log(data[key].rno)
+							$tr.append(data[key].rno);
+						}
+						
+						
+					},
+					error:function(){
+						console.log("error");
+					}
+					
+				});
+			});
+		});	
+		/* 상세조건이 전체일때 상세정보입력 비활성화 */
+		function detailsChg(){
+			if($("#details").val()=="10"){
+				$("#filterContent").attr("disabled",true);
+			}else {
+				$("#filterContent").attr("disabled",false);
+			}
+		}
+		
+	</script>
 	<script
 		src="<%= request.getContextPath() %>/resource/vendor/jquery/jquery.min.js"></script>
 	<script

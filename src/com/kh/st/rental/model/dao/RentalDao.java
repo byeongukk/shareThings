@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -52,12 +53,12 @@ public class RentalDao {
 			while(rset.next()) {
 				hmap = new HashMap<String,Object>();
 				
-				hmap.put("rno", rset.getInt("RNO"));
+				hmap.put("rno", rset.getInt("RT_NO"));
 				hmap.put("pno", rset.getInt("PNO"));
 				hmap.put("model", rset.getString("MODEL"));
 				hmap.put("userName", rset.getString("USER_NAME"));
-				hmap.put("rentalDate", rset.getDate("RENTAL_DATE"));
-				hmap.put("pStatus", rset.getString("P_STATUS"));
+				hmap.put("rentalDate", rset.getDate("RT_STDATE"));
+				hmap.put("pStatus", rset.getString("STATUS"));
 				
 				list.add(hmap);
 			}
@@ -75,5 +76,45 @@ public class RentalDao {
 		System.out.println(list);
 		return list;
 		
+	}
+
+	// 상세조건들로 대여목록조회 
+	public ArrayList<HashMap<String, Object>> selectRentalFilter(Connection con, HashMap<String, Object> condition) {
+		ArrayList<HashMap<String,Object>> list = null;
+		HashMap<String,Object> hmap = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String query = prop.getProperty("selectRentalFilter");
+		System.out.println(condition.get("rentalStatus"));
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setObject(1, condition.get("rentalStatus"));
+			rset = pstmt.executeQuery();
+			
+			list = new ArrayList<HashMap<String,Object>>();
+			
+			while(rset.next()) {
+				hmap = new HashMap<String,Object>();
+				
+				hmap.put("rno", rset.getInt("RT_NO"));
+				hmap.put("pno", rset.getInt("PNO"));
+				hmap.put("model", rset.getString("MODEL"));
+				hmap.put("userName", rset.getString("USER_NAME"));
+				hmap.put("rentalDate", rset.getDate("RT_STDATE"));
+				hmap.put("pStatus", rset.getString("STATUS"));
+				
+				list.add(hmap);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);	
+		}
+		System.out.println(list);
+		return list;
 	}
 }
