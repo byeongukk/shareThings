@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>쉐어띵스-물품상세</title>
+<title>쉐어띵스-장바구니</title>
 <style>
 	.header {
 		width:100%;
@@ -114,6 +114,11 @@
 		display:table-cell;
 	} */
 	
+	.listimg{width:30%;}
+	.pdtlist {
+		text-align:center;
+	}
+	
 </style>
 </head>
 <body>
@@ -129,8 +134,68 @@
 		<!-- 메인바디 -->
 		<div class="main">
 
+			<div class="title" style="text-align:center;">
+				<img src="/st/resource/img/cart/cart.png" width="15%;" style="text-align:center; margin-bottom:-20px;">
+				<h2 align="center" style="padding-bottom:20px; font-weight:bold;">SHOPPING BASKET</h2>
+			</div>
 			
-
+			<div class="payprocess" style="text-align:center;">
+				<img src="/st/resource/img/payprocess2.png" width="70%;" style="text-align:center;">
+				<hr>
+			</div>
+			
+			
+			<hr>
+			
+			<table align=center width="100%;" class="pdtlist">
+				<tr>
+					<td colspan=7 width="100%" align="left" style="border:1px solid lightgray; padding:5px;">상품 리스트</td>
+				</tr>
+				<tr style="border:1px solid lightgray; padding:5px; margin:100px 100px;">
+					<td>
+						<input type="checkbox">
+					</td>
+					<td width="30%;">이미지</td>
+					<td width="30%;">상품정보</td>
+					<td>대여기간</td>
+					<td>대여비용</td>
+					<td>배송비</td>
+					<td>선택</td>
+				</tr>
+				<tr >
+					<td>
+						<input type="checkbox">
+					</td>
+					<td><img src="../../resource/img/mypage/naninggu.PNG" class="listimg"></td>
+					<td>아저씨의 난닝구</td>
+					<td>94/02/26</td>
+					<td>2,600,000</td>
+					<td>3,500</td>
+					<td>
+					<input type="button" value="dd">
+					<input type="button" value="dd">
+					</td>
+				</tr>
+				
+				
+				
+			</table>
+			
+			<hr>
+			
+			<table width="100%" align="center" class="pdtlist">
+				<tr>
+					<td>총 상품 금액</td>
+					<td>배송비</td>
+					<td>총 결제 금액</td>
+				</tr>
+				
+				<tr style="margin-bottom:50px;">
+					<td><h1>4,500</h1></td>
+					<td><h1>0</h1></td>
+					<td><h1>4,500</h1></td>
+				</tr>
+			</table>
 		</div> <!-- end of 메인바디 -->
 
 		<!-- 푸터 -->
