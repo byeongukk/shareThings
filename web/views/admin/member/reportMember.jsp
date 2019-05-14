@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="java.util.*, com.kh.st.member.model.vo.*, com.kh.st.common.*"%>
-<%
-	
+<%	
+	ArrayList<Report> list = (ArrayList<Report>) request.getAttribute("list");
 	PageInfo pi = (PageInfo) request.getAttribute("pi");
 	
 	int currentPage = pi.getCurrentPage();
@@ -37,16 +37,16 @@
 	href="<%=request.getContextPath()%>/resource/css/sb-admin-2.min.css"
 	rel="stylesheet">
 <style>
-.even:hover {
-	cursor: pointer;
-}
-
 #filter {
 	margin-top: 50px;
 }
 
 #filterArea td {
 	padding: 5px;
+}
+.paging {
+	margin-left:auto;
+	margin-right:auto;
 }
 </style>
 </head>
@@ -78,13 +78,10 @@
 									<table class="col-lg-12" id="filterArea">
 										<tr>
 											<td width="6%">회원ID :</td>
-											<td><input type="text" name="memberId"
-												style="width: 80%"></td>
-											<td width="6%">회원명 :</td>
-											<td><input type="text" name="memberName"
+											<td width="19%"><input type="text" name="memberId"
 												style="width: 80%"></td>
 											<td width="6%">분류 :</td>
-											<td><select style="heigth: 30px; width: 80%;">
+											<td width="19%"><select style="heigth: 30px; width: 80%;">
 													<option value="A">전체</option>
 													<option value="10">파손</option>
 													<option value="20">분실</option>
@@ -92,19 +89,25 @@
 													<option value="40">광고</option>
 													<option value="40">기타</option>
 											</select></td>
-											<td width="5%">상태 :</td>
-											<td><select style="heigth: 30px; width: 80%;">
+											<td width="8%">처리결과 :</td>
+											<td width="17%"><select style="heigth: 30px; width: 80%;">
 													<option value="A">전체</option>
-													<option value="Y">적합</option>
 													<option value="N">부적합</option>
+													<option value="Y">적합</option>
+											</select></td>
+											<td width="5%">상태 :</td>
+											<td width="20%"><select style="heigth: 30px; width: 80%;">
+													<option value="A">전체</option>
+													<option value="N">처리대기</option>
+													<option value="Y">처리완료</option>
 											</select></td>
 										</tr>
 										<tr>
-											<td width="5%">벌점 :</td>
-											<td colspan="3"><input type="number" name="startP"
-												style="width: 40%"> &nbsp;&nbsp;&nbsp; ~
+											<td width="8%">누적벌점 :</td>
+											<td><input type="number" name="startP"
+												style="width: 25%"> &nbsp;&nbsp;&nbsp; ~
 												&nbsp;&nbsp;&nbsp; <input type="number" name="endP"
-												style="width: 40%"></td>
+												style="width: 25%"></td>
 											<td width="6%">신고일 :</td>
 											<td colspan="3"><input type="date" name="startD"
 												style="width: 40%"> &nbsp;&nbsp;&nbsp; ~
@@ -126,6 +129,11 @@
 											class="dataTables_wrapper dt-bootstrap4">
 											<div class="row">
 												<div class="col-sm-12">
+													<div align="left">
+														<button>적합처리</button>&nbsp;&nbsp;&nbsp;
+														<button>적합처리</button>
+													</div>
+													<br>
 													<table class="table table-bordered dataTable"
 														id="dataTable" width="100%" cellspacing="0" role="grid"
 														aria-describedby="dataTable_info" style="width: 100%;"
@@ -141,20 +149,25 @@
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-sort="ascending"
 																	aria-label="Name: activate to sort column descending"
-																	style="width: 10%;">회원ID(회원명)</th>
-																<th class="sorting" tabindex="0"
-																	aria-controls="dataTable" rowspan="1" colspan="1"
-																	aria-label="Office: activate to sort column ascending"
-																	style="width: 8%;">신고분류</th>
+																	style="width: 2%;">No.</th>
 																<th class="sorting_asc" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-sort="ascending"
 																	aria-label="Name: activate to sort column descending"
-																	style="width: 10%;">신고인ID(회원명)</th>
+																	style="width: 10%;">회원ID</th>
+																<th class="sorting" tabindex="0"
+																	aria-controls="dataTable" rowspan="1" colspan="1"
+																	aria-label="Office: activate to sort column ascending"
+																	style="width: 8%;">신고분류</th>
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Age: activate to sort column ascending"
-																	style="width: 32%;">사유</th>
+																	style="width: 25%;">사유</th>
+																<th class="sorting_asc" tabindex="0"
+																	aria-controls="dataTable" rowspan="1" colspan="1"
+																	aria-sort="ascending"
+																	aria-label="Name: activate to sort column descending"
+																	style="width: 10%;">신고인ID</th>
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Start date: activate to sort column ascending"
@@ -162,22 +175,43 @@
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Salary: activate to sort column ascending"
-																	style="width: 5%;">벌점</th>
+																	style="width: 8%;">상태</th>
+																<th class="sorting" tabindex="0"
+																	aria-controls="dataTable" rowspan="1" colspan="1"
+																	aria-label="Start date: activate to sort column ascending"
+																	style="width: 10%;">처리일</th>
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Salary: activate to sort column ascending"
-																	style="width: 8%;">상태</th>
+																	style="width: 8%;">처리결과</th>
+																<th class="sorting" tabindex="0"
+																	aria-controls="dataTable" rowspan="1" colspan="1"
+																	aria-label="Salary: activate to sort column ascending"
+																	style="width: 10%;">누적벌점</th>
 															</tr>
 														</thead>
 														<tbody>
-
+															<% for(Report r : list){ %>
+																<tr>
+																	<td><input type="checkbox"></td>
+																	<td><%= r.getReportNo() %></td>
+																	<td><%= r.getTargetUser() %></td>
+																	<td><%= r.getReportName() %></td>
+																	<td><%= r.getReportInsert() %></td>
+																	<td><%= r.getReportUser() %></td>
+																	<td><%= r.getReportDate() %></td>
+																	<td><%= r.getStatus() %></td>
+																	<td><%= r.getReportResult() %></td>
+																	<td><%= r.getSumPenalty() %></td>
+																</tr>
+															<% } %>
 														</tbody>
 													</table>
 												</div>
 											</div>
 											<div class="row">
 												<div class="paging">
-			<%-- <div class="col-lg-12">
+			<div class="col-lg-12">
 				<div class="dataTables_paginate paging_simple_numbers"
 					id="dataTable_paginate">
 					<ul class="pagination">
@@ -247,13 +281,17 @@
 					</ul>
 				</div>
 			</div>
-		</div> --%>
+		</div>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
+					
+					<script>
+						
+					</script>
 						<!-- 메인 콘텐트 영역 끝 -->
 						<!-- Footer 인클루드 -->
 					</div>

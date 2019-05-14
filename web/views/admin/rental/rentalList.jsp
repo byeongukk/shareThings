@@ -87,11 +87,11 @@
 															<td width="10%">상세조건</td>
 															<td width="15%"><select class="form-control" id="details" name="details" onchange = detailsChg();>
 																	<option disabled>상세조건</option>
-																	<option value="10">전체</option>
-																	<option value="20">대여주문번호</option>
-																	<option value="30">대여자이름</option>
-																	<option value="40">물품명</option>
-																	<option value="50">물품번호</option>
+																	<option value="0">전체</option>
+																	<option value="rtNo">대여주문번호</option>
+																	<option value="rtUserName">대여자이름</option>
+																	<option value="model">물품명</option>
+																	<option value="pno">물품번호</option>
 															</select></td>
 															<td width="15%">
 																<input type="text" class="form-control" placeholder="상세정보입력" disabled id="filterContent" name="filterContent">
@@ -130,7 +130,7 @@
 						<!-- 리스트 테이블  -->
 						<div class="card shadow mb-4">
 							<div class="card-header py-3">
-								<h5 class="m-0 font-weight-bold text-primary"><%= list.size()%>건</h5>
+								<h5 class="m-0 font-weight-bold text-primary" id="listSize"><%= list.size()%>건</h5>
 							</div>
 							<div class="card-body">
 								<div class="table-responsive">
@@ -188,11 +188,13 @@
 														<% } %>
 													</tbody>
 												</table>
+												<div id="result-null">
 												<% if(list.size() <= 0){ %>
 													<br><br><br><br><br><br>
 													<h3 align="center"> 조회 결과가 없습니다.</h3>
 													<br><br><br><br><br><br>
 												<% } %>
+												</div>
 											</div>
 										</div>
 										<!-- 페이징 -->
@@ -223,6 +225,9 @@
 						</div>
 
 					</div>
+							<div id="replySelectArea">
+								<table id="dataTable2" border="1" align="center"></table>
+							</div>
 				</div>
 				<!-- 메인 콘텐트 영역 끝 -->
 				<!-- Footer 인클루드 -->
@@ -258,31 +263,60 @@
 				
 				$.ajax({
 					url:"<%=request.getContextPath()%>/selectFilter.rt",
-					type:"get",
 					data:{rentalStatus:rentalStatus,
 						details:details,
 						filterContent:filterContent,
 						startDate:startDate,
 						endDate:endDate
 					},
+					type:"get",
 					success:function(data){
-						
-						console.log($tr);
+						/* 기존 테이블 행 제거 */
 						$("#dataTable > tbody > tr").remove();
 						
-						for(var key in data){
-							var $tr = $("<tr>");
-							var $rtNoTd =  $("<td>").text(data[key].rno).css("width","100px");;
-							/* var $pnoTd = ;
-							var $modelTd = ;
-							var $userNameTd = ;
-							var $stdateTd = ;
-							var $status = ; */
-							console.log($rtNoTd);
-							console.log(data[key].rno)
-							$tr.append(data[key].rno);
-						}
+						var $dataTable = $("#dataTable");
+						/* 조회된 값이 없을때 출력할 공간 */
+						var $resultNull = $("#result-null");
+						/* 조회된 건수 출력할 공간 */
+						var $listSize = $("#listSize");
 						
+						/* 값넣을 공간 비우기 */
+						$resultNull.html('');
+						$listSize.prop("innerHTML",'');
+						if(data.length>0){
+							
+							for(var key in data){
+								
+								/* 가져온 값 td에 입력 */
+								var $tr = $("<tr class='odd' role='row' align='center'>");
+								var $chkTd = $("<td><input type='checkBox'>");
+								var $rtNoTd =  $("<td>").text(data[key].rno);
+								var $userNameTd = $("<td>").text(data[key].userName);
+								var $pnoTd = $("<td>").text(data[key].pno);
+								var $modelTd = $("<td>").text(data[key].model);
+								var $stdateTd = $("<td>").text(data[key].rentalDate);
+								var $statusTd = $("<td>").text(data[key].pStatus);
+								
+								/* tr에 td추가 */
+								$tr.append($chkTd);
+								$tr.append($rtNoTd);
+								$tr.append($userNameTd);
+								$tr.append($pnoTd);
+								$tr.append($modelTd);
+								$tr.append($stdateTd);
+								$tr.append($statusTd);
+								
+								/* table에 tr추가 */
+								$dataTable.append($tr);
+								
+							}
+						}else {
+							/* 조회된 값이 없을때 출력 */
+							$resultNull.append("<br><br><br><br><br><br>");
+							$resultNull.append("<h3 align='center'> 조회 결과가 없습니다.</h3>");
+							$resultNull.append("<br><br><br><br><br><br>");
+						}
+						$listSize.prop("innerHTML",data.length+"건");
 						
 					},
 					error:function(){

@@ -84,8 +84,7 @@ public class MemberService {
 		return list;
 	}
 	
-	
-	
+
 	
 	//민지
 	public Member login(String userId, String userPwd) {
@@ -109,6 +108,10 @@ public class MemberService {
 		close(con);
 		return result;
 	}
+
+	
+
+	
 
 	
 

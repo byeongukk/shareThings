@@ -1,46 +1,44 @@
-package com.kh.st.rental.controller;
+package com.kh.st.request.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.kh.st.rental.model.service.RentalService;
-
-
 /**
- * @author uukk
- *
+ * Servlet implementation class ReqOkServlet
  */
-@WebServlet("/selectRantalList.pd")
-public class SelectRentalListServlet extends HttpServlet {
+@WebServlet("/reqOk.bo")
+public class ReqOkServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-    public SelectRentalListServlet() {
+       
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public ReqOkServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
 
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-	
+		response.setCharacterEncoding("UTF-8");
 		
-		ArrayList<HashMap<String,Object>> list = new RentalService().selectRentalList();
+		String[] status = request.getParameterValues("status");
 		
-
-		String page ="";
-		if(list != null) {
-			page = "views/admin/rental/rentalList.jsp";
-			request.setAttribute("list", list);
+		for(int i = 0; i < status.length; i++) {
+			System.out.println(status[i]);
 		}
-		request.getRequestDispatcher(page).forward(request, response);
-		
+		//System.out.println(status);
 	}
 
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);

@@ -9,18 +9,18 @@ public class ReqProduct implements Serializable{
 	private String productName;
 	private Date reqDate;
 	private String bTitle;
-	private String acceptResult;
+	private String status;
 	
 	public ReqProduct() {}
 
-	public ReqProduct(int upNo, String bWriter, String productName, Date reqDate, String bTitle, String acceptResult) {
+	public ReqProduct(int upNo, String bWriter, String productName, Date reqDate, String bTitle, String status) {
 		super();
 		this.upNo = upNo;
 		this.bWriter = bWriter;
 		this.productName = productName;
 		this.reqDate = reqDate;
 		this.bTitle = bTitle;
-		this.acceptResult = acceptResult;
+		this.status = status;
 	}
 
 	public int getUpNo() {
@@ -63,17 +63,17 @@ public class ReqProduct implements Serializable{
 		this.bTitle = bTitle;
 	}
 
-	public String getAcceptResult() {
-		return acceptResult;
+	public String getStatus() {
+		return status;
 	}
 
-	public void setAcceptResult(String acceptResult) {
-		this.acceptResult = acceptResult;
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	@Override
 	public String toString() {
 		return "ReqProduct [upNo=" + upNo + ", bWriter=" + bWriter + ", productName=" + productName + ", reqDate="
-				+ reqDate + ", bTitle=" + bTitle + ", acceptResult=" + acceptResult + "]";
+				+ reqDate + ", bTitle=" + bTitle + ", acceptResult=" + status + "]";
 	}
 }

@@ -113,13 +113,14 @@
 							</div>
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">00건</h6>
+									<h6 class="m-0 font-weight-bold text-primary"><%= list.size() %>건</h6>
 								</div>
 								<div class="card-body">
-									<a href="#" class="btn btn-info btn-icon-split" onclick="ok();">
+									<a href="#" class="btn btn-info btn-icon-split" onclick="ok();" >
 										<span class="icon text-white-50"> <i
 											class="fas fa-info-circle"></i>
 									</span> <span class="text">요청 승인</span>
+									
 									</a> <a href="#" class="btn btn-danger btn-icon-split"
 										data-toggle="modal" data-target="#cancelModal"> <span
 										class="icon text-white-50"> <i class="fas fa-trash"></i>
@@ -139,7 +140,7 @@
 																<th tabindex="0" class="sorting"
 																	aria-controls="dataTable" style="width: 10px;"
 																	aria-label="Name: activate to sort column ascending"
-																	rowspan="1" colspan="1"><input type="checkBox"></th>
+																	rowspan="1" colspan="1"><input type="checkBox" id="checkAll"></th>
 																<th class="sorting_asc" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Name: activate to sort column descending"
@@ -170,13 +171,13 @@
 														<tbody>
 														<% for(ReqProduct rp : list) { %>
 															<tr role="row" class="even">
-																<td class="sorting_1"><input type="checkbox"></td>
+																<td class="sorting_1"><input type="checkbox" class="check"></td>
 																<td><%= rp.getUpNo() %></td>
 																<td><%= rp.getbWriter() %></td>
 																<td><%= rp.getProductName() %></td>
 																<td><%= rp.getReqDate() %></td>
 																<td><%= rp.getbTitle() %></td>
-																<td><%= rp.getAcceptResult() %></td>
+																<td><%= rp.getStatus() %></td>
 															</tr>
 															<% } %>
 														</tbody>
@@ -334,17 +335,40 @@
 			<!-- 로그아웃 모달-->
 			<%@ include file="../common/logoutModal.jsp"%>
 
-			<script>
+		<script>
 		$(function() {
 			$(".even").click(function() {
-				location = "<%=request.getContextPath()%>/views/admin/request/reqProductDetail.jsp";
+				<%-- location = "<%=request.getContextPath()%>/views/admin/request/reqProductDetail.jsp"; --%>
 				});
-			});
-
-				function ok() {
-					alert("정말 승인하시겠습니까?");
+			
+			$("#checkAll").click(function () {
+				if($("#checkAll").checked) {
+					$(".check").each(function() {
+						$(this).attr("checked", true);
+					});
+				} else {
+					$(".check").each(function() {
+						$(this).attr("checked", false);
+					});
 				}
-			</script>
+			});
+		});
+		
+		function ok() {
+			var result = confirm("정말 승인하시겠습니까?");
+			if(result) {
+				$(".even").each(function() {
+					if($(this).find(".check").is(":checked")) {	
+						console.log($(this).find("td").eq(1).text());
+					}
+						var status = $(this).find("td").eq(1).text()
+				});
+				location = "<%= request.getContextPath() %>/reqOk.bo?status=" + status;
+			} else {
+				location = location;
+			}
+		} 
+		</script>
 			<script
 				src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>
 			<script

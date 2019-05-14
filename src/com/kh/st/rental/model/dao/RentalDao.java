@@ -85,11 +85,69 @@ public class RentalDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		
+		//상세조건에 따라 query문 가져오기
+		HashMap<String,Object> detailsContent = (HashMap<String, Object>) condition.get("detailsContent");
+		
+		//상태조건이 전체가 아닐때
+		System.out.println(condition.get("rentalStatus").equals("0"));
+		System.out.println(detailsContent.get("details").equals("0"));
+		System.out.println(condition.get("sDate").equals(""));
+		if(condition.get("rentalStatus").equals("0") && detailsContent.get("details").equals("0") && condition.get("sDate").equals("")) {
+				System.out.println("전체조회");
+		}else {
+			System.out.println("전체ㄴㄴ");
+		}
+		
+		
 		String query = prop.getProperty("selectRentalFilter");
+		System.out.println(condition.get("rentalStatus"));
+		/*try {
+			pstmt = con.prepareStatement(query);
+			
+				
+				
+				
+			rset = pstmt.executeQuery();
+			
+			list = new ArrayList<HashMap<String,Object>>();
+			
+			while(rset.next()) {
+				hmap = new HashMap<String,Object>();
+				
+				hmap.put("rno", rset.getInt("RT_NO"));
+				hmap.put("pno", rset.getInt("PNO"));
+				hmap.put("model", rset.getString("MODEL"));
+				hmap.put("userName", rset.getString("USER_NAME"));
+				hmap.put("rentalDate", rset.getDate("RT_STDATE"));
+				hmap.put("pStatus", rset.getString("STATUS"));
+				
+				list.add(hmap);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);	
+		}
+		System.out.println(list);*/
+		return list;
+	}
+
+
+	public ArrayList<HashMap<String, Object>> selectPStatusFilter(Connection con, HashMap<String, Object> condition) {
+		ArrayList<HashMap<String,Object>> list = null;
+		HashMap<String,Object> hmap = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String query = prop.getProperty("selectPStatusFilter");
 		System.out.println(condition.get("rentalStatus"));
 		try {
 			pstmt = con.prepareStatement(query);
-			pstmt.setObject(1, condition.get("rentalStatus"));
+			//pstmt.setObject(1, condition.get("rentalStatus"));
+			pstmt.setObject(1,condition.get("rentalStatus"));
 			rset = pstmt.executeQuery();
 			
 			list = new ArrayList<HashMap<String,Object>>();
