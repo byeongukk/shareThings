@@ -144,7 +144,7 @@
 
             <a class="collapse-item" href="<%=request.getContextPath()%>/selectList.me">회원정보관리</a>
             <a class="collapse-item" href="<%=request.getContextPath()%>/selectMlevelList.me">회원등급관리</a>
-            <a class="collapse-item" href="<%=request.getContextPath()%>/views/admin/member/reportMember.jsp">신고이력관리</a>
+            <a class="collapse-item" href="<%=request.getContextPath()%>/selectReportList.me">신고이력관리</a>
 
           </div>
         </div>
