@@ -84,6 +84,7 @@ public class MemberService {
 		return list;
 	}
 	
+
 	
 	//민지
 	public Member login(String userId, String userPwd) {
@@ -91,6 +92,21 @@ public class MemberService {
 		Member loginUser = new MemberDao().login(con, userId, userPwd);
 		close(con);
 		return loginUser;
+	}
+
+	public int idCheck(String userId) {
+
+		Connection con = getConnection();
+		int result = new MemberDao().idCheck(con, userId);
+		close(con);
+		return result;
+	}
+
+	public int emailCheck(String email) {
+		Connection con = getConnection();
+		int result = new MemberDao().emailCheck(con, email);
+		close(con);
+		return result;
 	}
 
 	

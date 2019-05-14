@@ -7,21 +7,21 @@ public class Member implements java.io.Serializable{
 	private String userId;
 	private String userPwd;
 	private String userName;
+	private String gender;
+	private Date birthDate;
 	private String phone;
 	private String email;
 	private String address;
-	private int point;
-	private Date enrollDate;
-	private String status;
-	private String optionCheck;
 	private String subPhone;
-	private String socialLink;
-	private String gender;
-	private Date birthDate;
+	private Date enrollDate;
 	private Date modifyDate;
+	private String mLevel;
+	private int point;
 	private int profits;
 	private int penaltyPoint;
-	private String mLevel;
+	private String optionCheck;
+	private String socialLink;
+	private String status;
 	
 	public Member() {}
 
