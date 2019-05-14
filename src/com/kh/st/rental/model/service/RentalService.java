@@ -17,4 +17,17 @@ public class RentalService {
 		close(con);
 		return list;
 	}
+
+	/**
+	 * @param condition
+	 * @return
+	 */
+	public ArrayList<HashMap<String, Object>> selectRentalFilter(HashMap<String, Object> condition) {
+		Connection con = getConnection();
+		 ArrayList<HashMap<String, Object>> list = new RentalDao().selectRentalFilter(con,condition);
+		
+		 
+		close(con);
+		return list;
+	}
 }
