@@ -83,11 +83,11 @@ public class MemberDao {
 				m.setPhone(rset.getString("PHONE"));
 				m.setAddress(rset.getString("ADDRESS"));
 				m.setProfits(rset.getInt("PROFITS"));
-				m.setPoint(rset.getInt("POINT"));
+				m.setTotalPoint(rset.getInt("TOTAL_POINT"));
 				m.setPenaltyPoint(rset.getInt("PENALTY_POINT"));
-				//m.setEnrollDate(rset.getDate("ENROLL_DATE"));
+				m.setEnrollDate(rset.getDate("ENROLL_DATE"));
 				System.out.println(rset.getString("STATUS"));
-				if(rset.getString("STATUS") == "Y") {
+				if(rset.getString("STATUS").equals("Y")) {
 					m.setStatus("가입");
 				}else {
 					m.setStatus("탈퇴");
@@ -122,7 +122,7 @@ public class MemberDao {
 			while(rset.next()) {
 				Mlevel ml = new Mlevel();
 				
-				ml.setLevelCode(rset.getInt("LEVEL_CODE"));
+				ml.setLevelCode(rset.getString("LEVEL_CODE"));
 				ml.setLevelName(rset.getString("LEVEL_NAME"));
 				ml.setPerPoint(rset.getInt("PER_POINT"));
 				ml.setLevelStd(rset.getInt("LEVEL_STD"));
@@ -153,7 +153,7 @@ public class MemberDao {
 				pstmt.setString(1, list.get(i).getLevelName());
 				pstmt.setInt(2, list.get(i).getLevelStd());
 				pstmt.setInt(3, list.get(i).getPerPoint());
-				pstmt.setInt(4, list.get(i).getLevelCode());
+				pstmt.setString(4, list.get(i).getLevelCode());
 				
 				result += pstmt.executeUpdate();
 			}
@@ -223,15 +223,26 @@ public class MemberDao {
 				r.setReportNo(rset.getInt("REPORT_NO"));
 				r.setTargetUser(rset.getString("USER1"));
 				r.setReportName(rset.getString("REPORT_NAME"));
-				r.setReportInsert(rset.getString("REPORT_INSERT"));
+				r.setReportContent(rset.getString("REPORT_CONTENT"));
 				r.setReportUser(rset.getString("USER2"));
 				r.setReportDate(rset.getDate("REPORT_DATE"));
-				r.setStatus(rset.getString("STATUS"));
 				r.setComplateDate(rset.getDate("COMPLETE_DATE"));
-				r.setReportResult(rset.getString("REPORT_RESULT"));
 				r.setSumPenalty(rset.getInt("PENALTY_POINT"));
 				r.setReject(rset.getString("REJECT"));
 				r.setPenalty(rset.getInt("PENALTY"));
+				System.out.println(rset.getString("REPORT_RESULT"));
+				
+				if(rset.getString("REPORT_RESULT").equals("Y")) {
+					r.setReportResult("적합");
+				}else {
+					r.setReportResult("부적합");
+				}
+				
+				if(rset.getString("REPORT_RESULT") != null) {
+					r.setStatus("처리완료");
+				}else{
+					r.setStatus("처리대기");
+				}
 				
 				list.add(r);
 			}
@@ -386,6 +397,37 @@ public class MemberDao {
 		return list;
 	}
 	
+	
+	public int reportOk(Connection con, String[] reportsNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("reportOk");
+		
+		try {
+			for(int i = 0; i < reportsNo.length; i++) {
+				pstmt = con.prepareStatement(query);
+				pstmt.setInt(1, Integer.parseInt(reportsNo[i]));
+				
+				result += pstmt.executeUpdate();
+			}
+			
+			if(result == reportsNo.length) {
+				result = 1;
+			}else {
+				result = 0;
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+		
+	}
+	
 //민지
 	public Member login(Connection con, String userId, String userPwd) {
 
@@ -414,7 +456,7 @@ public class MemberDao {
 				loginUser.setEnrollDate(rset.getDate("ENROLL_DATE"));
 				loginUser.setModifyDate(rset.getDate("MODIFY_DATE"));
 				loginUser.setmLevel(rset.getString("MEMBER_LEVEL"));
-				loginUser.setPoint(rset.getInt("POINT"));
+				loginUser.setTotalPoint(rset.getInt("TOTAL_POINT"));
 				loginUser.setProfits(rset.getInt("PROFITS"));
 				loginUser.setPenaltyPoint(rset.getInt("PENALTY_POINT"));
 				loginUser.setOptionCheck(rset.getString("OPTION_CHECK"));
@@ -520,6 +562,25 @@ public class MemberDao {
 			close(pstmt);
 		}
 		
+		return result;
+	}
+
+	public int insertPlusPoint(Connection con, Member newMember, int pointPrice) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = prop.getProperty("insertPoint");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, newMember.getUserId());
+			pstmt.setString(2, "적립");
+			pstmt.setInt(3, pointPrice);
+			result = pstmt.executeUpdate();
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
 		return result;
 	}
 

@@ -45,6 +45,7 @@ public class MemberLoginServlet extends HttpServlet {
 		if(loginUser != null) {
 			HttpSession session = request.getSession();
 			session.setAttribute("loginUser", loginUser);
+			
 			if(loginUser.getUserId().equals("admin")) {
 				out.print("admin");
 			}else if(loginUser.getEmailVerif().equals("N")) {

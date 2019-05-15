@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -134,6 +133,13 @@
 	
 	
 	<script>
+		$(function() {
+			<% if(request.getParameter("login") != null && request.getParameter("login").equals("first")) { %>
+			alert("회원가입에 성공했습니다! 로그인해주세요.");
+			<% } %>
+		});
+		
+		
 		$("#joinBtn").click(function() {
 			location.href="<%= request.getContextPath() %>/views/member/memberJoinPage.jsp";
 		});
@@ -158,7 +164,7 @@
 						location.href="<%= request.getContextPath() %>/views/admin/adminMain.jsp";
 					}else if(data == "emailNotVerified") {
 						$("#loginFail").hide();
-						location.href="<%= request.getContextPath() %>/views/member/joinSuccessPage.jsp";
+						location.href="<%= request.getContextPath() %>/views/member/beforeEmailVerifPage.jsp";
 					}else {
 						$("#loginFail").hide();
 						location.href="<%= request.getContextPath() %>/views/main/main.jsp";
