@@ -253,14 +253,19 @@
 				var filterContent = $("#filterContent").val();
 				var startDate = $("#startDate").val();
 				var endDate = $("#endDate").val();
-				
 				console.log($("#startDate"));
 				/* 조회기간을 한쪽만 설정하거나 시작일이 더 클 때 alert 창 띄운후 리턴 */
 				if(startDate>endDate || (endDate!="" && startDate=="")){
 					alert("기간이 잘못 되었습니다");
 					return;
 				}
-				
+				/*상세정보가 전체가 아닌경우 alert 창 띄운후 리턴*/
+				if(details != "0"){
+					if(filterContent == ""){
+						alert("상세정보를 입력하세요");
+						return;
+					}
+				}
 				$.ajax({
 					url:"<%=request.getContextPath()%>/selectFilter.rt",
 					data:{rentalStatus:rentalStatus,
@@ -326,15 +331,20 @@
 				});
 			});
 		});	
+	
+	
+	</script>
+	<script>
 		/* 상세조건이 전체일때 상세정보입력 비활성화 */
 		function detailsChg(){
-			if($("#details").val()=="10"){
+			if($("#details").val()=="0"){
 				$("#filterContent").attr("disabled",true);
+				$("#filterContent").val("");
 			}else {
 				$("#filterContent").attr("disabled",false);
+				$("#filterContent").val("");
 			}
 		}
-		
 	</script>
 	<script
 		src="<%= request.getContextPath() %>/resource/vendor/jquery/jquery.min.js"></script>
