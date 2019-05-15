@@ -1,14 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="java.util.*, com.kh.st.member.model.vo.*, com.kh.st.common.*"%>
-<%
-	ArrayList<Refund> list = (ArrayList<Refund>)request.getAttribute("list");
-	PageInfo pi = (PageInfo)request.getAttribute("pi");
+<%	
+	ArrayList<Payback> list = (ArrayList<Payback>) request.getAttribute("list");
+	PageInfo pi = (PageInfo) request.getAttribute("pi");
 	
 	int currentPage = pi.getCurrentPage();
 	int maxPage = pi.getMaxPage();
 	int startPage = pi.getStartPage();
 	int endPage = pi.getEndPage();
-%>
+%> 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -71,7 +71,7 @@
 				<%@ include file="../common/header.jsp"%>
 				<!-- 컨텐츠바디 영역 실제 작성 영역 -->
 				<div class="container-fluid">
-					<h1 class="h3 mb-2 text-gray-800">회원환불</h1>
+					<h1 class="h3 mb-2 text-gray-800">수익금 환급</h1>
 					<img src="<%=request.getContextPath()%>/resource/img/adminHr.png"
 						width="100%">
 					<div class="row" id="filter" align="center">
@@ -86,11 +86,11 @@
 												style="width: 80%"></td>
 											<td width="5%">환급일 :</td>
 											<td><input type="date" name="startDate"
-												style="width: 40%"> &nbsp; ~ &nbsp; <input
+												style="width: 40%"> &nbsp; ~ &nbsp;<input
 												type="date" name="endDate" style="width: 40%"></td>
 											<td width="5%">금액 :</td>
 											<td><input type="number" name="startMoney"
-												style="width: 40%"> &nbsp; ~ &nbsp; <input
+												style="width: 40%"> &nbsp; ~ &nbsp;<input
 												type="number" name="endMoney" style="width: 40%"></td>
 											<td width="5%">상태 :</td>
 											<td><select style="width: 80%">
@@ -114,18 +114,11 @@
 											class="dataTables_wrapper dt-bootstrap4">
 											<div class="row">
 												<div class="col-sm-12">
-													<div align="left">
-														<a href="#" class="btn btn-success btn-circle btn-sm" onclick="ok()">
-										                    <i class="fas fa-check"></i></a> &nbsp;&nbsp;
-														<a href="#" class="btn btn-danger btn-circle btn-sm">
-										                    <i class="fas fa-trash"></i> </a>
-													</div>
-													<br>
 													<table class="table table-bordered dataTable"
 														id="dataTable" width="100%" cellspacing="0" role="grid"
 														aria-describedby="dataTable_info" style="width: 100%;"
 														style="height:100px;">
-														<thead align="center">
+														<thead>
 															<tr role="row">
 																<th width="1%"><input type="checkbox"></th>
 																<th class="sorting_asc" tabindex="0"
@@ -141,21 +134,21 @@
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Office: activate to sort column ascending"
-																	style="width: 7%;">결제번호</th>
+																	style="width: 20%;">계좌번호</th>
 																<th class="sorting_asc" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-sort="ascending"
 																	aria-label="Name: activate to sort column descending"
-																	style="width: 20%;">환불사유</th>
-																<!-- <th class="sorting" tabindex="0"
+																	style="width: 7%;">은행명</th>
+																<th class="sorting_asc" tabindex="0"
+																	aria-controls="dataTable" rowspan="1" colspan="1"
+																	aria-sort="ascending"
+																	aria-label="Name: activate to sort column descending"
+																	style="width: 5%;">예금주</th>
+																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Salary: activate to sort column ascending"
-																	style="width: 10%;">금액</th> -->	
-																<th class="sorting_asc" tabindex="0"
-																	aria-controls="dataTable" rowspan="1" colspan="1"
-																	aria-sort="ascending"
-																	aria-label="Name: activate to sort column descending"
-																	style="width: 5%;">구분</th>
+																	style="width: 10%;">금액</th>	
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Office: activate to sort column ascending"
@@ -163,7 +156,7 @@
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Age: activate to sort column ascending"
-																	style="width: 10%;">환불일</th>
+																	style="width: 10%;">환급일</th>
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Salary: activate to sort column ascending"
@@ -171,18 +164,18 @@
 															</tr>
 														</thead>
 														<tbody>
-															<% for(Refund r : list){ %>
+															<% for(Payback p : list){ %>
 																<tr>
 																	<td><input type="checkbox"></td>
-																	<td><%= r.getRfNo() %></td>
-																	<td><%= r.getUserId() %></td>
-																	<td><%= r.getPayNo() %></td>
-																	<td><%= r.getRfReason() %></td>
-																	
-																	<td><%= r.getRfType() %></td>
-																	<td><%= r.getReqDate() %></td>
-																	<td><%= r.getRfDate() %></td>
-																	<td><%= r.getRfStatus() %></td>
+																	<td><%= p.getPbNo() %></td>
+																	<td><%= p.getUserId() %></td>
+																	<td><%= p.getAccount() %></td>
+																	<td><%= p.getBank() %></td>
+																	<td><%= p.getAccName() %></td>
+																	<td><%= p.getPbAmount() %></td>
+																	<td><%= p.getReqDate() %></td>
+																	<td><%= p.getPbDate() %></td>
+																	<td><%= p.getPbStatus() %></td>
 																</tr>
 															<% } %>
 														</tbody>
@@ -197,7 +190,7 @@
 															<ul class="pagination">
 																<li class="paginate_button page-item"
 																	id="dataTable_first"><a
-																	href="<%=request.getContextPath()%>/selectRefundList.me?currentPage=1"
+																	href="<%=request.getContextPath()%>/selectPaybackList.me?currentPage=1"
 																	aria-controls="dataTable" data-dt-idx="0" tabindex="0"
 																	class="page-link">First</a></li>
 										
@@ -206,7 +199,7 @@
 																%>
 																<li class="paginate_button page-item disabled"
 																	id="dataTable_previous"><a
-																	href="<%=request.getContextPath()%>/selectRefundList.me?currentPage=<%=currentPage - 1%>"
+																	href="<%=request.getContextPath()%>/selectPaybackList.me?currentPage=<%=currentPage - 1%>"
 																	aria-controls="dataTable" data-dt-idx="0" tabindex="0"
 																	class="page-link">Previous</a></li>
 																<%
@@ -214,7 +207,7 @@
 																%>
 																<li class="paginate_button page-item"
 																	id="dataTable_previous"><a
-																	href="<%=request.getContextPath()%>/selectRefundList.me?currentPage=<%=currentPage - 1%>"
+																	href="<%=request.getContextPath()%>/selectPaybackList.me?currentPage=<%=currentPage - 1%>"
 																	aria-controls="dataTable" data-dt-idx="0" tabindex="0"
 																	class="page-link">Previous</a></li>
 																<%
@@ -224,13 +217,13 @@
 																		for (int p = startPage; p <= endPage; p++) {
 																		    if (p == currentPage) {
 																%>
-																<li class="paginate_button page-item disabled"><a href="<%=request.getContextPath()%>/selectRefundList.me?currentPage=<%=p%>"
+																<li class="paginate_button page-item disabled"><a href="<%=request.getContextPath()%>/selectPaybackList.me?currentPage=<%=p%>"
 																	aria-controls="dataTable" data-dt-idx="1" tabindex="0"
 																	class="page-link"><%=p%></a></li>
 																<%
 																		} else {
 																%>
-																<li class="paginate_button page-item active"><a href="<%=request.getContextPath()%>/selectRefundList.me?currentPage=<%=p%>"
+																<li class="paginate_button page-item active"><a href="<%=request.getContextPath()%>/selectPaybackList.me?currentPage=<%=p%>"
 																	aria-controls="dataTable" data-dt-idx="1" tabindex="0"
 																	class="page-link"><%=p%></a></li>
 																<%
@@ -246,17 +239,17 @@
 																		if (currentPage >= maxPage) {
 																%>
 																<li class="paginate_button page-item disabled" id="dataTable_next"><a
-																	href="<%=request.getContextPath()%>/selectRefundList.me?currentPage=<%=currentPage + 1%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+																	href="<%=request.getContextPath()%>/selectPaybackList.me?currentPage=<%=currentPage + 1%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
 																	class="page-link">Next</a></li>
 																<%
 																		} else {
 																%>
 																<li class="paginate_button page-item next" id="dataTable_next"><a
-																	href="<%=request.getContextPath()%>/selectRefundList.me?currentPage=<%=currentPage + 1%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+																	href="<%=request.getContextPath()%>/selectPaybackList.me?currentPage=<%=currentPage + 1%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
 																	class="page-link">Next</a></li>
 																<%      }     %>
 																<li class="paginate_button page-item next" id="dataTable_end"><a
-																	href="<%=request.getContextPath()%>/selectRefundList.me?currentPage=<%=maxPage%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+																	href="<%=request.getContextPath()%>/selectPaybackList.me?currentPage=<%=maxPage%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
 																	class="page-link">End</a></li>
 															</ul>
 														</div>
@@ -284,12 +277,7 @@
 			<%@ include file="../common/logoutModal.jsp"%>
 
 			<script>
-		$(function() {
-			$(".even").click(function() {
-				location = "<%=request.getContextPath()%>
-				/views/admin/reqProductDetail.jsp";
-									});
-				});
+		
 			</script>
 			<script
 				src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>
