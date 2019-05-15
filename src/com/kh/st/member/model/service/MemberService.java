@@ -93,6 +93,7 @@ public class MemberService {
 		
 		int listCount = new MemberDao().getPaybackListCount(con);
 
+
 		close(con);
 
 		return listCount;
@@ -152,6 +153,30 @@ public class MemberService {
 	public int emailCheck(String email) {
 		Connection con = getConnection();
 		int result = new MemberDao().emailCheck(con, email);
+		close(con);
+		return result;
+	}
+
+	public int insertMember(Member newMember) {
+		Connection con = getConnection();
+		int result = new MemberDao().insertMember(con, newMember);
+		if(result > 0) {
+			commit(con);
+		}else {
+			rollback(con);
+		}
+		close(con);
+		return result;
+	}
+
+	public int setEmailChecked(String userId) {
+		Connection con = getConnection();
+		int result = new MemberDao().setEmailChecked(con, userId);
+		if(result > 0) {
+			commit(con);
+		}else {
+			rollback(con);
+		}
 		close(con);
 		return result;
 	}

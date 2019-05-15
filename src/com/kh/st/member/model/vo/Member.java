@@ -21,185 +21,315 @@ public class Member implements java.io.Serializable{
 	private int penaltyPoint;
 	private String optionCheck;
 	private String socialLink;
+	private String emailVerif;
 	private String status;
 	
 	public Member() {}
 
-	public Member(int uno, String userId, String userPwd, String userName, String phone, String email, String address,
-			int point, Date enrollDate, String status, String optionCheck, String subPhone, String socialLink, String gender,
-			Date birthDate, Date modifyDate, int profits, int penaltyPoint, String mLevel) {
+	public Member(int uno, String userId, String userPwd, String userName, String gender, Date birthDate, String phone,
+			String email, String address, String subPhone, Date enrollDate, Date modifyDate, String mLevel, int point,
+			int profits, int penaltyPoint, String optionCheck, String socialLink, String emailVerif, String status) {
 		super();
 		this.uno = uno;
 		this.userId = userId;
 		this.userPwd = userPwd;
 		this.userName = userName;
+		this.gender = gender;
+		this.birthDate = birthDate;
 		this.phone = phone;
 		this.email = email;
 		this.address = address;
-		this.point = point;
-		this.enrollDate = enrollDate;
-		this.status = status;
-		this.optionCheck = optionCheck;
 		this.subPhone = subPhone;
-		this.socialLink = socialLink;
-		this.gender = gender;
-		this.birthDate = birthDate;
+		this.enrollDate = enrollDate;
 		this.modifyDate = modifyDate;
+		this.mLevel = mLevel;
+		this.point = point;
 		this.profits = profits;
 		this.penaltyPoint = penaltyPoint;
-		this.mLevel = mLevel;
+		this.optionCheck = optionCheck;
+		this.socialLink = socialLink;
+		this.emailVerif = emailVerif;
+		this.status = status;
 	}
 
+	/**
+	 * @return the uno
+	 */
 	public int getUno() {
 		return uno;
 	}
 
+	/**
+	 * @param uno the uno to set
+	 */
 	public void setUno(int uno) {
 		this.uno = uno;
 	}
 
+	/**
+	 * @return the userId
+	 */
 	public String getUserId() {
 		return userId;
 	}
 
+	/**
+	 * @param userId the userId to set
+	 */
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
+	/**
+	 * @return the userPwd
+	 */
 	public String getUserPwd() {
 		return userPwd;
 	}
 
+	/**
+	 * @param userPwd the userPwd to set
+	 */
 	public void setUserPwd(String userPwd) {
 		this.userPwd = userPwd;
 	}
 
+	/**
+	 * @return the userName
+	 */
 	public String getUserName() {
 		return userName;
 	}
 
+	/**
+	 * @param userName the userName to set
+	 */
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
 
-	public String getPhone() {
-		return phone;
-	}
-
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public int getPoint() {
-		return point;
-	}
-
-	public void setPoint(int point) {
-		this.point = point;
-	}
-
-	public Date getEnrollDate() {
-		return enrollDate;
-	}
-
-	public void setEnrollDate(Date enrollDate) {
-		this.enrollDate = enrollDate;
-	}
-
-	public String getStatus() {
-		return status;
-	}
-
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	public String getOptionCheck() {
-		return optionCheck;
-	}
-
-	public void setOptionCheck(String optionCheck) {
-		this.optionCheck = optionCheck;
-	}
-
-	public String getSubPhone() {
-		return subPhone;
-	}
-
-	public void setSubPhone(String subPhone) {
-		this.subPhone = subPhone;
-	}
-
-	public String getSocialLink() {
-		return socialLink;
-	}
-
-	public void setSocialLink(String socialLink) {
-		this.socialLink = socialLink;
-	}
-
+	/**
+	 * @return the gender
+	 */
 	public String getGender() {
 		return gender;
 	}
 
+	/**
+	 * @param gender the gender to set
+	 */
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
 
+	/**
+	 * @return the birthDate
+	 */
 	public Date getBirthDate() {
 		return birthDate;
 	}
 
+	/**
+	 * @param birthDate the birthDate to set
+	 */
 	public void setBirthDate(Date birthDate) {
 		this.birthDate = birthDate;
 	}
 
+	/**
+	 * @return the phone
+	 */
+	public String getPhone() {
+		return phone;
+	}
+
+	/**
+	 * @param phone the phone to set
+	 */
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	/**
+	 * @return the email
+	 */
+	public String getEmail() {
+		return email;
+	}
+
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	/**
+	 * @return the address
+	 */
+	public String getAddress() {
+		return address;
+	}
+
+	/**
+	 * @param address the address to set
+	 */
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	/**
+	 * @return the subPhone
+	 */
+	public String getSubPhone() {
+		return subPhone;
+	}
+
+	/**
+	 * @param subPhone the subPhone to set
+	 */
+	public void setSubPhone(String subPhone) {
+		this.subPhone = subPhone;
+	}
+
+	/**
+	 * @return the enrollDate
+	 */
+	public Date getEnrollDate() {
+		return enrollDate;
+	}
+
+	/**
+	 * @param enrollDate the enrollDate to set
+	 */
+	public void setEnrollDate(Date enrollDate) {
+		this.enrollDate = enrollDate;
+	}
+
+	/**
+	 * @return the modifyDate
+	 */
 	public Date getModifyDate() {
 		return modifyDate;
 	}
 
+	/**
+	 * @param modifyDate the modifyDate to set
+	 */
 	public void setModifyDate(Date modifyDate) {
 		this.modifyDate = modifyDate;
 	}
 
-	public int getProfits() {
-		return profits;
-	}
-
-	public void setProfits(int profits) {
-		this.profits = profits;
-	}
-
-	public int getPenaltyPoint() {
-		return penaltyPoint;
-	}
-
-	public void setPenaltyPoint(int penaltyPoint) {
-		this.penaltyPoint = penaltyPoint;
-	}
-
+	/**
+	 * @return the mLevel
+	 */
 	public String getmLevel() {
 		return mLevel;
 	}
 
+	/**
+	 * @param mLevel the mLevel to set
+	 */
 	public void setmLevel(String mLevel) {
 		this.mLevel = mLevel;
+	}
+
+	/**
+	 * @return the point
+	 */
+	public int getPoint() {
+		return point;
+	}
+
+	/**
+	 * @param point the point to set
+	 */
+	public void setPoint(int point) {
+		this.point = point;
+	}
+
+	/**
+	 * @return the profits
+	 */
+	public int getProfits() {
+		return profits;
+	}
+
+	/**
+	 * @param profits the profits to set
+	 */
+	public void setProfits(int profits) {
+		this.profits = profits;
+	}
+
+	/**
+	 * @return the penaltyPoint
+	 */
+	public int getPenaltyPoint() {
+		return penaltyPoint;
+	}
+
+	/**
+	 * @param penaltyPoint the penaltyPoint to set
+	 */
+	public void setPenaltyPoint(int penaltyPoint) {
+		this.penaltyPoint = penaltyPoint;
+	}
+
+	/**
+	 * @return the optionCheck
+	 */
+	public String getOptionCheck() {
+		return optionCheck;
+	}
+
+	/**
+	 * @param optionCheck the optionCheck to set
+	 */
+	public void setOptionCheck(String optionCheck) {
+		this.optionCheck = optionCheck;
+	}
+
+	/**
+	 * @return the socialLink
+	 */
+	public String getSocialLink() {
+		return socialLink;
+	}
+
+	/**
+	 * @param socialLink the socialLink to set
+	 */
+	public void setSocialLink(String socialLink) {
+		this.socialLink = socialLink;
+	}
+
+	/**
+	 * @return the emailVerif
+	 */
+	public String getEmailVerif() {
+		return emailVerif;
+	}
+
+	/**
+	 * @param emailVerif the emailVerif to set
+	 */
+	public void setEmailVerif(String emailVerif) {
+		this.emailVerif = emailVerif;
+	}
+
+	/**
+	 * @return the status
+	 */
+	public String getStatus() {
+		return status;
+	}
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(String status) {
+		this.status = status;
 	}
 
 	/* (non-Javadoc)
@@ -208,12 +338,14 @@ public class Member implements java.io.Serializable{
 	@Override
 	public String toString() {
 		return "Member [uno=" + uno + ", userId=" + userId + ", userPwd=" + userPwd + ", userName=" + userName
-				+ ", phone=" + phone + ", email=" + email + ", address=" + address + ", point=" + point
-				+ ", enrollDate=" + enrollDate + ", status=" + status + ", optionCheck=" + optionCheck + ", subPhone=" + subPhone
-				+ ", socialLink=" + socialLink + ", gender=" + gender + ", birthDate=" + birthDate + ", modifyDate="
-				+ modifyDate + ", profits=" + profits + ", penaltyPoint=" + penaltyPoint + ", mLevel=" + mLevel + "]";
+				+ ", gender=" + gender + ", birthDate=" + birthDate + ", phone=" + phone + ", email=" + email
+				+ ", address=" + address + ", subPhone=" + subPhone + ", enrollDate=" + enrollDate + ", modifyDate="
+				+ modifyDate + ", mLevel=" + mLevel + ", point=" + point + ", profits=" + profits + ", penaltyPoint="
+				+ penaltyPoint + ", optionCheck=" + optionCheck + ", socialLink=" + socialLink + ", emailVerif="
+				+ emailVerif + ", status=" + status + "]";
 	}
 
+	
 	
 	
 

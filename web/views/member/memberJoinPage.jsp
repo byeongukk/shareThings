@@ -52,7 +52,7 @@
 			</h1>
 			<!-- <h2 align="center">회원 가입</h2> -->
 			<br><br>
-			<form id="joinForm" action="" method="post">
+			<form id="joinForm" action="<%= request.getContextPath() %>/join.me" method="post">
 				<div class="row">
 					<div class="col col-lg-2 col-md-2"></div>
 					<div class="joinArea col col-lg-8 col-md-8" align="center">
@@ -184,17 +184,23 @@
 									</div>
 								</td>
 								<td>
-									<div class="ui blue button" id="idCheck" style="height:35px">인증번호 발송</div>
+									<div class="ui left pointing red basic label fluid wrongmsg" id="phoneWrongMsg"
+									style="display:none;">
+	      								숫자만 입력해주세요!
+	    							</div>
 								</td>
+								<!-- <td>
+									<div class="ui blue button" id="idCheck" style="height:35px">인증번호 발송</div>
+								</td> -->
 							</tr>
-							<tr>
+							<!-- <tr>
 								<td></td>
 								<td colspan="3">
 									<div class="ui fluid input">
 										<input type="text" placeholder="인증번호 입력" name="verifyNum" id="verifyNum">
 									</div>
 								</td>
-							</tr>
+							</tr> -->
 							<tr>
 								<td><b>이메일 주소 *</b></td>
 								<td colspan="3">
@@ -213,32 +219,7 @@
 	      							</div>
 								</td>
 							</tr>
-							<tr>
-								<td><b>비상 연락망</b></td>
-								<td>
-									<select name="subPhone0">
-										<option value="skt">SKT</option>
-										<option value="kt">KT</option>
-										<option value="lg">LG U+</option>
-									</select>
-								</td>
-								<td>
-									<div class="ui input telInput">
-										<input type="tel" placeholder="010" name="subPhone1" size="3">
-									</div>
-								</td>
-								<td>
-									<div class="ui input telInput">
-										<input type="tel" placeholder="0000" name="subPhone2" size="4">
-									</div>
-								</td>
-								<td>
-									<div class="ui input telInput">
-										<input type="tel" placeholder="0000" name="subPhone3" size="4">
-									</div>
-								</td>
-								
-							</tr>
+							
 							<tr>
 								<td rowspan="3"><b>주소 *</b></td>
 								<td colspan="2">
@@ -266,6 +247,40 @@
 										class="mandatory">
 									</div>
 								</td>
+							</tr>
+							<tr>
+								<td><b>비상 연락망</b></td>
+								<td>
+									<select name="subPhone0">
+										<option value="skt">SKT</option>
+										<option value="kt">KT</option>
+										<option value="lg">LG U+</option>
+									</select>
+								</td>
+								<td>
+									<div class="ui input telInput">
+										<input type="tel" placeholder="010" name="subPhone1" size="3">
+									</div>
+								</td>
+								<td>
+									<div class="ui input telInput">
+										<input type="tel" placeholder="0000" name="subPhone2" size="4">
+									</div>
+								</td>
+								<td>
+									<div class="ui input telInput">
+										<input type="tel" placeholder="0000" name="subPhone3" size="4">
+									</div>
+								</td>
+								<td>
+									<div class="ui left pointing red basic label fluid wrongmsg" id="phoneWrongMsg2"
+									style="display:none;">
+	      								숫자만 입력해주세요!
+	    							</div>
+								</td>
+							</tr>
+							<tr>
+								<td><label style="font-size:0.8em; color:gray">(* : 필수입력)</label></td>
 							</tr>
 						</table>
 					</div> <!-- end of joinArea -->
@@ -308,7 +323,7 @@
 							</tr>
 							<tr>
 								<td width="80%">
-									<input type="checkbox" name="TnC" value="check3" id="checl3">
+									<input type="checkbox" name="TnC" value="check3" id="check3">
 									<label for="check3">개인정보 수집 및 이용(선택)</label>
 								</td>
 								<td width="20%">
@@ -339,11 +354,14 @@
 		$(function() {
 			//$(".wrongmsg").hide();
 		});
+		
+		//회원가입란 정규표현식
 		var koreanCheck = /[^a-z|0-9]/gi;
 		var koreanCheck2 = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/gi;
-		var blankCheck = /\w+/g;
+		var blankCheck = /\w+/;
 		var engAtLeastOneCheck = /[a-z]+/i;
 		var numAtLeastOneCheck = /[0-9]+/;
+		var numberCheck = /[^0-9]/;
 		$("#userId").change(function() {
 			if(koreanCheck.test($(this).val())) {
 				$("#idWrongMsg").show();
@@ -392,6 +410,23 @@
 				$("#emaiWrongMsg").hide();
 			}
 		});
+		$("input[name^=phone]").change(function() {
+			if(numberCheck.test($(this).val())) {
+				$("#phoneWrongMsg").show();
+			}else {
+				$("#phoneWrongMsg").hide();
+			}
+		});
+		$("input[name^=subPhone]").change(function() {
+			if(numberCheck.test($(this).val())) {
+				$("#phoneWrongMsg2").show();
+			}else {
+				$("#phoneWrongMsg2").hide();
+			}
+		});
+		
+		
+		//아이디 중복확인
 		var idCheckCtn = 0;
 		$("#idCheck").click(function() {
 			idCheckCtn = 1;
@@ -412,6 +447,7 @@
 				}
 			});
 		});
+		//이메일 중복확인
 		var emailCheckCtn = 0;
 		$("#emailCheck").click(function() {
 			emailCheckCtn = 1;
@@ -433,6 +469,8 @@
 			});
 		});
 		
+		
+		//주소검색 api
 		$("#addressSearch").click(function() {
 			new daum.Postcode({
 		    	oncomplete: function(data) {
@@ -481,17 +519,37 @@
 	                document.getElementById("address2").focus();
 		        }
 		    }).open();
-		           
-			
-			
-		})
+		});
+		
+		//약관전체동의체크시
+		$("#checkAll").change(function() {
+			if($(this).prop("checked")) {
+				$("#check1").prop("checked", true);
+				$("#check2").prop("checked", true);
+				$("#check3").prop("checked", true);
+			}else {
+				$("#check1").prop("checked", false);
+				$("#check2").prop("checked", false);
+				$("#check3").prop("checked", false);
+			}
+		});
+		
+		
+		//회원가입 버튼클릭시
 		function join() {
-					
-			if(!blankCheck.test($(".mandatory").val())) {
+			var blankCtn = 0;
+			console.log("초기값 : " + blankCtn);
+			$(".mandatory").each(function() {
+				if($(this).val() == "") {
+					blankCtn++;
+				}
+			});		
+			if(blankCtn != 0) {
+				console.log(blankCtn);
 				alert("필수입력란을 모두 입력해주세요");
 			}else if(idCheckCtn == 0) {
 				alert("아이디 중복확인을 해주세요");
-			}else if(emailCtn == 0) {	
+			}else if(emailCheckCtn == 0) {	
 				alert("이메일 중복확인을 해주세요");
 			}else if(!$("#check1").prop("checked") || !$("#check2").prop("checked")) {
 				alert("약관에 체크해주세요");

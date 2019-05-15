@@ -405,21 +405,22 @@ public class MemberDao {
 				loginUser.setUserId(rset.getString("USER_ID"));
 				loginUser.setUserPwd(rset.getString("USER_PWD"));
 				loginUser.setUserName(rset.getString("USER_NAME"));
+				loginUser.setGender(rset.getString("GENDER"));
+				loginUser.setBirthDate(rset.getDate("BIRTH_DATE"));
 				loginUser.setPhone(rset.getString("PHONE"));
 				loginUser.setEmail(rset.getString("EMAIL"));
 				loginUser.setAddress(rset.getString("ADDRESS"));
-				loginUser.setPoint(rset.getInt("POINT"));
-				loginUser.setEnrollDate(rset.getDate("ENROLL_DATE"));
-				loginUser.setStatus(rset.getString("STATUS"));
-				loginUser.setOptionCheck(rset.getString("OPTION_CHECK"));
 				loginUser.setSubPhone(rset.getString("SUB_PHONE"));
-				loginUser.setSocialLink(rset.getString("SOCIAL_LINK"));
-				loginUser.setGender(rset.getString("GENDER"));
-				loginUser.setBirthDate(rset.getDate("BIRTH_DATE"));
+				loginUser.setEnrollDate(rset.getDate("ENROLL_DATE"));
 				loginUser.setModifyDate(rset.getDate("MODIFY_DATE"));
+				loginUser.setmLevel(rset.getString("MEMBER_LEVEL"));
+				loginUser.setPoint(rset.getInt("POINT"));
 				loginUser.setProfits(rset.getInt("PROFITS"));
 				loginUser.setPenaltyPoint(rset.getInt("PENALTY_POINT"));
-				loginUser.setmLevel(rset.getString("MEMBER_LEVEL"));
+				loginUser.setOptionCheck(rset.getString("OPTION_CHECK"));
+				loginUser.setSocialLink(rset.getString("SOCIAL_LINK"));
+				loginUser.setEmailVerif(rset.getString("EMAIL_VERIF"));
+				loginUser.setStatus(rset.getString("STATUS"));
 			}
 			
 		} catch (SQLException e) {
@@ -473,6 +474,50 @@ public class MemberDao {
 		} finally {
 			close(pstmt);
 			close(rset);
+		}
+		
+		return result;
+	}
+
+	public int insertMember(Connection con, Member newMember) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = prop.getProperty("insertMember");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, newMember.getUserId());
+			pstmt.setString(2, newMember.getUserPwd());
+			pstmt.setString(3, newMember.getUserName());
+			pstmt.setString(4, newMember.getGender());
+			pstmt.setDate(5, newMember.getBirthDate());
+			pstmt.setString(6, newMember.getPhone());
+			pstmt.setString(7, newMember.getEmail());
+			pstmt.setString(8, newMember.getAddress());
+			pstmt.setString(9, newMember.getSubPhone());
+			pstmt.setString(10, newMember.getOptionCheck());
+		
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	public int setEmailChecked(Connection con, String userId) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = prop.getProperty("emailCheck");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, userId);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
 		}
 		
 		return result;

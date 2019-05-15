@@ -1,29 +1,25 @@
 package com.kh.st.member.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.kh.st.member.model.service.MemberService;
-import com.kh.st.member.model.vo.Member;
 
 /**
- * Servlet implementation class MemberLoginServlet
+ * Servlet implementation class MemberEmailCheckServlet
  */
-@WebServlet("/login.me")
-public class MemberLoginServlet extends HttpServlet {
+@WebServlet("/emailVerif.me")
+public class MemberEmailVerifServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public MemberLoginServlet() {
+    public MemberEmailVerifServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,31 +28,18 @@ public class MemberLoginServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
-		System.out.println("11");
-		String userId = request.getParameter("userId");
-		String userPwd = request.getParameter("userPwd");
-		System.out.println("userId : " + userId);
-		System.out.println("userPwd : " + userPwd);
-		Member loginUser = new MemberService().login(userId, userPwd);
-		
-		PrintWriter out = response.getWriter();
-		response.setCharacterEncoding("UTF-8");
-		if(loginUser != null) {
-			HttpSession session = request.getSession();
-			session.setAttribute("loginUser", loginUser);
-			if(loginUser.getUserId().equals("admin")) {
-				out.print("admin");
-			}else if(loginUser.getEmailVerif().equals("N")) {
-				out.print("emailNotVerified");
-			}else {
-				out.print("success");
-			}
+
+		String userId = (String)request.getSession().getAttribute("loginUser");
+		int result = new MemberService().setEmailChecked(userId);
+		String page = "";
+		if(result > 0) {
+			response.getWriter().print("<script>alert('감사합니다! 이제 서비스 이용이 가능합니다.')<script>");
+			response.sendRedirect("views/main/main.jsp");
 		}else {
-			out.print("fail");
+			page = "views/common/errorPage.jsp";
+			request.setAttribute("msg", "인증결과 전송에 실패했습니다..!");
+			request.getRequestDispatcher(page).forward(request, response);
 		}
-		out.flush();
-		out.close();
 	}
 
 	/**

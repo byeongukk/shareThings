@@ -156,6 +156,9 @@
 					}else if (data == "admin"){
 						$("#loginFail").hide();
 						location.href="<%= request.getContextPath() %>/views/admin/adminMain.jsp";
+					}else if(data == "emailNotVerified") {
+						$("#loginFail").hide();
+						location.href="<%= request.getContextPath() %>/views/member/joinSuccessPage.jsp";
 					}else {
 						$("#loginFail").hide();
 						location.href="<%= request.getContextPath() %>/views/main/main.jsp";
