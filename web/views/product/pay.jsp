@@ -198,10 +198,11 @@
 				<tr>
 					<td colspan=7 width="100%" align="left" style="border:1px solid lightgray; padding:5px; font-weight:bold; background:#ececec;">배송지 정보</td>
 				</tr>
-					<tr> <td>&nbsp;</td></tr>
+					<tr> <td class="firsttd">&nbsp;</td></tr>
 			</table>
 			
 			<table width="100%" align="center" class="devlist">
+				<tr><td colspan=4 style="margin-top:20px;">&nbsp;</td></tr>
 				<tr style="margin-bottom:50px;">
 					<td width="10%;" class="firsttd">배송지 선택</td>
 					<td style="border-right:1px solid lightgray;" colspan=2>
@@ -212,9 +213,15 @@
 						<input type="radio" id="newadd" > 새로운 배송지
 					</td>
 				</tr>
+				<tr> <td class="firsttd">&nbsp;</td></tr>
 				<tr>
-					<td class="ui fluid input">수령인</td>
-					<td colspan=4><input type="text" style="width:10%; border-radius:10px; decoration:none;"></td>
+					<td >수령인</td>
+					<td colspan=4 width="50%">
+					<div class="ui fluid input">
+					<input type="text" style="width:100%;" placeholder="수령인" name="dlName" id="dlName">
+					</div>
+					</td>
+					
 				</tr>
 				<tr>
 								<td rowspan="3"><b>주소 *</b></td>
@@ -244,12 +251,58 @@
 									</div>
 								</td>
 							</tr>
-				
+							
+					<tr>
+					<td >휴대전화</td>
+					<td colspan=4 width="50%">
+					<div class="ui fluid input">
+					<input type="text" style="width:100%;" placeholder="휴대전화" name="Phone" id="Phone">
+					</div>
+					</td>
+					
+				</tr>
+				<tr>
+					<td >번호(비상연락망)</td>
+					<td colspan=4 width="50%">
+					<div class="ui fluid input">
+					<input type="text" style="width:100%;" placeholder="휴대전화" name="dlPhone" id="dlPhone">
+					</div>
+					</td>
+					
+				</tr>
+				<tr>
+					<td >배송 메세지</td>
+					<td colspan=4 width="50%">
+					<div class="ui fluid input">
+					<textarea  style="width:100%; margin-top:10px; margin-bottom:20px; border:1px solid lightgray;" placeholder="배송 메세지를 적어주세요." cols=15 rows=3 name="Phone" id="Phone"></textarea>
+					</div>
+					</td>
+					
+				</tr>
 				
 			</table>
+			
+			<hr>
+			
+			<table width="100%" align="center" class="pdtlist">
+				<tr>
+					<td colspan=7 width="100%" align="left" style="border:1px solid lightgray; padding:5px; font-weight:bold; background:#ececec;">적립 및 할인</td>
+				</tr>
+			</table>
+			<table width="100%" align="center" class="pdtlist" style="border:1px solid lightgray;">
+				
+					<tr> <td colspan=2>&nbsp;</td></tr>
+					
+					<tr>
+						<td>적립금</td>
+						<td style="float:left;"><input type="text" >원 <label style="width:50%;">사용가능한 적립금()</label></td>
+					</tr>
+					<tr> <td colspan=2>&nbsp;</td></tr>
+			</table>
+			
 			<div style="margin:50px;" align="center">
 				<button style="background:#ececec; color:black; text-decoration:none; border-radius:10px; border:none; height:50px; width:120px;">이전</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none; height:50px; width:120px;">선택 상품 결제</button><br><br>
+				<button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none; height:50px; width:120px;" onclick="gopay();">선택 상품 결제</button><br><br>
 			
 			</div>
 			
@@ -316,8 +369,45 @@
 	})
 	</script>
 
-	
-	
+	<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+<script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+
+<script>
+function gopay(){
+	IMP.init('imp41924715');
+
+	IMP.request_pay({
+	    pg : 'inicis', // version 1.1.0부터 지원.
+	    pay_method : 'card',
+	    merchant_uid : 'merchant_' + new Date().getTime(),
+	    name : '주문명:결제테스트',
+	    amount : 100, //판매 가격
+	    buyer_email : 'iamport@siot.do',
+	    buyer_name : '구매자이름',
+	    buyer_tel : '010-1234-5678',
+	    buyer_addr : '서울특별시 강남구 삼성동',
+	    buyer_postcode : '123-456'
+	}, function(rsp) {
+	    if ( rsp.success ) {
+	        var msg = '결제가 완료되었습니다.';
+	        msg += '고유ID : ' + rsp.imp_uid;
+	        msg += '상점 거래ID : ' + rsp.merchant_uid;
+	        msg += '결제 금액 : ' + rsp.paid_amount;
+	        msg += '카드 승인번호 : ' + rsp.apply_num;
+	        location.href="/st/views/product/paycomplete.jsp";
+	      
+
+
+	    } else {
+	        var msg = '결제에 실패하였습니다.';
+	        msg += '에러내용 : ' + rsp.error_msg;
+	    }
+	    /* alert(msg); */
+	});
+}
+
+
+</script>
 	
 	
 </body>
