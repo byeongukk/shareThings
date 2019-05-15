@@ -62,8 +62,28 @@ public class SelectRentalFilterServlet extends HttpServlet {
 		System.out.println(startDate);
 		System.out.println(endDate);
 		
-		//조회 해서 받아올 리스트
 		ArrayList<HashMap<String,Object>> list = new RentalService().selectRentalFilter(condition);
+		
+		/*//조회 해서 받아올 리스트
+		ArrayList<HashMap<String,Object>> list = null;
+		//대여상태가 전체가 아닌경우
+		if(!(rentalStatus.equals("0"))) {
+			 list = new RentalService().selectPStatusList(rentalStatus);
+		}
+		//상세조건이 전체가 아닌경우
+		if(!(details.equals("0"))) {
+			if(details.equals("rtNo")) {
+				list = new RentalService().selectRtNoDetails(filterContent);
+			} else if(details.equals("rtUserName")) {
+				list = new RentalService().selectRtUserNameDetails(filterContent);	
+			} else if(details.equals("model")) {
+				list = new RentalService().selectModelDetails(filterContent);	
+			} else if(details.equals("pno")) {
+				list = new RentalService().selectPnoDetails(filterContent);	
+			}
+		}*/
+		
+		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		new Gson().toJson(list, response.getWriter());

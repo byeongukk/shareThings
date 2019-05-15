@@ -20,7 +20,6 @@ import com.kh.st.rental.model.dao.RentalDao;
 class TestRentalDao {
 
 	
-	
 	/*@Test
 	void testSelectRentalFilter() {
 		assertNotNull(new RentalDao().selectRentalFilter());
