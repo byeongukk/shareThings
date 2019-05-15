@@ -9,6 +9,8 @@ import java.util.*;
 
 import com.kh.st.member.model.vo.Member;
 import com.kh.st.member.model.vo.Mlevel;
+import com.kh.st.member.model.vo.Payback;
+import com.kh.st.member.model.vo.Refund;
 import com.kh.st.member.model.vo.Report;
 import com.kh.st.common.PageInfo;
 
@@ -243,6 +245,146 @@ public class MemberDao {
 		return list;
 	}
 	
+	//수익금 환급이력 전체 카운트용
+	public int getPaybackListCount(Connection con) {
+		Statement stmt = null;
+		ResultSet rset = null;
+		int listCount = 0;
+		
+		String query = prop.getProperty("paybackListCount");
+		
+		try {
+			stmt = con.createStatement();
+			rset = stmt.executeQuery(query);
+			
+			while(rset.next()) {
+				listCount = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(stmt);
+			close(rset);
+		}
+		
+		return listCount;
+	}
+	
+	//수익금 환급 전체 조회용
+	public ArrayList<Payback> selectPaybackList(Connection con, PageInfo pi) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<Payback> list = null;
+		
+		String query = prop.getProperty("selectPaybackList");
+		
+		int startRow = (pi.getCurrentPage() - 1) * pi.getLimit() + 1;
+		int endRow = startRow + pi.getLimit() - 1;
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+			
+			rset = pstmt.executeQuery();
+			
+			list = new ArrayList<Payback>();
+			
+			while(rset.next()) {
+				Payback p = new Payback();
+				
+				p.setPbNo(rset.getInt("PB_NO"));
+				p.setUserId(rset.getString("USER_ID"));
+				p.setUserName(rset.getString("USER_NAME"));
+				p.setBank(rset.getString("BANK"));
+				p.setAccount(rset.getString("ACCOUNT"));
+				p.setAccName(rset.getString("ACCNAME"));
+				p.setReqDate(rset.getDate("REQ_DATE"));
+				p.setPbAmount(rset.getInt("PB_AMOUNT"));
+				p.setPbDate(rset.getDate("PB_DATE"));
+				p.setPbStatus(rset.getString("PB_STATUS"));
+				
+				list.add(p);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		
+		return list;
+	}
+	
+	//회원환불 전체 카운트용
+	public int getRefundListCount(Connection con) {
+		Statement stmt = null;
+		ResultSet rset = null;
+		int listCount = 0;
+		
+		String query = prop.getProperty("refundListCount");
+		
+		try {
+			stmt = con.createStatement();
+			rset = stmt.executeQuery(query);
+			
+			while(rset.next()) {
+				listCount = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(stmt);
+			close(rset);
+		}
+		
+		return listCount;
+	}
+	
+	//회원환불 전체 리스트 조회용
+	public ArrayList<Refund> selectRefundList(Connection con, PageInfo pi) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<Refund> list = null;
+		
+		String query = prop.getProperty("selectRefundList");
+		
+		int startRow = (pi.getCurrentPage() - 1) * pi.getLimit() + 1;
+		int endRow = startRow + pi.getLimit() - 1;
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+			
+			rset = pstmt.executeQuery();
+			
+			list = new ArrayList<Refund>();
+			
+			while(rset.next()) {
+				Refund r = new Refund();
+				
+				r.setRfNo(rset.getInt("RF_NO"));
+				r.setUserId(rset.getString("USER_ID"));
+				r.setUserName(rset.getString("USER_NAME"));
+				r.setPayNo(rset.getInt("PAY_NO"));
+				r.setRfType(rset.getString("RF_TYPE"));
+				r.setReqDate(rset.getDate("REQ_DATE"));
+				r.setRfStatus(rset.getString("RF_STATUS"));
+				r.setRfDate(rset.getDate("RF_DATE"));
+				r.setRfReason(rset.getString("RF_REASON"));
+				
+				list.add(r);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		
+		return list;
+	}
 	
 //민지
 	public Member login(Connection con, String userId, String userPwd) {
@@ -335,6 +477,14 @@ public class MemberDao {
 		
 		return result;
 	}
+
+	
+
+	
+
+	
+
+	
 
 	
 
