@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kh.st.request.model.service.ReqService;
+
 /**
  * Servlet implementation class ReqOkServlet
  */
@@ -28,12 +30,25 @@ public class ReqOkServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
 		
-		String[] status = request.getParameterValues("status");
+		String statuses = request.getParameter("status");
+		String[] status = statuses.split(",");
 		
-		for(int i = 0; i < status.length; i++) {
-			System.out.println(status[i]);
+		String page = "";
+		if(statuses.equals("")) {
+			page = "views/common/errorPage.jsp";
+			request.setAttribute("msg", "승인 물품을 선택하세요");
+			request.getRequestDispatcher(page).forward(request, response);
 		}
-		//System.out.println(status);
+		
+		int result = new ReqService().reqOk(status);
+		
+		if(result > 0) {
+			response.sendRedirect(request.getContextPath() + "/reqProduct.bo");
+		} else {
+			page = "views/common/errorPage.jsp";
+			request.setAttribute("msg", "승인 오류");
+			request.getRequestDispatcher(page).forward(request, response);
+		}
 	}
 
 	/**

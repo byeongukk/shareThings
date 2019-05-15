@@ -130,8 +130,10 @@
 											<div class="row">
 												<div class="col-sm-12">
 													<div align="left">
-														<button>적합처리</button>&nbsp;&nbsp;&nbsp;
-														<button>적합처리</button>
+														<a href="#" class="btn btn-success btn-circle btn-sm" onclick="ok()">
+										                    <i class="fas fa-check"></i></a> &nbsp;&nbsp;
+														<a href="#" class="btn btn-danger btn-circle btn-sm">
+										                    <i class="fas fa-trash"></i> </a>
 													</div>
 													<br>
 													<table class="table table-bordered dataTable"
@@ -144,7 +146,7 @@
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-sort="ascending"
 																	aria-label="Name: activate to sort column descending"
-																	style="width: 1%;"><input type="checkbox"></th>
+																	style="width: 1%;"><input type="checkbox" id="allCheck"></th>
 																<th class="sorting_asc" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-sort="ascending"
@@ -211,83 +213,145 @@
 											</div>
 											<div class="row">
 												<div class="paging">
-			<div class="col-lg-12">
-				<div class="dataTables_paginate paging_simple_numbers"
-					id="dataTable_paginate">
-					<ul class="pagination">
-						<li class="paginate_button page-item"
-							id="dataTable_first"><a
-							href="<%=request.getContextPath()%>/selectReport.me?currentPage=1"
-							aria-controls="dataTable" data-dt-idx="0" tabindex="0"
-							class="page-link">First</a></li>
-
-						<%
-								if (currentPage <= 1) {
-						%>
-						<li class="paginate_button page-item disabled"
-							id="dataTable_previous"><a
-							href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=currentPage - 1%>"
-							aria-controls="dataTable" data-dt-idx="0" tabindex="0"
-							class="page-link">Previous</a></li>
-						<%
-								} else {
-						%>
-						<li class="paginate_button page-item"
-							id="dataTable_previous"><a
-							href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=currentPage - 1%>"
-							aria-controls="dataTable" data-dt-idx="0" tabindex="0"
-							class="page-link">Previous</a></li>
-						<%
-								}
-						%>
-						<%
-								for (int p = startPage; p <= endPage; p++) {
-								    if (p == currentPage) {
-						%>
-						<li class="paginate_button page-item disabled"><a href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=p%>"
-							aria-controls="dataTable" data-dt-idx="1" tabindex="0"
-							class="page-link"><%=p%></a></li>
-						<%
-								} else {
-						%>
-						<li class="paginate_button page-item active"><a href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=p%>"
-							aria-controls="dataTable" data-dt-idx="1" tabindex="0"
-							class="page-link"><%=p%></a></li>
-						<%
-								}
-						%>
-
-
-						<%
-								}
-						%>
-						
-						<%
-								if (currentPage >= maxPage) {
-						%>
-						<li class="paginate_button page-item disabled" id="dataTable_next"><a
-							href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=currentPage + 1%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
-							class="page-link">Next</a></li>
-						<%
-								} else {
-						%>
-						<li class="paginate_button page-item next" id="dataTable_next"><a
-							href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=currentPage + 1%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
-							class="page-link">Next</a></li>
-						<%      }     %>
-						<li class="paginate_button page-item next" id="dataTable_end"><a
-							href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=maxPage%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
-							class="page-link">End</a></li>
-					</ul>
-				</div>
-			</div>
-		</div>
+													<div class="col-lg-12">
+														<div class="dataTables_paginate paging_simple_numbers"
+															id="dataTable_paginate">
+															<ul class="pagination">
+																<li class="paginate_button page-item"
+																	id="dataTable_first"><a
+																	href="<%=request.getContextPath()%>/selectReport.me?currentPage=1"
+																	aria-controls="dataTable" data-dt-idx="0" tabindex="0"
+																	class="page-link">First</a></li>
+										
+																<%
+																		if (currentPage <= 1) {
+																%>
+																<li class="paginate_button page-item disabled"
+																	id="dataTable_previous"><a
+																	href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=currentPage - 1%>"
+																	aria-controls="dataTable" data-dt-idx="0" tabindex="0"
+																	class="page-link">Previous</a></li>
+																<%
+																		} else {
+																%>
+																<li class="paginate_button page-item"
+																	id="dataTable_previous"><a
+																	href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=currentPage - 1%>"
+																	aria-controls="dataTable" data-dt-idx="0" tabindex="0"
+																	class="page-link">Previous</a></li>
+																<%
+																		}
+																%>
+																<%
+																		for (int p = startPage; p <= endPage; p++) {
+																		    if (p == currentPage) {
+																%>
+																<li class="paginate_button page-item disabled"><a href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=p%>"
+																	aria-controls="dataTable" data-dt-idx="1" tabindex="0"
+																	class="page-link"><%=p%></a></li>
+																<%
+																		} else {
+																%>
+																<li class="paginate_button page-item active"><a href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=p%>"
+																	aria-controls="dataTable" data-dt-idx="1" tabindex="0"
+																	class="page-link"><%=p%></a></li>
+																<%
+																		}
+																%>
+										
+										
+																<%
+																		}
+																%>
+																
+																<%
+																		if (currentPage >= maxPage) {
+																%>
+																<li class="paginate_button page-item disabled" id="dataTable_next"><a
+																	href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=currentPage + 1%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+																	class="page-link">Next</a></li>
+																<%
+																		} else {
+																%>
+																<li class="paginate_button page-item next" id="dataTable_next"><a
+																	href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=currentPage + 1%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+																	class="page-link">Next</a></li>
+																<%      }     %>
+																<li class="paginate_button page-item next" id="dataTable_end"><a
+																	href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=maxPage%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+																	class="page-link">End</a></li>
+															</ul>
+														</div>
+													</div>
+												</div>
 											</div>
 										</div>
 									</div>
 								</div>
 							</div>
 						</div>
+						
+					<div class="modal fade" id="okModal" role="dialog">
+						<div class="modal-dialog">
+
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title">검수 거절 처리</h4>
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+								</div>
+								<div class="row">
+									<div class="col-md-12 col-lg-12">
+										<div class="modal-body">
+											<p>물품명과 검수상태를 확인하고 처리하세요</p>
+											<div class="panel-body">
+												<table width="100%"
+													class="table table-striped table-bordered table-hover"
+													id="dataTables-example">
+													<thead>
+														<tr>
+															<th style="width: 40px; text-align: center;"><input
+																type="checkBox"></th>
+															<th style="text-align: center;"
+																class="text-black-50 small">등록요청번호</th>
+															<th style="text-align: center;"
+																class="text-black-50 small">물품명</th>
+															<th style="text-align: center;"
+																class="text-black-50 small">등록자</th>
+															<th style="text-align: center; width: 130px"
+																class="text-black-50 small">거절사유</th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr class="odd gradeX">
+															<td><input type="checkBox">
+															<td></td>
+															<td></td>
+															<td></td>
+															<td></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<h5>*거절상세사유</h5>
+											<textarea class="col-lg-12" placeholder="EX)거짓 정보 등록"></textarea>
+										</div>
+										<div class="modal-footer">
+											<button type="submit" class="btn btn-default"
+												data-dismiss="modal">거절처리</button>
+											<button type="button" class="btn btn-default"
+												data-dismiss="modal">닫기</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					
+					
+					
+					
 					
 					<script>
 						

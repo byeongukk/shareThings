@@ -386,7 +386,6 @@ public class MemberDao {
 		return list;
 	}
 	
-	
 //민지
 	public Member login(Connection con, String userId, String userPwd) {
 
@@ -523,6 +522,14 @@ public class MemberDao {
 		
 		return result;
 	}
+
+	
+
+	
+
+	
+
+	
 
 	
 

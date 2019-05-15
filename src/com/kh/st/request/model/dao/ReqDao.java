@@ -91,5 +91,58 @@ public class ReqDao {
 		}
 		return list;
 	}
+	public int reqOk(Connection con, String[] status) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("reqOk");
+		
+			try {
+				for(int i = 0; i < status.length; i++) {
+					pstmt = con.prepareStatement(query);
+					pstmt.setInt(1, Integer.parseInt(status[i]));
+					
+					result += pstmt.executeUpdate();
+				}
+			} catch (SQLException e) {
+				e.printStackTrace();
+			} finally {
+				close(pstmt);
+			}
+		return result;
+	}
+	public ArrayList<ReqProduct> reqNoSelect(Connection con, String[] status) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<ReqProduct> list = new ArrayList<ReqProduct>();
+		
+		String query = prop.getProperty("reqNoSelect");
+		try {
+			for(int i = 0; i < status.length; i++) {
+				pstmt = con.prepareStatement(query);
+				pstmt.setInt(1, Integer.parseInt(status[i]));
+				
+				rset = pstmt.executeQuery();
+				
+				while(rset.next()) {
+					ReqProduct rp = new ReqProduct();
+					
+					rp.setUpNo(rset.getInt("UP_NO"));
+					rp.setProductName(rset.getString("CID"));
+					rp.setbWriter(rset.getString("USER_NAME"));
+					rp.setNoResult(rset.getString("ACCEPT_RESULT"));
+					
+					list.add(rp);
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		System.out.println(list);
+		return list;
+	}
 
 }

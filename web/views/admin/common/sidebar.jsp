@@ -166,8 +166,8 @@
         <div id="collapseUserM" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
 
-            <a class="collapse-item" href="<%=request.getContextPath()%>/views/admin/money/depositMember.jsp">수익금 환급</a>
-            <a class="collapse-item" href="<%=request.getContextPath()%>/views/admin/money/refundMember.jsp">회원 환불</a>
+            <a class="collapse-item" href="<%=request.getContextPath()%>/selectPaybackList.me">수익금 환급</a>
+            <a class="collapse-item" href="<%=request.getContextPath()%>/selectRefundList.me">회원 환불</a>
 
           </div>
         </div>

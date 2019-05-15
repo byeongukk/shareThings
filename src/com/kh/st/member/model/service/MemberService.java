@@ -93,6 +93,7 @@ public class MemberService {
 		
 		int listCount = new MemberDao().getPaybackListCount(con);
 
+
 		close(con);
 
 		return listCount;
@@ -131,10 +132,9 @@ public class MemberService {
 		return list;
 	}
 
-	
 
 	
-	//민지
+	//---------------------------------------------- 민지 ----------------------------------------------
 	public Member login(String userId, String userPwd) {
 		Connection con = getConnection();
 		Member loginUser = new MemberDao().login(con, userId, userPwd);
@@ -180,6 +180,13 @@ public class MemberService {
 		close(con);
 		return result;
 	}
+
+	
+	
+
+	
+
+	
 
 	
 
