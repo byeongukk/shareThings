@@ -3,14 +3,14 @@ package com.kh.st.member.model.vo;
 import java.io.Serializable;
 
 public class Mlevel implements Serializable{
-	private int levelCode;
+	private String levelCode;
 	private String levelName;
 	private int perPoint;
 	private int levelStd;
 	
 	public Mlevel() {}
 
-	public Mlevel(int levelCode, String levelName, int perPoint, int levelStd) {
+	public Mlevel(String levelCode, String levelName, int perPoint, int levelStd) {
 		super();
 		this.levelCode = levelCode;
 		this.levelName = levelName;
@@ -18,7 +18,7 @@ public class Mlevel implements Serializable{
 		this.levelStd = levelStd;
 	}
 
-	public int getLevelCode() {
+	public String getLevelCode() {
 		return levelCode;
 	}
 
@@ -34,7 +34,7 @@ public class Mlevel implements Serializable{
 		return levelStd;
 	}
 
-	public void setLevelCode(int levelCode) {
+	public void setLevelCode(String levelCode) {
 		this.levelCode = levelCode;
 	}
 
@@ -55,6 +55,8 @@ public class Mlevel implements Serializable{
 		return "Mlevel [levelCode=" + levelCode + ", levelName=" + levelName + ", perPoint=" + perPoint + ", levelStd="
 				+ levelStd + "]";
 	}
+
+	
 	
 	
 }

@@ -12,7 +12,7 @@ public class Report implements Serializable{
 	private String reportResult;
 	private Date complateDate;
 	private String reportName;
-	private String reportInsert;
+	private String reportContent;
 	private int penalty;
 	private int sumPenalty;
 	private String status;
@@ -20,8 +20,8 @@ public class Report implements Serializable{
 	public Report() {}
 
 	public Report(int reportNo, String reject, Date reportDate, String reportUser, String targetUser,
-			String reportResult, Date complateDate, String reportName, String reportInsert, int penalty, int sumPenalty,
-			String status) {
+			String reportResult, Date complateDate, String reportName, String reportContent, int penalty,
+			int sumPenalty, String status) {
 		super();
 		this.reportNo = reportNo;
 		this.reject = reject;
@@ -31,7 +31,7 @@ public class Report implements Serializable{
 		this.reportResult = reportResult;
 		this.complateDate = complateDate;
 		this.reportName = reportName;
-		this.reportInsert = reportInsert;
+		this.reportContent = reportContent;
 		this.penalty = penalty;
 		this.sumPenalty = sumPenalty;
 		this.status = status;
@@ -69,8 +69,8 @@ public class Report implements Serializable{
 		return reportName;
 	}
 
-	public String getReportInsert() {
-		return reportInsert;
+	public String getReportContent() {
+		return reportContent;
 	}
 
 	public int getPenalty() {
@@ -117,8 +117,8 @@ public class Report implements Serializable{
 		this.reportName = reportName;
 	}
 
-	public void setReportInsert(String reportInsert) {
-		this.reportInsert = reportInsert;
+	public void setReportContent(String reportContent) {
+		this.reportContent = reportContent;
 	}
 
 	public void setPenalty(int penalty) {
@@ -137,9 +137,11 @@ public class Report implements Serializable{
 	public String toString() {
 		return "Report [reportNo=" + reportNo + ", reject=" + reject + ", reportDate=" + reportDate + ", reportUser="
 				+ reportUser + ", targetUser=" + targetUser + ", reportResult=" + reportResult + ", complateDate="
-				+ complateDate + ", reportName=" + reportName + ", reportInsert=" + reportInsert + ", penalty="
+				+ complateDate + ", reportName=" + reportName + ", reportContent=" + reportContent + ", penalty="
 				+ penalty + ", sumPenalty=" + sumPenalty + ", status=" + status + "]";
 	}
+
+	
 	
 	
 	
