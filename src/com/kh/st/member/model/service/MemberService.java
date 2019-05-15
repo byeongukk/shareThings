@@ -131,6 +131,23 @@ public class MemberService {
 		
 		return list;
 	}
+	
+	public int reportOk(String[] reportsNo) {
+		Connection con = getConnection();
+		
+		int result = new MemberDao().reportOk(con, reportsNo);
+		
+		if(result > 0) {
+			commit(con);
+		}else {
+			rollback(con);
+		}
+		
+		close(con);
+		
+		return result;
+	}
+
 
 
 	
@@ -159,26 +176,36 @@ public class MemberService {
 
 	public int insertMember(Member newMember) {
 		Connection con = getConnection();
-		int result = new MemberDao().insertMember(con, newMember);
-		if(result > 0) {
-			commit(con);
+		int result = 0;
+		int result1 = new MemberDao().insertMember(con, newMember);
+		if(result1 > 0) {
+			int result2 = new MemberDao().insertPlusPoint(con, newMember, 3000);
+			if(result2 > 0) {
+				result = 1;
+				commit(con);
+			}else {
+				rollback(con);
+			}
 		}else {
+			result = 0;
 			rollback(con);
 		}
 		close(con);
 		return result;
 	}
 
-	public int setEmailChecked(String userId) {
+	public Member setEmailChecked(Member loginUser) {
 		Connection con = getConnection();
-		int result = new MemberDao().setEmailChecked(con, userId);
+		int result = new MemberDao().setEmailChecked(con, loginUser.getUserId());
+		Member updateUser = null;
 		if(result > 0) {
 			commit(con);
+			updateUser = new MemberDao().login(con, loginUser.getUserId(), loginUser.getUserPwd());
 		}else {
 			rollback(con);
 		}
 		close(con);
-		return result;
+		return updateUser;
 	}
 
 	

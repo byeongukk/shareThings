@@ -2,6 +2,12 @@
     pageEncoding="UTF-8" import="com.kh.st.member.model.vo.Member"%>
 <%
 	Member loginUser = (Member)session.getAttribute("loginUser");
+	
+	String emailVerif = "";
+	if(loginUser != null) {
+		emailVerif = loginUser.getEmailVerif();
+	}
+	
 %>
 <!DOCTYPE html>
 <html>
@@ -137,9 +143,9 @@
 	<div class="row top" align="right" id="afterLogin">
 		<label style="color:gray; font-size:0.8em;"><%= loginUser.getUserName() %>님, 환영합니다!</label>
 		<i class="user outline icon"></i>
-		<a href="/st/views/mypage/mypgMain.jsp">마이페이지</a> 
-		<label>l</label/> 
-		<a href="/st/views/product/cart.jsp">장바구니</a> 
+		<a href="" id="linkToMyPage">마이페이지</a> 
+		<label>l</label> 
+		<a href="" id="linkToCart">장바구니</a> 
 		<label>l</label>
 		<a href="/st/views/customerService/cs.jsp">고객센터</a>
 		<label>l</label> 
@@ -300,8 +306,8 @@
 			<button class="ui positive icon button" id="sideUpBtn">
 				<i class="arrow up icon"></i>
 			</button>
-			<button class="ui primary button" id="sideMyBtn">MY</button>
-			<button class="ui negative icon button" id="sideCartBtn">
+			<button class="ui primary button" id="sideMyBtn" class="goToMyPage">MY</button>
+			<button class="ui negative icon button" id="sideCartBtn" class="goToCart">
 				<i class="shop icon"></i>
 			</button>
 		</div>
@@ -312,6 +318,21 @@
 	<script>
 		$(function() {
 			//$(".sideBtns").hide();
+			<% 
+				String verifResult = request.getParameter("verif");
+				if(verifResult != null && verifResult.equals("success")) {
+			%>
+			alert("감사합니다! 웰컴 적립금 3000원이 적립되었습니다!\n 마이페이지에서 확인 가능합니다.");
+			<%  }%>
+			
+			//이메일인증 여부를 확인해서 마이페이지와 장바구니 연결 제한
+			<% if(!emailVerif.equals("Y")) {%>
+			$("#linkToMyPage").attr("href", "/st/views/member/beforeEmailVerifPage.jsp");
+			$("#linkToCart").attr("href", "/st/views/member/beforeEmailVerifPage.jsp")
+			<% } else {%>
+			$("#linkToMyPage").attr("href", "/st/views/mypage/mypgMain.jsp");
+			$("#linkToCart").attr("href", "/st/views/product/cart.jsp");
+			<% } %>
 		});
 		
 		$(".category.all").parent().click(function() {
@@ -362,6 +383,8 @@
 				$(".sideBtns").hide();
 			}
 		}
+
+		
 		
 		//사이드 버튼 이벤트
 		$("#sideUpBtn").click(function() {
@@ -371,6 +394,8 @@
 		$("#sideMyBtn").click(function() {
 			<% if(loginUser == null) {%>
 			location.href="<%= request.getContextPath() %>/views/member/loginPage.jsp";
+			<% }else if(!emailVerif.equals("Y")) {%>
+			location.href="<%= request.getContextPath() %>/views/member/beforeEmailVerifPage.jsp";
 			<% }else {%>
 			location.href="/st/views/mypage/mypgMain.jsp";
 			<% } %>
@@ -378,15 +403,19 @@
 		$("#sideCartBtn").click(function() {
 			<% if(loginUser == null) {%>
 			location.href="<%= request.getContextPath() %>/views/member/loginPage.jsp";
+			<% }else if(!emailVerif.equals("Y")) {%>
+			location.href="<%= request.getContextPath() %>/views/member/beforeEmailVerifPage.jsp";
 			<% }else {%>
 			location.href="/st/views/product/cart.jsp";
 			<% } %>
 		});
 		
 		$("#registerProductBtn").click(function() {
-			<% if(loginUser == null) {%>
+			<% if(loginUser == null) { %>
 			location.href="<%= request.getContextPath() %>/views/member/loginPage.jsp";
-			<% }else {%>
+			<% }else if(!emailVerif.equals("Y")) { %>
+			location.href="<%= request.getContextPath() %>/views/member/beforeEmailVerifPage.jsp";
+			<% }else { %>
 			location.href="/st/views/product/productInsertPage.jsp";
 			<% } %>
 		});

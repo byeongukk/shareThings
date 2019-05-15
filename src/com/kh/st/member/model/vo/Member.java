@@ -16,7 +16,7 @@ public class Member implements java.io.Serializable{
 	private Date enrollDate;
 	private Date modifyDate;
 	private String mLevel;
-	private int point;
+	private int totalPoint;
 	private int profits;
 	private int penaltyPoint;
 	private String optionCheck;
@@ -27,8 +27,9 @@ public class Member implements java.io.Serializable{
 	public Member() {}
 
 	public Member(int uno, String userId, String userPwd, String userName, String gender, Date birthDate, String phone,
-			String email, String address, String subPhone, Date enrollDate, Date modifyDate, String mLevel, int point,
-			int profits, int penaltyPoint, String optionCheck, String socialLink, String emailVerif, String status) {
+			String email, String address, String subPhone, Date enrollDate, Date modifyDate, String mLevel,
+			int totalPoint, int profits, int penaltyPoint, String optionCheck, String socialLink, String emailVerif,
+			String status) {
 		super();
 		this.uno = uno;
 		this.userId = userId;
@@ -43,7 +44,7 @@ public class Member implements java.io.Serializable{
 		this.enrollDate = enrollDate;
 		this.modifyDate = modifyDate;
 		this.mLevel = mLevel;
-		this.point = point;
+		this.totalPoint = totalPoint;
 		this.profits = profits;
 		this.penaltyPoint = penaltyPoint;
 		this.optionCheck = optionCheck;
@@ -60,24 +61,10 @@ public class Member implements java.io.Serializable{
 	}
 
 	/**
-	 * @param uno the uno to set
-	 */
-	public void setUno(int uno) {
-		this.uno = uno;
-	}
-
-	/**
 	 * @return the userId
 	 */
 	public String getUserId() {
 		return userId;
-	}
-
-	/**
-	 * @param userId the userId to set
-	 */
-	public void setUserId(String userId) {
-		this.userId = userId;
 	}
 
 	/**
@@ -88,24 +75,10 @@ public class Member implements java.io.Serializable{
 	}
 
 	/**
-	 * @param userPwd the userPwd to set
-	 */
-	public void setUserPwd(String userPwd) {
-		this.userPwd = userPwd;
-	}
-
-	/**
 	 * @return the userName
 	 */
 	public String getUserName() {
 		return userName;
-	}
-
-	/**
-	 * @param userName the userName to set
-	 */
-	public void setUserName(String userName) {
-		this.userName = userName;
 	}
 
 	/**
@@ -116,24 +89,10 @@ public class Member implements java.io.Serializable{
 	}
 
 	/**
-	 * @param gender the gender to set
-	 */
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-
-	/**
 	 * @return the birthDate
 	 */
 	public Date getBirthDate() {
 		return birthDate;
-	}
-
-	/**
-	 * @param birthDate the birthDate to set
-	 */
-	public void setBirthDate(Date birthDate) {
-		this.birthDate = birthDate;
 	}
 
 	/**
@@ -144,24 +103,10 @@ public class Member implements java.io.Serializable{
 	}
 
 	/**
-	 * @param phone the phone to set
-	 */
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
-	/**
 	 * @return the email
 	 */
 	public String getEmail() {
 		return email;
-	}
-
-	/**
-	 * @param email the email to set
-	 */
-	public void setEmail(String email) {
-		this.email = email;
 	}
 
 	/**
@@ -172,24 +117,10 @@ public class Member implements java.io.Serializable{
 	}
 
 	/**
-	 * @param address the address to set
-	 */
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	/**
 	 * @return the subPhone
 	 */
 	public String getSubPhone() {
 		return subPhone;
-	}
-
-	/**
-	 * @param subPhone the subPhone to set
-	 */
-	public void setSubPhone(String subPhone) {
-		this.subPhone = subPhone;
 	}
 
 	/**
@@ -200,24 +131,10 @@ public class Member implements java.io.Serializable{
 	}
 
 	/**
-	 * @param enrollDate the enrollDate to set
-	 */
-	public void setEnrollDate(Date enrollDate) {
-		this.enrollDate = enrollDate;
-	}
-
-	/**
 	 * @return the modifyDate
 	 */
 	public Date getModifyDate() {
 		return modifyDate;
-	}
-
-	/**
-	 * @param modifyDate the modifyDate to set
-	 */
-	public void setModifyDate(Date modifyDate) {
-		this.modifyDate = modifyDate;
 	}
 
 	/**
@@ -228,24 +145,10 @@ public class Member implements java.io.Serializable{
 	}
 
 	/**
-	 * @param mLevel the mLevel to set
+	 * @return the totalPoint
 	 */
-	public void setmLevel(String mLevel) {
-		this.mLevel = mLevel;
-	}
-
-	/**
-	 * @return the point
-	 */
-	public int getPoint() {
-		return point;
-	}
-
-	/**
-	 * @param point the point to set
-	 */
-	public void setPoint(int point) {
-		this.point = point;
+	public int getTotalPoint() {
+		return totalPoint;
 	}
 
 	/**
@@ -256,24 +159,10 @@ public class Member implements java.io.Serializable{
 	}
 
 	/**
-	 * @param profits the profits to set
-	 */
-	public void setProfits(int profits) {
-		this.profits = profits;
-	}
-
-	/**
 	 * @return the penaltyPoint
 	 */
 	public int getPenaltyPoint() {
 		return penaltyPoint;
-	}
-
-	/**
-	 * @param penaltyPoint the penaltyPoint to set
-	 */
-	public void setPenaltyPoint(int penaltyPoint) {
-		this.penaltyPoint = penaltyPoint;
 	}
 
 	/**
@@ -284,24 +173,10 @@ public class Member implements java.io.Serializable{
 	}
 
 	/**
-	 * @param optionCheck the optionCheck to set
-	 */
-	public void setOptionCheck(String optionCheck) {
-		this.optionCheck = optionCheck;
-	}
-
-	/**
 	 * @return the socialLink
 	 */
 	public String getSocialLink() {
 		return socialLink;
-	}
-
-	/**
-	 * @param socialLink the socialLink to set
-	 */
-	public void setSocialLink(String socialLink) {
-		this.socialLink = socialLink;
 	}
 
 	/**
@@ -312,17 +187,143 @@ public class Member implements java.io.Serializable{
 	}
 
 	/**
-	 * @param emailVerif the emailVerif to set
-	 */
-	public void setEmailVerif(String emailVerif) {
-		this.emailVerif = emailVerif;
-	}
-
-	/**
 	 * @return the status
 	 */
 	public String getStatus() {
 		return status;
+	}
+
+	/**
+	 * @param uno the uno to set
+	 */
+	public void setUno(int uno) {
+		this.uno = uno;
+	}
+
+	/**
+	 * @param userId the userId to set
+	 */
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	/**
+	 * @param userPwd the userPwd to set
+	 */
+	public void setUserPwd(String userPwd) {
+		this.userPwd = userPwd;
+	}
+
+	/**
+	 * @param userName the userName to set
+	 */
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	/**
+	 * @param gender the gender to set
+	 */
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	/**
+	 * @param birthDate the birthDate to set
+	 */
+	public void setBirthDate(Date birthDate) {
+		this.birthDate = birthDate;
+	}
+
+	/**
+	 * @param phone the phone to set
+	 */
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+
+	/**
+	 * @param email the email to set
+	 */
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	/**
+	 * @param address the address to set
+	 */
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	/**
+	 * @param subPhone the subPhone to set
+	 */
+	public void setSubPhone(String subPhone) {
+		this.subPhone = subPhone;
+	}
+
+	/**
+	 * @param enrollDate the enrollDate to set
+	 */
+	public void setEnrollDate(Date enrollDate) {
+		this.enrollDate = enrollDate;
+	}
+
+	/**
+	 * @param modifyDate the modifyDate to set
+	 */
+	public void setModifyDate(Date modifyDate) {
+		this.modifyDate = modifyDate;
+	}
+
+	/**
+	 * @param mLevel the mLevel to set
+	 */
+	public void setmLevel(String mLevel) {
+		this.mLevel = mLevel;
+	}
+
+	/**
+	 * @param totalPoint the totalPoint to set
+	 */
+	public void setTotalPoint(int totalPoint) {
+		this.totalPoint = totalPoint;
+	}
+
+	/**
+	 * @param profits the profits to set
+	 */
+	public void setProfits(int profits) {
+		this.profits = profits;
+	}
+
+	/**
+	 * @param penaltyPoint the penaltyPoint to set
+	 */
+	public void setPenaltyPoint(int penaltyPoint) {
+		this.penaltyPoint = penaltyPoint;
+	}
+
+	/**
+	 * @param optionCheck the optionCheck to set
+	 */
+	public void setOptionCheck(String optionCheck) {
+		this.optionCheck = optionCheck;
+	}
+
+	/**
+	 * @param socialLink the socialLink to set
+	 */
+	public void setSocialLink(String socialLink) {
+		this.socialLink = socialLink;
+	}
+
+	/**
+	 * @param emailVerif the emailVerif to set
+	 */
+	public void setEmailVerif(String emailVerif) {
+		this.emailVerif = emailVerif;
 	}
 
 	/**
@@ -340,11 +341,10 @@ public class Member implements java.io.Serializable{
 		return "Member [uno=" + uno + ", userId=" + userId + ", userPwd=" + userPwd + ", userName=" + userName
 				+ ", gender=" + gender + ", birthDate=" + birthDate + ", phone=" + phone + ", email=" + email
 				+ ", address=" + address + ", subPhone=" + subPhone + ", enrollDate=" + enrollDate + ", modifyDate="
-				+ modifyDate + ", mLevel=" + mLevel + ", point=" + point + ", profits=" + profits + ", penaltyPoint="
-				+ penaltyPoint + ", optionCheck=" + optionCheck + ", socialLink=" + socialLink + ", emailVerif="
-				+ emailVerif + ", status=" + status + "]";
+				+ modifyDate + ", mLevel=" + mLevel + ", totalPoint=" + totalPoint + ", profits=" + profits
+				+ ", penaltyPoint=" + penaltyPoint + ", optionCheck=" + optionCheck + ", socialLink=" + socialLink
+				+ ", emailVerif=" + emailVerif + ", status=" + status + "]";
 	}
-
 	
 	
 	

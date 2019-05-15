@@ -42,13 +42,13 @@
 			<br><br>
 			<% if(loginUser == null) { %>
 			<h1 class="ui center aligned icon header">
-  				<i class="smile outline icon"></i>
+  				<i class="exclamation icon"></i>
    			 	먼저, 로그인을 해주세요.
 			</h1>
 			<button class="ui massive primary button" onclick="location.href='<%= request.getContextPath()%>/views/member/loginPage.jsp'">
 			로그인하러 가기</button>
 			<% 
-				}else { 
+			   }else { 
 					String userEmail = loginUser.getEmail();
 					boolean isRight = ((new EmailVerification().getSHA256(userEmail)).equals(code))?true:false;
 					if(isRight == true) {
@@ -62,11 +62,12 @@
 			%>
 			<script>
 				alert("유효하지 않은 인증입니다.");
-				location.href="<%= request.getContextPath()%>/views/member/joinSuccessPage.jsp";
+				location.href="<%= request.getContextPath()%>/views/member/beforeEmailVerifPage.jsp";
 			</script>
 			<%
 					}
-			   } %>
+			   } 
+			%>
 		</div>
 		<div class="footer">
 			<%@ include file="../common/footer.jsp"%>

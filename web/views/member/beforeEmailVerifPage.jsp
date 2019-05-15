@@ -33,9 +33,10 @@
 			<br><br>
 			<h1 class="ui center aligned icon header">
   				<i class="smile outline icon"></i>
-   			 	회원가입이 완료되었습니다!
+   			 	거의 다 되었습니다..!
 			</h1>
-			<h3 align="center" style="color:#F44A0C">서비스 이용을 위해 가입시 입력한 이메일로 전송된 인증메일을 통해 인증을 완료해주세요!</h3>
+			<label align="center" style="color:#F44A0C">서비스 이용을 위해 가입시 입력한 이메일로 전송된 인증메일을 통해 인증을 완료해주세요!</label>
+			<br><br><br><br><br>
 		</div>
 		<div class="footer">
 			<%@ include file="../common/footer.jsp"%>

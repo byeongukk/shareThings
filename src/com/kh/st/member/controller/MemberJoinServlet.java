@@ -100,6 +100,7 @@ public class MemberJoinServlet extends HttpServlet {
 		int result = new MemberService().insertMember(newMember);
 		String page = "";
 		if(result > 0) {
+			
 			String host = "http://localhost:8001/st";
 			String from = "sharethings1224@gmail.com";
 			String to = newMember.getEmail();
@@ -134,13 +135,8 @@ public class MemberJoinServlet extends HttpServlet {
 			} catch (MessagingException e) {
 				e.printStackTrace();
 			}
-			PrintWriter out = response.getWriter();
-			out.print("<script>");
-			out.print("alert('회원가입에 성공했습니다! 로그인페이지로 이동합니다.')");
-			out.print("<script>");
-			out.flush();
-			out.close();
-			response.sendRedirect("views/member/loginPage.jsp");
+			
+			response.sendRedirect("views/member/loginPage.jsp?login=first");
 		}else {
 			page = "views/common/errorPage.jsp";
 			request.setAttribute("msg", "죄송합니다.. 회원가입에 실패했습니다!");
