@@ -268,6 +268,7 @@
 							<div class="modal-dialog">
 
 								<!-- Modal content-->
+							<form action="<%= request.getContextPath() %>/reqNo.bo" method="get">
 								<div class="modal-content">
 									<div class="modal-header">
 										<h4 class="modal-title">요청 거절 처리</h4>
@@ -282,17 +283,13 @@
 														class="table table-striped table-bordered table-hover"
 														id="dataTables-example">
 														<thead>
-															<tr>
-																<th style="width: 40px; text-align: center;"><input
-																	type="checkBox"></th>
+															<tr>																
 																<th style="text-align: center;"
 																	class="text-black-50 small">등록요청번호</th>
 																<th style="text-align: center;"
 																	class="text-black-50 small">물품명</th>
 																<th style="text-align: center;"
 																	class="text-black-50 small">등록자</th>
-																<th style="text-align: center; width: 130px"
-																	class="text-black-50 small">거절사유</th>
 															</tr>
 														</thead>
 														<tbody>
@@ -301,24 +298,23 @@
 																<td></td>
 																<td></td>
 																<td></td>
-																<td></td>
 															</tr>
 														</tbody>
 													</table>
 												</div>
 												<h5>*거절상세사유</h5>
-												<textarea class="col-lg-12" placeholder="EX)거짓 정보 등록"></textarea>
+												<textarea id="textResult" name="textResult" class="col-lg-12" placeholder="EX)거짓 정보 등록"></textarea>
 											</div>
 											<div class="modal-footer">
 												<button type="submit" class="btn btn-default"
-													data-dismiss="modal">거절처리</button>
+													data-dismiss="modal" id="result">거절처리</button>
 												<button type="button" class="btn btn-default"
 													data-dismiss="modal">닫기</button>
 											</div>
 										</div>
 									</div>
 								</div>
-
+							</form>
 							</div>
 						</div>
 						<!-- 메인 콘텐트 영역 끝 -->
@@ -381,17 +377,27 @@
 				type:"get",
 				success:function(data) {
 					console.log(data);
-					$tableBody = $("#dataTables-example tbody");
-					$tableBody.html('');
-					$tr = $(".gradeX");
+					
+					var $dataTables = $("#dataTables-example tbody");
+					var $textarea = $("<textarea id='textResult' name='textResult' class='col-lg-12' placeholder='EX)거짓 정보 등록'></textarea>");
+					
+					//기존 테이블 행 제거
+					$("#dataTables-example > tbody > tr").remove();
+					$textarea.remove();
 					
 					for(var key in data) {
-						console.log(data[key].upNo)
-						$tr.append('ddd');
-						var $upNo = $("<td>").text(data[key].upNo);
-						$tr.append($upNo);
-						$tableBody.append($tr);
+						var $tr = $("<tr class='odd gradeX'>");
+						var $upNoTd = $("<td>").text(data[key].upNo);
+						var $bWriterTd = $("<td>").text(data[key].bWriter);
+						var $productNameTd = $("<td>").text(data[key].productName);
+						
+						$tr.append($upNoTd);
+						$tr.append($bWriterTd);
+						$tr.append($productNameTd);
+						
+						$dataTables.append($tr);
 					}
+					$("#modal-body").append($textarea);
 				},
 				error:function(data) {
 					console.log("실패");

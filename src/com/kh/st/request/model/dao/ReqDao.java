@@ -75,10 +75,10 @@ public class ReqDao {
 			while(rset.next()) {
 				ReqProduct rp = new ReqProduct();
 				
-				rp.setUpNo(rset.getInt("UP_NO"));
+				rp.setUpNo(rset.getInt("REQP_NO"));
 				rp.setbWriter(rset.getString("USER_NAME"));
-				rp.setProductName(rset.getString("CID"));
-				rp.setReqDate(rset.getDate("REQ_DATE"));
+				rp.setProductName(rset.getString("CTG_ID"));
+				rp.setReqDate(rset.getDate("REQP_DATE"));
 				rp.setbTitle(rset.getString("BTITLE"));
 				rp.setStatus(rset.getString("STATUS"));
 				
@@ -127,10 +127,10 @@ public class ReqDao {
 				while(rset.next()) {
 					ReqProduct rp = new ReqProduct();
 					
-					rp.setUpNo(rset.getInt("UP_NO"));
-					rp.setProductName(rset.getString("CID"));
+					rp.setUpNo(rset.getInt("REQP_NO"));
+					rp.setProductName(rset.getString("CTG_ID"));
 					rp.setbWriter(rset.getString("USER_NAME"));
-					rp.setNoResult(rset.getString("ACCEPT_RESULT"));
+					//rp.setNoResult(rset.getString("REJECT_REASON"));
 					
 					list.add(rp);
 				}

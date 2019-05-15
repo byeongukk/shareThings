@@ -38,6 +38,7 @@ public class ReqNoSelectServlet extends HttpServlet {
 		String statuses = request.getParameter("status");
 		String[] status = statuses.split(",");
 		
+		
 		for(int i = 0; i < status.length; i++) {
 			System.out.println(status[i]);
 		}
