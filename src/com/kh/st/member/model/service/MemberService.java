@@ -6,13 +6,15 @@ import java.util.*;
 import com.kh.st.member.model.dao.MemberDao;
 import com.kh.st.member.model.vo.Member;
 import com.kh.st.member.model.vo.Mlevel;
+import com.kh.st.member.model.vo.Payback;
+import com.kh.st.member.model.vo.Refund;
 import com.kh.st.member.model.vo.Report;
 import com.kh.st.common.PageInfo;
 
 public class MemberService {
 
 	
-    //도연이꺼
+	//---------------------------------------------- 도연 ----------------------------------------------
 	//전체 회원수 리턴
 	public int getListCount() {
 		Connection con = getConnection();
@@ -63,6 +65,7 @@ public class MemberService {
 		return result;
 	}
 	
+	//신고이력 카운트용
 	public int getReportListCount() {
 		Connection con = getConnection();
 		
@@ -84,9 +87,53 @@ public class MemberService {
 		return list;
 	}
 	
+	//수익금 환급이력 전체 카운트용
+	public int getPaybackListCount() {
+		Connection con = getConnection();
+		
+		int listCount = new MemberDao().getPaybackListCount(con);
+
+		close(con);
+
+		return listCount;
+	}
+	
+	//수익금 환급 이력 전체 조회용
+	public ArrayList<Payback> selectPaybackList(PageInfo pi) {
+		Connection con = getConnection();
+		
+		ArrayList<Payback> list = new MemberDao().selectPaybackList(con, pi);
+		
+		close(con);
+		
+		return list;
+	}
+	
+	//회원환불 전체 카운트용
+	public int getRefundListCount() {
+		Connection con = getConnection();
+		
+		int listCount = new MemberDao().getRefundListCount(con);
+
+		close(con);
+
+		return listCount;
+	}
+	
+	//회원환불 전체 리스트 조회
+	public ArrayList<Refund> selectRefundList(PageInfo pi) {
+		Connection con = getConnection();
+		
+		ArrayList<Refund> list = new MemberDao().selectRefundList(con, pi);
+		
+		close(con);
+		
+		return list;
+	}
+
 
 	
-	//민지
+	//---------------------------------------------- 민지 ----------------------------------------------
 	public Member login(String userId, String userPwd) {
 		Connection con = getConnection();
 		Member loginUser = new MemberDao().login(con, userId, userPwd);
@@ -108,6 +155,13 @@ public class MemberService {
 		close(con);
 		return result;
 	}
+
+	
+	
+
+	
+
+	
 
 	
 

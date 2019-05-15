@@ -11,15 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.kh.st.common.PageInfo;
 import com.kh.st.member.model.service.MemberService;
-import com.kh.st.member.model.vo.Report;
+import com.kh.st.member.model.vo.Payback;
 
 
-@WebServlet("/selectReportList.me")
-public class SelectReportListServlet extends HttpServlet {
+@WebServlet("/selectPaybackList.me")
+public class SelectPaybackListServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 
-	public SelectReportListServlet() {
+	public SelectPaybackListServlet() {
 		super();
 	}
 
@@ -40,7 +40,7 @@ public class SelectReportListServlet extends HttpServlet {
 
 		limit = 20;
 
-		int listCount = new MemberService().getReportListCount();
+		int listCount = new MemberService().getPaybackListCount();
 
 		maxPage = (int)((double)listCount / limit + 0.95);
 
@@ -56,25 +56,23 @@ public class SelectReportListServlet extends HttpServlet {
 
 		// -----------------------------------------------  페이징 처리 (20개)  -----------------------------------------------
 		
-		ArrayList<Report> list = new MemberService().selectReportList(pi);
+		ArrayList<Payback> list = new MemberService().selectPaybackList(pi);
 		
 		String page = "";
 		if(list != null) {
-			page = "views/admin/member/reportMember.jsp";
+			page = "views/admin/money/paybackMember.jsp";
 			request.setAttribute("list", list);
 			request.setAttribute("pi", pi);
 		}else {
 			page = "views/admin/common/errorPage.jsp";
-			request.setAttribute("msg", "신고이력 조회 실패!!!!!!!!!");
+			request.setAttribute("msg", "수익금 환급 이력 조회 실패!!");
 		}
 		
 		request.getRequestDispatcher(page).forward(request, response);
-		
 	}
 
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		doGet(request, response);
 	}
 
