@@ -28,7 +28,7 @@ public class SelectMlevelListServlet extends HttpServlet {
 			throws ServletException, IOException {
 		
 		ArrayList<Mlevel> list = new MemberService().selectMlevelList();
-		
+		System.out.println(list);
 		String page = "";
 		if(list != null) {
 			page = "views/admin/member/memberLevelList.jsp";

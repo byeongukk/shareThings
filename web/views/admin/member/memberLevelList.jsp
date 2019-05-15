@@ -87,7 +87,7 @@
 									<table class="col-lg-12" id="alterList">
 										<% for(Mlevel ml : list){ %>
 										<tr align="center">
-											<td style="width:33%"><input type="hidden" value="<%= ml.getLevelCode()%>" name="levelCode" id="levelCode">
+											<td style="width:33%"><input type="hidden" value="<%= ml.getLevelCode() %>" name="levelCode" id="levelCode">
 																  <input type="text" value="<%= ml.getLevelName() %>" name="levelName" id="levelName">
 																  </td> 
 											<td style="width:33%">대여 <input type="text" value="<%= ml.getLevelStd() %>" name="levelStd" id="levelStd">원 이상</td>

@@ -132,7 +132,8 @@
 													<div align="left">
 														<a href="#" class="btn btn-success btn-circle btn-sm" onclick="ok()">
 										                    <i class="fas fa-check"></i></a> &nbsp;&nbsp;
-														<a href="#" class="btn btn-danger btn-circle btn-sm">
+														<a href="#" class="btn btn-danger btn-circle btn-sm" 
+														data-toggle="modal" data-target="#no" onclick="no()">
 										                    <i class="fas fa-trash"></i> </a>
 													</div>
 													<br>
@@ -146,7 +147,7 @@
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-sort="ascending"
 																	aria-label="Name: activate to sort column descending"
-																	style="width: 1%;"><input type="checkbox" id="allCheck"></th>
+																	style="width: 1%;"><input type="checkbox" id="checkAll"></th>
 																<th class="sorting_asc" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-sort="ascending"
@@ -194,15 +195,16 @@
 														</thead>
 														<tbody>
 															<% for(Report r : list){ %>
-																<tr>
-																	<td><input type="checkbox"></td>
+																<tr role="row" class="even" align="center">
+																	<td><input type="checkbox" class="check"></td>
 																	<td><%= r.getReportNo() %></td>
 																	<td><%= r.getTargetUser() %></td>
 																	<td><%= r.getReportName() %></td>
-																	<td><%= r.getReportInsert() %></td>
+																	<td><%= r.getReportContent() %></td>
 																	<td><%= r.getReportUser() %></td>
 																	<td><%= r.getReportDate() %></td>
 																	<td><%= r.getStatus() %></td>
+																	<td><%= r.getComplateDate() %></td>
 																	<td><%= r.getReportResult() %></td>
 																	<td><%= r.getSumPenalty() %></td>
 																</tr>
@@ -291,13 +293,13 @@
 							</div>
 						</div>
 						
-					<div class="modal fade" id="okModal" role="dialog">
+					<div class="modal fade" id="no" role="dialog">
 						<div class="modal-dialog">
 
 							<!-- Modal content-->
 							<div class="modal-content">
 								<div class="modal-header">
-									<h4 class="modal-title">검수 거절 처리</h4>
+									<h4 class="modal-title">신고 부적합 처리</h4>
 									<button type="button" class="close" data-dismiss="modal">&times;</button>
 								</div>
 								<div class="row">
@@ -333,8 +335,8 @@
 													</tbody>
 												</table>
 											</div>
-											<h5>*거절상세사유</h5>
-											<textarea class="col-lg-12" placeholder="EX)거짓 정보 등록"></textarea>
+											<h5>부적합 사유</h5>
+											<textarea class="col-lg-12" placeholder="부적합 사유를 입력해주세요"></textarea>
 										</div>
 										<div class="modal-footer">
 											<button type="submit" class="btn btn-default"
@@ -354,7 +356,35 @@
 					
 					
 					<script>
+						$(function () {
+					         $("#checkAll").click(function() {
+					            var check = $(this).is(":checked");
+					            var result = $(".even").find("td").eq(6).text();
+					            if(check) {
+					               $(".check").prop("checked", true);
+					            } else {
+					               $(".check").prop("checked", false);
+					            }
+					         });
+					      });
 						
+						function ok() {
+					         var result = confirm("정말 승인하시겠습니까?");
+					         if(result) {
+					            var no = new Array();
+					            $(".even").each(function() {
+					               if($(this).find(".check").is(":checked")) {   
+					                  console.log($(this).find("td").eq(1).text());
+					                  no.push($(this).find("td").eq(1).text());
+					               }
+					                  
+					            });
+					            console.log(no);
+					            location = "<%= request.getContextPath() %>/reportOk.me?no=" + no;
+					         } else {
+					            location = location;
+					         }
+					      }
 					</script>
 						<!-- 메인 콘텐트 영역 끝 -->
 						<!-- Footer 인클루드 -->
