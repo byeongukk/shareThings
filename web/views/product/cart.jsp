@@ -118,6 +118,10 @@
 	.pdtlist {
 		text-align:center;
 	}
+	.paywon {
+		color:#F44A0C;
+		font-weight:bold;
+	}
 	
 </style>
 </head>
@@ -136,7 +140,7 @@
 
 			<div class="title" style="text-align:center;">
 				<img src="/st/resource/img/cart/cart.png" width="15%;" style="text-align:center; margin-bottom:-20px;">
-				<h2 align="center" style="padding-bottom:20px; font-weight:bold;">SHOPPING BASKET</h2>
+				<h2 align="center" style="padding-bottom:0px; font-weight:bold;">SHOPPING BASKET</h2>
 			</div>
 			
 			<div class="payprocess" style="text-align:center;">
@@ -149,13 +153,15 @@
 			
 			<table align=center width="100%;" class="pdtlist">
 				<tr>
-					<td colspan=7 width="100%" align="left" style="border:1px solid lightgray; padding:5px;">상품 리스트</td>
+					<td colspan=7 width="100%" align="left" style="border:1px solid lightgray; padding:5px; font-weight:bold; background:#ececec;">상품 리스트</td>
 				</tr>
-				<tr style="border:1px solid lightgray; padding:5px; margin:100px 100px;">
+				<tr> <td>&nbsp;</td></tr>
+				
+				<tr style="border:1px solid lightgray; padding:5px; margin:100px 100px; background:#0CB6F4; color:white;">
 					<td>
 						<input type="checkbox">
 					</td>
-					<td width="30%;">이미지</td>
+					<td width="30%;">상품사진</td>
 					<td width="30%;">상품정보</td>
 					<td>대여기간</td>
 					<td>대여비용</td>
@@ -190,12 +196,18 @@
 					<td>총 결제 금액</td>
 				</tr>
 				
-				<tr style="margin-bottom:50px;">
-					<td><h1>4,500</h1></td>
-					<td><h1>0</h1></td>
-					<td><h1>4,500</h1></td>
+				<tr>
+					<td><h1 class="paywon">4,500</h1></td>
+					<td><h1 class="paywon">0</h1></td>
+					<td><h1 class="paywon">4,500</h1></td>
 				</tr>
 			</table>
+			<div style="margin:50px;" align="center">
+				<button style="background:#ececec; color:black; text-decoration:none; border-radius:10px; border:none; height:50px; width:120px;">이전</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none; height:50px; width:120px;">선택 상품 결제</button><br><br>
+			
+			</div>
+			
 		</div> <!-- end of 메인바디 -->
 
 		<!-- 푸터 -->
