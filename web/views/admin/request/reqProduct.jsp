@@ -5,6 +5,7 @@
 	ArrayList<ReqProduct> list =
 		(ArrayList<ReqProduct>) request.getAttribute("list");
 	PageInfo pi = (PageInfo) request.getAttribute("pi");
+	int listCount = (int) request.getAttribute("listCount");
 
 	int currentPage = pi.getCurrentPage();
 	int maxPage = pi.getMaxPage();
@@ -113,7 +114,7 @@
 							</div>
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary"><%= list.size() %>건</h6>
+									<h6 class="m-0 font-weight-bold text-primary"><%= listCount %>건</h6>
 								</div>
 								<div class="card-body">
 									<a href="#" class="btn btn-info btn-icon-split" onclick="ok();" >
@@ -121,8 +122,8 @@
 											class="fas fa-info-circle"></i>
 									</span> <span class="text">요청 승인</span>
 									
-									</a> <a href="#" class="btn btn-danger btn-icon-split"
-										data-toggle="modal" data-target="#cancelModal"> <span
+									</a> <a href="#" class="btn btn-danger btn-icon-split" id="no"
+										data-toggle="modal" data-target="#cancelModal""> <span
 										class="icon text-white-50"> <i class="fas fa-trash"></i>
 									</span> <span class="text">요청 거절</span>
 									</a>
@@ -336,20 +337,14 @@
 			<%@ include file="../common/logoutModal.jsp"%>
 
 		<script>
-		$(function() {
-			$(".even").click(function() {
-				<%-- location = "<%=request.getContextPath()%>/views/admin/request/reqProductDetail.jsp"; --%>
-				});
-			
-			$("#checkAll").click(function () {
-				if($("#checkAll").checked) {
-					$(".check").each(function() {
-						$(this).attr("checked", true);
-					});
+		$(function () {
+			$("#checkAll").click(function() {
+				var check = $(this).is(":checked");
+				var result = $(".even").find("td").eq(6).text();
+				if(check) {
+					$(".check").prop("checked", true);
 				} else {
-					$(".check").each(function() {
-						$(this).attr("checked", false);
-					});
+					$(".check").prop("checked", false);
 				}
 			});
 		});
@@ -357,17 +352,52 @@
 		function ok() {
 			var result = confirm("정말 승인하시겠습니까?");
 			if(result) {
+				var status = new Array();
 				$(".even").each(function() {
 					if($(this).find(".check").is(":checked")) {	
 						console.log($(this).find("td").eq(1).text());
+						status.push($(this).find("td").eq(1).text());
 					}
-						var status = $(this).find("td").eq(1).text()
+						
 				});
+				console.log(status);
 				location = "<%= request.getContextPath() %>/reqOk.bo?status=" + status;
 			} else {
 				location = location;
 			}
-		} 
+		}
+		
+		$("#no").click(function () {
+			var status = new Array();
+			$(".even").each(function() {
+				if($(this).find(".check").is(":checked")) {	
+					//console.log($(this).find("td").eq(1).text());
+					status.push($(this).find("td").eq(1).text());
+				}
+					
+			});
+			$.ajax({
+				url:"reqNoSelect.bo?status=" + status,
+				type:"get",
+				success:function(data) {
+					console.log(data);
+					$tableBody = $("#dataTables-example tbody");
+					$tableBody.html('');
+					$tr = $(".gradeX");
+					
+					for(var key in data) {
+						console.log(data[key].upNo)
+						$tr.append('ddd');
+						var $upNo = $("<td>").text(data[key].upNo);
+						$tr.append($upNo);
+						$tableBody.append($tr);
+					}
+				},
+				error:function(data) {
+					console.log("실패");
+				}
+			});
+		});
 		</script>
 			<script
 				src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>

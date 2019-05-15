@@ -10,10 +10,12 @@ public class ReqProduct implements Serializable{
 	private Date reqDate;
 	private String bTitle;
 	private String status;
+	private String noResult;
 	
 	public ReqProduct() {}
 
-	public ReqProduct(int upNo, String bWriter, String productName, Date reqDate, String bTitle, String status) {
+	public ReqProduct(int upNo, String bWriter, String productName, Date reqDate, String bTitle, String status,
+			String noResult) {
 		super();
 		this.upNo = upNo;
 		this.bWriter = bWriter;
@@ -21,6 +23,7 @@ public class ReqProduct implements Serializable{
 		this.reqDate = reqDate;
 		this.bTitle = bTitle;
 		this.status = status;
+		this.noResult = noResult;
 	}
 
 	public int getUpNo() {
@@ -71,9 +74,17 @@ public class ReqProduct implements Serializable{
 		this.status = status;
 	}
 
+	public String getNoResult() {
+		return noResult;
+	}
+
+	public void setNoResult(String noResult) {
+		this.noResult = noResult;
+	}
+
 	@Override
 	public String toString() {
 		return "ReqProduct [upNo=" + upNo + ", bWriter=" + bWriter + ", productName=" + productName + ", reqDate="
-				+ reqDate + ", bTitle=" + bTitle + ", acceptResult=" + status + "]";
+				+ reqDate + ", bTitle=" + bTitle + ", status=" + status + ", noResult=" + noResult + "]";
 	}
 }
