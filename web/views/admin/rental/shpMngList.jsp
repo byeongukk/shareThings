@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import="java.util.*"%>
+<%
+	ArrayList<HashMap<String, Object>> list = 
+	(ArrayList<HashMap<String, Object>>) request.getAttribute("list");
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -126,7 +130,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 						<!-- 리스트 테이블  -->
 						<div class="card shadow mb-4">
 							<div class="card-header py-3">
-								<h6 class="m-0 font-weight-bold text-primary">00 건</h6>
+								<h5 class="m-0 font-weight-bold text-primary" id="listSize"><%= list.size()%>건</h5>
 							</div>
 							<div class="card-body">
 								<div class="row">
@@ -160,7 +164,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 											&nbsp;&nbsp;&nbsp;
 
 											<button type="button"
-												class="btn btn-danger btn-icon-split btn-sm"
+												class="btn btn-danger btn-icon-split btn-sm" id="cancelBtn"
 												data-toggle="modal" data-target="#cancelModal">
 												<span class="icon text-white-50"> <i
 													class="fas fas fa-trash"></i>
@@ -195,16 +199,6 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 																aria-controls="dataTable" style="width: 50px;"
 																aria-sort="ascending" rowspan="1" colspan="1">물품번호</th>
 															<th tabindex="0" class="sorting"
-																aria-controls="dataTable" style="width: 50px;"
-																rowspan="1" colspan="1">택배사</th>
-															<th tabindex="0" class="sorting"
-																aria-controls="dataTable" style="width: 67px;"
-																rowspan="1" colspan="1">송장번호</th>
-															<th tabindex="0" class="sorting"
-																aria-controls="dataTable" style="width: 55px;"
-																rowspan="1" colspan="1">발송일</th>
-
-															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 67px;"
 																rowspan="1" colspan="1">대여요청일시</th>
 															<th tabindex="0" class="sorting"
@@ -226,22 +220,32 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 														</tr>
 													</thead>
 													<tbody>
+														<% for(int i = 0; i<list.size(); i++){
+															HashMap<String, Object> hmap = list.get(i);	
+														
+														%> 
+														
 														<tr class="odd" role="row" align="center">
-															<td><input type="checkBox"></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
+															<td><input type="checkBox" class="check"></td>
+															<td><%= hmap.get("rno") %></td>
+															<td><%= hmap.get("pno")%></td>
+															<td><%= hmap.get("rtReqDate")%></td>
+															<td><%= hmap.get("userId")%></td>
+															<td><%= hmap.get("userName")%></td>
+															<td><%= hmap.get("phone")%></td>
+															<td><%= hmap.get("address")%></td>
+															<td><%= hmap.get("rtStatus")%></td>
 														</tr>
+														<% } %>
 													</tbody>
 												</table>
+												<div id="result-null">
+												<% if(list.size() <= 0){ %>
+													<br><br><br><br><br><br>
+													<h3 align="center"> 조회 결과가 없습니다.</h3>
+													<br><br><br><br><br><br>
+												<% } %>
+												</div>
 											</div>
 										</div>
 										<!-- 페이징 -->
@@ -304,18 +308,18 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									id="dataTables-example">
 									<thead>
 										<tr>
-											<th style="width: 40px; text-align: center;"><input
-												type="checkBox"></th>
 											<th style="text-align: center;" class="text-black-50 small">등록요청번호</th>
-											<th style="text-align: center;" class="text-black-50 small">물품명</th>
-											<th style="text-align: center;" class="text-black-50 small">대여자</th>
-											<th style="text-align: center; width: 130px"
-												class="text-black-50 small">취소사유</th>
+											<th style="text-align: center;" class="text-black-50 small">요청인</th>
+											<th style="text-align: center;" class="text-black-50 small">물품번호</th>
+											<th style="text-align: center;" class="text-black-50 small">모델명</th>
+											<th style="text-align: center;" class="text-black-50 small">요청자ID</th>
+											<th style="text-align: center;" class="text-black-50 small">상태</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr class="odd gradeX">
-											<td><input type="checkBox">
+										<tr class="odd" role="row" align="center">
+											<td></td>
+											<td></td>
 											<td></td>
 											<td></td>
 											<td></td>
@@ -340,6 +344,74 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 
 		</div>
 	</div>
+	<script>
+			
+			$("#cancelBtn").click(function() {
+				console.log("b");
+				var status = new Array();
+				$(".odd").each(function() {
+					if($(this).find(".check").is(":checked")) {	
+						status.push($(this).find("td").eq(1).text());
+					}
+				});
+				$.ajax({
+					url:"selectShpNum.rt?status=" + status,
+					type:"get",
+					success:function(data) {
+						var $dataTables = $("#dataTables-example tbody");
+						var $textarea = $("<textarea id='textResult' name='textResult' class='col-lg-12' placeholder='EX)거짓 정보 등록'></textarea>");
+						//기존 테이블 행 제거
+						$("#dataTables-example > tbody > tr").remove();
+						$textarea.remove();
+						
+						console.log(data);
+						for(var key in data) {
+							console.log(data[key]);
+							var $tr = $("<tr class='odd gradeX'>");
+							var $rnoTd =  $("<td>").text(data[key].rnoTd);
+							var $pnoTd =  $("<td>").text(data[key].pnoTd);
+							var $modelTd =  $("<td>").text(data[key].modelTd);
+							var $userNameTd =  $("<td>").text(data[key].userNameTd);
+							var $userIdTd =  $("<td>").text(data[key].userIdTd);
+							var $rtStatusTd =  $("<td>").text(data[key].rtStatusTd);
+							
+							$tr.append($rnoTd);
+							$tr.append($pnoTd);
+							$tr.append($modelTd);
+							$tr.append($userNameTd);
+							$tr.append($userIdTd);
+							$tr.append($rtStatusTd);
+							$dataTables.append($tr);
+						}
+					},
+					error:function(data){
+						console.log("에러");
+					}
+				
+				});
+				
+				
+				/* $.ajax({
+					console.log("ajax");
+					url:"selectShpNum.rt?status=" + status,
+					type:"get",
+					success:function(data) {
+						var $dataTables = $("#dataTables-example tbody");
+						var $textarea = $("<textarea id='textResult' name='textResult' class='col-lg-12' placeholder='EX)거짓 정보 등록'></textarea>");
+						
+						//기존 테이블 행 제거
+						$("#dataTables-example > tbody > tr").remove();
+						$textarea.remove();
+					
+					},
+					error:function(data) {
+						console.log("실패");
+					}
+				});  */
+			});
+		
+	
+	</script>
 	<!-- 맨위로-->
 	<%@ include file="../common/toTop.jsp"%>
 

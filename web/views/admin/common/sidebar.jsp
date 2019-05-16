@@ -65,7 +65,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
 
             <a class="collapse-item" href="<%= request.getContextPath() %>/selectRantalList.pd">대여관리</a>
-            <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/rental/sendManagement.jsp">발송관리</a>
+            <a class="collapse-item" href="<%= request.getContextPath() %>/selectShpMngList.rt">발송관리</a>
             <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/rental/sendList.jsp">배송조회</a>
             <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/rental/returnReqList.jsp">반품요청관리</a>
             <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/rental/returnProductManagement.jsp">수거관리</a>

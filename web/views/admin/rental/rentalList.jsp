@@ -79,9 +79,9 @@
 															<td width="15%"><select class="form-control" id="rentalStatus" name="rentalStatus">
 																	<option disabled>대여상태</option>
 																	<option value="0">전체</option>
-																	<option value="S4">대여대기</option>
-																	<option value="S5">대여중</option> 
-																	<option value="S6">대여완료</option>
+																	<option value="WT">대여대기</option>
+																	<option value="S">대여중</option> 
+																	<option value="COM">대여완료</option>
 																	
 															</select></td>
 															<td width="10%">상세조건</td>
@@ -182,8 +182,8 @@
 															<td><%= hmap.get("userName")%></td>
 															<td><%= hmap.get("pno")%></td>
 															<td><%= hmap.get("model")%></td>
-															<td><%= hmap.get("rentalDate")%></td>
-															<td><%= hmap.get("pStatus")%></td>
+															<td><%= hmap.get("rtReqDate")%></td>
+															<td><%= hmap.get("rtStatus")%></td>
 														</tr>
 														<% } %>
 													</tbody>
@@ -299,8 +299,8 @@
 								var $userNameTd = $("<td>").text(data[key].userName);
 								var $pnoTd = $("<td>").text(data[key].pno);
 								var $modelTd = $("<td>").text(data[key].model);
-								var $stdateTd = $("<td>").text(data[key].rentalDate);
-								var $statusTd = $("<td>").text(data[key].pStatus);
+								var $stdateTd = $("<td>").text(data[key].rtReqDate);
+								var $statusTd = $("<td>").text(data[key].rtStatus);
 								
 								/* tr에 td추가 */
 								$tr.append($chkTd);
