@@ -34,7 +34,7 @@ public class UpdateMlevelServlet extends HttpServlet {
 		
 		for(int i = 0; i < levelCode.length; i++) {
 			Mlevel ml = new Mlevel();
-			ml.setLevelCode(Integer.parseInt(levelCode[i]));
+			ml.setLevelCode(levelCode[i]);
 			ml.setLevelName(levelName[i]);
 			ml.setLevelStd(Integer.parseInt(levelStd[i]));
 			ml.setPerPoint(Integer.parseInt(perPoint[i]));

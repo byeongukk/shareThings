@@ -29,7 +29,7 @@ public class MemberDao {
 		}
 	}
 
-	//도연이꺼
+	//---------------------------------------------- 도연 ----------------------------------------------
 	//전체 회원 수 리턴
 	public int getListCount(Connection con) {
 		Statement stmt = null;
@@ -230,13 +230,17 @@ public class MemberDao {
 				r.setSumPenalty(rset.getInt("PENALTY_POINT"));
 				r.setReject(rset.getString("REJECT"));
 				r.setPenalty(rset.getInt("PENALTY"));
-				System.out.println(rset.getString("REPORT_RESULT"));
 				
-				if(rset.getString("REPORT_RESULT").equals("Y")) {
+				
+				if(rset.getString("REPORT_RESULT") == null) {
+					r.setReportResult(rset.getString("REPORT_RESULT"));
+				}else if(rset.getString("REPORT_RESULT").equals("Y")) {
 					r.setReportResult("적합");
 				}else {
 					r.setReportResult("부적합");
 				}
+				
+					
 				
 				if(rset.getString("REPORT_RESULT") != null) {
 					r.setStatus("처리완료");
@@ -428,7 +432,69 @@ public class MemberDao {
 		
 	}
 	
-//민지
+	public ArrayList<HashMap<String, Object>> selectOneReport(Connection con, int reportNo) {
+		ArrayList<HashMap<String,Object>> list = null;
+		HashMap<String,Object> hmap = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		String query = prop.getProperty("selectOneReport");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, reportNo);
+			
+			rset = pstmt.executeQuery();
+			
+			list = new ArrayList<HashMap<String,Object>>();
+			
+			if(rset.next()) {
+				hmap = new HashMap<String,Object>();
+				
+				hmap.put("reportNo", rset.getInt("REPORT_NO"));
+				hmap.put("targetId", rset.getString("USER_ID1"));
+				hmap.put("targetName", rset.getString("USER_NAME1"));
+				hmap.put("repId", rset.getString("USER_ID2"));
+				hmap.put("repName", rset.getString("USER_NAME2"));
+				hmap.put("reportName", rset.getString("REPORT_NAME"));
+				hmap.put("reportContent", rset.getString("REPORT_CONTENT"));
+				hmap.put("reportDate", rset.getDate("REPORT_DATE"));
+				hmap.put("completeDate", rset.getDate("COMPLETE_DATE"));
+				hmap.put("reject", rset.getString("REJECT"));
+				hmap.put("penalty", rset.getInt("PENALTY"));
+				hmap.put("totalPenalty", rset.getInt("PENALTY_POINT"));
+				
+				if(rset.getString("REPORT_RESULT") == null) {
+					hmap.put("reportResult", rset.getString("REPORT_RESULT"));
+				}else if(rset.getString("REPORT_RESULT").equals("Y")) {
+					hmap.put("reportResult", "적합");
+				}else {
+					hmap.put("reportResult", "부적합");
+				}
+				
+
+				if(rset.getString("REPORT_RESULT") != null) {
+					hmap.put("status", "처리완료");
+				}else{
+					hmap.put("status", "처리대기");
+				}
+				
+				list.add(hmap);
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+			close(rset);
+		}
+		return list;
+	}
+	
+	
+	
+	
+	//---------------------------------------------- 민지 ----------------------------------------------
 	public Member login(Connection con, String userId, String userPwd) {
 
 		PreparedStatement pstmt = null;
@@ -583,6 +649,8 @@ public class MemberDao {
 		}
 		return result;
 	}
+
+	
 
 	
 

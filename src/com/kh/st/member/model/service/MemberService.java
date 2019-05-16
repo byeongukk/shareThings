@@ -132,6 +132,7 @@ public class MemberService {
 		return list;
 	}
 	
+	//신고 적합판정용
 	public int reportOk(String[] reportsNo) {
 		Connection con = getConnection();
 		
@@ -146,6 +147,16 @@ public class MemberService {
 		close(con);
 		
 		return result;
+	}
+	
+	public ArrayList<HashMap<String, Object>> selectOneReport(int reportNo) {
+		Connection con = getConnection();
+		
+		ArrayList<HashMap<String,Object>> list = new MemberDao().selectOneReport(con, reportNo);
+		
+		close(con);
+		
+		return list;
 	}
 
 
@@ -207,6 +218,8 @@ public class MemberService {
 		close(con);
 		return updateUser;
 	}
+
+	
 
 	
 	
