@@ -114,13 +114,18 @@
 											class="dataTables_wrapper dt-bootstrap4">
 											<div class="row">
 												<div class="col-sm-12">
+													<div align="left">
+														<a href="#" class="btn btn-success btn-circle btn-sm" onclick="ok()">
+										                    <i class="fas fa-check"></i></a>
+													</div>
+													<br>
 													<table class="table table-bordered dataTable"
 														id="dataTable" width="100%" cellspacing="0" role="grid"
 														aria-describedby="dataTable_info" style="width: 100%;"
 														style="height:100px;">
 														<thead>
 															<tr role="row">
-																<th width="1%"><input type="checkbox"></th>
+																<th width="1%"><input type="checkbox" id="checkAll"></th>
 																<th class="sorting_asc" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-sort="ascending"
@@ -165,8 +170,8 @@
 														</thead>
 														<tbody>
 															<% for(Payback p : list){ %>
-																<tr>
-																	<td><input type="checkbox"></td>
+																<tr role="row" class="even">
+																	<td><input type="checkbox" class="check"></td>
 																	<td><%= p.getPbNo() %></td>
 																	<td><%= p.getUserId() %></td>
 																	<td><%= p.getAccount() %></td>
@@ -277,7 +282,34 @@
 			<%@ include file="../common/logoutModal.jsp"%>
 
 			<script>
-		
+			$(function () {
+		         $("#checkAll").click(function() {
+		            var check = $(this).is(":checked");
+		            if(check) {
+		               $(".check").prop("checked", true);
+		            } else {
+		               $(".check").prop("checked", false);
+		            }
+		         });
+		      });
+			
+			function ok() {
+		         var result = confirm("처리완료 하시겠습니까?");
+		         if(result) {
+		            var no = new Array();
+		            $(".even").each(function() {
+		               if($(this).find(".check").is(":checked")) {   
+		                  console.log($(this).find("td").eq(1).text());
+		                  no.push($(this).find("td").eq(1).text());
+		               }
+		                  
+		            });
+		            console.log(no);
+		            <%-- location = "<%= request.getContextPath() %>/paybackOk.me?no=" + no; --%>
+		         } else {
+		            location = location;
+		         }
+		      };
 			</script>
 			<script
 				src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>

@@ -404,6 +404,7 @@
 				}
 			});
 		});
+		
 		$("#result").click(function() {
 			var nums = new Array();
 			$(".gradeX").each(function() {

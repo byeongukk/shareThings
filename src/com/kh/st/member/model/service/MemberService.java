@@ -158,7 +158,32 @@ public class MemberService {
 		
 		return list;
 	}
+	
+	public int updateReportNo(String[] num, String inputReject) {
+		Connection con = getConnection();
+		
+		int result = new MemberDao().updateReportNo(con, num, inputReject);
+		
+		if(result > 0) {
+			commit(con);
+		}else {
+			rollback(con);
+		}
+		
+		close(con);
+		
+		return result;
+	}
 
+	public HashMap<String, Object> selectOneMember(int no) {
+		Connection con = getConnection();
+		
+		HashMap<String,Object> hmap = new MemberDao().selectOneMember(con,no);
+		
+		close(con);
+		
+		return hmap;
+	}
 
 
 	
@@ -218,6 +243,10 @@ public class MemberService {
 		close(con);
 		return updateUser;
 	}
+
+	
+
+	
 
 	
 
