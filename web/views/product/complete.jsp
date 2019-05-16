@@ -7,6 +7,7 @@
 
 <title>Insert title here</title>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <style>
 table {
@@ -188,6 +189,9 @@ table {
 	margin:14px;
 	
 	}
+	#photo {
+	text-align:center;
+	}
 </style>
 </head>
 <body>
@@ -205,331 +209,45 @@ table {
 
 
 <hr>
-<div id="photo">
-<form action="<%=request.getContextPath() %>/insert.tn">
-<table align="center">
+<div id="photo" >
 
-<tr>
-<td colspan="1"></td>
-<td class="teduri" colspan="3" id="pic1">사진등록</td>
-<td colspan="7" id="pic2">
-
-<div class="pho0">
-<!--  -->
-<div class="pho2" id="img1Area">
-<img id="img1" style="width:100%; height:220px;">
-</div>
-
-<div class="pho1" id="img2Area">
-<img id="img2" style="width:100%; height:220px;">
-</div>
-
-
-<div class="pho1" id="img3Area">
-<img id="img3" style="width:100%; height:220px;">
-</div>
-
-</div> <!-- pho0 -->
-
-<div class="pho0">
-
-<div class="pho2" id="img4Area">
-<img id="img4" style="width:100%; height:220px;">
-</div>
-<div class="pho1" id="img5Area">
-<img id="img5" style="width:100%; height:220px;">
-</div>
-<div class="pho1" id="img6Area">
-<img id="img6" style="width:100%; height:220px;">
-</div>
-
-
-</div> <!-- pho0 -->
-
-
-
-
-
-
-
-</td>
-<td colspan="1"></td>
-
-</tr>
-
-<tr>
-
-
-
-</tr>
-
-<tr>
-<td colspan="1"></td>
-<td colspan="3" id="title1">제목</td>
-<td colspan="7" id="title2">
-
-<input class="tb" type="text" name="title" style="width:700px; 
-height:40px; left:0;" placeholder="  내용을 입력해주세욧">
-
-
-</td>
-<td colspan="1"></td>
-</tr>
-
-<tr>
-<td colspan="1"></td>
-<td colspan="3" id="category1">카테고리</td>
-
-
-<td colspan="7" id="category2">
-
- <select id="big" class="cc" style="width:150px; height:50px; text-align:center;">
-
-<option >대분류</option>
-<option>전자기기</option>
-<option>취미/레저</option>
-<option>리빙</option>
-<option>유아동</option>
-<option>반려동물</option>
-
-</select>
-<select id="mid"class="cc" style="width:150px; height:50px; text-align:center;">
-
-<option>중분류</option>
-
-
-</select>
-<select id="small"class="cc" style="width:150px; height:50px; text-align:center;">
-
-<option>소분류</option>
-
-</select> 
-
-</td>
-<td colspan="1"></td>
-</tr>
-
-<tr>
-<td colspan="1"></td>
-<td colspan="3" id="lental1">렌탈 가능 기간</td>
-
-<td colspan="7" id="lental2">
-	<div class="ui left icon fluid input datePicker" style="margin-left:2.5%; width:30%; float:left;">
-											<input type="text" name="startDay" id="startDay" placeholder="대여 시작일">
-											<i class="calendar alternate outline icon"></i>
-										</div>
-										
-										<div class="ui left icon fluid input datePicker" style="margin-left:2.5%; width:30%; float:left;">
-											<input type="text" name="endDay" id="endDay" placeholder="대여 종료일">
-											<i class="calendar alternate outline icon"></i>
-										</div>
-</td>
-<td colspan="1"></td>
-</tr>
-
-<tr>
-<td colspan="1"></td>
-<td colspan="3" id="info1">내용</td>
-<td colspan="7" id="info2">
-
-<textarea name="content" class="ta" style="width:90%; height:150px;" id="productdetail" row="15" col="50" placeholder="아이템 정보를 상세히 입력하세요"></textarea>
-
-
-</td>
-<td colspan="1"></td>
-</tr>
-
-
-
-
-
-<tr>
-<td colspan="1"></td>
-<td colspan="3" id="phone1">전화번호</td>
-<td colspan="7" id="phone2">
-<input class="p"type="text" name="hp1" style="width:30%; height:30px; margin-bottom:5px; " placeholder="  hp" value="<%= loginUser.getPhone()%>"><br>
-
-<input class="p"type="text" name="em1" style="width:30%; height:30px; " placeholder="  비상연락망">
-
-
-
-
-</td>
-<td colspan="1"></td>
-</tr>
-
-<tr>
-					
-					
-					<td colspan="1"></td>
-					<td colspan="3" rowspan="2" style="text-align:center;">주소지</td>
-					<td colspan="7">
-					    <input type="hidden" id="confmKey" name="confmKey" value=""  >
-						<input type="text" id="zipCode" name="zipNo" readonly style="width:100px;  text-align:center; margin-left:2.5%;">
-						<input type="button"  value="주소검색" id="addressSearch">
-					</td>
-					<td colspan="1"></td>
-				</tr>
-				
-				
-				<tr>
-					<td colspan="1"></td>
-						<td colspan="7">
-							<input type="text" id="address1" style="width:40%; margin:2%; margin-left:2.5%;" value="">
-							<input type="text" id="address2"  style="width:40%; text-align:center;" value="">
-						</td>
-							<td colspan="1"></td>
-				</tr>
-<!-- <tr>
-<td colspan="1"></td>
-<td colspan="3" id="address1">주소지</td>
-<td colspan="7" id="address2">
-
-<input class="zad" type="text" name="zipcode" style="width:20%; height:30px; " placeholder="  우편번호">
-<button style="background:#c4c4c0" >검색</button>
-<br>
-<input class="zad" type="text" name="add" style="width:50%; height:30px; " placeholder="  주소">
-<br>
-<input class="zad" type="text" name="dadd" style="width:50%; height:30px; " placeholder="  상세주소">
-
-
-
-
-</td>
-<td colspan="1"></td>
-</tr> -->
-
-<tr>
-<td colspan="1"></td>
-<td colspan="3" id="time1">제품구입시기</td>
-<td colspan="7" id="time2">
-<!-- <input class="tta" type="text" name="textfield" style="width:30%; height:30px; " placeholder="제품 구입 시기 입력"> -->
-<div class="ui left icon fluid input datePicker" style="margin-left:2.5%; width:30%; float:left;">
-											<input type="text" name="buyDay" id="buyDay" placeholder="구입시기">
-											<i class="calendar alternate outline icon"></i>
-										</div>
-
-
-</td>
-<td colspan="1"></td>
-</tr>
-
-<tr>
-<td colspan="1"></td>
-<td colspan="3" id="modelName1">모델명</td>
-<td colspan="7" id="modelName2">
-
-<input class="mta"type="text" name="pmodel" style="width:30%; height:30px; " placeholder="모델명 입력">
-</td>
-<td colspan="1"></td>
-</tr>
-
-<tr>
-<td colspan="1"></td>
-<td colspan="3" id="purchasePrice1" style="text-align:center" >구입가</td>
-<td colspan="7" id="purchasePrice2" >
-
-<input name="purchasePrice" class="price" type="text" name="textfield" style="width:30%; height:30px; ">
-<label>원</label>
-</td>
-<td colspan="1"></td>
-
-</tr>
- 
-<!-- <tr>
-<td colspan="1"></td>
-<td colspan="3" id="brand1" style="text-align:center">물품스펙 / 브랜드명</td>
-<td colspan="7" id="brand2">
-<input class="brand3" type="text" name="textfield" style="width:700px; 
-height:40px; left:0;" placeholder="  내용을 입력해주세욧">
-
-</td>
-<td colspan="1"></td>
-
-
-</tr> -->
-
-<tr>
-<td colspan="1"></td>
-<td colspan="3" id="as1" style="text-align:center">최근 A/S이력</td>
-<td colspan="7" id="as2">
-<input class="as3" type="text" name="asHistory" style="width:700px; 
-height:40px; left:0;" placeholder="  내용을 입력해주세욧">
-
-
-</td>
-<td colspan="1"></td>
-</tr>
-
-<tr>
-<td colspan="1"></td>
-<td colspan="3" id="rentPrice1" style="text-align:center">희망 렌탈비(월)</td>
-<td colspan="7" id="rentPrice2">
-<input class="rentPrice3" type="text" name="rentPrice" style="width:200px; 
-height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
-<label style="margin-left:2.5%; margin-top:2%;">※ 등록 물품 대비 금액이 너무 높으면 렌탈이 어려울 수 있음을 주의하십시오!</label>
-
-
-</td>
-<td colspan="1"></td>
-</tr>
-
-
-
-<tr>
-<td colspan="1"></td>
-<td colspan="3" id="deposit1" style="text-align:center">보증금</td>
-<td colspan="7" id="deposit2">
-<input class="deposit3" type="text" name="depost" style="width:200px; 
-height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
-<label style="margin-left:2.5%; margin-top:2%;">※ 희망 렌탈비 대비 보증금이 너무 높으면 렌탈이 어려울 수 있음을 주의하십시오!</label>
-
-</td>
-<td colspan="1"></td>
-</tr>
-
-
-
-
-
-
-</table>
-<br>
 		<br><br>
 		
-		
-		<div style="margin-bottom:30px;">
+		<i class="far fa-check-circle fa-8x"></i>
+		<h2 style="margin-bottom:20px;">물품 등록 신청 완료</h2>
+		<h6 style="color:red; font-weight:bold;">※ 등록한 제품이 14일 이내에 렌탈이 안될 시, 반납될 수 있습니다.</h6>
+		<h6 style="color:red; font-weight:bold; margin-bottom:100px;">※ 물품 검수 후, 불통과시 등록이 불가 할 수 있습니다. </h6>
+			<div style="margin-bottom:50px;">
 		
 		<ul class="pager">
-    <li><a href="" style="color:#F44A0C">이전</a></li>
-    <li><a href="confirm.jsp" style="color:#0CB6F4">다음</a></li>
+
+    <li><a href="../main/main.jsp" style="color:#0CB6F4">MAIN</a></li>
   </ul>
-</div> <!-- 이전, 다음 버튼 -->
-
-</form>
-
-
-
-
 </div>
+		
+		
+
+
+
+
+</div><!-- photo -->
 		</div>
 		
 		</div>
 		
-		<div style="width:80%; margin:0 auto; text-align:center;">
-		<h5 style="text-align:center; font-weight:bold; color:red;"> 아이템 등록전에 꼭 확인하세요!</h5><br>
+		<!-- <div style="width:60%; margin:0 auto">
 		
-		비정상적인 물품, 실 제품과 등록한 제품이 다른 물품, 거래 금지 물품에 속하는 아이템을  해당 카테고리가 아닌 잘못된 카테고리에 등록할 경우<br>
- 		그 정도에 따라 경고 또는 포인트 전액 소멸, 계정제재 등의 책임을 물을 수 있음을 알려드립니다.
+		비정상적인 물품을 등록하거나, share things 사용금지 거래(상품권)에 속하는 아이템을 해당 카테고리가 아닌 잘못된 카테고리에 등록할 경우
+ 		그 정도에 따라 경고, 출금요청 취소, 지급된 share things 포인트 전액 소멸, 계정제재 등의 책임을 물을 수 있음을 알려드립니다.
 		<br>
 		
-		</div>
-		<div id="footer" style="margin-top:50px;">
+		</div> -->
+		<div id="footer">
 			<%@ include file="../common/footer.jsp" %>
 		</div>
 	
 	</div>
-	<div class="col-lg-1 col-md-1" >
+	<div class="col-lg-1 col-md-1">
 	</div>
 	</div>
 	
@@ -546,9 +264,7 @@ height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
 	 	$(function() {
 		    $("#startDay").datepicker();
 		    $("#endDay").datepicker();
-		    $("#buyDay").datepicker();
-
-		   
+		
 		});
 	 	
 	
