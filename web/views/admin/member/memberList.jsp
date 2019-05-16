@@ -52,6 +52,12 @@
 	margin-left:auto;
 	margin-right:auto;
 }
+#dataTables-detail td{
+	padding:8px;
+}
+.MTR {
+	color:black;
+}
 </style>
 </head>
 
@@ -193,7 +199,7 @@
 															<%
 																for (Member m : list) {
 															%>
-															<tr>
+															<tr role="row" class="even" align="center" data-toggle="modal" data-target="#detail">
 																<td><%=m.getUno()%></td>
 																<td><%=m.getUserId()%></td>
 																<td><%=m.getUserName()%></td>
@@ -291,6 +297,103 @@
 								</div>
 							</div>
 						</div>
+						
+						<div class="modal fade" id="detail" role="dialog">
+						<div class="modal-dialog">
+
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title MTR">회원 상세보기</h4>
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+								</div>
+								<div class="row">
+									<div class="col-md-12 col-lg-12">
+										<div class="modal-body">
+											<div class="panel-body">
+												<table width="100%"
+													 id="dataTables-detail">
+													<tbody>
+														<tr>
+															<td width="20%" class="MTR">No.</td>
+															<td id="noTd" colspan="2" width="13%"></td>
+															<td width="20%" class="MTR">상태</td>
+															<td id="statusTd" colspan="2" width="13%"></td>
+														</tr>
+														<tr>
+															<td width="20%" class="MTR">ID</td>
+															<td id="idTd" width="13%"></td>
+															<td width="20%" class="MTR">회원명</td>
+															<td id="nameTd" width="13%"></td>
+															<td width="20%" class="MTR">등급</td>
+															<td id="levelTd" width="13%"></td>
+														</tr>
+														<tr>
+															<td width="25%" class="MTR">계정연동</td>
+															<td width="17%" id="socialTd"></td>
+															<td width="25%" class="MTR">선택약관</td>
+															<td id="optionTd"></td>
+															<td width="25%" class="MTR">메일인증</td>
+															<td id="emailVTd"></td>
+														</tr>
+														<tr>
+															<td width="20%" class="MTR">수익금</td>
+															<td id="profitsTd"></td>
+															<td width="20%" class="MTR">적립금</td>
+															<td id="pointTd"></td>
+															<td width="20%" class="MTR">벌점</td>
+															<td id="penaltyTd"></td>
+														</tr>
+														<tr>
+															<td class="MTR">생년월일</td>
+															<td id="birthTd" colspan="2"></td>
+															<td class="MTR">성별</td>
+															<td id="genderTd" colspan="2"></td>
+															
+														</tr>
+														<tr>
+															<td class="MTR">전화번호</td>
+															<td id="phoneTd" colspan="5"></td>
+														</tr>
+														<tr id="hide" style="display:none">
+															<td class="MTR">비상번호</td>
+															<td id="subPhoneTd" colspan="5"></td>
+														</tr>
+														<tr>
+															<td class="MTR">주소</td>
+															<td id="addressTd" colspan="5"></td>
+														</tr>
+														<tr>
+															<td class="MTR">이메일</td>
+															<td id="emailTd" colspan="5"></td>
+														</tr>
+														<tr>
+															<td class="MTR">가입일</td>
+															<td id="enrollTd" colspan="2"></td>
+															<td class="MTR" id="stn">수정일</td>
+															<td id="modifyTd" colspan="2"></td>
+														</tr>
+														<tr>
+															<td class="MTR">등록</td>
+															<td id="inputTd" colspan="2"></td>
+															<td class="MTR">대여</td>
+															<td id="outputTd" colspan="2"></td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<br><br>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-default"
+												data-dismiss="modal">닫기</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
 						<!-- 메인 콘텐트 영역 끝 -->
 						<!-- Footer 인클루드 -->
 					</div>
@@ -307,7 +410,56 @@
 			<%@ include file="../common/logoutModal.jsp"%>
 
 			<script>
-			
+			$(function(){
+		    	$(".even").mouseenter(function(){
+		    		$(this).css({"background":"lightblue", "color":"black" ,"cursor":"pointer"})
+		    	}).mouseout(function(){
+		    		$(this).css({"background":"white", "color":"gray"})
+		    	}).click(function(){
+		    		var no = $(this).children().eq(0).text();
+					console.log(no);
+					$.ajax({
+						url:"selectOneMember.me?no=" + no,
+						type:"post",
+						success:function(data){
+							$("#noTd").text(data.userNo);
+							$("#statusTd").text(data.status);
+							$("#idTd").text(data.userId);
+							$("#nameTd").text(data.userName);
+							$("#levelTd").text(data.level);
+							$("#socialTd").text(data.social);
+							$("#optionTd").text(data.option);
+							$("#emailVTd").text(data.verif);
+							$("#profitsTd").text(data.profits);
+							$("#pointTd").text(data.totalPoint);
+							$("#penaltyTd").text(data.penaltyPoint);
+							$("#birthTd").text(data.birth);
+							$("#genderTd").text(data.gender);
+							$("#phoneTd").text(data.phone);
+							$("#addressTd").text(data.address);
+							$("#emailTd").text(data.email);
+							$("#enrollTd").text(data.enrollDate);
+							$("#modifyTd").text(data.modifyDate);
+							$("#inputTd").text(data.input);
+							$("#outputTd").text(data.output);
+							$("#subPhoneTd").text(data.subPhone);
+							
+							if(data.status == "탈퇴"){
+								$("#stn").text("탈퇴일");
+							}else{
+								$("#stn").text("수정일");
+							}
+							
+							if(data.subPhone != null){
+								$("#hide").show();
+							}else{
+								$("#hide").hide();
+							}
+						}
+					});
+					
+		    	});
+		    });
 			</script>
 			<script
 				src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>

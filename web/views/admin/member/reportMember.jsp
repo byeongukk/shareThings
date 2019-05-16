@@ -139,8 +139,7 @@
 														<a href="#" class="btn btn-success btn-circle btn-sm" onclick="ok()">
 										                    <i class="fas fa-check"></i></a> &nbsp;&nbsp;
 														<a href="#" class="btn btn-danger btn-circle btn-sm" 
-														onclick="no()" >
-										                    <i class="fas fa-trash"></i> </a>
+														id="no" data-toggle="modal" data-target="#noModal"><i class="fas fa-trash"></i> </a>
 													</div>
 													<br>
 													<table class="table table-bordered dataTable"
@@ -201,7 +200,7 @@
 														</thead>
 														<tbody>
 															<% for(Report r : list){ %>
-																<tr role="row" class="even" align="center" data-toggle="modal" data-target="#no">
+																<tr role="row" class="even" align="center" data-toggle="modal" data-target="#detail">
 																	<td><input type="checkbox" class="check"></td>
 																	<td><%= r.getReportNo() %></td>
 																	<td><%= r.getTargetUser() %></td>
@@ -299,7 +298,7 @@
 							</div>
 						</div>
 						
-					<div class="modal fade" id="no" role="dialog">
+					<div class="modal fade" id="detail" role="dialog">
 						<div class="modal-dialog">
 
 							<!-- Modal content-->
@@ -364,6 +363,55 @@
 						</div>
 					</div>
 					
+					<div class="modal fade" id="noModal" role="dialog">
+						<div class="modal-dialog">
+
+							<!-- Modal content-->
+							<div class="modal-content">
+								<div class="modal-header">
+									<h4 class="modal-title MTR">부적합 처리</h4>
+									<button type="button" class="close" data-dismiss="modal">&times;</button>
+								</div>
+								<div class="row">
+									<div class="col-md-12 col-lg-12">
+										<div class="modal-body">
+											<div class="panel-body">
+												<table width="100%"
+													 id="dataTables-no">
+													<thead>
+														<tr class="MTR">
+															<th>선택된 신고No.</th>
+														</tr>
+													</thead>
+													<tbody>
+													<tr>
+														<td id="numsTd"></td>
+													</tr>
+													<tr>
+														<td class="MTR"><b>부적합 사유</b></td>
+													</tr>
+													<tr>
+														<td>
+															<textarea id="inputReject" class="col-lg-12" rows="3"></textarea>
+														</td>
+													</tr>
+													</tbody>
+												</table>
+											</div>
+											<br><br>
+										</div>
+										<div class="modal-footer">
+											<button type="submit" class="btn btn-default" id="completeNo"
+												data-dismiss="modal">완료</button>
+											<button type="button" class="btn btn-default"
+												data-dismiss="modal">닫기</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+						</div>
+					</div>
 					
 					
 					
@@ -372,7 +420,6 @@
 						$(function () {
 					         $("#checkAll").click(function() {
 					            var check = $(this).is(":checked");
-					            var result = $(".even").find("td").eq(6).text();
 					            if(check) {
 					               $(".check").prop("checked", true);
 					            } else {
@@ -453,7 +500,26 @@
 					    	});
 					    });
 						
+					    $("#no").click(function(){
+					    	$("#numsTd").text("");
+					    	var result = "";
+					    	$(".even").each(function(){
+					    		if($(this).find(".check").is(":checked")){
+					    			result += $(this).find("td").eq(1).text() + " ";
+					    		}	
+					    	});
+					    	$("#numsTd").text(result);
+					    });
 						
+					    $("#completeNo").click(function(){
+					    	var nums = $("#numsTd").text();
+					    	console.log(nums);
+					    	var inputReject = $("#inputReject").val();
+					    	console.log(inputReject);
+					    	location = "<%=request.getContextPath()%>/reportNo.me?nums=" + nums + "&inputReject=" + inputReject;
+					    });
+					    
+					   
 					</script>
 						<!-- 메인 콘텐트 영역 끝 -->
 						<!-- Footer 인클루드 -->
