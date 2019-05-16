@@ -10,6 +10,7 @@ import java.util.HashMap;
 import com.kh.st.rental.model.dao.RentalDao;
 
 public class RentalService {
+	/* 대여리스트 전체 조회 */
 	public ArrayList<HashMap<String, Object>> selectRentalList() {
 		Connection con = getConnection();
 		ArrayList<HashMap<String, Object>> list = new RentalDao().selectRentalList(con);
@@ -17,7 +18,7 @@ public class RentalService {
 		close(con);
 		return list;
 	}
-
+	/* 대여리스트 상세조회 */
 	public ArrayList<HashMap<String, Object>> selectRentalFilter(HashMap<String, Object> condition) {
 		Connection con = getConnection();
 		ArrayList<HashMap<String, Object>> list = new RentalDao().selectRentalFilter(con,condition);
@@ -26,46 +27,21 @@ public class RentalService {
 		return list;
 	}
 
-
-	public ArrayList<HashMap<String, Object>> selectPStatusList(String rentalStatus) {
+	/* 발송관리(대여대기) 리스트 전체 조회 */
+	public ArrayList<HashMap<String, Object>> selectShpMngList() {
 		Connection con = getConnection();
-		ArrayList<HashMap<String, Object>> list = new RentalDao().selectPStatusList(con,rentalStatus);
+		ArrayList<HashMap<String, Object>> list = new RentalDao().selectShpMngList(con);
 		
 		close(con);
 		return list;
 	}
-
-	public ArrayList<HashMap<String, Object>> selectDetailsList(String filterContent) {
+	
+	/* 대여취소 모달  ajax 출력용*/
+	public ArrayList<HashMap<String, Object>> selectShpNum(String[] status) {
 		Connection con = getConnection();
-		ArrayList<HashMap<String, Object>> list = new RentalDao().selectDetailsList(con,filterContent);
+		ArrayList<HashMap<String, Object>> list = new RentalDao().selectShpNum(con,status);
 		
 		close(con);
 		return list;
-	}
-	/*대여번호로 검색*/
-	public ArrayList<HashMap<String, Object>> selectRtNoDetails(String filterContent) {
-		Connection con = getConnection();
-		ArrayList<HashMap<String, Object>> list = new RentalDao().selectRtNoDetails(con,filterContent);
-		
-		close(con);
-		return list;
-	}
-
-	/*대여자이름으로 검색*/
-	public ArrayList<HashMap<String, Object>> selectRtUserNameDetails(String filterContent) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*모델명으로 검색*/
-	public ArrayList<HashMap<String, Object>> selectModelDetails(String filterContent) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*물품번호로 검색*/
-	public ArrayList<HashMap<String, Object>> selectPnoDetails(String filterContent) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }
