@@ -127,9 +127,9 @@
     				<a href="#" class="btn btn-primary" style="background:#0CB6F4;">배송지 설정</a>
   				</div>
   				<hr>
-  				<div style="border:1px solid #ececec; padding:5%;">
+  				<div >
   					<form>
-    					<div class="form-group">
+    					<!-- <div class="form-group">
       						<label for="userId">아이디:</label>
       						<input type="text" class="form-control" id="userId" readonly value="wnsgur3280">
     					</div>
@@ -144,7 +144,102 @@
     					<div class="form-group" style="width:20%;">
       						<label for="usr">이름:</label>
       						<input type="text" class="form-control" id="usr" >
-    					</div>
+    					</div> -->
+
+						<form class="form-horizontal" action="/action_page.php">
+						  <div class="form-group">
+						    <label class="control-label col-sm-2" for="userId">아이디:</label>
+						    <div class="col-sm-10">
+						      <input type="text" class="form-control" id="userId" placeholder="아이디를 입력하세요." value="wnsgur3280" readonly>
+						    </div>
+						  </div>
+						  <div class="form-group"> 
+						    <div class="col-sm-offset-2 col-sm-10">
+						     	<div>
+						     		&nbsp;
+						     	</div>
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <label class="control-label col-sm-2" for="pwd">비밀번호:</label>
+						    <div class="col-sm-10"> 
+						      <input type="password" class="form-control" id="pwd" placeholder="비밀번호를 입력하세요.">
+						    </div>
+						  </div>
+						   <div class="form-group">
+						    <label class="control-label col-sm-2" for="pwd2">재확인:</label>
+						    <div class="col-sm-10"> 
+						      <input type="password" class="form-control" id="pwd2" placeholder="비밀번호를 입력하세요.">
+						    </div>
+						  </div>
+						  <div class="form-group"> 
+						    <div class="col-sm-offset-2 col-sm-10">
+						     	<div>
+						     		&nbsp;
+						     	</div>
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <label class="control-label col-sm-2" for="userName">이름:</label>
+						    <div class="col-sm-10">
+						      <input type="text" class="form-control" id="userName" placeholder="이름을 입력하세요.">
+						    </div>
+						  </div>
+						  <div class="form-group"> 
+						    <div class="col-sm-offset-2 col-sm-10">
+						     	<div>
+						     		&nbsp;
+						     	</div>
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <label class="control-label col-sm-2" for="email">이메일:</label>
+						    <div class="col-sm-10">
+						      <input type="text" class="form-control" id="email" placeholder="이메일 입력하세요." value="joonhyeok_c@naver.com">
+						    </div>
+						  </div>
+						  <div class="form-group"> 
+						    <div class="col-sm-offset-2 col-sm-10">
+						     	<div>
+						     		&nbsp;
+						     	</div>
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <label class="control-label col-sm-2" for="phone">휴대전화:</label>
+						    <div class="col-sm-10">
+						      <input type="phone" class="form-control" id="phone" placeholder="휴대전화번호를 입력하세요." value="010-5067-5022">
+						   	  <button type="submit" class="btn btn-default pull-right" style="background:#ececec">휴대폰 인증</button>
+						    </div>
+						  </div>
+						  <div class="form-group"> 
+						    <div class="col-sm-offset-2 col-sm-10">
+						     	<div>
+						     		&nbsp;
+						     	</div>
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <label class="control-label col-sm-2" for="phone2">전화번호:</label>
+						    <div class="col-sm-10">
+						      <input type="phone" class="form-control" id="phone2" placeholder="비상연락망을 입력하세요." value="031-939-9948">
+						    </div>
+						  </div>
+						  <div class="form-group"> 
+						    <div class="col-sm-offset-2 col-sm-10">
+						     	<div>
+						     		&nbsp;
+						     	</div>
+						    </div>
+						  </div>
+						  <div class="form-group"> 
+						    <div class="col-sm-offset-2 col-sm-10">
+						      <button type="submit" class="btn btn-default center-block">회원 정보 수정</button>
+						    </div>
+						  </div>
+						</form>
+
+
   					</form>
   				</div>
 			
