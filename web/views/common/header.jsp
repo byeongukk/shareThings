@@ -256,7 +256,7 @@
 					<td><label>전체보기</label></td>
 					<td>
 						<ul>
-							<li><a href="/st/views/main/productList.jsp">카메라</a></li>
+							<li><a href="/st/views/main/productList.js">카메라</a></li>
 							<li><a href="#">컴퓨터/주변기기</a></li>
 							<li><a href="#">휴대폰/태블릿</a></li>
 							<li><a href="#">게임기</a></li>
@@ -418,6 +418,17 @@
 			<% }else { %>
 			location.href="/st/views/product/productInsertPage.jsp";
 			<% } %>
+		});
+		
+		
+		//카테고리 클릭시 상품리스트페이지 연결
+		$("#submenu").find("li").click(function() {
+			var ctgLv2 = $(this).children("a").text();
+			location.href="<%= request.getContextPath()%>/selectList.bo?ctgLv2=" + ctgLv2;
+		});
+		$(".dropdown-menu").children("li").click(function() {
+			var ctgLv2 = $(this).children("a").text();
+			location.href="<%= request.getContextPath()%>/selectList.bo?ctgLv2=" + ctgLv2;
 		});
 	</script>
 </body>
