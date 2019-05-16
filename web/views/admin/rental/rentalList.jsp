@@ -79,9 +79,9 @@
 															<td width="15%"><select class="form-control" id="rentalStatus" name="rentalStatus">
 																	<option disabled>대여상태</option>
 																	<option value="0">전체</option>
-																	<option value="SID1">대여대기</option>
-																	<option value="SID2">대여중</option> 
-																	<option value="SID3">대여완료</option>
+																	<option value="S4">대여대기</option>
+																	<option value="S5">대여중</option> 
+																	<option value="S6">대여완료</option>
 																	
 															</select></td>
 															<td width="10%">상세조건</td>
@@ -152,13 +152,13 @@
 																rowspan="1" colspan="1"><input type="checkBox"></th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 57px;"
-																rowspan="1" colspan="1">대여주문번호</th>
+																rowspan="1" colspan="1" id="th_rtNo">대여주문번호</th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 61px;"
-																rowspan="1" colspan="1">대여자</th>
-															<th tabindex="0" class="sorting_asc"
+																rowspan="1" colspan="1" id="th_rtUser">대여자</th>
+															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 50px;"
-																aria-sort="ascending" rowspan="1" colspan="1">물품번호</th>
+																aria-sort="ascending" rowspan="1" colspan="1" id="th_rtPd">물품번호</th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 31px;"
 																rowspan="1" colspan="1">물품명</th>
@@ -313,7 +313,6 @@
 								
 								/* table에 tr추가 */
 								$dataTable.append($tr);
-								
 							}
 						}else {
 							/* 조회된 값이 없을때 출력 */
@@ -331,9 +330,9 @@
 				});
 			});
 		});	
-	
-	
+
 	</script>
+
 	<script>
 		/* 상세조건이 전체일때 상세정보입력 비활성화 */
 		function detailsChg(){
