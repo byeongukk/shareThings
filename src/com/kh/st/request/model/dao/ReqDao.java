@@ -111,6 +111,26 @@ public class ReqDao {
 			}
 		return result;
 	}
+	
+	public int reqOkResult(Connection con, String[] status) {
+		PreparedStatement pstmt = null;
+		int result1 = 0;
+		
+		String query = prop.getProperty("reqOkResult");
+		try {
+			for(int i = 0; i < status.length; i++) {
+				pstmt = con.prepareStatement(query);
+				pstmt.setInt(1, Integer.parseInt(status[i]));
+				
+				result1 += pstmt.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result1;
+	}
 	public ArrayList<ReqProduct> reqNoSelect(Connection con, String[] status) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -130,7 +150,6 @@ public class ReqDao {
 					rp.setUpNo(rset.getInt("REQP_NO"));
 					rp.setProductName(rset.getString("CTG_ID"));
 					rp.setbWriter(rset.getString("USER_NAME"));
-					//rp.setNoResult(rset.getString("REJECT_REASON"));
 					
 					list.add(rp);
 				}
@@ -144,5 +163,44 @@ public class ReqDao {
 		System.out.println(list);
 		return list;
 	}
-
+	public int reqNo(Connection con, String[] num) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("reqNo");
+		
+		try {
+			for(int i = 0; i < num.length; i++) {
+				pstmt = con.prepareStatement(query);
+				pstmt.setInt(1, Integer.parseInt(num[i]));
+				
+				result += pstmt.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	public int reqNoResult(Connection con, String[] num, String textResult) {
+		PreparedStatement pstmt = null;
+		int result1 = 0;
+		
+		String query = prop.getProperty("reqNoResult");
+		try {
+			for(int i = 0; i < num.length; i++) {
+				pstmt = con.prepareStatement(query);
+				pstmt.setString(1, textResult);
+				pstmt.setInt(2, Integer.parseInt(num[i]));
+				
+				result1 += pstmt.executeUpdate();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result1;
+	}
 }

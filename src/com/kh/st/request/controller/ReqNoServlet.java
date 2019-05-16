@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kh.st.request.model.service.ReqService;
+
 /**
  * Servlet implementation class ReqNoServlet
  */
@@ -29,8 +31,19 @@ public class ReqNoServlet extends HttpServlet {
 		response.setCharacterEncoding("UTF-8");
 		
 		String textResult = request.getParameter("textResult");
+		String nums = request.getParameter("nums");
+		String[] num = nums.split(",");
 		
-		System.out.println(textResult);
+		int result = new ReqService().reqNo(num, textResult);
+		
+		String page = "";
+		if(result > 0) {
+			response.sendRedirect(request.getContextPath() + "/reqProduct.bo");
+		} else {
+			page = "views/common/errorPage.jsp";
+			request.setAttribute("msg", "거절 오류");
+			request.getRequestDispatcher(page).forward(request, response);
+		}
 	}
 
 	/**
