@@ -404,6 +404,16 @@
 				}
 			});
 		});
+		$("#result").click(function() {
+			var nums = new Array();
+			$(".gradeX").each(function() {
+				console.log($(this).find("td").eq(0).text());
+				nums.push($(this).find("td").eq(0).text());
+			});
+			alert($("#textResult").val());
+			var textResult = $("#textResult").val();
+			location = "<%= request.getContextPath() %>/reqNo.bo?nums=" + nums + "&textResult=" + textResult;
+		});
 		</script>
 			<script
 				src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>

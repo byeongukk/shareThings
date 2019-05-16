@@ -36,7 +36,12 @@ public class ReqService {
 		int result = new ReqDao().reqOk(con, status);
 		
 		if(result == status.length) {
-			commit(con);
+			int result1 = new ReqDao().reqOkResult(con, status);
+			if(result1 == status.length) {
+				commit(con);				
+			} else {
+				rollback(con);
+			}
 		} else {
 			rollback(con);
 		}
@@ -51,6 +56,25 @@ public class ReqService {
 		
 		close(con);
 		return list;
+	}
+
+	public int reqNo(String[] num, String textResult) {
+		Connection con = getConnection();
+		
+		int result = new ReqDao().reqNo(con, num);
+		
+		if(result == num.length) {
+			int result1 = new ReqDao().reqNoResult(con, num, textResult);
+			
+			if(result1 == num.length) {
+				commit(con);
+			} else {
+				rollback(con);
+			}
+		} else {
+			rollback(con);
+		}
+		return result;
 	}
 
 }
