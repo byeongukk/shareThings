@@ -2,185 +2,205 @@ package com.kh.st.product.model.vo;
 
 import java.sql.Date;
 
-public class Product implements java.io.Serializable{
-	
-	
-	private int pno; //물품번호
-	private Date stDate; //등록시작일
-	private Date edDate; //등록종료일
-	private int price; //가격
-	private int deposit; //보증금
-	private int dlAmount; //배송비
-	private String model; //모델명
-	private int uno; //회원번호
-	private int ctgId;//물품 분류 코드
-	private Date purchaseDate; //구입시기
-	private int purchasePrice;//구입가격
-	private String condition;//물품상태
-	private String sid; //상태코드
-	
-	
-	public Product() {}
+public class Product {
 
+   private int pno;
+   private int uno;
+   private Date pStartDate;
+   private Date pEndDate;
+   private int price;
+   private int deposite;
+   private int dlFreeAmount;
+   private String model;
+   private int ctgId;
+   private Date purchaseDate;
+   private int purchasePrice;
+   private String condition;
+   private String sid;
+   public Product(int pno, int uno, Date pStartDate, Date pEndDate, int price, int deposite, int dlFreeAmount,
+         String model, int ctgId, Date purchaseDate, int purchasePrice, String condition, String sid) {
+      super();
+      this.pno = pno;
+      this.uno = uno;
+      this.pStartDate = pStartDate;
+      this.pEndDate = pEndDate;
+      this.price = price;
+      this.deposite = deposite;
+      this.dlFreeAmount = dlFreeAmount;
+      this.model = model;
+      this.ctgId = ctgId;
+      this.purchaseDate = purchaseDate;
+      this.purchasePrice = purchasePrice;
+      this.condition = condition;
+      this.sid = sid;
+   }
+   /**
+    * @return the pno
+    */
+   public int getPno() {
+      return pno;
+   }
+   /**
+    * @return the uno
+    */
+   public int getUno() {
+      return uno;
+   }
+   /**
+    * @return the pStartDate
+    */
+   public Date getpStartDate() {
+      return pStartDate;
+   }
+   /**
+    * @return the pEndDate
+    */
+   public Date getpEndDate() {
+      return pEndDate;
+   }
+   /**
+    * @return the price
+    */
+   public int getPrice() {
+      return price;
+   }
+   /**
+    * @return the deposite
+    */
+   public int getDeposite() {
+      return deposite;
+   }
+   /**
+    * @return the dlFreeAmount
+    */
+   public int getDlFreeAmount() {
+      return dlFreeAmount;
+   }
+   /**
+    * @return the model
+    */
+   public String getModel() {
+      return model;
+   }
+   /**
+    * @return the ctgId
+    */
+   public int getCtgId() {
+      return ctgId;
+   }
+   /**
+    * @return the purchaseDate
+    */
+   public Date getPurchaseDate() {
+      return purchaseDate;
+   }
+   /**
+    * @return the purchasePrice
+    */
+   public int getPurchasePrice() {
+      return purchasePrice;
+   }
+   /**
+    * @return the condition
+    */
+   public String getCondition() {
+      return condition;
+   }
+   /**
+    * @return the sid
+    */
+   public String getSid() {
+      return sid;
+   }
+   /**
+    * @param pno the pno to set
+    */
+   public void setPno(int pno) {
+      this.pno = pno;
+   }
+   /**
+    * @param uno the uno to set
+    */
+   public void setUno(int uno) {
+      this.uno = uno;
+   }
+   /**
+    * @param pStartDate the pStartDate to set
+    */
+   public void setpStartDate(Date pStartDate) {
+      this.pStartDate = pStartDate;
+   }
+   /**
+    * @param pEndDate the pEndDate to set
+    */
+   public void setpEndDate(Date pEndDate) {
+      this.pEndDate = pEndDate;
+   }
+   /**
+    * @param price the price to set
+    */
+   public void setPrice(int price) {
+      this.price = price;
+   }
+   /**
+    * @param deposite the deposite to set
+    */
+   public void setDeposite(int deposite) {
+      this.deposite = deposite;
+   }
+   /**
+    * @param dlFreeAmount the dlFreeAmount to set
+    */
+   public void setDlFreeAmount(int dlFreeAmount) {
+      this.dlFreeAmount = dlFreeAmount;
+   }
+   /**
+    * @param model the model to set
+    */
+   public void setModel(String model) {
+      this.model = model;
+   }
+   /**
+    * @param ctgId the ctgId to set
+    */
+   public void setCtgId(int ctgId) {
+      this.ctgId = ctgId;
+   }
+   /**
+    * @param purchaseDate the purchaseDate to set
+    */
+   public void setPurchaseDate(Date purchaseDate) {
+      this.purchaseDate = purchaseDate;
+   }
+   /**
+    * @param purchasePrice the purchasePrice to set
+    */
+   public void setPurchasePrice(int purchasePrice) {
+      this.purchasePrice = purchasePrice;
+   }
+   /**
+    * @param condition the condition to set
+    */
+   public void setCondition(String condition) {
+      this.condition = condition;
+   }
+   /**
+    * @param sid the sid to set
+    */
+   public void setSid(String sid) {
+      this.sid = sid;
+   }
+   /* (non-Javadoc)
+    * @see java.lang.Object#toString()
+    */
+   @Override
+   public String toString() {
+      return "Product [pno=" + pno + ", uno=" + uno + ", pStartDate=" + pStartDate + ", pEndDate=" + pEndDate
+            + ", price=" + price + ", deposite=" + deposite + ", dlFreeAmount=" + dlFreeAmount + ", model=" + model
+            + ", ctgId=" + ctgId + ", purchaseDate=" + purchaseDate + ", purchasePrice=" + purchasePrice
+            + ", condition=" + condition + ", sid=" + sid + "]";
+   }
+   
+   
 
-	public Product(int pno, Date stDate, Date edDate, int price, int deposit, int dlAmount, String model, int uno,
-			int ctgId, Date purchaseDate, int purchasePrice, String condition, String sid) {
-		super();
-		this.pno = pno;
-		this.stDate = stDate;
-		this.edDate = edDate;
-		this.price = price;
-		this.deposit = deposit;
-		this.dlAmount = dlAmount;
-		this.model = model;
-		this.uno = uno;
-		this.ctgId = ctgId;
-		this.purchaseDate = purchaseDate;
-		this.purchasePrice = purchasePrice;
-		this.condition = condition;
-		this.sid = sid;
-	}
-
-
-	public int getPno() {
-		return pno;
-	}
-
-
-	public void setPno(int pno) {
-		this.pno = pno;
-	}
-
-
-	public Date getStDate() {
-		return stDate;
-	}
-
-
-	public void setStDate(Date stDate) {
-		this.stDate = stDate;
-	}
-
-
-	public Date getEdDate() {
-		return edDate;
-	}
-
-
-	public void setEdDate(Date edDate) {
-		this.edDate = edDate;
-	}
-
-
-	public int getPrice() {
-		return price;
-	}
-
-
-	public void setPrice(int price) {
-		this.price = price;
-	}
-
-
-	public int getDeposit() {
-		return deposit;
-	}
-
-
-	public void setDeposit(int deposit) {
-		this.deposit = deposit;
-	}
-
-
-	public int getDlAmount() {
-		return dlAmount;
-	}
-
-
-	public void setDlAmount(int dlAmount) {
-		this.dlAmount = dlAmount;
-	}
-
-
-	public String getModel() {
-		return model;
-	}
-
-
-	public void setModel(String model) {
-		this.model = model;
-	}
-
-
-	public int getUno() {
-		return uno;
-	}
-
-
-	public void setUno(int uno) {
-		this.uno = uno;
-	}
-
-
-	public int getCtgId() {
-		return ctgId;
-	}
-
-
-	public void setCtgId(int ctgId) {
-		this.ctgId = ctgId;
-	}
-
-
-	public Date getPurchaseDate() {
-		return purchaseDate;
-	}
-
-
-	public void setPurchaseDate(Date purchaseDate) {
-		this.purchaseDate = purchaseDate;
-	}
-
-
-	public int getPurchasePrice() {
-		return purchasePrice;
-	}
-
-
-	public void setPurchasePrice(int purchasePrice) {
-		this.purchasePrice = purchasePrice;
-	}
-
-
-	public String getCondition() {
-		return condition;
-	}
-
-
-	public void setCondition(String condition) {
-		this.condition = condition;
-	}
-
-
-	public String getSid() {
-		return sid;
-	}
-
-
-	public void setSid(String sid) {
-		this.sid = sid;
-	}
-
-
-	@Override
-	public String toString() {
-		return "Product [pno=" + pno + ", stDate=" + stDate + ", edDate=" + edDate + ", price=" + price + ", deposit="
-				+ deposit + ", dlAmount=" + dlAmount + ", model=" + model + ", uno=" + uno + ", ctgId=" + ctgId
-				+ ", purchaseDate=" + purchaseDate + ", purchasePrice=" + purchasePrice + ", condition=" + condition
-				+ ", sid=" + sid + "]";
-	}
-	
-	
-	
-	
 }
