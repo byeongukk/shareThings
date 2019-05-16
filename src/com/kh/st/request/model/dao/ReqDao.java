@@ -77,7 +77,7 @@ public class ReqDao {
 				
 				rp.setUpNo(rset.getInt("REQP_NO"));
 				rp.setbWriter(rset.getString("USER_NAME"));
-				rp.setProductName(rset.getString("CTG_ID"));
+				rp.setProductName(rset.getString("CTG_NAME"));
 				rp.setReqDate(rset.getDate("REQP_DATE"));
 				rp.setbTitle(rset.getString("BTITLE"));
 				rp.setStatus(rset.getString("STATUS"));
@@ -112,7 +112,7 @@ public class ReqDao {
 		return result;
 	}
 	
-	public int reqOkResult(Connection con, String[] status) {
+	/*public int reqOkResult(Connection con, String[] status) {
 		PreparedStatement pstmt = null;
 		int result1 = 0;
 		
@@ -130,7 +130,7 @@ public class ReqDao {
 			close(pstmt);
 		}
 		return result1;
-	}
+	}*/
 	public ArrayList<ReqProduct> reqNoSelect(Connection con, String[] status) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -148,7 +148,7 @@ public class ReqDao {
 					ReqProduct rp = new ReqProduct();
 					
 					rp.setUpNo(rset.getInt("REQP_NO"));
-					rp.setProductName(rset.getString("CTG_ID"));
+					rp.setProductName(rset.getString("CTG_NAME"));
 					rp.setbWriter(rset.getString("USER_NAME"));
 					
 					list.add(rp);
@@ -202,5 +202,89 @@ public class ReqDao {
 			close(pstmt);
 		}
 		return result1;
+	}
+	public ReqProduct reqOkSelect(Connection con, String status) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ReqProduct rp = null;
+		
+		String query = prop.getProperty("reqOkSelect");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, Integer.parseInt(status));
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				rp = new ReqProduct();
+				
+				rp.setUpNo(rset.getInt("REQP_NO"));
+				rp.setProductName(rset.getString("CTG_NAME"));
+				rp.setbWriter(rset.getString("USER_NAME"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return rp;
+	}
+	public int reqOk(Connection con, int num) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("reqOk");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, num);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	public int reqOkResult(Connection con, int num) {
+		PreparedStatement pstmt = null;
+		int result1 = 0;
+		
+		String query = prop.getProperty("reqOkResult");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, num);
+			
+			result1 = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result1;
+	}
+	public int delWait(Connection con, int num, String delivery, int dNo) {
+		PreparedStatement pstmt = null;
+		int result2 = 0;
+		
+		String query = prop.getProperty("delWait");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, dNo);
+			pstmt.setString(2, delivery);
+			pstmt.setString(3, "등록");
+			pstmt.setInt(4, num);
+			pstmt.setString(5, "입고");
+			pstmt.setInt(6, num);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result2;
 	}
 }
