@@ -31,7 +31,7 @@ public class ReqService {
 		return list;
 	}
 
-	public int reqOk(String[] status) {
+	/*public int reqOk(String[] status) {
 		Connection con = getConnection();
 		int result = new ReqDao().reqOk(con, status);
 		
@@ -47,7 +47,7 @@ public class ReqService {
 		}
 		close(con);
 		return result;
-	}
+	}*/
 
 	public ArrayList<ReqProduct> reqNoSelect(String[] status) {
 		Connection con = getConnection();
@@ -74,6 +74,35 @@ public class ReqService {
 		} else {
 			rollback(con);
 		}
+		return result;
+	}
+
+	public ReqProduct reqOkSelect(String status) {
+		Connection con = getConnection();
+		
+		ReqProduct rp = new ReqDao().reqOkSelect(con, status);
+		
+		close(con);
+		return rp;
+	}
+
+	public int reqOk(int num, String delivery, int dNo) {
+		Connection con = getConnection();
+		
+		int result = new ReqDao().reqOk(con, num);
+		
+		if(result > 0) {
+			int result1 = new ReqDao().reqOkResult(con, num);
+			if(result1 > 0) {
+				int result2 = new ReqDao().delWait(con, num, delivery, dNo);
+				if(result2 > 0) {
+					commit(con);
+				} else {
+					rollback(con);
+				}
+			}
+		}
+		close(con);
 		return result;
 	}
 

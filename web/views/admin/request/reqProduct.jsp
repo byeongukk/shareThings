@@ -117,13 +117,14 @@
 									<h6 class="m-0 font-weight-bold text-primary"><%= listCount %>건</h6>
 								</div>
 								<div class="card-body">
-									<a href="#" class="btn btn-info btn-icon-split" onclick="ok();" >
+									<a href="#" class="btn btn-info btn-icon-split" id="ok"
+										data-toggle="modal" data-target="#okModal">
 										<span class="icon text-white-50"> <i
 											class="fas fa-info-circle"></i>
 									</span> <span class="text">요청 승인</span>
 									
 									</a> <a href="#" class="btn btn-danger btn-icon-split" id="no"
-										data-toggle="modal" data-target="#cancelModal""> <span
+										data-toggle="modal" data-target="#cancelModal"> <span
 										class="icon text-white-50"> <i class="fas fa-trash"></i>
 									</span> <span class="text">요청 거절</span>
 									</a>
@@ -264,6 +265,60 @@
 								</div>
 							</div>
 						</div>
+						<div class="modal fade" id="okModal" role="dialog">
+							<div class="modal-dialog">
+
+								<!-- Modal content-->
+							<form action="<%= request.getContextPath() %>/reqOk.bo" method="get">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 class="modal-title">요청 승인 처리</h4>
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+									</div>
+									<div class="row">
+										<div class="col-md-12 col-lg-12">
+											<div class="modal-body">
+												<p>물품명과 승인상태를 확인하고 처리하세요</p>
+												<div class="panel-body">
+													<table width="100%"
+														class="table table-striped table-bordered table-hover"
+														id="dataTablesOk">
+														<thead>
+															<tr>																
+																<th style="text-align: center;"
+																	class="text-black-50 small">등록요청번호</th>
+																<th style="text-align: center;"
+																	class="text-black-50 small">물품명</th>
+																<th style="text-align: center;"
+																	class="text-black-50 small">등록자</th>
+															</tr>
+														</thead>
+														<tbody>
+															<!-- <tr class="odd gradeX">
+																<td><input type="checkBox">
+																<td></td>
+																<td></td>
+															</tr> -->
+														</tbody>
+													</table>
+												</div>
+												<h5>*택배사</h5>
+												<textarea id="delivery" name="delivery" class="col-lg-12" placeholder="EX)CJ대한통운"></textarea>
+												<h5>*송장번호</h5>
+												<textarea id="dNo" name="dNo" class="col-lg-12" placeholder="EX)송장번호 입력"></textarea>
+											</div>
+											<div class="modal-footer">
+												<button type="submit" class="btn btn-default"
+													data-dismiss="modal" id="okResult">승인처리</button>
+												<button type="button" class="btn btn-default"
+													data-dismiss="modal">닫기</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</form>
+							</div>
+						</div>
 						<div class="modal fade" id="cancelModal" role="dialog">
 							<div class="modal-dialog">
 
@@ -293,12 +348,11 @@
 															</tr>
 														</thead>
 														<tbody>
-															<tr class="odd gradeX">
+															<!-- <tr class="odd gradeX">
 																<td><input type="checkBox">
 																<td></td>
 																<td></td>
-																<td></td>
-															</tr>
+															</tr> -->
 														</tbody>
 													</table>
 												</div>
@@ -345,7 +399,7 @@
 			});
 		});
 		
-		function ok() {
+		<%-- function ok() {
 			var result = confirm("정말 승인하시겠습니까?");
 			if(result) {
 				var status = new Array();
@@ -361,7 +415,65 @@
 			} else {
 				location = location;
 			}
-		}
+		} --%>
+		$("#ok").click(function() {
+			var status = new Array();
+			$(".even").each(function() {
+				if($(this).find(".check").is(":checked")) {	
+					console.log($(this).find("td").eq(1).text());
+					status.push($(this).find("td").eq(1).text());
+				}
+			});
+			if(status.length > 1) {
+				alert("한개만 선택하세요");
+				return false;
+			}
+			$.ajax({
+				url:"reqOkSelect.bo?status=" + status,
+				type:"get",
+				success:function(data) {
+					console.log(data);
+					
+					var $dataTables = $("#dataTablesOk tbody");
+					var $delivery = $("<textarea id='delivery' name='delivery' class='col-lg-12' placeholder='EX)CJ대한통운'></textarea>");
+					var $dNo = $("<textarea id='dNo' name='dNo' class='col-lg-12' placeholder='EX)송장번호 입력'></textarea>"); 		
+			
+					//기존 테이블 행 제거
+					$("#dataTablesOk > tbody > tr").remove();
+					$delivery.remove();
+					$dNo.remove();
+					
+					var $tr = $("<tr class='odd gradeX'>");
+					var $upNoTd = $("<td>").text(data.upNo);
+					var $bWriterTd = $("<td>").text(data.bWriter);
+					var $productNameTd = $("<td>").text(data.productName);
+						
+					$tr.append($upNoTd);
+					$tr.append($bWriterTd);
+					$tr.append($productNameTd);
+						
+					$dataTables.append($tr);
+					//$("#modal-body").append($dataTables);
+					/* $("#modal-body").append($delivery);
+					$("#modal-body").append($dNo); */
+				},
+				error:function(data) {
+					console.log("실패");
+				}
+			});
+		});
+		
+		$("#okResult").click(function() {
+			var num = $(".gradeX").find("td").eq(0).text();
+			
+			var delivery = $("#delivery").val();
+			var dNo = $("#dNo").val();
+			console.log(delivery);
+			console.log(dNo);
+			console.log(num)
+			var textResult = $("#textResult").val();
+			location = "<%= request.getContextPath() %>/reqOk.bo?num=" + num + "&delivery=" + delivery + "&dNo=" + dNo;
+		});
 		
 		$("#no").click(function () {
 			var status = new Array();
@@ -397,7 +509,7 @@
 						
 						$dataTables.append($tr);
 					}
-					$("#modal-body").append($textarea);
+					//$("#modal-body").append($textarea);
 				},
 				error:function(data) {
 					console.log("실패");
@@ -407,11 +519,12 @@
 		$("#result").click(function() {
 			var nums = new Array();
 			$(".gradeX").each(function() {
-				console.log($(this).find("td").eq(0).text());
+				console.log($(this).find("td").eq(0).text())
 				nums.push($(this).find("td").eq(0).text());
 			});
 			alert($("#textResult").val());
 			var textResult = $("#textResult").val();
+			console.log(nums);
 			location = "<%= request.getContextPath() %>/reqNo.bo?nums=" + nums + "&textResult=" + textResult;
 		});
 		</script>
