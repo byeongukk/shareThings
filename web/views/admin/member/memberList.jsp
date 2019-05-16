@@ -200,7 +200,7 @@
 																<td><%=m.getPhone()%></td>
 																<td><%=m.getAddress()%></td>
 																<td><%=m.getProfits()%></td>
-																<td><%=m.getPoint()%></td>
+																<td><%=m.getTotalPoint()%></td>
 																<td><%=m.getPenaltyPoint()%></td>
 																<td><%=m.getEnrollDate()%></td>
 																<td><%=m.getStatus()%></td>
