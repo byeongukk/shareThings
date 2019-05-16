@@ -1,13 +1,16 @@
 package com.kh.st.request.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import com.kh.st.request.model.service.ReqService;
+import com.kh.st.request.model.vo.ReqProduct;
 
 /**
  * Servlet implementation class ReqOkServlet
@@ -30,20 +33,20 @@ public class ReqOkServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
 		
-		String statuses = request.getParameter("status");
-		String[] status = statuses.split(",");
+		int num = Integer.parseInt(request.getParameter("num"));
+		String delivery = request.getParameter("delivery");
+		int dNo = Integer.parseInt(request.getParameter("dNo"));
+		
+		System.out.println(num);
+		System.out.println(delivery);
+		System.out.println(dNo);
+		
+		int result = new ReqService().reqOk(num, delivery, dNo);
 		
 		String page = "";
-		if(statuses.equals("")) {
-			page = "views/common/errorPage.jsp";
-			request.setAttribute("msg", "승인 물품을 선택하세요");
-			request.getRequestDispatcher(page).forward(request, response);
-		}
-		
-		int result = new ReqService().reqOk(status);
-		
 		if(result > 0) {
 			response.sendRedirect(request.getContextPath() + "/reqProduct.bo");
+			System.out.println("성공");
 		} else {
 			page = "views/common/errorPage.jsp";
 			request.setAttribute("msg", "승인 오류");

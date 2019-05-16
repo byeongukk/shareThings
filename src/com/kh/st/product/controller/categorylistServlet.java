@@ -1,25 +1,28 @@
-package com.kh.st.request.controller;
+package com.kh.st.product.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.kh.st.request.model.service.ReqService;
+import com.kh.st.product.model.service.CategoryListService;
+
 
 /**
- * Servlet implementation class ReqNoServlet
+ * Servlet implementation class categorylistServlet
  */
-@WebServlet("/reqNo.bo")
-public class ReqNoServlet extends HttpServlet {
+@WebServlet("/categoryList.do")
+public class categorylistServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ReqNoServlet() {
+    public categorylistServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -28,25 +31,21 @@ public class ReqNoServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setCharacterEncoding("UTF-8");
+		request.setCharacterEncoding("UTF-8");
 		
-		String textResult = request.getParameter("textResult");
-		String nums = request.getParameter("nums");
-		String[] num = nums.split(",");
+		String topcategory = request.getParameter("tGroup");
+		ArrayList<Object> clist = new CategoryListService().loadList(topcategory);
 		
-		for(int i = 0; i < num.length; i++) {
-			System.out.println(num[i]);
+		for(int i = 0; i < clist.size(); i++) {
+			System.out.println(clist.get(i));
 		}
-		int result = new ReqService().reqNo(num, textResult);
 		
-		String page = "";
-		if(result > 0) {
-			response.sendRedirect(request.getContextPath() + "/reqProduct.bo");
-		} else {
-			page = "views/common/errorPage.jsp";
-			request.setAttribute("msg", "거절 오류");
-			request.getRequestDispatcher(page).forward(request, response);
-		}
+		System.out.println();
+		
+		
+		
+		
+		
 	}
 
 	/**

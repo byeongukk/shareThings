@@ -491,8 +491,100 @@ public class MemberDao {
 		return list;
 	}
 	
+	public int updateReportNo(Connection con, String[] num, String inputReject) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("reportNo");
+		
+		try {
+			for(int i = 0; i < num.length; i++) {
+				pstmt = con.prepareStatement(query);
+				pstmt.setString(1, inputReject);
+				pstmt.setInt(2, Integer.parseInt(num[i]));
+				
+				result += pstmt.executeUpdate();
+			}
+			
+			if(result == num.length) {
+				result = 1;
+			}else {
+				result = 0;
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
 	
-	
+	public HashMap<String, Object> selectOneMember(Connection con, int no) {
+		PreparedStatement pstmt = null;
+		HashMap<String,Object> hmap = null;
+		ResultSet rset = null;
+		
+		String query = prop.getProperty("selectOneMember");
+		
+		 try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, no);
+			pstmt.setInt(2, no);
+			pstmt.setInt(3, no);
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				hmap = new HashMap<String,Object>();
+				
+				hmap.put("userNo", rset.getInt("UNO"));
+				hmap.put("userId", rset.getString("USER_ID"));
+				hmap.put("userName", rset.getString("USER_NAME"));
+				if(rset.getString("STATUS").equals("Y")) {
+					hmap.put("status","가입");
+				}else {
+					hmap.put("status","탈퇴");
+				}
+				hmap.put("level", rset.getString("LEVEL_NAME"));
+				hmap.put("phone", rset.getString("PHONE"));
+				hmap.put("subPhone", rset.getString("SUB_PHONE"));
+				hmap.put("birth", rset.getDate("BIRTH_DATE"));
+				hmap.put("gender", rset.getString("GENDER"));
+				hmap.put("address", rset.getString("ADDRESS"));
+				hmap.put("email", rset.getString("EMAIL"));
+				hmap.put("enrollDate", rset.getDate("ENROLL_DATE"));
+				hmap.put("modifyDate", rset.getDate("MODIFY_DATE"));
+				hmap.put("totalPoint", rset.getInt("TOTAL_POINT"));
+				hmap.put("penaltyPoint", rset.getInt("PENALTY_POINT"));
+				hmap.put("profits", rset.getInt("PROFITS"));
+				hmap.put("option", rset.getString("OPTION_CHECK"));
+				hmap.put("social", rset.getString("SOCIAL_LINK"));
+				hmap.put("verif", rset.getString("EMAIL_VERIF"));
+				if(rset.getString("SOCIAL_LINK") == null) {
+					hmap.put("social", "ST");
+				}else if(rset.getString("SOCIAL_LINK").equals("K")) {
+					hmap.put("social", "카카오");
+				}else if(rset.getString("SOCIAL_LINK").equals("G")) {
+					hmap.put("social", "구글");
+				}else {
+					hmap.put("social", "네이버");
+				}
+				hmap.put("input", rset.getInt("INPUT"));
+				hmap.put("output", rset.getInt("OUTPUT"));
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		
+		
+		return hmap;
+	}
 	
 	//---------------------------------------------- 민지 ----------------------------------------------
 	public Member login(Connection con, String userId, String userPwd) {
@@ -649,6 +741,10 @@ public class MemberDao {
 		}
 		return result;
 	}
+
+	
+
+	
 
 	
 
