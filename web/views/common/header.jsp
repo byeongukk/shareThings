@@ -94,6 +94,7 @@
 	#submenu li:hover {
 		background:white;
 		color:#F44A0C;
+		cursor:pointer;
 	}
 	#submenu a {
 		text-decoration:none;
