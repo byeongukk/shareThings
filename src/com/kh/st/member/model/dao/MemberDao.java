@@ -666,6 +666,112 @@ public class MemberDao {
 		return result;
 	}
 	
+	public ArrayList<HashMap<String, Object>> selectMemberFilter(Connection con, HashMap<String, Object> condition) {
+		
+		ArrayList<HashMap<String,Object>> list = null;
+		HashMap<String,Object> hmap = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		ArrayList<String> queryArr = new ArrayList<String>();
+		ArrayList<Object> bindVal = new ArrayList<Object>();
+		String query = null;
+		boolean allViewsChk = false;
+		
+		if(condition.get("status").equals("0") && condition.get("startDate").equals("")
+				&& condition.get("userId").equals("") && condition.get("userName").equals("")
+				&& condition.get("userLv").equals("0")) {
+			allViewsChk = true;
+			queryArr.add(" 1 = ? ");
+			bindVal.add("1");
+		}else {
+		
+			if(!(condition.get("userId").equals(""))) {
+				queryArr.add(" USER_ID = ? ");
+				bindVal.add(condition.get("userId"));
+			}
+			
+			if(!(condition.get("userName").equals(""))) {
+				queryArr.add(" USER_NAME = ? ");
+				bindVal.add(condition.get("userName"));
+			}
+			
+			if(!(condition.get("userLv").equals("0"))) {
+				queryArr.add(" MEMBER_LEVEL = ? ");
+				bindVal.add(condition.get("userLv"));
+			}
+			
+			if(!(condition.get("status").equals("0"))) {
+				queryArr.add(" STATUS = ? ");
+				bindVal.add(condition.get("status"));
+			}
+			
+			if(!(condition.get("startDate").equals(""))) {
+				queryArr.add(" ENROLL_DATE BETWEEN ? ");
+				queryArr.add(" ? ");
+				bindVal.add(condition.get("startDate"));
+				bindVal.add(condition.get("endDate"));
+			}
+
+		}
+		
+		query = prop.getProperty("memberFilter");
+		
+		if(allViewsChk ==false) {
+			for(int i = 0; i < queryArr.size(); i++) {
+				if(i == queryArr.size()-1) {
+					query += queryArr.get(i);
+				}else {
+					query += queryArr.get(i) + " AND ";
+				}
+			}
+		}else {
+			query += queryArr.get(0);
+		}
+		
+		query += "ORDER BY UNO DESC";
+		System.out.println(query);
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			
+			for(int i = 0; i < bindVal.size(); i++) {
+				pstmt.setObject(i+1, bindVal.get(i));
+			}
+			
+			rset = pstmt.executeQuery();
+			list = new ArrayList<HashMap<String,Object>>();
+			
+			while(rset.next()) {
+				hmap = new HashMap<String,Object>();
+				
+				hmap.put("uno", rset.getInt("UNO"));
+				hmap.put("userId", rset.getString("USER_ID"));
+				hmap.put("userName", rset.getString("USER_NAME"));
+				hmap.put("phone", rset.getString("PHONE"));
+				hmap.put("address", rset.getString("ADDRESS"));
+				hmap.put("profits", rset.getInt("PROFITS"));
+				hmap.put("totalPoint", rset.getInt("TOTAL_POINT"));
+				hmap.put("penaltyPoint", rset.getInt("PENALTY_POINT"));
+				hmap.put("enrollDate", rset.getDate("ENROLL_DATE"));
+				if(rset.getString("STATUS").equals("Y")) {
+					hmap.put("status", "가입");
+				}else {
+					hmap.put("status", "탈퇴");
+				}
+				
+				list.add(hmap);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		
+		return list;
+	}
+	
 	
 	
 	//---------------------------------------------- 민지 ----------------------------------------------
@@ -823,6 +929,34 @@ public class MemberDao {
 		}
 		return result;
 	}
+
+	
+
+
+	   /*------------------------------준혁 -------------------------------------*/
+	   public int updateUserInfo(Connection con, Member loginUser) {
+	      PreparedStatement pstmt = null;
+	      int result = 0;
+	      String query = prop.getProperty("updateUser");
+	      
+	      try {
+	         pstmt = con.prepareStatement(query);
+	         pstmt.setString(1, loginUser.getUserName());
+	         pstmt.setString(2, loginUser.getEmail());
+	         pstmt.setString(3, loginUser.getPhone());
+	         pstmt.setString(4, loginUser.getSubPhone());
+	         pstmt.setInt(5, loginUser.getUno());
+	         
+	         result = pstmt.executeUpdate();
+	         
+	      } catch (SQLException e) {
+	         // TODO Auto-generated catch block
+	         e.printStackTrace();
+	      }finally {
+	         close(pstmt);
+	      }
+	      return result;
+	   }
 
 	
 

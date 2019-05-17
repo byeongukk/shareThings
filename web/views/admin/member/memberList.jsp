@@ -85,54 +85,41 @@
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">조회 필터</div>
 								<div class="card-body">
-									<table class="col-lg-12" id="filterArea">
-										<tr style="height: 20px">
-											<td style="width: 70px">회원ID :</td>
-											<td><input type="text" name="userId" style="width: 80%"></td>
-											<td style="width: 70px">회원명 :</td>
-											<td><input type="text" name="userName"
-												style="width: 80%"></td>
-											<td style="width: 90px">회원등급 :</td>
-											<td><select style="heigth: 30px; width: 80%;">
-													<option>전체</option>
-													<option>브론즈</option>
-													<option>실버</option>
-													<option>골드</option>
-													<option>VIP</option>
-													<option>VVIP</option>
-											</select></td>
-											<td style="width: 60px">상태 :</td>
-											<td><select style="heigth: 30px; width: 80%;">
-													<option>전체</option>
-													<option>가입</option>
-													<option>탈퇴</option>
-											</select></td>
-										</tr>
-										<tr>
-											<td style="width: 70px">수익금 :</td>
-											<td colspan="3"><input type="number" name="startM"
-												style="width: 40%">&nbsp;&nbsp;&nbsp; ~
-												&nbsp;&nbsp;&nbsp; <input type="number" name="endM"
-												style="width: 40%"></td>
-											<td style="width: 70px">적립금 :</td>
-											<td colspan="3"><input type="number" name="startM"
-												style="width: 40%">&nbsp;&nbsp;&nbsp; ~
-												&nbsp;&nbsp;&nbsp; <input type="number" name="endM"
-												style="width: 40%"></td>
-										</tr>
-										<tr>
-											<td style="width: 70px">가입일 :</td>
-											<td colspan="3"><input type="date" name="startD"
-												style="width: 40%">&nbsp;&nbsp;&nbsp; ~
-												&nbsp;&nbsp;&nbsp; <input type="date" name="endD"
-												style="width: 40%"></td>
-										</tr>
-									</table>
-									<div>
-										<button>조회하기</button>
-										&nbsp;&nbsp;&nbsp;
-										<button>초기화</button>
-									</div>
+									<form id="filterArea">
+										<table class="col-lg-12" id="filterArea">
+											<tr style="height: 20px">
+												<td style="width: 70px">회원ID :</td>
+												<td><input type="text" id="userIdF" style="width: 80%"></td>
+												<td style="width: 70px">회원명 :</td>
+												<td><input type="text" id="userNameF" style="width: 80%"></td>
+												<td style="width: 90px">회원등급 :</td>
+												<td><select style="heigth: 30px; width: 80%;" id="userLvF">
+														<option value="0">전체</option>
+														<option value="MLV1">Bronze</option>
+														<option value="MLV2">Silver</option>
+														<option value="MLV3">Gold</option>
+														<option value="MLV4">VIP</option>
+														<option value="MLV5">VVIP</option>
+												</select></td>
+												<td style="width: 60px">상태 :</td>
+												<td><select style="heigth: 30px; width: 80%;" id="statusF">
+														<option value="0">전체</option>
+														<option value="Y">가입</option>
+														<option value="N">탈퇴</option>
+												</select></td>
+											</tr>
+											<tr>
+												<td style="width: 70px">가입일 :</td>
+												<td colspan="3"><input type="date" id="startD" style="width: 20%">&nbsp;&nbsp;&nbsp; ~
+													&nbsp;&nbsp;&nbsp; <input type="date" id="endD" style="width: 20%"></td>
+											</tr>
+										</table>
+										<div>
+											<button type="button" id="inquiry">조회하기</button>
+											&nbsp;&nbsp;&nbsp;
+											<button type="reset">초기화</button>
+										</div>
+									</form>
 								</div>
 							</div>
 							<div class="card shadow mb-4">
@@ -410,55 +397,127 @@
 			<%@ include file="../common/logoutModal.jsp"%>
 
 			<script>
-			$(function(){
-		    	$(".even").mouseenter(function(){
-		    		$(this).css({"background":"lightblue", "color":"black" ,"cursor":"pointer"})
-		    	}).mouseout(function(){
-		    		$(this).css({"background":"white", "color":"gray"})
-		    	}).click(function(){
-		    		var no = $(this).children().eq(0).text();
-					console.log(no);
-					$.ajax({
-						url:"selectOneMember.me?no=" + no,
-						type:"post",
-						success:function(data){
-							$("#noTd").text(data.userNo);
-							$("#statusTd").text(data.status);
-							$("#idTd").text(data.userId);
-							$("#nameTd").text(data.userName);
-							$("#levelTd").text(data.level);
-							$("#socialTd").text(data.social);
-							$("#optionTd").text(data.option);
-							$("#emailVTd").text(data.verif);
-							$("#profitsTd").text(data.profits);
-							$("#pointTd").text(data.totalPoint);
-							$("#penaltyTd").text(data.penaltyPoint);
-							$("#birthTd").text(data.birth);
-							$("#genderTd").text(data.gender);
-							$("#phoneTd").text(data.phone);
-							$("#addressTd").text(data.address);
-							$("#emailTd").text(data.email);
-							$("#enrollTd").text(data.enrollDate);
-							$("#modifyTd").text(data.modifyDate);
-							$("#inputTd").text(data.input);
-							$("#outputTd").text(data.output);
-							$("#subPhoneTd").text(data.subPhone);
-							
-							if(data.status == "탈퇴"){
-								$("#stn").text("탈퇴일");
-							}else{
-								$("#stn").text("수정일");
-							}
-							
-							if(data.subPhone != null){
-								$("#hide").show();
-							}else{
-								$("#hide").hide();
-							}
+			$(document).on('click', '.even', function(){
+	    		var no = $(this).children().eq(0).text();
+				console.log(no);
+				$.ajax({
+					url:"selectOneMember.me?no=" + no,
+					type:"post",
+					success:function(data){
+						$("#noTd").text(data.userNo);
+						$("#statusTd").text(data.status);
+						$("#idTd").text(data.userId);
+						$("#nameTd").text(data.userName);
+						$("#levelTd").text(data.level);
+						$("#socialTd").text(data.social);
+						$("#optionTd").text(data.option);
+						$("#emailVTd").text(data.verif);
+						$("#profitsTd").text(data.profits);
+						$("#pointTd").text(data.totalPoint);
+						$("#penaltyTd").text(data.penaltyPoint);
+						$("#birthTd").text(data.birth);
+						$("#genderTd").text(data.gender);
+						$("#phoneTd").text(data.phone);
+						$("#addressTd").text(data.address);
+						$("#emailTd").text(data.email);
+						$("#enrollTd").text(data.enrollDate);
+						$("#modifyTd").text(data.modifyDate);
+						$("#inputTd").text(data.input);
+						$("#outputTd").text(data.output);
+						$("#subPhoneTd").text(data.subPhone);
+						
+						if(data.status == "탈퇴"){
+							$("#stn").text("탈퇴일");
+						}else{
+							$("#stn").text("수정일");
 						}
-					});
-					
+						
+						if(data.subPhone != null){
+							$("#hide").show();
+						}else{
+							$("#hide").hide();
+						}
+					}
+				});
+	    	});
+			$(document).on('mouseenter', '.even', function(){
+				$(this).css({"background":"lightblue", "color":"black" ,"cursor":"pointer"})
+			}).on('mouseout', '.even', function(){
+				$(this).css({"background":"white", "color":"gray"})
+			});
+			
+			$(function(){
+				
+		    	$("#inquiry").click(function(){
+		    		var userId = $("#userIdF").val();
+		    		var userName = $("#userNameF").val();
+		    		var userLv = $("#userLvF").val();
+		    		var userStatus = $("#statusF").val();
+		    		var startDate = $("#startD").val();
+		    		var endDate = $("#endD").val();
+		    		
+		    		if(startDate>endDate || (endDate!="" && startDate=="")){
+		    			alert("기간이 잘못 되었습니다");
+		    			return;
+		    		}
+		    		
+		    		$.ajax({
+		    			url:"<%=request.getContextPath()%>/selectMemberFilter.me",
+		    			data:{
+		    				userId:userId,
+		    				userName:userName,
+		    				userLv:userLv,
+		    				userStatus:userStatus,
+		    				startDate:startDate,
+		    				endDate:endDate
+		    			},
+		    			type:"get",
+		    			success:function(data){
+		    				$("#dataTable > tbody > tr").remove();
+		    				
+		    				var $dataTable = $("#dataTable");
+							/* 조회된 값이 없을때 출력할 공간 */
+							var $resultNull = $("#result-null");
+							/* 조회된 건수 출력할 공간 */
+							var $listSize = $("#listSize");
+							
+							$resultNull.html('');
+							$listSize.prop("innerHTML",'');
+							if(data.length>0){
+								for(var key in data){
+									
+									var $tr = $("<tr role='row' class='even' align='center' data-toggle='modal' data-target='#detail'>");
+									var $noTd = $("<td>").text(data[key].uno);
+									var $idTd = $("<td>").text(data[key].userId);
+									var $nameTd = $("<td>").text(data[key].userName);
+									var $phTd = $("<td>").text(data[key].phone);
+									var $addressTd = $("<td>").text(data[key].address);
+									var $profitsTd = $("<td>").text(data[key].profits);
+									var $tpTd = $("<td>").text(data[key].totalPoint);
+									var $ppTd = $("<td>").text(data[key].penaltyPoint);
+									var $edTd = $("<td>").text(data[key].enrollDate);
+									var $stTd = $("<td>").text(data[key].status);
+									
+									$tr.append($noTd);
+									$tr.append($idTd);
+									$tr.append($nameTd);
+									$tr.append($phTd);
+									$tr.append($addressTd);
+									$tr.append($profitsTd);
+									$tr.append($tpTd);
+									$tr.append($ppTd);
+									$tr.append($edTd);
+									$tr.append($stTd);
+									
+									$dataTable.append($tr);
+								}
+							}else{
+								
+							}
+		    			}
+		    		});
 		    	});
+		    	
 		    });
 			</script>
 			<script

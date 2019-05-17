@@ -216,6 +216,15 @@ public class MemberService {
 		
 		return result;
 	}
+	
+	public ArrayList<HashMap<String, Object>> selectMemberFilter(HashMap<String, Object> condition) {
+		Connection con = getConnection();
+		ArrayList<HashMap<String,Object>> list = new MemberDao().selectMemberFilter(con, condition);
+		
+		close(con);
+		return list;
+	}
+
 
 	
 	//---------------------------------------------- 민지 ----------------------------------------------
@@ -275,6 +284,22 @@ public class MemberService {
 		return updateUser;
 	}
 
+	/*-----------------------------------------준혁--------------------------------------------------------*/
+
+	   public int updateUserInfo(Member loginUser) {
+	      
+	      Connection con = getConnection();
+	      int result = new MemberDao().updateUserInfo(con, loginUser);
+	      
+	      if(result > 0) {
+	         commit(con);
+	      }else {
+	         rollback(con);
+	      }
+	      close(con);
+	      
+	      return result;
+	   }
 	
 
 	
