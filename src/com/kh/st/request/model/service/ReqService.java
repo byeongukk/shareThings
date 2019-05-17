@@ -31,24 +31,6 @@ public class ReqService {
 		return list;
 	}
 
-	/*public int reqOk(String[] status) {
-		Connection con = getConnection();
-		int result = new ReqDao().reqOk(con, status);
-		
-		if(result == status.length) {
-			int result1 = new ReqDao().reqOkResult(con, status);
-			if(result1 == status.length) {
-				commit(con);				
-			} else {
-				rollback(con);
-			}
-		} else {
-			rollback(con);
-		}
-		close(con);
-		return result;
-	}*/
-
 	public ArrayList<ReqProduct> reqNoSelect(String[] status) {
 		Connection con = getConnection();
 		
@@ -93,11 +75,15 @@ public class ReqService {
 		
 		if(result > 0) {
 			int result1 = new ReqDao().reqOkResult(con, num);
+			
 			if(result1 > 0) {
 				int result2 = new ReqDao().delWait(con, num, delivery, dNo);
+				
 				if(result2 > 0) {
+					result = 1;
 					commit(con);
 				} else {
+					result = 0;
 					rollback(con);
 				}
 			}

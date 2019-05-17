@@ -388,6 +388,7 @@
 
 		<script>
 		$(function () {
+			//전체 선택, 해제
 			$("#checkAll").click(function() {
 				var check = $(this).is(":checked");
 				var result = $(".even").find("td").eq(6).text();
@@ -397,25 +398,29 @@
 					$(".check").prop("checked", false);
 				}
 			});
+			
+			//체크박스 클릭해도 동작 X(해당 번호 가져옴)
+			$(".sorting_1").siblings().click(function() {
+				$(this).parent().each(function() {
+					console.log($(this).find("td").eq(1).text());
+					var reqNum = $(this).find("td").eq(1).text();
+					location = "<%= request.getContextPath()%>/reqProductDetail.bo?reqNum=" + reqNum;
+				});
+			});
+			
+			//td클릭해도 체크되게
+			$(".sorting_1").click(function() {
+				$(this).parent().each(function() {
+					var check = $(this).find(".check").is(":checked");
+					if(!check) {
+						$(this).find(".check").prop("checked", true);
+					} else {
+						$(this).find(".check").prop("checked", false);
+					}
+				});
+			});
 		});
 		
-		<%-- function ok() {
-			var result = confirm("정말 승인하시겠습니까?");
-			if(result) {
-				var status = new Array();
-				$(".even").each(function() {
-					if($(this).find(".check").is(":checked")) {	
-						console.log($(this).find("td").eq(1).text());
-						status.push($(this).find("td").eq(1).text());
-					}
-						
-				});
-				console.log(status);
-				location = "<%= request.getContextPath() %>/reqOk.bo?status=" + status;
-			} else {
-				location = location;
-			}
-		} --%>
 		$("#ok").click(function() {
 			var status = new Array();
 			$(".even").each(function() {
