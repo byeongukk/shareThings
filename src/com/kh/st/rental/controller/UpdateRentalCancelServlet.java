@@ -14,7 +14,7 @@ import com.kh.st.rental.model.service.RentalService;
 /**
  * Servlet implementation class UpdateRentalCancelServlet
  */
-@WebServlet("/cancle.rt")
+@WebServlet("/cancel.rt")
 public class UpdateRentalCancelServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 

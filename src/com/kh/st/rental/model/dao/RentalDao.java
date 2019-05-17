@@ -321,7 +321,7 @@ public class RentalDao {
 	public int updateProductStatus(Connection con, String[] pno) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		String query = prop.getProperty("updatePStatus");
+		String query = prop.getProperty("updatePdStatus");
 		
 		try {
 			System.out.println(pno);
@@ -349,4 +349,98 @@ public class RentalDao {
 		}
 		return result;
 	}
+
+	// 송장번호 입력  
+	public int insertInvcNum(Connection con, HashMap<String, Object> invoiceVal) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = prop.getProperty("insertInvcNum");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			//송장번호
+			pstmt.setObject(1, invoiceVal.get("invoiceNum"));
+			pstmt.setObject(2, invoiceVal.get("dCom"));
+			pstmt.setObject(3, invoiceVal.get("rtNo"));
+			pstmt.setObject(4, invoiceVal.get("userId"));
+			
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	/* 대여상태 으로 바꾸기*/
+	public int updateRentalStatusSw(Connection con, HashMap<String, Object> invoiceVal) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = prop.getProperty("updateRentalStatusSw");
+		
+		try {
+			
+			pstmt = con.prepareStatement(query);
+			
+			//물품번호
+			pstmt.setObject(1, invoiceVal.get("rtNo"));			
+			
+			result = pstmt.executeUpdate();
+
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	/* 물품 상태 대여중으로 바꿈*/
+	public int updatePdStatusS(Connection con, HashMap<String, Object> invoiceVal) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = prop.getProperty("updatePdStatusS");
+		
+		try {
+			
+			pstmt = con.prepareStatement(query);
+			
+			//물품번호
+			pstmt.setObject(1, invoiceVal.get("pno"));			
+			
+			result = pstmt.executeUpdate();
+
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
