@@ -10,10 +10,10 @@ import com.kh.st.product.model.dao.CategoryListDao;
 
 public class CategoryListService {
 
-	public ArrayList<Object> loadList(String topcategory) {
+	public ArrayList<Object> loadList(String big) {
 		Connection con = getConnection();
 		
-		ArrayList<Object> clist = new CategoryListDao().loadList(con, topcategory);
+		ArrayList<Object> clist = new CategoryListDao().loadList(con, big);
 		
 		close(con);
 		
