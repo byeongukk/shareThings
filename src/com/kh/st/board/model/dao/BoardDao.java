@@ -36,6 +36,7 @@ public class BoardDao {
 		try {
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, ctgLv2);
+			pstmt.setString(2,"등록");
 			rset = pstmt.executeQuery();
 			
 			bList = new ArrayList<HashMap<String, Object>>();
@@ -44,17 +45,16 @@ public class BoardDao {
 				hmap.put("bno", rset.getInt("BNO"));
 				hmap.put("pno", rset.getInt("PNO"));
 				hmap.put("bTitle", rset.getString("BTITLE"));
-				hmap.put("bContent", rset.getString("BCONTENT"));
 				hmap.put("bWriter", rset.getString("USER_NAME"));
 				hmap.put("bCount", rset.getInt("BCOUNT"));
 				hmap.put("bDate", rset.getDate("BDATE"));
-				hmap.put("bLevel", rset.getInt("BLEVEL"));
 				hmap.put("reviewStar", rset.getInt("REVIEW_STAR"));
 				hmap.put("ano", rset.getInt("ANO"));
-				hmap.put("originName", rset.getString("ORIGIN_NAME"));
 				hmap.put("changeName", rset.getString("CHANGE_NAME"));
-				hmap.put("uploadDate", rset.getDate("UPLOAD_DATE"));
-				
+				hmap.put("filePath", rset.getString("FILE_PATH"));
+				hmap.put("price", rset.getInt("PRICE"));
+				hmap.put("deposit", rset.getInt("DEPOSIT"));
+				hmap.put("rtCount", rset.getInt("COUNT(RT.RT_NO)"));
 				bList.add(hmap);
 			}
 		} catch (SQLException e) {
@@ -63,6 +63,47 @@ public class BoardDao {
 			close(pstmt);
 			close(rset);
 		}
+		return bList;
+	}
+	public ArrayList<HashMap<String, Object>> selectFilterList(Connection con, HashMap<String, Object> filterMap) {
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<HashMap<String, Object>> bList = null;
+		HashMap<String, Object> hmap = null;
+		String query = prop.getProperty("selectFilterList");
+		
+		String orderBy = "";
+		if(filterMap.get("orderBy").equals("recent")) {
+			orderBy = "B.BDATE DESC";
+		}else if(filterMap.get("orcerBy").equals("popular")) {
+			orderBy = "COUNT(RT.RT_NO)";
+		}else if(filterMap.get("orderBy").equals("review")) {
+			orderBy = "B.REVIEW_STAR DESC";
+		}else if(filterMap.get("orderBy").equals("priceAsc")) {
+			orderBy = "P.PRICE ASC";
+		}else if(filterMap.get("orderBy").equals("priceDesc")) {
+			orderBy = "P.PRICE DESC";
+		}
+		
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, filterMap.get("ctgLv2").toString());
+			//pstmt.setString(2, x);
+			
+			
+			
+			
+			
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		
 		return bList;
 	}
 	

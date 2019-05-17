@@ -4,7 +4,7 @@
 	HashMap<String, Object> listMap = (HashMap<String, Object>)request.getAttribute("listMap");
 	ArrayList<PCategory> ctgList = (ArrayList<PCategory>)listMap.get("ctgList");
 	ArrayList<HashMap<String, Object>> bList = (ArrayList<HashMap<String, Object>>)listMap.get("bList");
-	
+	String ctgLv2 = (String)request.getAttribute("ctgLv2");
 %>
 <!DOCTYPE html>
 <html>
@@ -113,10 +113,12 @@
 								<input type="text" name="endFilter" id="endFilter" placeholder="종료일">
 								<i class="calendar alternate outline icon"></i>
 							</div>
+							<label style="font-size:0.8em; color:gray; font-style:italic">
+							(일주일 단위로 대여가능하며, 최소대여기간은 일주일(7일)입니다.)</label>
 						</div>
 						<div class="col col-lg-6 col-md-6 col-sm-12 col-xs-12">
 							<p>
-								<label for="priceFilter">대여 가격 설정(/일)</label>
+								<label for="priceFilter">대여 가격 설정(/주)</label>
 								<input type="text" id="priceFilter" readonly style="border:0; color:#F44A0C; font-weight:bold;">
 							</p>
 							<div id="slider-range"></div>
@@ -130,7 +132,7 @@
 						<input type="radio" name="orderBy" value="popular" id="byPopular"> 
 						<label for="byPopular" style="font-size:0.8em">인기순</label>
 						<input type="radio" name="orderBy" value="review" id="byReview"> 
-						<label for="byReview" style="font-size:0.8em">리뷰 많은 순</label>
+						<label for="byReview" style="font-size:0.8em">리뷰 점수 높은순</label>
 						<input type="radio" name="orderBy" value="priceAsc" id="byPriceAsc"> 
 						<label for="byPriceAsc" style="font-size:0.8em">가격 낮은 순</label>
 						<input type="radio" name="orderBy" value="priceDesc" id="byPriceDesc"> 
@@ -192,8 +194,60 @@
 	<script>
 		
 		$(function() {
-			$("#startFilter").datepicker();
-		    $("#endFilter").datepicker();
+			//대여 시작일, 종료일 지정
+			var startDate;
+			var endDate;
+			var startDay;
+			var endDay;
+			var today = new Date();
+			start = $("#startFilter").datepicker({
+				defaultDate:"+1w",
+				changeMonth:true,
+				minDate:today,
+				onSelect:function(selectedDate) {
+					startDate = $(this).datepicker('getDate');
+					endDate = new Date(startDate);
+					endDate.setDate(startDate.getDate() + 6);
+					endDay = endDate.getDay();
+					$("#endFilter").datepicker("option", "minDate", endDate);
+				}, 
+				beforeShowDay:function(date) {
+					if(startDay != null) {
+						if(date.getDay() != startDay) {
+							return [false];
+						}else {
+							return [true];
+						}
+					}else {
+						return [true];
+					}
+				}
+			});
+		    end = $("#endFilter").datepicker({
+		    	defaultDate:"+1w",
+		    	changeMonth:true,
+		    	onSelect:function(selectedDate) {
+		    		endDate = $(this).datepicker('getDate');
+		    		startDate = new Date(endDate);
+		    		startDate.setDate(endDate.getDate() - 6);
+		    		startDay = startDate.getDay();
+		    		$("#startFilter").datepicker("option", "maxDate", startDate);
+		    	},
+		    	beforeShowDay:function(date) {
+		    		if(endDay != null) {
+			    		if(date.getDay() != endDay) {
+			    			return [false];
+			    		}else {
+			    			return [true];
+			    		}
+		    		}else {
+		    			return [true];
+		    		}
+		    	}
+		    });
+			
+			
+		    //가격설정 슬라이더
 		    $( "#slider-range" ).slider({
 			      range:true,
 			      min:0,
@@ -201,16 +255,15 @@
 			      step:1000,
 			      values:[0, 100000],
 			      slide:function(event, ui) {
-			        $("#priceFilter").val(ui.values[0] + "원 - " + ui.values[1] + "원");
+			        $("#priceFilter").val(ui.values[0] + "원-" + ui.values[1] + "원");
 			      }
 			});
 			$("#priceFilter").val($("#slider-range").slider("values", 0) +
-			      "원 - " + $("#slider-range").slider("values", 1) + "원");
+			      "원-" + $("#slider-range").slider("values", 1) + "원");
 		});
 		
-		
+		//하위카테고리 선택시 css변화
 		$(".ctgLv3Btn").click(function() {
-			
 			if($(this).css("backgroundColor") != "rgb(12, 182, 244)") {
 				$(this).css("background", "#0CB6F4");
 				$(this).find("i").css("color", "red");
@@ -218,19 +271,38 @@
 				$(this).css("background", "white");
 				$(this).find("i").css("color", "black");
 			}
-			/* if($(this).css("background") != "rgb(12, 182, 244)"){
-			} */
-			
-			
-			var checkBox = $(this).children("input:checkbox");
-			if(checkBox.prop("checked", true)) {
-				checkBox.prop("checked", false);
-			}
-			if(checkBox.prop("checked", false)){
-				checkBox.prop("checked", true);
-			}
+		});
+		
+		
+		//필터적용
+		$("#doFilter").click(function() {
+			var ctgLv3Arr = [];
+			$(".ctgLv3Btn").each(function() {
+				if($(this).css("backgroundColor") == "rgb(12, 182, 244)") {
+					var ctgName = $(this).find("label").text();
+					ctgLv3Arr.push(ctgName);
+				}
+			});
+			var start = $("#startFilter").val();
+			var end = $("#endFilter").val();
+			var priceRange = $("#priceFilter").val();
+			var orderBy = $("input[name=orderBy]").filter(":checked").val();
+			console.log(order);
+			$.ajax({
+				url:"<%= request.getContextPath() %>/filter.bo",
+				type:"post",
+				data:{ctgLv2:<%= ctgLv2 %>, ctgLv3Arr:ctgLv3Arr, start:start, end:end, priceRange:priceRange, orderBy:orderBy},
+				success:function(data) {
+					
+				}, error:function() {
+					alert("서버전송 실패..!");
+				}
+			});
 			
 		});
+		
+		
+		
 		$(".thumbnail").click(function() {
 			location.href="/st/views/main/productDetail.jsp";
 		});

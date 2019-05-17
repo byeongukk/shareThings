@@ -1,4 +1,4 @@
-package com.kh.st.board.model.vo;
+package com.kh.st.attachment.model.vo;
 
 import java.sql.Date;
 
@@ -7,20 +7,23 @@ public class Attachment implements java.io.Serializable{
 	private int ano;
 	private String originName;
 	private String changeName;
-	private String changePath;
+	private String filePath;
 	private Date uploadDate;
 	private int fileLevel;
 	private String aType;
 	private int bno;
 	private int chkNo;
 	private int csNo;
-	public Attachment(int ano, String originName, String changeName, String changePath, Date uploadDate, int fileLevel,
+	
+	public Attachment() {}
+	
+	public Attachment(int ano, String originName, String changeName, String filePath, Date uploadDate, int fileLevel,
 			String aType, int bno, int chkNo, int csNo) {
 		super();
 		this.ano = ano;
 		this.originName = originName;
 		this.changeName = changeName;
-		this.changePath = changePath;
+		this.filePath = filePath;
 		this.uploadDate = uploadDate;
 		this.fileLevel = fileLevel;
 		this.aType = aType;
@@ -49,8 +52,8 @@ public class Attachment implements java.io.Serializable{
 	/**
 	 * @return the changePath
 	 */
-	public String getChangePath() {
-		return changePath;
+	public String getFilePath() {
+		return filePath;
 	}
 	/**
 	 * @return the uploadDate
@@ -109,8 +112,8 @@ public class Attachment implements java.io.Serializable{
 	/**
 	 * @param changePath the changePath to set
 	 */
-	public void setChangePath(String changePath) {
-		this.changePath = changePath;
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
 	}
 	/**
 	 * @param uploadDate the uploadDate to set
@@ -153,8 +156,8 @@ public class Attachment implements java.io.Serializable{
 	 */
 	@Override
 	public String toString() {
-		return "Attachment [ano=" + ano + ", originName=" + originName + ", changeName=" + changeName + ", changePath="
-				+ changePath + ", fileLevel=" + fileLevel + ", aType=" + aType + ", bno=" + bno + ", chkNo=" + chkNo
+		return "Attachment [ano=" + ano + ", originName=" + originName + ", changeName=" + changeName + ", filePath="
+				+ filePath + ", fileLevel=" + fileLevel + ", aType=" + aType + ", bno=" + bno + ", chkNo=" + chkNo
 				+ ", csNo=" + csNo + "]";
 	}
 	
