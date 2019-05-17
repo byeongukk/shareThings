@@ -38,11 +38,8 @@
 	href="<%=request.getContextPath()%>/resource/css/sb-admin-2.min.css"
 	rel="stylesheet">
 <style>
-#filter {
-	margin-top: 50px;
-}
 
-#filterArea td {
+#filter td {
 	padding: 5px;
 }
 
@@ -85,54 +82,56 @@
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">조회 필터</div>
 								<div class="card-body">
-									<table class="col-lg-12" id="filterArea">
-										<tr>
-											<td width="6%">회원ID :</td>
-											<td width="19%"><input type="text" name="memberId"
-												style="width: 80%"></td>
-											<td width="6%">분류 :</td>
-											<td width="19%"><select
-												style="heigth: 30px; width: 80%;">
-													<option value="A">전체</option>
-													<option value="10">파손</option>
-													<option value="20">분실</option>
-													<option value="30">욕설</option>
-													<option value="40">광고</option>
-													<option value="40">기타</option>
-											</select></td>
-											<td width="8%">처리결과 :</td>
-											<td width="17%"><select
-												style="heigth: 30px; width: 80%;">
-													<option value="A">전체</option>
-													<option value="N">부적합</option>
-													<option value="Y">적합</option>
-											</select></td>
-											<td width="5%">상태 :</td>
-											<td width="20%"><select
-												style="heigth: 30px; width: 80%;">
-													<option value="A">전체</option>
-													<option value="N">처리대기</option>
-													<option value="Y">처리완료</option>
-											</select></td>
-										</tr>
-										<tr>
-											<td width="8%">누적벌점 :</td>
-											<td><input type="number" name="startP"
-												style="width: 25%"> &nbsp;&nbsp;&nbsp; ~
-												&nbsp;&nbsp;&nbsp; <input type="number" name="endP"
-												style="width: 25%"></td>
-											<td width="6%">신고일 :</td>
-											<td colspan="3"><input type="date" name="startD"
-												style="width: 40%"> &nbsp;&nbsp;&nbsp; ~
-												&nbsp;&nbsp;&nbsp; <input type="date" name="endD"
-												style="width: 40%"></td>
-										</tr>
-									</table>
-									<div>
-										<button>조회하기</button>
-										&nbsp;&nbsp;&nbsp;
-										<button>초기화</button>
-									</div>
+									<form id="filterArea">
+										<table class="col-lg-12" id="filter">
+											<tr>
+												<td width="6%">회원ID :</td>
+												<td width="19%"><input type="text" id="userIdF"
+													style="width: 80%"></td>
+												<td width="6%">분류 :</td>
+												<td width="19%"><select
+													style="heigth: 30px; width: 80%;" id="reportCodeF">
+														<option value="0">전체</option>
+														<option value="RR1">파손</option>
+														<option value="RR2">분실</option>
+														<option value="RR3">욕설</option>
+														<option value="RR4">광고</option>
+														<option value="RR5">기타</option>
+												</select></td>
+												<td width="8%">처리결과 :</td>
+												<td width="17%"><select
+													style="heigth: 30px; width: 80%;" id="reportResultF">
+														<option value="0">전체</option>
+														<option value="N">부적합</option>
+														<option value="Y">적합</option>
+												</select></td>
+												<td width="5%">상태 :</td>
+												<td width="20%"><select
+													style="heigth: 30px; width: 80%;" id="status">
+														<option value="0">전체</option>
+														<option value="N">처리대기</option>
+														<option value="Y">처리완료</option>
+												</select></td>
+											</tr>
+											<tr>
+												<td width="8%">누적벌점 :</td>
+												<td><input type="number" id="startP"
+													style="width: 25%"> &nbsp;&nbsp;&nbsp; ~
+													&nbsp;&nbsp;&nbsp; <input type="number" id="endP"
+													style="width: 25%"></td>
+												<td width="6%">신고일 :</td>
+												<td colspan="3"><input type="date" id="startD"
+													style="width: 40%"> &nbsp;&nbsp;&nbsp; ~
+													&nbsp;&nbsp;&nbsp; <input type="date" id="endD"
+													style="width: 40%"></td>
+											</tr>
+										</table>
+										<div>
+											<button type="button" id="inquiry">조회하기</button>
+											&nbsp;&nbsp;&nbsp;
+											<button type="reset">초기화</button>
+										</div>
+									</form>
 								</div>
 							</div>
 							<div class="card shadow mb-4">
