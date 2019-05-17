@@ -77,7 +77,6 @@
 														<tr>
 															<td width="10%">대여상태</td>
 															<td width="15%"><select class="form-control" id="rentalStatus" name="rentalStatus">
-																	<option disabled>대여상태</option>
 																	<option value="0">전체</option>
 																	<option value="WT">대여대기</option>
 																	<option value="S">대여중</option> 
@@ -86,7 +85,6 @@
 															</select></td>
 															<td width="10%">상세조건</td>
 															<td width="15%"><select class="form-control" id="details" name="details" onchange = detailsChg();>
-																	<option disabled>상세조건</option>
 																	<option value="0">전체</option>
 																	<option value="rtNo">대여주문번호</option>
 																	<option value="rtUserName">대여자이름</option>
@@ -102,7 +100,7 @@
 
 														<tr>
 															<td>대여기간</td>
-															<td width="25%"><input type="date" value="19/05/05" id="startDate" name="startDate"
+															<td width="25%"><input type="date" id="startDate" name="startDate"
 																style="width: 140px"> &nbsp; ~ &nbsp;<input
 																type="date" id="endDate" name="endDate" style="width: 140px">
 															</td>

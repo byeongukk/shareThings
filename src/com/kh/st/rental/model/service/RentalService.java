@@ -68,6 +68,53 @@ public class RentalService {
 		return result;
 		
 	}
+
+	// 송장번호 입력 
+	public int insertInvcNum(HashMap<String, Object> invoiceVal) {
+		Connection con = getConnection();
+		int result = 0;
+		
+		// delivery insert
+		int dvResult = new RentalDao().insertInvcNum(con,invoiceVal);
+		
+		// delivery 데이터 정상 삽입시
+		if(dvResult > 0) {
+			//대여상테 데이터  대여중으로 업데이트
+			int rtResult = new RentalDao().updateRentalStatusSw(con,invoiceVal);
+			
+			// 대여상태 데이터 정상 업데이트시에
+			if(rtResult > 0) {
+				int pdResult = new RentalDao().updatePdStatusS(con,invoiceVal);
+				
+				//물품상태 데이터 정상 업데이트시에
+				if(pdResult>0) {
+					result = 1;
+				}
+				
+			}
+		}
+		
+		if(result>0) {
+			commit(con);
+		}else {
+			rollback(con);
+		}
+		System.out.println(result);
+		return result;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	

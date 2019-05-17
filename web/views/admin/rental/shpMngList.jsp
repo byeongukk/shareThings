@@ -139,15 +139,15 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 											<div class="form-group">
 												<span>송장 정보 입력 : </span>
 												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-												<select class="form-control">
-													<option>택배사</option>
-													<option>대한통운</option>
-													<option>로젠택배</option>
-													<option>ㅁㄴㅇㄴㅁ</option>
-												</select> &nbsp;&nbsp;&nbsp;&nbsp; <span> <input type="number"
-													class="form-control" placeholder="송장번호">
+												<select class="form-control" id="dCom">
+													<option disabled>택배사</option>
+													<option value="d1">대한통운</option>
+													<option value="d2">로젠택배</option>
+												</select> 
+												&nbsp;&nbsp;&nbsp;&nbsp; <span> <input type="number"
+													class="form-control" id="invoiceNum" placeholder="송장번호">
 												</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-												<button class="btn btn-success btn-icon-split btn-sm">
+												<button type="button" class="btn btn-success btn-icon-split btn-sm" id="applyBtn">
 													<span class="icon text-white-50"> <i
 														class="fas fas fa-check"></i>
 													</span> <span class="text">적용하기</span>
@@ -406,7 +406,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 						pnos.push($(this).find("td").eq(0).text());
 					});
 					var textResult = $("#textResult").val();
-					location = "<%= request.getContextPath() %>/cancle.rt?rtNos=" + rtNos + "&textResult=" + textResult + "&pnos=" + pnos;
+					location = "<%= request.getContextPath() %>/cancel.rt?rtNos=" + rtNos + "&textResult=" + textResult + "&pnos=" + pnos;
 				}
 			});
 			
@@ -420,6 +420,43 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 				} else {
 					$(".check").prop("checked", false);
 				}
+			});
+			
+			//택배송장 입력 
+			$("#applyBtn").click(function(){
+				var status = new Array();
+				var dCom =  $("#dCom").val();
+				var rtNo = "";
+				var pno = "";
+				var invoiceNum = $("#invoiceNum").val();
+				$(".odd").each(function() {
+					if($(this).find(".check").is(":checked")) {	
+						status.push($(this).find("td").eq(1).text());
+						
+						rtNo = $(this).find("td").eq(1).text();
+						pno = $(this).find("td").eq(2).text();
+						userId = $(this).find("td").eq(4).text();
+					}
+				});
+				if(status.length != 1 ) {
+					alert("적용하실 물품을 1개 선택하세요");
+					return false;
+				}
+				console.log(rtNo);
+				console.log(dCom);
+				console.log(pno);
+				console.log("송장입력");
+				//송장번호 받아오기
+				
+				console.log(invoiceNum);
+				location = "<%= request.getContextPath() %>/insertInvcNum.rt?rtNo=" + rtNo + 
+															"&invoiceNum=" + invoiceNum + 
+															"&pno=" + pno + 
+															"&dCom=" + dCom +
+															"&userId=" + userId;
+				 
+				
+				
 			});
 		
 			

@@ -10,11 +10,13 @@ import static com.kh.st.common.JDBCTemplate.getConnection;
 import static org.junit.Assert.assertEquals;
 
 import java.sql.Connection;
+import java.util.HashMap;
 
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
 import com.kh.st.rental.model.dao.RentalDao;
+import com.kh.st.rental.model.service.RentalService;
 
 /**
  * @author uukk
@@ -45,7 +47,7 @@ class TestRentalDao {
     	textResult = "test";
 		assertEquals(new RentalDao().updateCancel(con,rtNo,textResult),0);
 	}*/
-	@Test
+/*	@Test
 	void updateProductStatus() {
 		Connection con = null;
 		String[] pno = null;
@@ -54,5 +56,72 @@ class TestRentalDao {
 		pno[0] = "17";
 		pno[1] = "1555";
 		assertEquals(new RentalDao().updateProductStatus(con,pno),2);
+	}*/
+	
+/*	@Test
+	void updateProductStatus() {
+		Connection con = null;
+		con = getConnection();
+		 int rtNo = 10;
+		 int invoiceNum = 153453534;
+		 int pno = 11;
+		 String dCom = "d1";
+		 String userId = "user15";
+		 
+		 HashMap<String,Object> invoiceVal = new HashMap<String,Object>();
+		 
+		 invoiceVal.put("rtNo", rtNo);
+		 invoiceVal.put("invoiceNum",invoiceNum);
+		 invoiceVal.put("pno",pno);
+		 invoiceVal.put("dCom",dCom);
+		 invoiceVal.put("userId",userId);
+
+		 System.out.println(userId);
+		
+		assertEquals(new RentalDao().insertInvcNum(con,invoiceVal),1);
+		
+	}*/
+	
+	/*@Test
+	void updateRentalStatusS() {
+		Connection con = null;
+		con = getConnection();
+		 int rtNo = 10;
+		 int invoiceNum = 153453534;
+		 int pno = 11;
+		 String dCom = "d1";
+		 String userId = "user15";
+		 
+		 HashMap<String,Object> invoiceVal = new HashMap<String,Object>();
+		 
+		 invoiceVal.put("rtNo", rtNo);
+		 invoiceVal.put("invoiceNum",invoiceNum);
+		 invoiceVal.put("pno",pno);
+		 invoiceVal.put("dCom",dCom);
+		 invoiceVal.put("userId",userId);
+		assertEquals(new RentalDao().updateRentalStatusS(con,invoiceVal),1);
+		
+		
+	}*/
+	@Test
+	void updatePdStatusS() {
+		Connection con = null;
+		con = getConnection();
+		 int rtNo = 10;
+		 int invoiceNum = 153453534;
+		 int pno = 11;
+		 String dCom = "d1";
+		 String userId = "user15";
+		 
+		 HashMap<String,Object> invoiceVal = new HashMap<String,Object>();
+		 
+		 invoiceVal.put("rtNo", rtNo);
+		 invoiceVal.put("invoiceNum",invoiceNum);
+		 invoiceVal.put("pno",pno);
+		 invoiceVal.put("dCom",dCom);
+		 invoiceVal.put("userId",userId);
+		assertEquals(new RentalDao().updatePdStatusS(con,invoiceVal),1);
+		
+		
 	}
 }
