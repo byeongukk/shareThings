@@ -7,6 +7,7 @@ import static com.kh.st.common.JDBCTemplate.rollback;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.kh.st.common.PageInfo;
 import com.kh.st.request.model.dao.ReqDao;
@@ -90,6 +91,17 @@ public class ReqService {
 		}
 		close(con);
 		return result;
+	}
+
+	//요청 물품 상세 보기
+	public HashMap<String, Object> reqProductDetail(int reqNum) {
+		Connection con = getConnection();
+		
+		HashMap<String, Object> hmap =
+				new ReqDao().reqProductDetail(con, reqNum);
+		
+		close(con);
+		return hmap;
 	}
 
 }

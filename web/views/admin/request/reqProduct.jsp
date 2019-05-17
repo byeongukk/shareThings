@@ -146,6 +146,10 @@
 																<th class="sorting_asc" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Name: activate to sort column descending"
+																	aria-sort="ascending" style="width: 30px;">글번호</th>
+																<th class="sorting_asc" tabindex="0"
+																	aria-controls="dataTable" rowspan="1" colspan="1"
+																	aria-label="Name: activate to sort column descending"
 																	aria-sort="ascending" style="width: 30px;">요청번호</th>
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
@@ -174,6 +178,7 @@
 														<% for(ReqProduct rp : list) { %>
 															<tr role="row" class="even">
 																<td class="sorting_1"><input type="checkbox" class="check"></td>
+																<td><%= rp.getbNo() %></td>
 																<td><%= rp.getUpNo() %></td>
 																<td><%= rp.getbWriter() %></td>
 																<td><%= rp.getProductName() %></td>
