@@ -51,6 +51,8 @@ public class SelectShpMngNumServlet extends HttpServlet {
 		
 		ArrayList<HashMap<String,Object>> list = new RentalService().selectShpNum(status);
 		System.out.println(list.size());
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
 		new Gson().toJson(list, response.getWriter());
 	}
 

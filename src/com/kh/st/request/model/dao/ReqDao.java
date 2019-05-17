@@ -32,6 +32,7 @@ public class ReqDao {
 			e.printStackTrace();
 		}
 	}
+	//페이징 처리 전체 조회 게시글 숫자
 	public int getListCount(Connection con) {
 		Statement stmt = null;
 		ResultSet rset = null;
@@ -53,6 +54,7 @@ public class ReqDao {
 		}
 		return listCount;
 	}
+	//페이징 처리 전체 조회
 	public ArrayList<ReqProduct> reqList(Connection con, PageInfo pi) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -91,46 +93,8 @@ public class ReqDao {
 		}
 		return list;
 	}
-	public int reqOk(Connection con, String[] status) {
-		PreparedStatement pstmt = null;
-		int result = 0;
-		
-		String query = prop.getProperty("reqOk");
-		
-			try {
-				for(int i = 0; i < status.length; i++) {
-					pstmt = con.prepareStatement(query);
-					pstmt.setInt(1, Integer.parseInt(status[i]));
-					
-					result += pstmt.executeUpdate();
-				}
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				close(pstmt);
-			}
-		return result;
-	}
 	
-	/*public int reqOkResult(Connection con, String[] status) {
-		PreparedStatement pstmt = null;
-		int result1 = 0;
-		
-		String query = prop.getProperty("reqOkResult");
-		try {
-			for(int i = 0; i < status.length; i++) {
-				pstmt = con.prepareStatement(query);
-				pstmt.setInt(1, Integer.parseInt(status[i]));
-				
-				result1 += pstmt.executeUpdate();
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close(pstmt);
-		}
-		return result1;
-	}*/
+	//선택한 요청 거절 조회
 	public ArrayList<ReqProduct> reqNoSelect(Connection con, String[] status) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -163,6 +127,8 @@ public class ReqDao {
 		System.out.println(list);
 		return list;
 	}
+	
+	//요청 거절 처리
 	public int reqNo(Connection con, String[] num) {
 		PreparedStatement pstmt = null;
 		int result = 0;
@@ -183,6 +149,8 @@ public class ReqDao {
 		}
 		return result;
 	}
+	
+	//요청 거절 결과(사유 입력)
 	public int reqNoResult(Connection con, String[] num, String textResult) {
 		PreparedStatement pstmt = null;
 		int result1 = 0;
@@ -203,6 +171,8 @@ public class ReqDao {
 		}
 		return result1;
 	}
+	
+	//선택한 요청 승인 조회
 	public ReqProduct reqOkSelect(Connection con, String status) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -231,6 +201,8 @@ public class ReqDao {
 		}
 		return rp;
 	}
+	
+	//요청 승인 처리
 	public int reqOk(Connection con, int num) {
 		PreparedStatement pstmt = null;
 		int result = 0;
@@ -249,6 +221,8 @@ public class ReqDao {
 		}
 		return result;
 	}
+	
+	//요청 승인 처리(승인 날짜)
 	public int reqOkResult(Connection con, int num) {
 		PreparedStatement pstmt = null;
 		int result1 = 0;
@@ -267,19 +241,25 @@ public class ReqDao {
 		}
 		return result1;
 	}
+	
+	//요청 승인 배송 처리
 	public int delWait(Connection con, int num, String delivery, int dNo) {
 		PreparedStatement pstmt = null;
 		int result2 = 0;
+		String reg = "등록";
+		String in = "입고";
 		
 		String query = prop.getProperty("delWait");
 		try {
 			pstmt = con.prepareStatement(query);
 			pstmt.setInt(1, dNo);
 			pstmt.setString(2, delivery);
-			pstmt.setString(3, "등록");
+			pstmt.setString(3, reg);
 			pstmt.setInt(4, num);
-			pstmt.setString(5, "입고");
+			pstmt.setString(5, in);
 			pstmt.setInt(6, num);
+			
+			result2 = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
