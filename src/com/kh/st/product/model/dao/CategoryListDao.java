@@ -28,16 +28,16 @@ private Properties prop = new Properties();
 			e.printStackTrace();
 		}
 	}
-	public ArrayList<Object> loadList(Connection con, String topcategory) {
+	public ArrayList<Object> loadList(Connection con, String big) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		ArrayList<Object> clist = null;
+		ArrayList<Object> clist = new ArrayList<Object>();
 		
 		String query = prop.getProperty("loadList");
 		
 		try {
 			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, topcategory);
+			pstmt.setString(1, big);
 			rset = pstmt.executeQuery();
 			
 			while(rset.next())

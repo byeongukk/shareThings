@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import com.kh.st.product.model.service.CategoryListService;
 
 
@@ -33,8 +34,8 @@ public class categorylistServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		
-		String topcategory = request.getParameter("tGroup");
-		ArrayList<Object> clist = new CategoryListService().loadList(topcategory);
+		String big = request.getParameter("big");
+		ArrayList<Object> clist = new CategoryListService().loadList(big);
 		
 		for(int i = 0; i < clist.size(); i++) {
 			System.out.println(clist.get(i));
@@ -42,7 +43,9 @@ public class categorylistServlet extends HttpServlet {
 		
 		System.out.println();
 		
-		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("utf-8");
+		new Gson().toJson(clist, response.getWriter());
 		
 		
 		
