@@ -55,6 +55,7 @@ public class MemberDao {
 		return listCount;
 	}
 
+	//전체회원 조회용
 	public ArrayList<Member> selectList(Connection con, PageInfo pi) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -317,7 +318,12 @@ public class MemberDao {
 				p.setReqDate(rset.getDate("REQ_DATE"));
 				p.setPbAmount(rset.getInt("PB_AMOUNT"));
 				p.setPbDate(rset.getDate("PB_DATE"));
-				p.setPbStatus(rset.getString("PB_STATUS"));
+				
+				if(rset.getString("PB_STATUS") == null) {
+					p.setPbStatus("환급대기");
+				}else {
+					p.setPbStatus("환급완료");
+				}
 				
 				list.add(p);
 			}
@@ -383,9 +389,22 @@ public class MemberDao {
 				r.setUserId(rset.getString("USER_ID"));
 				r.setUserName(rset.getString("USER_NAME"));
 				r.setPayNo(rset.getInt("PAY_NO"));
-				r.setRfType(rset.getString("RF_TYPE"));
+				
+				
+				if(rset.getString("RF_TYPE").equals("RF1")) {
+					r.setRfType("전체환불");
+				}else {
+					r.setRfType("부분환불");
+				}
+				
 				r.setReqDate(rset.getDate("REQ_DATE"));
-				r.setRfStatus(rset.getString("RF_STATUS"));
+				
+				if(rset.getString("RF_STATUS").equals("N")) {
+					r.setRfStatus("처리대기");
+				}else {
+					r.setRfStatus("처리완료");
+				}
+				
 				r.setRfDate(rset.getDate("RF_DATE"));
 				r.setRfReason(rset.getString("RF_REASON"));
 				
@@ -401,7 +420,7 @@ public class MemberDao {
 		return list;
 	}
 	
-	
+	//신고 적합 처리용
 	public int reportOk(Connection con, String[] reportsNo) {
 		PreparedStatement pstmt = null;
 		int result = 0;
@@ -432,6 +451,7 @@ public class MemberDao {
 		
 	}
 	
+	//신고이력 상세보기용
 	public ArrayList<HashMap<String, Object>> selectOneReport(Connection con, int reportNo) {
 		ArrayList<HashMap<String,Object>> list = null;
 		HashMap<String,Object> hmap = null;
@@ -491,6 +511,7 @@ public class MemberDao {
 		return list;
 	}
 	
+	//신고 부적합 처리용
 	public int updateReportNo(Connection con, String[] num, String inputReject) {
 		PreparedStatement pstmt = null;
 		int result = 0;
@@ -521,6 +542,7 @@ public class MemberDao {
 		return result;
 	}
 	
+	//회원 상세보기용
 	public HashMap<String, Object> selectOneMember(Connection con, int no) {
 		PreparedStatement pstmt = null;
 		HashMap<String,Object> hmap = null;
@@ -585,6 +607,66 @@ public class MemberDao {
 		
 		return hmap;
 	}
+	
+	//수익금 환급 처리완료용
+	public int updatePaybackOk(Connection con, String[] nums) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("paybackOk");
+		
+		try {
+			for(int i = 0; i < nums.length; i++) {
+				pstmt = con.prepareStatement(query);
+				pstmt.setInt(1, Integer.parseInt(nums[i]));
+				
+				result = pstmt.executeUpdate();
+			}
+			
+			if(result == nums.length) {
+				result = 1;
+			}else {
+				result = 0;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+	
+	public int updateRefundOk(Connection con, String[] nums) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("refundOk");
+		
+		try {
+			for(int i = 0; i < nums.length; i++) {
+				pstmt = con.prepareStatement(query);
+				pstmt.setInt(1, Integer.parseInt(nums[i]));
+				
+				result = pstmt.executeUpdate();
+			}
+			
+			if(result == nums.length) {
+				result = 1;
+			}else {
+				result = 0;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+	
+	
 	
 	//---------------------------------------------- 민지 ----------------------------------------------
 	public Member login(Connection con, String userId, String userPwd) {
@@ -741,6 +823,10 @@ public class MemberDao {
 		}
 		return result;
 	}
+
+	
+
+	
 
 	
 

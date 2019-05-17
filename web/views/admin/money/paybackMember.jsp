@@ -52,6 +52,7 @@
 	margin-left:auto;
 	margin-right:auto;
 }
+
 </style>
 </head>
 
@@ -116,7 +117,9 @@
 												<div class="col-sm-12">
 													<div align="left">
 														<a href="#" class="btn btn-success btn-circle btn-sm" onclick="ok()">
-										                    <i class="fas fa-check"></i></a>
+										                    <i class="fas fa-check"></i></a>&nbsp;
+										                <a href="#" class="btn btn-info btn-circle btn-sm">
+										                    <i class="fas fa-flag"></i></a>
 													</div>
 													<br>
 													<table class="table table-bordered dataTable"
@@ -170,8 +173,8 @@
 														</thead>
 														<tbody>
 															<% for(Payback p : list){ %>
-																<tr role="row" class="even">
-																	<td><input type="checkbox" class="check"></td>
+																<tr class="even">
+																	<td class="sorting_1"><input type="checkbox" class="check"></td>
 																	<td><%= p.getPbNo() %></td>
 																	<td><%= p.getUserId() %></td>
 																	<td><%= p.getAccount() %></td>
@@ -291,6 +294,18 @@
 		               $(".check").prop("checked", false);
 		            }
 		         });
+		         
+		         $(".sorting_1").click(function() {
+		             $(this).parent().each(function() {
+		                var check = $(this).find(".check").is(":checked");
+		                if(!check) {
+		                   $(this).find(".check").prop("checked", true);
+		                } else {
+		                   $(this).find(".check").prop("checked", false);
+		                }
+		             });
+		          });
+		         
 		      });
 			
 			function ok() {
@@ -305,11 +320,12 @@
 		                  
 		            });
 		            console.log(no);
-		            <%-- location = "<%= request.getContextPath() %>/paybackOk.me?no=" + no; --%>
+		            location = "<%= request.getContextPath() %>/paybackOk.me?no=" + no;
 		         } else {
 		            location = location;
 		         }
 		      };
+		      
 			</script>
 			<script
 				src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>
