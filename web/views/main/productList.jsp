@@ -44,6 +44,29 @@
 		background-size:cover; 
 		background-position:center; 
 	}
+	.filter {
+		background:whitesmoke;
+		border:1px solid gray;
+		border-radius:5px;
+		padding:10px;
+		width:100%;
+	}
+	.ctgLv3Btn {
+		display:inline-block;
+		background:white;
+		border:1px solid lightgray;
+		border-radius:5px;
+		padding:5px;
+		margin:5px;
+		
+	}
+	.ctgLv3Btn:hover {
+		border:1px solid #0CB6F4;
+		border-radius:5px;
+	}
+	#startFilter, #endFilter {
+		 width:100% !important;
+	}
 	
 	
 </style>
@@ -61,30 +84,65 @@
 		<!-- 메인바디 -->
 		<div class="main">
 
-			
+			<br><br>
 			<div class="row filterArea">
-				<div class="ui red ribbon label">
-        			<i class="check icon"></i> 선택
-      			</div>
-				<div>
-					<label></label>
+				<div class="filter">
+					<div class="ui red ribbon label" style="font-size:100%">
+	        			<i class="check icon"></i> 상세검색
+	      			</div>
+	      			<br>
+					<!-- <p>항목 선택</p> -->
 					<% for(int i = 0; i < ctgList.size(); i++) { %>
-					<button class="ui basic button ctgLv3Btn" >
-						<input type="checkBox" name="ctgLv3" value="<%= ctgList.get(i).getCtgId() %>" 
-						id="<%= ctgList.get(i).getCtgId() %>">
-						<label for="<%= ctgList.get(i).getCtgId() %>"><%= ctgList.get(i).getCtgName() %></label>
-					</button>
+					<div class="ctgLv3Btn">
+						<div style="width:100%">
+							<i class="check icon"></i>
+							<label style="margin:0"><%= ctgList.get(i).getCtgName() %></label>
+						</div>
+					</div>
 					<% } %>
-				</div>
-				
-				<div class="col col-lg-6 col-md-6 col-sm-6 col-xs-12" id="ctgLv3Area">
+					<hr style="border:1px solid lightgray">
+					<div class="row">
+						<div class="col col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom:5px;">
+							<label>대여 날짜 검색</label>
+							<div class="ui left icon fluid input datePicker" style="display:inline-block; margin-right:10px; width:150px;">
+								<input type="text" name="startFilter" id="startFilter" placeholder="시작일">
+								<i class="calendar alternate outline icon"></i>
+							</div>
+							
+							<div class="ui left icon fluid input datePicker" style="display:inline-block; margin:0; width:150px;">
+								<input type="text" name="endFilter" id="endFilter" placeholder="종료일">
+								<i class="calendar alternate outline icon"></i>
+							</div>
+						</div>
+						<div class="col col-lg-6 col-md-6 col-sm-12 col-xs-12">
+							<p>
+								<label for="priceFilter">대여 가격 설정(/일)</label>
+								<input type="text" id="priceFilter" readonly style="border:0; color:#F44A0C; font-weight:bold;">
+							</p>
+							<div id="slider-range"></div>
+						</div>
+					</div>
+					<hr style="border:1px solid lightgray">
 					<div>
-						
+						<label>정렬기준</label> &nbsp;&nbsp;
+						<input type="radio" name="orderBy" value="recent" id="byRecent" checked>
+						<label for="byRecent" style="font-size:0.8em">최신순</label>
+						<input type="radio" name="orderBy" value="popular" id="byPopular"> 
+						<label for="byPopular" style="font-size:0.8em">인기순</label>
+						<input type="radio" name="orderBy" value="review" id="byReview"> 
+						<label for="byReview" style="font-size:0.8em">리뷰 많은 순</label>
+						<input type="radio" name="orderBy" value="priceAsc" id="byPriceAsc"> 
+						<label for="byPriceAsc" style="font-size:0.8em">가격 낮은 순</label>
+						<input type="radio" name="orderBy" value="priceDesc" id="byPriceDesc"> 
+						<label for="byPriceDesc" style="font-size:0.8em">가격 높은 순</label>
+					</div>
+					<br>
+					<div align="right">
+						<div class="ui big red button" id="doFilter" align="right">적용하기</div>
 					</div>
 				</div>
-
+				<br>
 			</div> <!-- end of filterArea -->
-			<br><br>
 			
 			<div class="row thumbnailArea">
 			
@@ -131,10 +189,40 @@
 	<div class="rightArea col col-lg-1 col-md-1">
 	</div>
 	
-	
 	<script>
+		
+		$(function() {
+			$("#startFilter").datepicker();
+		    $("#endFilter").datepicker();
+		    $( "#slider-range" ).slider({
+			      range:true,
+			      min:0,
+			      max:100000,
+			      step:1000,
+			      values:[0, 100000],
+			      slide:function(event, ui) {
+			        $("#priceFilter").val(ui.values[0] + "원 - " + ui.values[1] + "원");
+			      }
+			});
+			$("#priceFilter").val($("#slider-range").slider("values", 0) +
+			      "원 - " + $("#slider-range").slider("values", 1) + "원");
+		});
+		
+		
 		$(".ctgLv3Btn").click(function() {
-			var checkBox = $(this).children("input[type=checkBox]");
+			
+			if($(this).css("backgroundColor") != "rgb(12, 182, 244)") {
+				$(this).css("background", "#0CB6F4");
+				$(this).find("i").css("color", "red");
+			}else {
+				$(this).css("background", "white");
+				$(this).find("i").css("color", "black");
+			}
+			/* if($(this).css("background") != "rgb(12, 182, 244)"){
+			} */
+			
+			
+			var checkBox = $(this).children("input:checkbox");
 			if(checkBox.prop("checked", true)) {
 				checkBox.prop("checked", false);
 			}
