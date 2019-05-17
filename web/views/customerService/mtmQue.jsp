@@ -65,6 +65,25 @@ width:100%;
       width:80%;
       margin-left: 3%;
    }
+   .pho1 {
+	display:block;
+	float:left;
+	width:30%;
+	height:220px;
+	border:1px solid #c4c4c0;
+	margin-left:2.5%;
+	margin-bottom:1.5%;
+	}
+	.pho2 {
+	display:block;
+	float:left;
+	width:30%;
+	height:220px;
+	border:1px solid #c4c4c0;
+	clear:left;
+	margin-left:2.5%;
+	margin-bottom:1.5%;
+	}
 	
 </style>
 
@@ -182,20 +201,26 @@ width:100%;
     <button type="submit" class="btn btn-default">Submit</button>
   </form>
     
-     <div>
-    <table>
-    
-    <tr>
-    
-    <td style="width:30%; height:150px; border:1px solid black;">아</td>
-    <td>에</td>
-    <td>이</td>
-    <td>오</td>
-    <td>우</td>
-    
-    </tr>
-    
-    </table>
+     <div style="margin-top:5%;">
+  <div class="pho2" id="img1Area">
+<img id="img1" style="width:100%; height:100%%; ">
+</div>
+
+<div class="pho1" id="img2Area">
+<img id="img2" style="width:100%; height:100%;">
+</div>
+
+
+<div class="pho1" id="img3Area">
+<img id="img3" style="width:100%; height:100%;">
+</div>
+
+<div class="pho2" id="img4Area">
+<img id="img4" style="width:100%; height:100%;">
+</div>
+<div class="pho1" id="img5Area">
+<img id="img5" style="width:100%; height:100%;">
+</div>
     
     
     
@@ -208,37 +233,6 @@ width:100%;
    
 </div> <!-- detail -->
     
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!-- footer -->
 <div id="footer">
@@ -247,6 +241,85 @@ width:100%;
 	
 	<div class="col-lg-1 col-md-1">
 	</div>
+	
+	<div  id="fileArea" style="display: none;">
+		<input type="file" id="fileimg1" name="fileimg1" onchange="loadImg(this,1)">
+		<input type="file" id="fileimg2" name="fileimg2" onchange="loadImg(this,2)">
+		<input type="file" id="fileimg3" name="fileimg3" onchange="loadImg(this,3)">
+		<input type="file" id="fileimg4" name="fileimg4" onchange="loadImg(this,4)">
+		<input type="file" id="fileimg5" name="fileimg5" onchange="loadImg(this,5)">
+		<input type="file" id="fileimg6" name="fileimg6" onchange="loadImg(this,6)">
+	
+		</div> 
+<script>
+		$(function(){
+			
+			$("#fileArea").hide();
+			 $("#img1Area").click(function(){
+				 $("#fileimg1").click();
+			 })
+			  $("#img2Area").click(function(){
+				 $("#fileimg2").click();
+			 })
+			  $("#img3Area").click(function(){
+				 $("#fileimg3").click();
+			 })
+			  $("#img4Area").click(function(){
+				 $("#fileimg4").click();
+			 })
+			  $("#img5Area").click(function(){
+				 $("#fileimg5").click();
+			 })
+			
+			
+		})
+		
+		function loadImg(value, num) {
+			if(value.files && value.files[0]){
+				var reader = new FileReader();
+				reader.onload = function(e){
+					switch(num){
+					case 1 : 
+						$("#img1").attr("src",e.target.result);
+						break;
+					case 2 : 
+						$("#img2").attr("src",e.target.result);
+						break;
+					case 3 : 
+						$("#img3").attr("src",e.target.result);
+						break;
+					case 4 : 
+						$("#img4").attr("src",e.target.result);
+						break;
+					case 5 : 
+						$("#img5").attr("src",e.target.result);
+						break;
+				
+					}
+				}
+				reader.readAsDataURL(value.files[0]);
+			}
+		}
+		
+		</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </body>
 </html>
