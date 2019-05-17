@@ -1,5 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import="java.util.*,
+	com.kh.st.product.model.vo.*,
+	com.kh.st.member.model.vo.*"%>
+<%
+	Product reqProduct = (Product) request.getAttribute("reqProduct");
+	Member m = (Member) request.getAttribute("m");
+	//ArrayList<Attachment> fileList = (ArrayList<Attachment>) request.getAttribute("fileList");
+	HashMap<String, Object> req =
+			(HashMap<String, Object>) request.getAttribute("req");
+	//Attachment img1 = fileList.get(0);
+	//Attachment img2 = fileList.get(1);
+	//Attachment img3 = fileList.get(2);
+%>
+<!-- com.kh.st.attachment.vo.*, -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -35,10 +48,6 @@
 	margin-top: 15%;
 } */
 
-
-td {
-	border:1px solid red;
-}
 .productPic {
 	width: 100%;
 	height: 100%;
@@ -50,6 +59,10 @@ table {
 }
 textarea {
 	border:0;
+}
+.img {
+	width: 150px;
+	height: 150px;
 }
 </style>
 </head>
@@ -78,60 +91,60 @@ textarea {
 					<div class="row">
 						<div class="col-lg-10">
 							<div class="card shadow mb-4">
+							<div style="display:none" id="pno"><%= reqProduct.getPno() %></div>
 								<div class="card-header py-3">
 									<h6 class="m-0 font-weight-bold text-primary">
-										요청날짜 : 2019/05/08<br>등록자 : user01<br>물품 : 노트북<br>등록기간
-										: 2019/05/10 ~ 2019/07/10
+										요청날짜 : <%= req.get("reqpDate") %><br>
+										등록자 : <%= m.getUserName() %><br>
+										물품 : <%= req.get("pName") %><br>
+										등록기간 : <%= req.get("pStart") %> ~ <%= req.get("pEnd") %>
 									</h6>
 								</div>
 								<div class="card-body">
 									<table class="col-lg-10">
 										<tr>
 											<td>
-												<div class="productPic">사진1</div>
+												<div class="productPic">
+													<%-- <img id="img1" class="img" src="<%= request.getContextPath()%>/attach_upload/<%= img1.getChangeName() %>"> --%>
+												</div>
 											</td>
 											<td>
-												<div class="productPic">사진2</div>
+												<div class="productPic">
+													<%-- <img id="img1" class="img" src="<%= request.getContextPath()%>/attach_upload/<%= img2.getChangeName() %>"> --%>
+												</div>
 											</td>
 											<td>
-												<div class="productPic">사진3</div>
+												<div class="productPic">
+													<%-- <img id="img1" class="img" src="<%= request.getContextPath()%>/attach_upload/<%= img3.getChangeName() %>"> --%>
+												</div>
 											</td>
 										</tr>
 										<tr>
-											<td colspan="3">구입시기 : 2013년</td>
+											<td colspan="3">구입시기 : <%= reqProduct.getPurchaseDate() %></td>
 										</tr>
 										<tr>
-											<td colspan="3">모델명 : 1234</td>
+											<td colspan="3">모델명 : <%= reqProduct.getModel() %></td>
 										</tr>
 										<tr>
-											<td colspan="3">브랜드 : 삼성</td>
-										</tr>
-										<tr>
-											<td colspan="3">구입가 : 500,000원</td>
+											<td colspan="3">구입가 : <%= reqProduct.getPurchasePrice() %>원</td>
 										</tr>
 										<tr>
 											<td colspan="3">물품상태</td>
 										</tr>
 										<tr>
-											<td colspan="3">CPU : i15</td>
+											<td colspan="3"><%= req.get("bContent") %></td>
 										</tr>
 										<tr>
-											<td colspan="3">메모리 : 1억 GB</td>
+											<td colspan="3">렌탈비 : <%= reqProduct.getPrice() %>원</td>
 										</tr>
 										<tr>
-											<td colspan="3">운영 체제 : window10</td>
+											<td colspan="3">보증금 : <%= reqProduct.getDeposite() %>원</td>
 										</tr>
 										<tr>
-											<td colspan="3">월 렌탈비 : 30,000원</td>
+											<td colspan="3">전화번호 : <%= m.getPhone() %></td>
 										</tr>
 										<tr>
-											<td colspan="3">보증금 : 150,000원</td>
-										</tr>
-										<tr>
-											<td colspan="3">전화번호 : 010-1234-5678</td>
-										</tr>
-										<tr>
-											<td colspan="3">주소 : 서울시 강남구</td>
+											<td colspan="3">주소 : <%= m.getAddress() %></td>
 										</tr>
 									</table>
 								</div>
@@ -145,14 +158,18 @@ textarea {
 									<h6 class="m-0 font-weight-bold text-primary">거절 사유</h6>
 								</div>
 								<div class="card-body">
-								<textarea class="col-lg-12" rows="5">거짓 사진</textarea>
+								<% if(req.get("rejectReason") == null) { %>
+								<textarea class="col-lg-12" rows="5" id="noResult"></textarea>
+								<% } else { %>
+								<textarea class="col-lg-12" rows="5" id="noResult"><%= req.get("rejectReason") %></textarea>
+								<% } %>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="button">
 						<a
-							href="<%=request.getContextPath()%>/views/admin/request/reqProduct.jsp"
+							href="<%= request.getContextPath() %>/reqProduct.bo"
 							class="btn btn-success btn-icon-split"><span
 							class="icon text-white-50"> <i class="fas fa-check"></i></span> <span
 							class="text">돌아가기</span> </a>
@@ -160,7 +177,7 @@ textarea {
 							loginUser.getUserId().equals("admin"))  { %> --%>
 						<a href="#" class="btn btn-info btn-icon-split" onclick="ok();"> <span
 							class="icon text-white-50"> <i class="fas fa-info-circle"></i>
-						</span> <span class="text">승인하기</span></a> <a href="#"
+						</span> <span class="text">승인하기</span></a> <a href="#" id="no"
 							class="btn btn-danger btn-icon-split" data-toggle="modal" 
 							data-target="#cancelModal"> <span
 							class="icon text-white-50"> <i class="fas fa-trash"></i>
@@ -169,7 +186,7 @@ textarea {
 						<%-- <% } %> --%>
 					</div>
 				</div>
-				<div class="modal fade" id="cancelModal" role="dialog">
+				<div class="modal fade" id="okModal" role="dialog">
 		<div class="modal-dialog">
 
 			<!-- Modal content-->
@@ -234,6 +251,13 @@ textarea {
 
 
 	<script>
+		$("#no").click(function() {
+			console.log($("#pno").text());
+			var noResult = $("#noResult").text();
+			
+			alert(noResult);
+		});
+	
 		function ok() {
 			alert("정말 승인하시겠습니까?");
 			location = "<%= request.getContextPath()%>/views/admin/request/reqProduct.jsp";
