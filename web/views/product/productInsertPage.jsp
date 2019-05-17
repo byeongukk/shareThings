@@ -51,11 +51,11 @@ table {
 	width:1000px;
 	
 	}
-	 td{
+	 /* td{
 	border:1.5px solid #c4c4c0;
 	
 	
-	} 
+	}  */
 	#title1{
 	height:100px;
 	text-align:center;
@@ -663,17 +663,19 @@ height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
 		}
 		
 		</script>
-	<script>
-	$("#cGroup").change(function(){
-        var cGroup = $(this).children("option:selected").val(); // 대분류
-        var $cName = $("#cName");  // 소분류
+	
+		
+		<script>
+   $("#big").change(function(){
+        var big = $(this).children("option:selected").val().replace("/",""); // 대분류
+        var $mid = $("#mid");  // 중분류
         $.ajax({
-           url:"<%= request.getContextPath() %>/selectNameList.do",
-           data:{cGroup:cGroup},
+           url:"<%= request.getContextPath() %>/categoryList.do",
+           data:{big:big},
            type:"get",
            success:function(data){
               console.log("서버 전송 성공!");
-              var options = "<option selected>-- 중분류 --</option>"; 
+               var options = "<option selected> 중분류 </option>"; 
               for(var i = 0; i < data.length; i++){
                  
                  if(i == 0){
@@ -682,45 +684,15 @@ height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
                     options += "<option value=\"" + data[i] + "\">" + data[i] + "</option>";
                  }
               }    
-              $cName.html(options);
+              $mid.html(options); 
            },error:function(data){
               console.log("서버 전송 실패!");
            }
         });
      });
-	
-	
-	</script>
-		<script>
-		$("#cGroup").change(function(){
-	         var $big = $(this).children("option:selected").val(); // 대분류
-	         var $mid = $("#small");  // 소분류
-	         $.ajax({
-	            url:"<%= request.getContextPath() %>/selectNameList.do",
-	            data:{big:big},
-	            type:"get",
-	            success:function(data){
-	               console.log("서버 전송 성공!");
-	               var options = "<option selected>-- 중분류 --</option>"; 
-	               for(var i = 0; i < data.length; i++){
-	                  
-	                  if(i == 0){
-	                     options += "<option value=\"" + data[i] + "\">" + data[i] + "</option>";
-	                  } else{
-	                     options += "<option value=\"" + data[i] + "\">" + data[i] + "</option>";
-	                  }
-	               }    
-	               $small.html(options);
-	            },error:function(data){
-	               console.log("서버 전송 실패!");
-	            }
-	         });
-	      });
-		
-		
-		</script>
-		
-		
+   
+   
+   </script>
 		
 		
 		
