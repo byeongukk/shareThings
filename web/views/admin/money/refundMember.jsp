@@ -116,9 +116,9 @@
 												<div class="col-sm-12">
 													<div align="left">
 														<a href="#" class="btn btn-success btn-circle btn-sm" onclick="ok()">
-										                    <i class="fas fa-check"></i></a> &nbsp;&nbsp;
-														<a href="#" class="btn btn-danger btn-circle btn-sm">
-										                    <i class="fas fa-trash"></i> </a>
+										                    <i class="fas fa-check"></i></a> &nbsp;
+														<a href="#" class="btn btn-info btn-circle btn-sm">
+										                    <i class="fas fa-flag"></i> </a>
 													</div>
 													<br>
 													<table class="table table-bordered dataTable"
@@ -127,7 +127,7 @@
 														style="height:100px;">
 														<thead align="center">
 															<tr role="row">
-																<th width="1%"><input type="checkbox"></th>
+																<th width="1%"><input type="checkbox" id="checkAll"></th>
 																<th class="sorting_asc" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-sort="ascending"
@@ -172,17 +172,17 @@
 														</thead>
 														<tbody>
 															<% for(Refund r : list){ %>
-																<tr>
-																	<td><input type="checkbox"></td>
-																	<td><%= r.getRfNo() %></td>
-																	<td><%= r.getUserId() %></td>
-																	<td><%= r.getPayNo() %></td>
-																	<td><%= r.getRfReason() %></td>
+																<tr align="center" class="even">
+																	<td class="sorting_1"><input type="checkbox" class="check"></td>
+																	<td data-toggle="modal" data-target="#detail"><%= r.getRfNo() %></td>
+																	<td data-toggle="modal" data-target="#detail"><%= r.getUserId() %></td>
+																	<td data-toggle="modal" data-target="#detail"><%= r.getPayNo() %></td>
+																	<td data-toggle="modal" data-target="#detail"><%= r.getRfReason() %></td>
 																	
-																	<td><%= r.getRfType() %></td>
-																	<td><%= r.getReqDate() %></td>
-																	<td><%= r.getRfDate() %></td>
-																	<td><%= r.getRfStatus() %></td>
+																	<td data-toggle="modal" data-target="#detail"><%= r.getRfType() %></td>
+																	<td data-toggle="modal" data-target="#detail"><%= r.getReqDate() %></td>
+																	<td data-toggle="modal" data-target="#detail"><%= r.getRfDate() %></td>
+																	<td data-toggle="modal" data-target="#detail"><%= r.getRfStatus() %></td>
 																</tr>
 															<% } %>
 														</tbody>
@@ -268,6 +268,73 @@
 								</div>
 							</div>
 						</div>
+						
+						<div class="modal fade" id="detail" role="dialog">
+							<div class="modal-dialog">
+
+								<!-- Modal content-->
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 class="modal-title MTR">환불내역 상세보기</h4>
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+									</div>
+									<div class="row">
+										<div class="col-md-12 col-lg-12">
+											<div class="modal-body">
+												<div class="panel-body">
+													<table width="100%" id="dataTables-detail">
+														<tbody>
+															<tr>
+																<td width="20%" class="MTR">환불No.</td>
+																<td id="noTd" width="13%"></td>
+																<td width="15%" class="MTR">구분</td>
+																<td id="ftTd" width="13%"></td>
+																<td width="20%" class="MTR">처리상태</td>
+																<td id="stTd" width="18%"></td>
+															</tr>
+															<tr>
+																<td class="MTR">신청일</td>
+																<td id="rdTd" colspan="2"></td>
+																<td class="MTR hide hideOk" style="display: none">처리일</td>
+																<td class="hide hideOk" id="cdTd" colspan="2"
+																	style="display: none"></td>
+
+															</tr>
+															<tr>
+																<td class="MTR">신청인</td>
+																<td id="tiTd" colspan="2"></td>
+																<td class="MTR">결제No.</td>
+																<td id="riTd" colspan="2"></td>
+															</tr>
+															<tr>
+																<td colspan="6" class="MTR">- 환불 사유</td>
+															</tr>
+															<tr>
+																<td colspan="6"><textarea id="ctTa"
+																		class="col-lg-12" rows="3" readonly></textarea></td>
+															</tr>
+															<tr class="hide" style="display: none">
+																<td colspan="6" class="MTR">- 부적합 사유</td>
+															</tr>
+															<tr class="hide" style="display: none">
+																<td colspan="6"><textarea id="rejectTd"
+																		class="col-lg-12" rows="3" readonly></textarea></td>
+															</tr>
+														</tbody>
+													</table>
+												</div>
+												<br> <br>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-default"
+													data-dismiss="modal">닫기</button>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
 						<!-- 메인 콘텐트 영역 끝 -->
 						<!-- Footer 인클루드 -->
 					</div>
@@ -284,12 +351,52 @@
 			<%@ include file="../common/logoutModal.jsp"%>
 
 			<script>
-		$(function() {
-			$(".even").click(function() {
-				location = "<%=request.getContextPath()%>
-				/views/admin/reqProductDetail.jsp";
-									});
-				});
+				$(function () {
+		         $("#checkAll").click(function() {
+		            var check = $(this).is(":checked");
+		            if(check) {
+		               $(".check").prop("checked", true);
+		            } else {
+		               $(".check").prop("checked", false);
+		            }
+		         });
+		         
+		         $(".sorting_1").click(function() {
+		             $(this).parent().each(function() {
+		                var check = $(this).find(".check").is(":checked");
+		                if(!check) {
+		                   $(this).find(".check").prop("checked", true);
+		                } else {
+		                   $(this).find(".check").prop("checked", false);
+		                }
+		             });
+		          });
+		         
+		         $(".even").mouseenter(function(){
+			    		$(this).css({"background":"lightblue", "color":"black" ,"cursor":"pointer"})
+			    	}).mouseout(function(){
+			    		$(this).css({"background":"white", "color":"gray"})
+			    	});
+		        });
+				
+				
+				function ok() {
+			         var result = confirm("처리완료 하시겠습니까?");
+			         if(result) {
+			            var no = new Array();
+			            $(".even").each(function() {
+			               if($(this).find(".check").is(":checked")) {   
+			                  console.log($(this).find("td").eq(1).text());
+			                  no.push($(this).find("td").eq(1).text());
+			               }
+			                  
+			            });
+			            console.log(no);
+			            location = "<%=request.getContextPath()%>/refundOk.me?no="+ no;
+						} else {
+							location = location;
+						}
+					};
 			</script>
 			<script
 				src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>

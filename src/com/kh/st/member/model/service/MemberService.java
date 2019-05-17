@@ -185,6 +185,37 @@ public class MemberService {
 		return hmap;
 	}
 
+	public int updatePaybackOk(String[] nums) {
+		Connection con = getConnection();
+		
+		int result = new MemberDao().updatePaybackOk(con,nums);
+		
+		if(result > 0) {
+			commit(con);
+		}else {
+			rollback(con);
+		}
+		
+		close(con);
+		
+		return result;
+	}
+	
+	public int updateRefundOk(String[] nums) {
+		Connection con = getConnection();
+		
+		int result = new MemberDao().updateRefundOk(con, nums);
+		
+		if(result > 0) {
+			commit(con);
+		}else {
+			rollback(con);
+		}
+		
+		close(con);
+		
+		return result;
+	}
 
 	
 	//---------------------------------------------- 민지 ----------------------------------------------
@@ -243,6 +274,10 @@ public class MemberService {
 		close(con);
 		return updateUser;
 	}
+
+	
+
+	
 
 	
 
