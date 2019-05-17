@@ -242,6 +242,7 @@ public class RentalDao {
 		return list;
 	}
 
+	//대여번호로 배송조회
 	public ArrayList<HashMap<String, Object>> selectShpNum(Connection con, String[] status) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -280,28 +281,72 @@ public class RentalDao {
 		return list;
 	}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	//물품취소처리 
+	public int updateRentalStatus(Connection con, String[] rtNo, String textResult) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+
+		String query = prop.getProperty("updateRentalStatus");
+		
+		try {
+			System.out.println(rtNo);
+			for(int i=0; i < rtNo.length; i++) {
+				pstmt = con.prepareStatement(query);
+				
+				//취소사유 , 대여번호 순서
+				pstmt.setString(1, textResult);
+				pstmt.setInt(2, Integer.parseInt(rtNo[i]));			
+				
+				result = pstmt.executeUpdate();
+				
+				//한개라도 값이 잘못 됐을때 리턴
+				if(result == 0) {
+					break;
+				}
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		// 결과값과 맞지 않을때 0을 리턴
+		if(rtNo.length != result) {
+			result = 0;
+		}
+		return result;
+	}
+
+	public int updateProductStatus(Connection con, String[] pno) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = prop.getProperty("updatePStatus");
+		
+		try {
+			System.out.println(pno);
+			for(int i=0; i < pno.length; i++) {
+				pstmt = con.prepareStatement(query);
+				
+				//물품번호
+				pstmt.setInt(1, Integer.parseInt(pno[i]));			
+				
+				result += pstmt.executeUpdate();
+
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		System.out.println(result);
+		// 결과값과 맞지 않을때 0을 리턴
+		if(pno.length != result) {
+			result = 0;
+		}
+		return result;
+	}
 }

@@ -1,7 +1,7 @@
 package com.kh.st.rental.model.service;
 
 import static com.kh.st.common.JDBCTemplate.close;
-import static com.kh.st.common.JDBCTemplate.getConnection;
+import static com.kh.st.common.JDBCTemplate.*;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -44,4 +44,54 @@ public class RentalService {
 		close(con);
 		return list;
 	}
+	/* 취소시 업데이트 */
+	public int updateCancel(String[] rtNo,String[] pno, String textResult) {
+		Connection con = getConnection();
+		int result = 0;
+		int rtResult = new RentalDao().updateRentalStatus(con,rtNo,textResult);
+		
+		//db에 대여상태 업데이트가 정상적으로 됐을떄
+		if(rtResult>0) {
+			int pdResult = new RentalDao().updateProductStatus(con,pno);
+			//db에 물품상태 업데이트가 정상적으로 됐을떄
+			if(pdResult >0) {
+				result = 1;
+				commit(con);
+			}else {
+				rollback(con);
+			}
+		}else {
+			rollback(con);
+		}
+		
+		close(con);
+		return result;
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }

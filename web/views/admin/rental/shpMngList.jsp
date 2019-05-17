@@ -191,7 +191,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 10px;"
 																aria-label="Name: activate to sort column ascending"
-																rowspan="1" colspan="1"><input type="checkBox"></th>
+																rowspan="1" colspan="1"><input type="checkBox" id="checkAll"></th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 68px;"
 																rowspan="1" colspan="1">대여주문번호</th>
@@ -301,7 +301,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 				<div class="row">
 					<div class="col-md-12 col-lg-12">
 						<div class="modal-body">
-							<p>물품명과 주문상태를 확인하고 처리하세요</p>
+							<p>물품명과 요청자를 확인하고 처리하세요</p>
 							<div class="panel-body">
 								<table width="100%"
 									class="table table-striped table-bordered table-hover"
@@ -329,11 +329,11 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 								</table>
 							</div>
 							<h5>*취소상세사유</h5>
-							<textarea class="col-lg-12" placeholder="EX)고객요청으로 인한 취소"></textarea>
+							<textarea id="textResult" class="col-lg-12" placeholder="EX)고객요청으로 인한 취소"></textarea>
 
 						</div>
 						<div class="modal-footer">
-							<button type="submit" class="btn btn-default"
+							<button type="submit" class="btn btn-default" id="cancel"
 								data-dismiss="modal">취소처리</button>
 							<button type="button" class="btn btn-default"
 								data-dismiss="modal">닫기</button>
@@ -345,15 +345,19 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 		</div>
 	</div>
 	<script>
-			
+			//대여취소 버튼
 			$("#cancelBtn").click(function() {
-				console.log("b");
 				var status = new Array();
 				$(".odd").each(function() {
 					if($(this).find(".check").is(":checked")) {	
 						status.push($(this).find("td").eq(1).text());
 					}
 				});
+				if(status.length == 0) {
+					alert("한개이상 선택하세요");
+					return false;
+				}
+				
 				$.ajax({
 					url:"selectShpNum.rt?status=" + status,
 					type:"get",
@@ -368,12 +372,12 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 						for(var key in data) {
 							console.log(data[key]);
 							var $tr = $("<tr class='odd gradeX'>");
-							var $rnoTd =  $("<td>").text(data[key].rnoTd);
-							var $pnoTd =  $("<td>").text(data[key].pnoTd);
-							var $modelTd =  $("<td>").text(data[key].modelTd);
-							var $userNameTd =  $("<td>").text(data[key].userNameTd);
-							var $userIdTd =  $("<td>").text(data[key].userIdTd);
-							var $rtStatusTd =  $("<td>").text(data[key].rtStatusTd);
+							var $rnoTd =  $("<td>").text(data[key].rno);
+							var $pnoTd =  $("<td>").text(data[key].pno);
+							var $modelTd =  $("<td>").text(data[key].model);
+							var $userNameTd =  $("<td>").text(data[key].userName);
+							var $userIdTd =  $("<td>").text(data[key].userId);
+							var $rtStatusTd =  $("<td>").text(data[key].rtStatus);
 							
 							$tr.append($rnoTd);
 							$tr.append($pnoTd);
@@ -387,29 +391,38 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 					error:function(data){
 						console.log("에러");
 					}
-				
 				});
-				
-				
-				/* $.ajax({
-					console.log("ajax");
-					url:"selectShpNum.rt?status=" + status,
-					type:"get",
-					success:function(data) {
-						var $dataTables = $("#dataTables-example tbody");
-						var $textarea = $("<textarea id='textResult' name='textResult' class='col-lg-12' placeholder='EX)거짓 정보 등록'></textarea>");
-						
-						//기존 테이블 행 제거
-						$("#dataTables-example > tbody > tr").remove();
-						$textarea.remove();
-					
-					},
-					error:function(data) {
-						console.log("실패");
-					}
-				});  */
+			});
+			
+			//모달 취소처리button
+			$("#cancel").click(function(){
+				var conResult = confirm("취소처리 하시겠습니까?");
+				if(conResult == true){
+					var rtNos = new Array();
+					var pnos = new Array();
+					//취소선택된 테이블 가져오기
+					$(".gradeX").each(function(){
+						rtNos.push($(this).find("td").eq(0).text());
+						pnos.push($(this).find("td").eq(0).text());
+					});
+					var textResult = $("#textResult").val();
+					location = "<%= request.getContextPath() %>/cancle.rt?rtNos=" + rtNos + "&textResult=" + textResult + "&pnos=" + pnos;
+				}
+			});
+			
+			
+			//체크박스 전체 선택
+			$("#checkAll").click(function() {
+				var check = $(this).is(":checked");
+				var result = $(".even").find("td").eq(6).text();
+				if(check) {
+					$(".check").prop("checked", true);
+				} else {
+					$(".check").prop("checked", false);
+				}
 			});
 		
+			
 	
 	</script>
 	<!-- 맨위로-->

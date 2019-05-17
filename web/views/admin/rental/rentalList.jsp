@@ -148,10 +148,6 @@
 														<tr role="row" align="center">
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 57px;"
-																aria-label="Name: activate to sort column ascending"
-																rowspan="1" colspan="1"><input type="checkBox"></th>
-															<th tabindex="0" class="sorting"
-																aria-controls="dataTable" style="width: 57px;"
 																rowspan="1" colspan="1" id="th_rtNo">대여주문번호</th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 61px;"
@@ -176,8 +172,7 @@
 														
 														%> 
 														
-														<tr class="odd" role="row" align="center">
-															<td><input type="checkBox"></td>
+														<tr class="even" role="row" align="center">
 															<td><%= hmap.get("rno") %></td>
 															<td><%= hmap.get("userName")%></td>
 															<td><%= hmap.get("pno")%></td>
@@ -294,7 +289,6 @@
 								
 								/* 가져온 값 td에 입력 */
 								var $tr = $("<tr class='odd' role='row' align='center'>");
-								var $chkTd = $("<td><input type='checkBox'>");
 								var $rtNoTd =  $("<td>").text(data[key].rno);
 								var $userNameTd = $("<td>").text(data[key].userName);
 								var $pnoTd = $("<td>").text(data[key].pno);
@@ -303,7 +297,6 @@
 								var $statusTd = $("<td>").text(data[key].rtStatus);
 								
 								/* tr에 td추가 */
-								$tr.append($chkTd);
 								$tr.append($rtNoTd);
 								$tr.append($userNameTd);
 								$tr.append($pnoTd);
@@ -334,6 +327,7 @@
 	</script>
 
 	<script>
+
 		/* 상세조건이 전체일때 상세정보입력 비활성화 */
 		function detailsChg(){
 			if($("#details").val()=="0"){
@@ -344,6 +338,7 @@
 				$("#filterContent").val("");
 			}
 		}
+	
 	</script>
 	<script
 		src="<%= request.getContextPath() %>/resource/vendor/jquery/jquery.min.js"></script>
