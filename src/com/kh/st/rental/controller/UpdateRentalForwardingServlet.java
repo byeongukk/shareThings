@@ -12,38 +12,37 @@ import javax.servlet.http.HttpServletResponse;
 import com.kh.st.rental.model.service.RentalService;
 
 /**
- * Servlet implementation class UpdateRentalCancelServlet
+ * Servlet implementation class UpdateRentalForwardingServlet
  */
-@WebServlet("/cancel.rt")
-public class UpdateRentalCancelServlet extends HttpServlet {
+@WebServlet("/updateForwarding.rt")
+public class UpdateRentalForwardingServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-
-    public UpdateRentalCancelServlet() {
+       
+    public UpdateRentalForwardingServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		String textResult = request.getParameter("textResult");
 		String rtNos = request.getParameter("rtNos");
 		String[] rtNo = rtNos.split(",");
 		String pnos = request.getParameter("pnos");
 		String[] pno = pnos.split(",");
 		
-		String pStatus = "PS10";
-		String rtStatus = "RTS1";
+		//물품코드 대여중
+		String pStatus = "PS12";
+		//대여상태 서비스중
+		String rtStatus = "RTS3";
 	
 		HashMap<String,Object> hmap = new HashMap<String,Object>();
 		
 		hmap.put("pno", pno);
-		hmap.put("textResult", textResult);
 		hmap.put("rtNo", rtNo);
 		hmap.put("pStatus", pStatus);
 		hmap.put("rtStatus", rtStatus);
 		
 		
-		int result = new RentalService().updateCancel(hmap);
+		int result = new RentalService().updateForwarding(hmap);
 		
 		
 		String page = "";
@@ -54,11 +53,10 @@ public class UpdateRentalCancelServlet extends HttpServlet {
 			request.setAttribute("msg", "상태 업데이트 오류");
 			request.getRequestDispatcher(page).forward(request, response);
 		}
+	
 	}
 
-
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doGet(request, response);
 	}
 

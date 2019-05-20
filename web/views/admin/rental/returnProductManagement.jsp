@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import="java.util.*"%>
+<%
+	ArrayList<HashMap<String, Object>> list = 
+		(ArrayList<HashMap<String, Object>>) request.getAttribute("list");
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -123,16 +127,52 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 						<!-- 리스트 테이블  -->
 						<div class="card shadow mb-4">
 							<div class="card-header py-3">
-								<h6 class="m-0 font-weight-bold text-primary">00 건</h6>
+								<h6 class="m-0 font-weight-bold text-primary"><%= list.size() %>건</h6>
 							</div>
 							<div class="card-body">
 								<div class="row">
 									<div class="col-lg-6 mb-4">
 										<form class="form-inline">
-											<button type="button" class="btn btn-secondary btn-icon-split btn-sm">
+											
+											<div class="form-group">
+												<span>송장 정보 입력 : </span>
+												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												<select class="form-control" id="dCom">
+													<option disabled>택배사</option>
+													<option value="04">대한통운</option>
+												</select> 
+												&nbsp;&nbsp;&nbsp;&nbsp; <span> <input type="number"
+													class="form-control" id="invoiceNum" placeholder="송장번호">
+												</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												<button type="button" class="btn btn-success btn-icon-split btn-sm" id="applyBtn">
+													<span class="icon text-white-50"> <i
+														class="fas fas fa-check"></i>
+													</span> <span class="text">적용하기</span>
+												</button>
+												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												<button type="button"
+													class="btn btn-danger btn-icon-split btn-sm" id="applyCancelBtn">
+													<span class="icon text-white-50"> <i
+														class="fas fas fa-trash"></i>
+													</span> <span class="text">적용취소</span>
+												</button>
+												
+											</div>
+										</form>
+										<br>
+										<form>
+											<button type="button" class="btn btn-secondary btn-icon-split btn-sm" id="returnPdBtn">
+												<span class="icon text-white-50"> <i
+													class="fas fas fa-arrow-right"></i>
+												</span> <span class="text">수거요청</span>
+											</button>
+											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+											<button type="button"
+												class="btn btn-secondary btn-icon-split btn-sm" id="returnBtn"
+												data-toggle="modal" data-target="#returnModal">
 												<span class="icon text-white-50"> <i
 													class="fas fas fa-arrow-left"></i>
-												</span> <span class="text">수거요청</span>
+												</span> <span class="text">수거처리</span>
 											</button>
 										</form>
 									</div>
@@ -143,7 +183,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 
 										<div class="row">
 											<div class="col-sm-12">
-												<table width="100%" class="table table-bordered dataTable"
+												<table width="100%" class="table table-bordered dataTable table-hover"
 													id="dataTable" role="grid"
 													aria-describedby="dataTable_info" style="width: 100%;"
 													cellspacing="0">
@@ -152,7 +192,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 10px;"
 																aria-label="Name: activate to sort column ascending"
-																rowspan="1" colspan="1"><input type="checkBox"></th>
+																rowspan="1" colspan="1"><input type="checkBox" id="checkAll"></th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 68px;"
 																rowspan="1" colspan="1">대여주문번호</th>
@@ -161,10 +201,13 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 																aria-sort="ascending" rowspan="1" colspan="1">물품번호</th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 50px;"
-																rowspan="1" colspan="1">대여 일시</th>
+																rowspan="1" colspan="1">대여 시작일</th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 67px;"
 																rowspan="1" colspan="1">대여 만료일</th>
+															<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 67px;"
+																rowspan="1" colspan="1">남은 일 수</th>
 
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 45px;"
@@ -175,76 +218,41 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 55px;"
 																rowspan="1" colspan="1">대여자 연락처</th>
-															<th tabindex="0" class="sorting"
-																aria-controls="dataTable" style="width: 67px;"
-																rowspan="1" colspan="1">주문상태</th>
-															<th tabindex="0" class="sorting"
-																aria-controls="dataTable" style="width: 68px;"
-																rowspan="1" colspan="1">택배사</th>
-															<th tabindex="0" class="sorting"
-																aria-controls="dataTable" style="width: 68px;"
-																rowspan="1" colspan="1">송장번호</th>
+															
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 68px;"
 																rowspan="1" colspan="1">수거상태</th>
-															<th tabindex="0" class="sorting"
-																aria-controls="dataTable" style="width: 68px;"
-																rowspan="1" colspan="1">수거처리</th>
 														</tr>
 													</thead>
 													<tbody>
-														<tr class="odd" role="row" align="center">
-															<td><input type="checkBox"></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td>
-																<button type="button"
-																	class="btn btn-secondary btn-icon-split btn-sm"
-																	data-toggle="modal" data-target="#returnModal">
-																	<span class="icon text-white-50"> <i
-																		class="fas fas fa-arrow-left"></i>
-																	</span> <span class="text">수거처리</span>
-																</button>
-															</td>
+														<% for(int i = 0; i<list.size(); i++){
+															HashMap<String, Object> hmap = list.get(i);	
+														
+														%> 
+														<tr class="even" role="row" align="center">
+															<td><input type="checkBox" class="check"></td>
+															<td><%= hmap.get("rtNo") %></td>
+															<td><%= hmap.get("pno")%></td>
+															<td><%= hmap.get("rtStDate")%></td>
+															<td><%= hmap.get("rtEndDate")%></td>
+															<td id="endDay"><%= hmap.get("endDay") %></td>
+															<td><%= hmap.get("userId")%></td>
+															<td><%= hmap.get("userName")%></td>
+															<td><%= hmap.get("phone")%></td>
+															<td><%= hmap.get("rtStatus")%></td>
 														</tr>
+														<% } %>
 													</tbody>
 												</table>
-											</div>
-										</div>
-										<!-- 페이징 -->
-										<div class="row">
-											<div class="col-sm-12 col-md-7" ailgn="center">
-												<div class="dataTables_paginate paging_simple_numbers"
-													id="dataTable_paginate">
-													<ul class="pagination">
-														<li class="paginate_button page-item previous disabled"
-															id="dataTable_previous"><a tabindex="0"
-															class="page-link" aria-controls="dataTable" href="#"
-															data-dt-idx="0">Previous</a></li>
-														<li class="paginate_button page-item active"><a
-															tabindex="0" class="page-link" aria-controls="dataTable"
-															href="#" data-dt-idx="1">1</a></li>
-														<li class="paginate_button page-item "><a
-															tabindex="0" class="page-link" aria-controls="dataTable"
-															href="#" data-dt-idx="2">2</a></li>
-														<li class="paginate_button page-item next"
-															id="dataTable_next"><a tabindex="0"
-															class="page-link" aria-controls="dataTable" href="#"
-															data-dt-idx="7">Next</a></li>
-													</ul>
+												<div id="result-null">
+													<% if(list.size() <= 0){ %>
+														<br><br><br><br><br><br>
+														<h3 align="center"> 조회 결과가 없습니다.</h3>
+														<br><br><br><br><br><br>
+													<% } %>
 												</div>
 											</div>
 										</div>
-										<!-- 페이징 끝부분 -->
 									</div>
 								</div>
 							</div>
@@ -287,14 +295,18 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 									id="dataTables-example">
 									<thead>
 										<tr>
-											<th style="width: 40px; text-align: center;"><input type="checkBox"></th>
+											<th style="text-align: center;" class="text-black-50 small">대여주문번호</th>
+											<th style="text-align: center;" class="text-black-50 small">물품번호</th>
 											<th style="text-align: center;" class="text-black-50 small">물품명</th>
-											<th style="text-align: center;" class="text-black-50 small">대여자</th>
+											<th style="text-align: center;" class="text-black-50 small">대여자이름</th>
+											<th style="text-align: center;" class="text-black-50 small">대여자ID</th>
 										</tr>
 									</thead>
 									<tbody>
 										<tr class="odd gradeX">
-											<td><input type="checkBox">
+											<td></td>
+											<td></td>
+											<td></td>
 											<td></td>
 											<td></td>
 										</tr>
@@ -323,6 +335,224 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 
 		</div>
 	</div>
+	<script>
+	//체크박스 전체 선택
+	$("#checkAll").click(function() {
+		var check = $(this).is(":checked");
+		var result = $(".even").find("td").eq(6).text();
+		if(check) {
+			$(".check").prop("checked", true);
+		} else {
+			$(".check").prop("checked", false);
+		}
+	});
+	//대여기간이 3일이하로 남은 물품 강조
+	$(function(){
+		
+		$(".even").each(function(){
+			var endDay = $(this).find("td").eq(5).text();
+			if(endDay<=3){
+				$(this).find("td").eq(5).prop("color","red");
+				console.log($(this).attr("bgColor","lightgray"));
+			}else {
+				
+			}
+		});
+	});
+	//택배송장 입력 
+	$("#applyBtn").click(function(){
+		if(confirm("송장번호를 적용하시겠습니까?")){
+			
+			var status = new Array();
+			var dCom =  $("#dCom").val();
+			var rtNos = new Array();
+			var pnos = new Array();
+			var invoiceNum = $("#invoiceNum").val();
+			var rtStatus = "";
+			$(".even").each(function() {
+				if($(this).find(".check").is(":checked")) {	
+					status.push($(this).find("td").eq(1).text());
+					
+					rtNos = $(this).find("td").eq(1).text();
+					pnos = $(this).find("td").eq(2).text();
+					rtStatus = $(this).find("td").eq(9).text();
+				}
+			});
+			console.log(rtStatus);
+			if(rtStatus == "RTS5 "){
+				alert("이미 입력된 물품입니다");
+				return false;
+			}
+			if(invoiceNum == ""){
+				alert("송장번호를 입력하세요");
+				return false;
+			}
+			if(status.length != 1 ) {
+				alert("적용하실 물품을 1개 선택하세요");
+				return false;
+			}
+			//송장번호 받아오기
+			
+			location = "<%= request.getContextPath() %>/insertReturnInvcNum.rt?rtNos=" + rtNos + 
+														"&invoiceNum=" + invoiceNum + 
+														"&pnos=" + pnos + 
+														"&dCom=" + dCom ;
+		}
+		
+	});
+	//택배송장 취소
+	$("#applyCancelBtn").click(function(){
+	if(confirm("송장번호 입력 취소하시겠습니까?")){
+		
+		var status = new Array();
+		var dCom =  $("#dCom").val();
+		var rtNos = new Array();
+		var pnos = new Array();
+		var invoiceNum = $("#invoiceNum").val();
+		var rtStatus = "";
+		$(".even").each(function() {
+			if($(this).find(".check").is(":checked")) {
+				status.push($(this).find("td").eq(1).text());
+				
+				rtNos.push($(this).find("td").eq(1).text());
+				pnos.push($(this).find("td").eq(2).text());
+				rtStatus = $(this).find("td").eq(9).text();
+			}
+		});
+		if(rtStatus != "RTS5"){
+			alert("송장번호가 입력되지 않은 물품입니다");
+			return false;
+		}
+		if(status.length == 0) {
+			alert("적용하실 물품을 한개이상 선택하세요");
+			return false;
+		}
+		
+		location = "<%= request.getContextPath() %>/deleteReturnInvcNum.rt?rtNos=" + rtNos + 
+													"&pnos=" + pnos;
+	}
+	
+	});
+	
+	//수거요청
+	$("#returnPdBtn").click(function(){
+		if(confirm("수거 요청 처리 하시겠습니까?")){
+			var status = new Array();
+			var rtNos = new Array();
+			var pnos = new Array();
+			var rtStatus = "";
+			var rtStatusCheck = true;
+			$(".even").each(function() {
+				if($(this).find(".check").is(":checked")) {
+					//운송장번호가 입력되지않은  물품이 있는경우
+					if($(this).find("td").eq(9).text() != "RTS5"){
+						console.log($(this).find("td").eq(9).text());
+						rtStatusCheck = false;
+					}
+					
+					status.push($(this).find("td").eq(0).text());
+					
+					rtNos.push($(this).find("td").eq(1).text());
+					pnos.push($(this).find("td").eq(2).text());
+					rtStatus = $(this).find("td").eq(9).text();
+				}
+			});
+			if(rtStatusCheck == false){
+				alert("송장번호가 입력되지 않은 물품이 있습니다");
+				return false;
+			}
+			if(status.length == 0) {
+				alert("적용하실 물품을 한개이상 선택하세요");
+				return false;
+			}
+			
+			location = "<%= request.getContextPath() %>/updateReturnPd.rt?rtNos=" + rtNos + 
+														"&pnos=" + pnos;
+		}
+		
+		
+	});
+	
+	/****************************************************************************/
+	//수거처리 버튼
+	$("#returnBtn").click(function() {
+		var status = new Array();
+		var rtStatus = new Array();
+		var pno = new Array();
+		var rtStatusCheck = true;
+		$(".even").each(function() {
+			if($(this).find(".check").is(":checked")) {	
+				//상태가 수거중이 아닌  물품이 있는경우
+				if($(this).find("td").eq(9).text() != "RTS6"){
+					rtStatusCheck = false;
+				}
+				status.push($(this).find("td").eq(1).text());
+				rtStatus.push($(this).find("td").eq(8).text());
+				pno.push($(this).find("td").eq(2).text());
+			}
+		});
+		if(status.length == 0) {
+			alert("적용하실 물품을 한개이상 선택하세요");
+			return false;
+		}
+		if(rtStatusCheck==false){
+			alert("수거중이지 않은 물품이 있습니다");
+			return false;
+		}
+		
+		
+		$.ajax({
+			url:"selectShpNum.rt?status=" + status,
+			type:"get",
+			success:function(data) {
+				var $dataTables = $("#dataTables-example tbody");
+				var $textarea = $("<textarea id='textResult' name='textResult' class='col-lg-12' placeholder='EX)거짓 정보 등록'></textarea>");
+				//기존 테이블 행 제거
+				$("#dataTables-example > tbody > tr").remove();
+				$textarea.remove();
+				
+				console.log(data);
+				for(var key in data) {
+					console.log(data[key]);
+					var $tr = $("<tr class='odd gradeX'>");
+					var $rnoTd =  $("<td>").text(data[key].rno);
+					var $pnoTd =  $("<td>").text(data[key].pno);
+					var $modelTd =  $("<td>").text(data[key].model);
+					var $userNameTd =  $("<td>").text(data[key].userName);
+					var $userIdTd =  $("<td>").text(data[key].userId);
+					
+					$tr.append($rnoTd);
+					$tr.append($pnoTd);
+					$tr.append($modelTd);
+					$tr.append($userNameTd);
+					$tr.append($userIdTd);
+					$dataTables.append($tr);
+				}
+			},
+			error:function(data){
+				console.log("에러");
+			}
+		});
+	});
+	
+	//모달 취소처리button
+	$("#cancel").click(function(){
+		var conResult = confirm("취소처리 하시겠습니까?");
+		if(conResult == true){
+			var rtNos = new Array();
+			var pnos = new Array();
+			//취소선택된 테이블 가져오기
+			$(".gradeX").each(function(){
+				rtNos.push($(this).find("td").eq(0).text());
+				pnos.push($(this).find("td").eq(0).text());
+			});
+			var textResult = $("#textResult").val();
+			location = "<%= request.getContextPath() %>/cancel.rt?rtNos=" + rtNos + "&textResult=" + textResult + "&pnos=" + pnos;
+		}
+	});
+	
+	
+	</script>
 	<script
 		src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>
 	<script

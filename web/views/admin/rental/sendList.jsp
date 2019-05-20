@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import="java.util.*"%>
+<%
+	ArrayList<HashMap<String, Object>> list = 
+		(ArrayList<HashMap<String, Object>>) request.getAttribute("list");
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -104,7 +108,6 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 																style="width: 140px"> &nbsp; ~ &nbsp;<input
 																type="date" name="endDate" style="width: 140px">
 															</td>
-															</td>
 															<td></td>
 															<td></td>
 															<td></td>
@@ -126,7 +129,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 						<!-- 리스트 테이블  -->
 						<div class="card shadow mb-4">
 							<div class="card-header py-3">
-								<h6 class="m-0 font-weight-bold text-primary">00 건</h6>
+								<h6 class="m-0 font-weight-bold text-primary" id="listSize"><%= list.size()%>건</h6>
 							</div>
 							<div class="card-body">
 								<div class="row"></div>
@@ -143,10 +146,6 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 													cellspacing="0">
 													<thead>
 														<tr role="row" align="center">
-															<th tabindex="0" class="sorting"
-																aria-controls="dataTable" style="width: 10px;"
-																aria-label="Name: activate to sort column ascending"
-																rowspan="1" colspan="1"><input type="checkBox"></th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 68px;"
 																rowspan="1" colspan="1">대여주문번호</th>
@@ -180,54 +179,44 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 																rowspan="1" colspan="1">배송지</th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 67px;"
+																rowspan="1" colspan="1">배송타입</th>
+															<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 67px;"
 																rowspan="1" colspan="1">배송상태</th>
 
 														</tr>
 													</thead>
 													<tbody>
-														<tr class="odd" role="row" align="center">
-															<td><input type="checkBox"></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
+														<% for(int i = 0; i<list.size(); i++){
+															HashMap<String, Object> hmap = list.get(i);	
+														
+														%> 
+														
+														<tr class="even" role="row" align="center">
+															<td><%= hmap.get("rtNo") %></td>
+															<td><%= hmap.get("pno")%></td>
+															<td id="dCom"><%= hmap.get("dCom")%></td>
+															<td><%= hmap.get("invc")%></td>
+															<td><%= hmap.get("spDate")%></td>
+															<td><%= hmap.get("reqDate")%></td>
+															<td><%= hmap.get("userId")%></td>
+															<td><%= hmap.get("userName")%></td>
+															<td><%= hmap.get("phone")%></td>
+															<td><%= hmap.get("address")%></td>
+															<td><%= hmap.get("inOut")%></td>
 														</tr>
+														<% } %>
 													</tbody>
 												</table>
-											</div>
-										</div>
-										<!-- 페이징 -->
-										<div class="row">
-											<div class="col-sm-12 col-md-7" ailgn="center">
-												<div class="dataTables_paginate paging_simple_numbers"
-													id="dataTable_paginate">
-													<ul class="pagination">
-														<li class="paginate_button page-item previous disabled"
-															id="dataTable_previous"><a tabindex="0"
-															class="page-link" aria-controls="dataTable" href="#"
-															data-dt-idx="0">Previous</a></li>
-														<li class="paginate_button page-item active"><a
-															tabindex="0" class="page-link" aria-controls="dataTable"
-															href="#" data-dt-idx="1">1</a></li>
-														<li class="paginate_button page-item "><a
-															tabindex="0" class="page-link" aria-controls="dataTable"
-															href="#" data-dt-idx="2">2</a></li>
-														<li class="paginate_button page-item next"
-															id="dataTable_next"><a tabindex="0"
-															class="page-link" aria-controls="dataTable" href="#"
-															data-dt-idx="7">Next</a></li>
-													</ul>
+												<div id="result-null">
+												<% if(list.size() <= 0){ %>
+													<br><br><br><br><br><br>
+													<h3 align="center"> 조회 결과가 없습니다.</h3>
+													<br><br><br><br><br><br>
+												<% } %>
 												</div>
 											</div>
 										</div>
-										<!-- 페이징 끝부분 -->
 									</div>
 								</div>
 							</div>
@@ -249,6 +238,135 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 
 	<!-- 로그아웃 모달-->
 	<%@ include file="../common/logoutModal.jsp"%>
+	
+	<script>
+		$(document).ready(function(){
+		    var myKey = "paDJdMz9NHdA8oZ69C2sgg"; // sweet tracker에서 발급받은 자신의 키 넣는다.
+		        // 택배사 목록 조회 company-api
+		        $.ajax({
+		            type:"GET",
+		            dataType : "json",
+		            url:"http://info.sweettracker.co.kr/api/v1/companylist?t_key="+myKey,
+		            success:function(data){
+		                    
+		                    // 방법 1. JSON.parse 이용하기
+		                    var parseData = JSON.parse(JSON.stringify(data));
+		                     console.log(parseData.Company); // 그중 Json Array에 접근하기 위해 Array명 Company 입력
+		                    
+		                    // 방법 2. Json으로 가져온 데이터에 Array로 바로 접근하기
+		                    var CompanyArray = data.Company; // Json Array에 접근하기 위해 Array명 Company 입력
+		                    console.log(CompanyArray); 
+		                     
+		                    var myData="";
+		                    $.each(CompanyArray,function(key,value) {
+		                            myData += ('<option value='+value.Code+'>' +'key:'+key+', Code:'+value.Code+',Name:'+value.Name + '</option>');                        
+		                    });
+		                    $("#tekbeCompnayList").html(myData);
+		                    
+		                    //택배 / 운송장 번호 
+		                    var t_code = $(".even").find("td").eq(2).text();
+				            var t_invoice = $(".even").find("td").eq(3).text();
+							//var t_invoice =  348540216731;
+				           
+				           
+				            console.log(t_code);
+				            $.ajax({
+				                type:"GET",
+				                dataType : "json",
+				                url:"http://info.sweettracker.co.kr/api/v1/trackingInfo?t_key="+myKey+"&t_code="+t_code+"&t_invoice="+t_invoice,
+				                success:function(data){
+				                    console.log(data);
+				                    var $dataTable = $(".dataTable");
+				                    var $tr = $(".even");
+				                    var $trackingTd = $("<td>");
+				                    console.log(data.level);
+				                    
+				                    console.log(data.status);
+				                    if(data.status == false){
+				                        $trackingTd = $("<td>").text("운송장번호오류");
+				                        console.log("$trackingTd : " + $trackingTd)
+				                    }else {
+				                    	switch(data.level){
+				                    	case 1 : $trackingTd = $("<td>").text("배송준비중"); break;
+				                    	case 2 : $trackingTd = $("<td>").text("집화완료"); break;
+				                    	case 3 : $trackingTd = $("<td>").text("배송중"); break;
+				                    	case 4 : $trackingTd = $("<td>").text("지점 도착"); break;
+				                    	case 5 : $trackingTd = $("<td>").text("배송출발"); break;
+				                    	case 6 : $trackingTd = $("<td>").text("배송 완료"); break;
+				                    	}
+				                    }
+				                    $tr.append($trackingTd);
+			                    	$dataTable.append($tr);
+				                }
+				            });
+		            }
+		        });
+		        // 배송정보와 배송추적 tracking-api
+		        $("#trackingNumBtn").click(function() {
+		            var t_code = $(".even").find("td").eq(2).text();
+		            var t_invoice = $(".even").find("td").eq(3).text();
+		
+		            console.log(t_code);
+		            $.ajax({
+		                type:"GET",
+		                dataType : "json",
+		                url:"http://info.sweettracker.co.kr/api/v1/trackingInfo?t_key="+myKey+"&t_code="+t_code+"&t_invoice="+t_invoice,
+		                success:function(data){
+		                    console.log(data);
+		                    var myInvoiceData = "";
+		                    if(data.status == false){
+		                        myInvoiceData += ('<p>'+data.msg+'<p>');
+		                    }else{
+		                        myInvoiceData += ('<tr>');                
+		                        myInvoiceData += ('<th>'+"보내는사람"+'</td>');                     
+		                        myInvoiceData += ('<th>'+data.senderName+'</td>');                     
+		                        myInvoiceData += ('</tr>');     
+		                        myInvoiceData += ('<tr>');                
+		                        myInvoiceData += ('<th>'+"제품정보"+'</td>');                     
+		                        myInvoiceData += ('<th>'+data.itemName+'</td>');                     
+		                        myInvoiceData += ('</tr>');     
+		                        myInvoiceData += ('<tr>');                
+		                        myInvoiceData += ('<th>'+"송장번호"+'</td>');                     
+		                        myInvoiceData += ('<th>'+data.invoiceNo+'</td>');                     
+		                        myInvoiceData += ('</tr>');     
+		                        myInvoiceData += ('<tr>');                
+		                        myInvoiceData += ('<th>'+"송장번호"+'</td>');                     
+		                        myInvoiceData += ('<th>'+data.receiverAddr+'</td>');                     
+		                        myInvoiceData += ('</tr>');                                       
+		                    }
+		                    
+		                    
+		                    $("#myPtag").html(myInvoiceData)
+		                    
+		                    var trackingDetails = data.trackingDetails;
+		                    
+		                    
+		                    var myTracking="";
+		                    var header ="";
+		                    header += ('<tr>');                
+		                    header += ('<th>'+"시간"+'</th>');
+		                    header += ('<th>'+"장소"+'</th>');
+		                    header += ('<th>'+"유형"+'</th>');
+		                    header += ('<th>'+"전화번호"+'</th>');                     
+		                    header += ('</tr>');     
+		                    
+		                    $.each(trackingDetails,function(key,value) {
+		                        myTracking += ('<tr>');                
+		                        myTracking += ('<td>'+value.timeString+'</td>');
+		                        myTracking += ('<td>'+value.where+'</td>');
+		                        myTracking += ('<td>'+value.kind+'</td>');
+		                        myTracking += ('<td>'+value.telno+'</td>');                     
+		                        myTracking += ('</tr>');                                    
+		                    });
+		                    
+		                    $("#myPtag2").html(header+myTracking);
+		                    
+		                }
+		            });
+		        });
+		        
+		});
+		</script>
 
 
 	<script
