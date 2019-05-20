@@ -206,7 +206,7 @@ table {
 
 <hr>
 <div id="photo">
-<form action="<%=request.getContextPath() %>/insert.tn">
+<form name="productInsertForm" action="<%=request.getContextPath() %>/productInsert.pd" encType="multipart/form-data">
 <table align="center">
 
 <tr>
@@ -306,7 +306,7 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 </select> 
 
 </td>
-<td colspan="1"></td>
+<td colspan="1"><div  style="display:none;"> <input type="text" id="ctgId" name="ctgId"></div></td>
 </tr>
 
 <tr>
@@ -375,8 +375,8 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 				<tr>
 					<td colspan="1"></td>
 						<td colspan="7">
-							<input type="text" id="address1" style="width:40%; margin:2%; margin-left:2.5%;" value="">
-							<input type="text" id="address2"  style="width:40%; text-align:center;" value="">
+							<input type="text" id="address1" name="address1" style="width:40%; margin:2%; margin-left:2.5%;" value="">
+							<input type="text" id="address2" name="address2" style="width:40%; text-align:center;" value="">
 						</td>
 							<td colspan="1"></td>
 				</tr>
@@ -429,7 +429,7 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 <td colspan="3" id="purchasePrice1" style="text-align:center" >구입가</td>
 <td colspan="7" id="purchasePrice2" >
 
-<input name="purchasePrice" class="price" type="text" name="textfield" style="width:30%; height:30px; ">
+<input name="purchasePrice" class="price" type="text" name="purchasePrice" style="width:30%; height:30px; ">
 <label>원</label>
 </td>
 <td colspan="1"></td>
@@ -463,7 +463,7 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 
 <tr>
 <td colspan="1"></td>
-<td colspan="3" id="rentPrice1" style="text-align:center">희망 렌탈비(월)</td>
+<td colspan="3" id="rentPrice1" style="text-align:center">희망 렌탈비(주단위)</td>
 <td colspan="7" id="rentPrice2">
 <input class="rentPrice3" type="text" name="rentPrice" style="width:200px; 
 height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
@@ -480,7 +480,7 @@ height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
 <td colspan="1"></td>
 <td colspan="3" id="deposit1" style="text-align:center">보증금</td>
 <td colspan="7" id="deposit2">
-<input class="deposit3" type="text" name="depost" style="width:200px; 
+<input class="deposit3" type="text" name="deposit" style="width:200px; 
 height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
 <label style="margin-left:2.5%; margin-top:2%;">※ 희망 렌탈비 대비 보증금이 너무 높으면 렌탈이 어려울 수 있음을 주의하십시오!</label>
 
@@ -502,9 +502,18 @@ height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
 		
 		<ul class="pager">
     <li><a href="" style="color:#F44A0C">이전</a></li>
-    <li><a href="confirm.jsp" style="color:#0CB6F4">다음</a></li>
+    <li><button onclick="pdInsert()" style="color:#0CB6F4">다음</button></li>
   </ul>
 </div> <!-- 이전, 다음 버튼 -->
+	<div  id="fileArea" style="display: none;">
+		<input type="file" id="fileimg1" name="fileimg1" onchange="loadImg(this,1)">
+		<input type="file" id="fileimg2" name="fileimg2" onchange="loadImg(this,2)">
+		<input type="file" id="fileimg3" name="fileimg3" onchange="loadImg(this,3)">
+		<input type="file" id="fileimg4" name="fileimg4" onchange="loadImg(this,4)">
+		<input type="file" id="fileimg5" name="fileimg5" onchange="loadImg(this,5)">
+		<input type="file" id="fileimg6" name="fileimg6" onchange="loadImg(this,6)">
+	
+		</div> 
 
 </form>
 
@@ -533,15 +542,7 @@ height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
 	</div>
 	</div>
 	
-	<div  id="fileArea" style="display: none;">
-		<input type="file" id="fileimg1" name="fileimg1" onchange="loadImg(this,1)">
-		<input type="file" id="fileimg2" name="fileimg2" onchange="loadImg(this,2)">
-		<input type="file" id="fileimg3" name="fileimg3" onchange="loadImg(this,3)">
-		<input type="file" id="fileimg4" name="fileimg4" onchange="loadImg(this,4)">
-		<input type="file" id="fileimg5" name="fileimg5" onchange="loadImg(this,5)">
-		<input type="file" id="fileimg6" name="fileimg6" onchange="loadImg(this,6)">
 	
-		</div> 
 	<script>
 	 	$(function() {
 		    $("#startDay").datepicker();
@@ -550,7 +551,17 @@ height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
 
 		   
 		});
-	 	
+	 	$("#startDay").datepicker({
+	 		dateFormat:'yy-mm-dd'
+	 	})
+	 		$("#endDay").datepicker({
+	 		dateFormat:'yy-mm-dd'
+	 	})
+
+	 		$("#buyDay").datepicker({
+	 		dateFormat:'yy-mm-dd'
+	 	})
+
 	
 	</script>
 	<script>
@@ -693,7 +704,83 @@ height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
    
    
    </script>
+   <script>
+   $("#mid").change(function(){
+        var mid = $(this).children("option:selected").val(); // 중분류
+        var $small = $("#small");  // 소분류
+        $.ajax({
+           url:"<%= request.getContextPath() %>/categoryList2.do",
+           data:{mid:mid},
+           type:"get",
+           success:function(data){
+              console.log("서버 전송 성공!");
+               var options = "<option selected> 소분류 </option>"; 
+              for(var i = 0; i < data.length; i++){
+                 
+                 if(i == 0){
+                    options += "<option value=\"" + data[i] + "\">" + data[i] + "</option>";
+                 } else{
+                    options += "<option value=\"" + data[i] + "\">" + data[i] + "</option>";
+                 }
+              }    
+              $small.html(options); 
+             
+           },error:function(data){
+              console.log("서버 전송 실패!");
+           }
+        });
+     });
+   
+   
+   </script>
+  <!--   $("#ctgId").attr("value", ); -->
+  <script>
+  $("#small").change(function(){
+       var small = $(this).children("option:selected").val(); // 소분류
+       var $ctgId = $("#ctgId");  // 소분류번호
+       $.ajax({
+          url:"<%= request.getContextPath() %>/getCategoryId.do",
+          data:{small:small},
+          type:"get",
+          success:function(data){
+             console.log("서버 전송 성공!");   
+             $ctgId.attr("value", data); 
+             
+             console.log(data);
+          },error:function(data){
+             console.log("서버 전송 실패!");
+          }
+       });
+    });
+  
+  
+  </script>
+  
+  
+   <!-- 다음 눌렀을때 -->
 		
+		<script> 
+			/* function loginCheck(){ 
+			   var id=document.loginForm.m_id.value; 
+			   var pass=document.loginForm.m_pw.value; 
+			    if(id==null||id.length==0||id=='아이디'){ 
+			      alert("아이디를 입력바랍니다."); 
+			      document.loginForm.m_id.focus(); 
+			      return; 
+			  } 
+			   if(pass==null||pass.length==0||pass=='비밀번호'){ 
+			     alert("비밀번호를 입력바랍니다."); 
+			     document.loginForm.m_pw.focus(); 
+			     return; 
+			    }else{  */
+			    <%--  document.productInsertForm.action="<% requee/login.mo";  --%>
+			   
+			    function pdInsert(){
+			    document.productInsertForm.submit(); 
+			    }
+			/*  } 
+			}  */
+		</script> 
 		
 		
 </body>

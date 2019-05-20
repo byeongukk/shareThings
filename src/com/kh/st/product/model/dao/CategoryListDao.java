@@ -60,5 +60,32 @@ private Properties prop = new Properties();
 		
 		return clist;
 	}
+	public int getCtgId(Connection con, String small) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int ctgid = 0;
+		
+		String query = prop.getProperty("getCtgId");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, small);
+			
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				ctgid = rset.getInt("CTG_ID");
+			}
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+
+		return ctgid;
+	}
 
 }
