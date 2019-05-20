@@ -1,25 +1,28 @@
 package com.kh.st.request.controller;
 
 import java.io.IOException;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import com.kh.st.request.model.service.ReqService;
+import com.kh.st.request.model.vo.ReqProduct;
 
 /**
- * Servlet implementation class ReqNoServlet
+ * Servlet implementation class ReqConfirmSelectServlet
  */
-@WebServlet("/reqNo.bo")
-public class ReqNoServlet extends HttpServlet {
+@WebServlet("/reqConfirmSelect.bo")
+public class ReqConfirmSelectServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ReqNoServlet() {
+    public ReqConfirmSelectServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -29,25 +32,27 @@ public class ReqNoServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
 		
-		String textResult = request.getParameter("textResult");
-		String nums = request.getParameter("nums");
-		String[] num = nums.split(",");
+		String status = request.getParameter("status");
 		
-		for(int i = 0; i < num.length; i++) {
-			System.out.println(num[i]);
-		}
-
-		System.out.println(textResult);
-		int result = new ReqService().reqNo(num, textResult);
+		System.out.println(status);
+		
+		
 		
 		String page = "";
-		if(result > 0) {
-			System.out.println("성공");
-			response.sendRedirect(request.getContextPath() + "/reqProduct.bo");
+		if(status.equals("")) {
+			page = "views/common/errorPage.jsp";
+			request.setAttribute("msg", "승인 물품을 선택하세요");
+			request.getRequestDispatcher(page).forward(request, response);
+		}
+		
+		ReqProduct rp = new ReqService().reqConfirmSelect(status);
+		
+		if(rp != null) {
+			new Gson().toJson(rp, response.getWriter());
 		} else {
 			page = "views/common/errorPage.jsp";
-			request.setAttribute("msg", "거절 오류");
 			request.getRequestDispatcher(page).forward(request, response);
 		}
 	}

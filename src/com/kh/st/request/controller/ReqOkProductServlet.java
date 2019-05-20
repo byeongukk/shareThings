@@ -9,21 +9,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.google.gson.Gson;
+import com.kh.st.common.PageInfo;
 import com.kh.st.request.model.service.ReqService;
 import com.kh.st.request.model.vo.ReqProduct;
 
 /**
- * Servlet implementation class ReqNoSelectServlet
+ * Servlet implementation class ReqOkProductServlet
  */
-@WebServlet("/reqNoSelect.bo")
-public class ReqNoSelectServlet extends HttpServlet {
+@WebServlet("/reqOkProduct.bo")
+public class ReqOkProductServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ReqNoSelectServlet() {
+    public ReqOkProductServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,32 +32,47 @@ public class ReqNoSelectServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		response.setCharacterEncoding("UTF-8");
-		response.setContentType("application/json");
+		int currentPage;
+		int limit;
+		int maxPage;
+		int startPage;
+		int endPage;
 		
-		String statuses = request.getParameter("status");
-		String[] status = statuses.split(",");
+		currentPage = 1;
 		
-		
-		for(int i = 0; i < status.length; i++) {
-			System.out.println(status[i]);
+		if(request.getParameter("currentPage") != null) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
+		
+		limit = 10;
+		
+		int listOkCount = new ReqService().getListOkCount();
+		
+		maxPage = (int)((double) listOkCount / limit + 0.9);
+		
+		startPage =(((int)((double) currentPage / limit + 0.9)) - 1) * 10 + 1;
+		
+		endPage = startPage + 10 - 1;
+		
+		if(maxPage < endPage) {
+			endPage = maxPage;
+		}
+		
+		PageInfo pi = new PageInfo(currentPage, limit, maxPage, startPage, endPage);
+		
+		ArrayList<ReqProduct> list = new ReqService().reqOkList(pi);
+		
 		String page = "";
-		if(statuses.equals("")) {
-			page = "views/common/errorPage.jsp";
-			request.setAttribute("msg", "거절 물품을 선택하세요");
-			request.getRequestDispatcher(page).forward(request, response);
-		}
-		
-		ArrayList<ReqProduct> list = new ReqService().reqNoSelect(status);
-		
-		
 		if(list != null) {
-			new Gson().toJson(list, response.getWriter());
+			page = "views/admin/request/reqData.jsp";
+			request.setAttribute("list", list);
+			request.setAttribute("pi", pi);
+			request.setAttribute("listOkCount", listOkCount);
 		} else {
 			page = "views/common/errorPage.jsp";
-			request.getRequestDispatcher(page).forward(request, response);
+			request.setAttribute("msg", "등록 요청 조회 실패");
 		}
+		request.getRequestDispatcher(page).forward(request, response);
 	}
 
 	/**

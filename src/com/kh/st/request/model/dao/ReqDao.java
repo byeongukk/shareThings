@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
-//import com.kh.st.attachment.vo.Attachment;
+import com.kh.st.attachment.model.vo.Attachment;
 import com.kh.st.common.PageInfo;
 import com.kh.st.member.model.vo.Member;
 import com.kh.st.product.model.vo.Product;
@@ -63,6 +63,7 @@ public class ReqDao {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		ArrayList<ReqProduct> list = null;
+		String bType = "등록";
 		
 		String qeury = prop.getProperty("reqList");
 		
@@ -71,8 +72,9 @@ public class ReqDao {
 		
 		try {
 			pstmt = con.prepareStatement(qeury);
-			pstmt.setInt(1, startRow);
-			pstmt.setInt(2, endRow);
+			pstmt.setString(1, bType);
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, endRow);
 			
 			rset = pstmt.executeQuery();
 			
@@ -272,14 +274,16 @@ public class ReqDao {
 		}
 		return result2;
 	}
+	
+	//요청물품 상세 보기
 	public HashMap<String, Object> reqProductDetail(Connection con, int reqNum) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
 		HashMap<String, Object> hmap = null;
 		Member m = null;
 		Product reqProduct = null;
-		//Attachment at = null;
-		//ArrayList<Attachment> list = null;
+		Attachment at = null;
+		ArrayList<Attachment> list = null;
 		
 		String query = prop.getProperty("reqProductDetail");
 		
@@ -289,7 +293,7 @@ public class ReqDao {
 			
 			rset = pstmt.executeQuery();
 			
-			//list = new ArrayList<Attachment>();
+			list = new ArrayList<Attachment>();
 			hmap = new HashMap<String, Object>();
 			while(rset.next()) {
 				reqProduct = new Product();		
@@ -300,18 +304,18 @@ public class ReqDao {
 				reqProduct.setDeposite(rset.getInt("DEPOSIT"));	//보증금
 				reqProduct.setPno(rset.getInt("PNO"));
 				
-				//at = new Attachment();
-				//at.setAno(rset.getInt("ANO"));	//파일번호
-				//at.setOriginName(rset.getString("ORIGIN_NAME"));	//원본
-				//at.setChangeName(rset.getString("CHANGe_NAME"));	//사본
-				//at.setFilePath(rset.getString("FILE_PATH"));	//경로
+				at = new Attachment();
+				at.setAno(rset.getInt("ANO"));	//파일번호
+				at.setOriginName(rset.getString("ORIGIN_NAME"));	//원본
+				at.setChangeName(rset.getString("CHANGe_NAME"));	//사본
+				at.setFilePath(rset.getString("FILE_PATH"));	//경로
 					
 				m = new Member();
 				m.setPhone(rset.getString("PHONE"));	//전화번호
 				m.setAddress(rset.getString("ADDRESS"));	//주소
 				m.setUserName(rset.getString("USER_NAME")); //이름
 				
-				//list.add(at);
+				list.add(at);
 				
 				hmap.put("pStart", rset.getDate("PSTART_DATE"));	//등록시작일
 				hmap.put("pEnd", rset.getDate("PEND_DATE"));	//등록종료일
@@ -322,7 +326,7 @@ public class ReqDao {
 				
 			}
 			hmap.put("reqProduct", reqProduct);
-			//hmap.put("attachment", list);
+			hmap.put("attachment", list);
 			hmap.put("member", m);
 			
 		} catch (SQLException e) {
@@ -332,5 +336,235 @@ public class ReqDao {
 			close(rset);
 		}
 		return hmap;
+	}
+	
+	//조건 검색
+	public ArrayList<HashMap<String, Object>> selectReqFilter(Connection con, HashMap<String, Object> condition) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		HashMap<String, Object> hmap = null;
+		ArrayList<HashMap<String, Object>> list = null;
+		
+		ArrayList<String> queryArr = new ArrayList<String>();
+		ArrayList<Object> bindVal = new ArrayList<Object>();
+		String query = null;
+		boolean allViewsChk = false;
+		
+		String bType = "등록";
+		
+		//조건에 따른 query문 가져오기
+		HashMap<String, Object> detailsContent = (HashMap<String, Object>) condition.get("detailsContent");
+		
+		//전체조회
+		if(condition.get("okStatus").equals("0") &&
+				detailsContent.get("details").equals("0") &&
+				condition.get("startD").equals("")) {
+			//조건없이 전체 조회
+			allViewsChk = true;
+			queryArr.add(" 1 = ? ");
+			bindVal.add("1");
+		} else {
+			//조건 검색
+			//승인상태가 전체가 아닐때
+			if(!(condition.get("okStatus").equals("0"))) {
+				queryArr.add(" PS.SID = ? ");
+				bindVal.add(condition.get("okStatus"));
+			}
+			//상세조건이 전체가 아닐때
+			if(!(detailsContent.get("details").equals("0"))) {
+				
+				//상세조건 별 쿼리문
+				if(detailsContent.get("details").equals("reqNo")) {
+					queryArr.add("R.REQP_NO = ? ");
+				} else if(detailsContent.get("details").equals("name")) {
+					queryArr.add("M.USER_NAME = ? ");
+				} else if(detailsContent.get("details").equals("reqName")) {
+					queryArr.add("PC.CTG_NAME = ? ");
+				}
+				bindVal.add(detailsContent.get("filterContent"));
+			}
+			//날짜값 있을 경우
+			if(!(condition).get("startD").equals("")) {
+				//날짜 2개 비교 인덱스 맞추기
+				queryArr.add("P.PSTART_DATE = ? ");
+				queryArr.add("P.PEND_DATE = ? ");
+				bindVal.add(condition.get("startD"));
+				bindVal.add(condition.get("endD"));
+			}
+		}
+		query = prop.getProperty("selectReqFilter");
+		
+		if(allViewsChk == false) {
+			//추가된 쿼리만큼 더하기
+			for(int i = 0; i < queryArr.size(); i++) {
+				if(i==queryArr.size() - 1) {
+					query += queryArr.get(i);
+				} else {
+					query += queryArr.get(i) + "AND ";
+				}
+			}
+		} else {
+			//전제조회 쿼리
+			query += queryArr.get(0);
+		}
+		//등록 요청 상태, 요청번호 순으로 내림차순
+		query += " ORDER BY STATUS DESC, REQP_NO";
+		System.out.println(query);
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, bType);
+			//반다온값으로 바인드값 보내기
+			for(int i = 0; i < bindVal.size(); i++) {
+				pstmt.setObject(i+2, bindVal.get(i));
+			}
+			
+			rset = pstmt.executeQuery();
+			
+			list = new ArrayList<HashMap<String, Object>>();
+			while(rset.next()) {
+				hmap = new HashMap<String, Object>();
+				
+				hmap.put("reqNo", rset.getInt("REQP_NO"));
+				hmap.put("userName", rset.getString("USER_NAME"));
+				hmap.put("ctgName", rset.getString("CTG_NAME"));
+				hmap.put("bTitle", rset.getString("BTITLE"));
+				hmap.put("status", rset.getString("STATUS"));
+				hmap.put("bNo", rset.getInt("BNO"));
+				hmap.put("reqD", rset.getDate("REQP_DATE"));
+				
+				list.add(hmap);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return list;
+	}
+	
+	//페이징 처리 요청 승인 게시글 숫자
+	public int getListOkCount(Connection con) {
+		Statement stmt = null;
+		ResultSet rset = null;
+		int listOkCount = 0;
+		
+		String query = prop.getProperty("listOkCount");
+		
+		try {
+			stmt = con.createStatement();
+			rset = stmt.executeQuery(query);
+			
+			if(rset.next()) {
+				listOkCount = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(stmt);
+			close(rset);
+		}
+		return listOkCount;
+	}
+	//페이징 처리 요청 승인 전체 게시글
+	public ArrayList<ReqProduct> reqOkList(Connection con, PageInfo pi) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<ReqProduct> list = null;
+		String bType = "등록";
+		
+		String qeury = prop.getProperty("reqOkList");
+		
+		int startRow = (pi.getCurrentPage() - 1) * pi.getLimit() + 1;
+		int endRow = startRow + pi.getLimit() - 1;
+		
+		try {
+			pstmt = con.prepareStatement(qeury);
+			pstmt.setString(1, bType);
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, endRow);
+			
+			rset = pstmt.executeQuery();
+			
+			list = new ArrayList<ReqProduct>();
+			
+			while(rset.next()) {
+				ReqProduct rp = new ReqProduct();
+				
+				rp.setbNo(rset.getInt("BNO"));
+				rp.setUpNo(rset.getInt("REQP_NO"));
+				rp.setbWriter(rset.getString("USER_NAME"));
+				rp.setProductName(rset.getString("CTG_NAME"));
+				rp.setReqDate(rset.getDate("REQP_DATE"));
+				rp.setbTitle(rset.getString("BTITLE"));
+				rp.setStatus(rset.getString("STATUS"));;
+				
+				list.add(rp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return list;
+	}
+	
+	//선택 검수 거절 조회
+	public ReqProduct reqRejectSelect(Connection con, String status) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ReqProduct rp = null;
+		
+		String query = prop.getProperty("reqRejectSelect");
+		try {
+				pstmt = con.prepareStatement(query);
+				pstmt.setInt(1, Integer.parseInt(status));
+				
+				rset = pstmt.executeQuery();
+				
+				if(rset.next()) {
+					rp = new ReqProduct();
+					
+					rp.setUpNo(rset.getInt("REQP_NO"));
+					rp.setProductName(rset.getString("CTG_NAME"));
+					rp.setbWriter(rset.getString("USER_NAME"));
+				}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return rp;
+	}
+	
+	//선택 검수 승인 조회
+	public ReqProduct reqConfirmSelect(Connection con, String status) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ReqProduct rp = null;
+		
+		String query = prop.getProperty("reqConfirmSelect");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, Integer.parseInt(status));
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				rp = new ReqProduct();
+				
+				rp.setUpNo(rset.getInt("REQP_NO"));
+				rp.setProductName(rset.getString("CTG_NAME"));
+				rp.setbWriter(rset.getString("USER_NAME"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return rp;
 	}
 }
