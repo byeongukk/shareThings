@@ -2,6 +2,7 @@ package com.kh.st.board.model.dao;
 
 import static com.kh.st.common.JDBCTemplate.*;
 
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -9,6 +10,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
@@ -249,6 +251,7 @@ public class BoardDao {
 				at.setChangeName(rset.getString("CHANGE_NAME"));
 				at.setFilePath(rset.getString("FILE_PATH"));
 				at.setFileLevel(rset.getInt("FILE_LEVEL"));
+				at.setBno(rset.getInt("BNO"));
 				attList.add(at);
 			}
 		
@@ -395,6 +398,172 @@ public class BoardDao {
 		return result;
 	}
 
+	public int insertReview(Connection con, Board newReview) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = prop.getProperty("insertReview");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, newReview.getPno());
+			pstmt.setString(2, newReview.getbContent());
+			pstmt.setString(3, newReview.getbContent());
+			pstmt.setInt(4, Integer.parseInt(newReview.getbWriter()));
+			pstmt.setString(5, "후기");
+			pstmt.setInt(6, newReview.getParentBno());
+			pstmt.setInt(7, newReview.getReviewStar());
+			
+			result = pstmt.executeUpdate();
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	public int selectCurrval(Connection con) {
+		Statement stmt = null;
+		ResultSet rset = null;
+		int bno = 0;
+		String query = prop.getProperty("selectBnoCurrval");
+		try {
+			stmt = con.createStatement();
+			rset = stmt.executeQuery(query);
+			if(rset.next()) {
+				bno = rset.getInt("CURRVAL");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(stmt);
+			close(rset);
+		}
+		
+		return bno;
+	}
+
+	public int insertRvImgList(Connection con, ArrayList<Attachment> rvImgList) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = prop.getProperty("insertAttachment");
+		
+		try {
+			for(int i = 0; i < rvImgList.size(); i++) {
+				pstmt = con.prepareStatement(query);
+				pstmt.setString(1, rvImgList.get(i).getOriginName());
+				pstmt.setString(2, rvImgList.get(i).getChangeName());
+				pstmt.setString(3, rvImgList.get(i).getFilePath());
+				int level = 0;
+				if(i == 0) {
+					level = 0;
+				}else {
+					level = 1;
+				}
+				pstmt.setInt(4, level);
+				pstmt.setInt(5, rvImgList.get(i).getBno());
+				
+				result += pstmt.executeUpdate();
+			}
+				
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	
+	
+	
+	
+	/*-------------------준혁 */
+	   public int insertThumnailContent(Connection con, Board b) {
+	      PreparedStatement pstmt = null;
+	      int result = 0;
+	      
+	      String query = prop.getProperty("insertThumb");
+	      
+	      try {
+	         pstmt = con.prepareStatement(query);
+	         pstmt.setInt(1, b.getPno());
+	         pstmt.setString(2, b.getbTitle());
+	         pstmt.setString(3, b.getbContent());
+	         pstmt.setInt(4, Integer.parseInt(b.getbWriter()));
+	         pstmt.setString(5, "등록");
+	         
+	         
+	         result = pstmt.executeUpdate();
+	         
+	      } catch (SQLException e1) {
+	         // TODO Auto-generated catch block
+	         e1.printStackTrace();
+	      } finally {
+	         close(pstmt);
+	      }
+	      
+	      
+	      return result;
+	   }
+
+	   /*public int selectCurrval(Connection con) {
+	      Statement stmt = null;
+	      ResultSet rset = null;
+	      int bno = 0;
+	      
+	      String query = prop.getProperty("selectCurrval");
+	      
+	      try {
+	         stmt = con.createStatement();
+	         rset = stmt.executeQuery(query);
+	         
+	         if(rset.next()) {
+	            bno = rset.getInt("currval");
+	         }
+	         
+	      } catch (SQLException e) {
+	         // TODO Auto-generated catch block
+	         e.printStackTrace();
+	      } finally {
+	         close(rset);
+	         close(stmt);
+	      }
+	      
+	      
+	      return bno;
+	   }*/
+
+	   public int insertAttachment(Connection con, ArrayList<Attachment> fileList) {
+	      PreparedStatement pstmt = null;
+	      int result = 0;
+	      
+	      String query = prop.getProperty("insertAttachment");
+	      
+	         try {
+	            
+	            for(int i = 0; i < fileList.size(); i++) {
+	            pstmt = con.prepareStatement(query);
+	            pstmt.setString(1, fileList.get(i).getOriginName());
+	            pstmt.setString(2, fileList.get(i).getChangeName());
+	            pstmt.setString(3, fileList.get(i).getFilePath());
+	            pstmt.setInt(4, fileList.get(i).getBno());
+	            result += pstmt.executeUpdate();
+	            }
+	            
+	         } catch (SQLException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	         } finally {
+	            close(pstmt);
+	         }
+	         
+	      
+	      
+	      
+	      return result;
+	   }
 	
 	
 }
