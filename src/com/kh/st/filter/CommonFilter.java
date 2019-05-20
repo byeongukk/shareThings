@@ -27,7 +27,7 @@ public class CommonFilter implements Filter {
 		request.setCharacterEncoding("UTF-8");
 
 		
-		System.out.println("인코딩 완료!!");
+		//System.out.println("인코딩 완료!!");
 		
 		chain.doFilter(request, response);
 	}

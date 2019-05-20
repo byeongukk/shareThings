@@ -18,7 +18,7 @@ public class Board implements java.io.Serializable{
 	private int reviewStar;
 	private String status;
 	
-	
+	public Board() {}
 	
 	public Board(int bno, int pno, String bTitle, String bContent, String bWriter, int bCount, Date bDate,
 			Date modifyDate, String bType, int parentBno, int bLevel, int reviewStar, String status) {
