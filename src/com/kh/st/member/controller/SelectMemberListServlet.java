@@ -26,7 +26,7 @@ public class SelectMemberListServlet extends HttpServlet {
 
     
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// -----------------------------------------------  페이징 처리 (25개)  -----------------------------------------------
+		// -----------------------------------------------  페이징 처리 (50개)  -----------------------------------------------
 		int currentPage;
 		int limit;
 		int maxPage;
@@ -39,13 +39,13 @@ public class SelectMemberListServlet extends HttpServlet {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
 		
-		limit = 20;
+		limit = 50;
 		
 		int listCount = new MemberService().getReportListCount();
 		
-		maxPage = (int)((double)listCount / limit + 0.95);
+		maxPage = (int)((double)listCount / limit + 0.98);
 		
-		startPage = (((int)((double)currentPage / limit + 0.95)) - 1) * 10 + 1;
+		startPage = (((int)((double)currentPage / limit + 0.98)) - 1) * 10 + 1;
 		
 		endPage = startPage + 10 - 1;
 		
@@ -55,7 +55,7 @@ public class SelectMemberListServlet extends HttpServlet {
 		
 		PageInfo pi = new PageInfo(currentPage, limit, maxPage, startPage, endPage);
 		
-		// -----------------------------------------------  페이징 처리 (25개)  -----------------------------------------------
+		// -----------------------------------------------  페이징 처리 (50개)  -----------------------------------------------
 		
 		ArrayList<Member> list = new MemberService().selectList(pi);
 		
