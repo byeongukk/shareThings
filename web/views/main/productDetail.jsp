@@ -382,7 +382,11 @@
 							<p><b>나의 후기</b></p>
 							<form id="reviewForm" method="POST" enctype="multipart/form-data">
 								<div class="ui star huge rating" data-rating="3" data-max-rating="5"></div>
-								<textarea class="reviewInput" rows="5" style="width:100%" placeholder="후기를 입력해주세요"></textarea>
+								<input type="hidden" name="bno" value="<%= (int)bmap.get("bno") %>">
+								<input type="hidden" name="pno" value="<%= (int)bmap.get("pno") %>">
+								<input type="hidden" name="reviewStar">
+								<textarea class="reviewInput" rows="5" style="width:100%" 
+								name="reviewInput" placeholder="후기를 입력해주세요"></textarea>
 								<div class="rvAttachArea">
 									<label>사진 첨부</label>
 									<div class="rvImageArea rvImageArea1">
@@ -430,20 +434,48 @@
 								<tbody>
 									<%
 										for(int i = 0; i < reviewList.size(); i++) {
-									
+											
+												
 									%>
 									<tr>
-										<td><%= reviewList.get(i).get("rvTitle") %></td>
+										<td>
+									<%
+											int rvNo = (int)reviewList.get(i).get("rvNo");
+											ArrayList<Attachment> rvAttList = (ArrayList<Attachment>)rvAttmap.get(String.valueOf(rvNo));
+											if(rvAttList != null) {
+												for(int j = 0; j < rvAttList.size(); j++) {	
+													if(rvAttList.get(j).getFileLevel() == 0) {
+									%>	
+										
+											<img src="/st/attach_upload/<%= rvAttList.get(j).getChangeName() %>" height="40px" width="40px">
+									<%
+													}
+												}
+											}
+									%>		
+											<%= reviewList.get(i).get("rvTitle") %>
+										</td>
 										<td><%= reviewList.get(i).get("rvWriter") %></td>
 										<td><%= reviewList.get(i).get("rvDate") %></td>
 									</tr>
 									<tr>
-										<td><%= reviewList.get(i).get("rvContent") %></td>
-										<td><%= reviewList.get(i).get("rvWriter") %></td>
-										<td><%= reviewList.get(i).get("rvDate") %></td>
+										<td>
+											<%= reviewList.get(i).get("rvContent") %>
+									<%
+											if(rvAttList != null) {
+												for(int j = 0; j < rvAttList.size(); j++) {	
+									%>		
+											<img src="/st/attach_upload/<%= rvAttList.get(j).getChangeName() %>" height="80px" width="80px">
+									<%
+												}
+											}
+									%>
+										</td>
+										<td></td>
+										<td></td>
 									</tr>
 									<%
-											if(QnAList.get(i).get("ansTitle") != null) {
+											if(reviewList.get(j).get("ansTitle") != null) {
 									%>
 									<tr>
 										<td style="color:orangered">&nbsp;&nbsp;[답글 :]<%= reviewList.get(i).get("ansTitle") %></td>
@@ -452,8 +484,8 @@
 									</tr>
 									<tr>
 										<td>&nbsp;&nbsp;<%= reviewList.get(i).get("ansContent") %></td>
-										<td><%= reviewList.get(i).get("ansWriter") %></td>
-										<td><%= reviewList.get(i).get("ansDate") %></td>
+										<td></td>
+										<td></td>
 									</tr>
 									<%
 											}
@@ -635,7 +667,7 @@
 					alert("서버 전송 실패");
 				}
 				
-			})
+			});
 			<% } %>
 		});
 		
@@ -645,28 +677,35 @@
 			<% if(loginUser == null) {%>
 			location.href="<%= request.getContextPath() %>/views/member/loginPage.jsp";
 			<% }else {%>
-			var form = $("#reviewForm");
+			var reviewStar = $(".ui.rating").rating("get rating");
+			$("input[name=reviewStar]").val(reviewStar);
+			var form = $("#reviewForm")[0];
 			var formData = new FormData(form);
+			//console.log(reviewStar);
+			/* formData.reviewStar = reviewStar; */
 			$.ajax({
-				url:"<%= request.getContextPath() %>/insertQnA.bo",
+				url:"<%= request.getContextPath() %>/insertReview.bo",
 				type:"post",
 				encType:"multipart/form-data",
 				data:formData,
+				cache:false,
+				contentType:false,
+				processData:false,
 				success:function(data) {
 					var $tbody = $("#reviewList>tbody");
 					$tbody.html("");
 					for(var key in data) {
 						var $tr = $("<tr>");
-						var $titleTd = $("<td>").text(data[key].qnaTitle);
-						var $writerTd = $("<td>").text(data[key].qnaWriter);
-						var $dateTd = $("<td>").text(data[key].qnaDate);
+						var $titleTd = $("<td>").text(data[key].rvTitle);
+						var $writerTd = $("<td>").text(data[key].rvWriter);
+						var $dateTd = $("<td>").text(data[key].rvDate);
 						$tr.append($titleTd);
 						$tr.append($writerTd);
 						$tr.append($dateTd);
 						$tbody.append($tr);
 						
 						var $contentTr = $("<tr>");
-						var $contentTd = $("<td>").text(data[key].qnaContent);
+						var $contentTd = $("<td>").text(data[key].rvContent);
 						var $emptyTd = $("<td colspan='2'>");
 						$contentTr.append($contentTd);
 						$contentTr.append($emptyTd);
@@ -691,9 +730,9 @@
 							
 						}
 					}
-					$("#QnAinput").val("");
+					$(".reviewInput").val("");
 					hideContent();
-					alert("QnA 등록 완료");
+					alert("대여 후기 등록 완료");
 				}, error:function(data) {
 					alert("서버 전송 실패");
 				}

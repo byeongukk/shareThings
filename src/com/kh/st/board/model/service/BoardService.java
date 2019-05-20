@@ -57,7 +57,7 @@ public class BoardService {
 				for(int i = 0; i < reviewList.size(); i++) {
 					int rvno = (int)reviewList.get(i).get("rvNo");
 					ArrayList<Attachment> rvAttList = new BoardDao().selectBoardImages(con, rvno);
-					rvAttmap.put("rvno", rvAttList);
+					rvAttmap.put(String.valueOf(rvno), rvAttList);
 				}
 				
 				bDetailMap.put("bmap", bmap);
@@ -93,6 +93,66 @@ public class BoardService {
 		return qnaList;
 	}
 
+	public int insertReview(Board newReview, ArrayList<Attachment> rvImgList) {
+		Connection con = getConnection();
+		int result = 0;
+		int result1 = new BoardDao().insertReview(con, newReview);
+		if(result1 > 0) {
+			int bno = new BoardDao().selectCurrval(con);
+			for(int i = 0; i < rvImgList.size(); i++) {
+				rvImgList.get(i).setBno(bno);
+			}
+		}
+		int result2 = new BoardDao().insertRvImgList(con, rvImgList);
+		if(result1 > 0 && result2 == rvImgList.size()) {
+			commit(con);
+			result = 1;
+		}else {
+			rollback(con);
+			result = 0;
+		}
+		close(con);
+		return result;
+	}
+
+	
+	
+	
+	
+	
+	/*사진게시판 등록용 메소드 ----------------------- 준혁*/
+	   
+	   public int insertProductBoard(Board b, ArrayList<Attachment> fileList) {
+	      Connection con = getConnection();
+	      int result = 0;
+	      
+	      int result1 = new BoardDao().insertThumnailContent(con, b);
+	      
+	      if(result1 > 0) {
+	         int bno = new BoardDao().selectCurrval(con);
+	         for(int i = 0; i < fileList.size(); i++) {
+	            fileList.get(i).setBno(bno);
+	         }
+	         
+	      }
+	      
+	      int result2 = new BoardDao().insertAttachment(con, fileList);
+	      
+	      if(result1 > 0 && result2 == fileList.size()) {
+	         commit(con);
+	         result = 1;
+	      }else {
+	         rollback(con);
+	         result = 0;
+	      }
+	      
+	      close(con);
+	      
+	      return result;
+	   }
+
+	
+	
 }
 
 
