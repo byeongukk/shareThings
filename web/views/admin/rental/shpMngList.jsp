@@ -141,8 +141,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 												<select class="form-control" id="dCom">
 													<option disabled>택배사</option>
-													<option value="d1">대한통운</option>
-													<option value="d2">로젠택배</option>
+													<option value="04">대한통운</option>
 												</select> 
 												&nbsp;&nbsp;&nbsp;&nbsp; <span> <input type="number"
 													class="form-control" id="invoiceNum" placeholder="송장번호">
@@ -152,11 +151,19 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 														class="fas fas fa-check"></i>
 													</span> <span class="text">적용하기</span>
 												</button>
+												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												<button type="button"
+													class="btn btn-danger btn-icon-split btn-sm" id="applyCancelBtn">
+													<span class="icon text-white-50"> <i
+														class="fas fas fa-trash"></i>
+													</span> <span class="text">적용취소</span>
+												</button>
+												
 											</div>
 										</form>
 										<br>
 										<form>
-											<button class="btn btn-secondary btn-icon-split btn-sm">
+											<button type="button" class="btn btn-secondary btn-icon-split btn-sm" id="forwardingBtn">
 												<span class="icon text-white-50"> <i
 													class="fas fas fa-arrow-right"></i>
 												</span> <span class="text">발송처리</span>
@@ -348,15 +355,27 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 			//대여취소 버튼
 			$("#cancelBtn").click(function() {
 				var status = new Array();
+				var rtStatus = new Array();
+				var rtStatusCheck = "";
 				$(".odd").each(function() {
 					if($(this).find(".check").is(":checked")) {	
+						//대여상태가 발송대기인 물품이 있는경우
+						if($(this).find("td").eq(8).text() == "RTS4"){
+							rtStatusCheck = "RTS4";
+						}
 						status.push($(this).find("td").eq(1).text());
+						rtStatus.push($(this).find("td").eq(8).text());
 					}
 				});
 				if(status.length == 0) {
-					alert("한개이상 선택하세요");
+					alert("적용하실 물품을 한개이상 선택하세요");
 					return false;
 				}
+				if(rtStatusCheck=="SW"){
+					alert("송장정보가 있는 물품이 있습니다.");
+					return false;
+				}
+				
 				
 				$.ajax({
 					url:"selectShpNum.rt?status=" + status,
@@ -424,41 +443,121 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 			
 			//택배송장 입력 
 			$("#applyBtn").click(function(){
-				var status = new Array();
-				var dCom =  $("#dCom").val();
-				var rtNo = "";
-				var pno = "";
-				var invoiceNum = $("#invoiceNum").val();
-				$(".odd").each(function() {
-					if($(this).find(".check").is(":checked")) {	
-						status.push($(this).find("td").eq(1).text());
-						
-						rtNo = $(this).find("td").eq(1).text();
-						pno = $(this).find("td").eq(2).text();
-						userId = $(this).find("td").eq(4).text();
+				if(confirm("송장번호를 적용하시겠습니까?")){
+					
+					var status = new Array();
+					var dCom =  $("#dCom").val();
+					var rtNos = new Array();
+					var pnos = new Array();
+					var invoiceNum = $("#invoiceNum").val();
+					var rtStatus = "";
+					$(".odd").each(function() {
+						if($(this).find(".check").is(":checked")) {	
+							status.push($(this).find("td").eq(1).text());
+							
+							rtNos = $(this).find("td").eq(1).text();
+							pnos = $(this).find("td").eq(2).text();
+							userId = $(this).find("td").eq(4).text();
+							rtStatus = $(this).find("td").eq(8).text();
+						}
+					});
+					console.log(rtStatus);
+					if(rtStatus == "RTS4"){
+						alert("이미 입력된 물품입니다");
+						return false;
 					}
-				});
-				if(status.length != 1 ) {
-					alert("적용하실 물품을 1개 선택하세요");
-					return false;
+					if(invoiceNum == ""){
+						alert("송장번호를 입력하세요");
+						return false;
+					}
+					if(status.length != 1 ) {
+						alert("적용하실 물품을 1개 선택하세요");
+						return false;
+					}
+					//송장번호 받아오기
+					
+					location = "<%= request.getContextPath() %>/insertInvcNum.rt?rtNos=" + rtNos + 
+																"&invoiceNum=" + invoiceNum + 
+																"&pnos=" + pnos + 
+																"&dCom=" + dCom +
+																"&userId=" + userId;
 				}
-				console.log(rtNo);
-				console.log(dCom);
-				console.log(pno);
-				console.log("송장입력");
-				//송장번호 받아오기
 				
-				console.log(invoiceNum);
-				location = "<%= request.getContextPath() %>/insertInvcNum.rt?rtNo=" + rtNo + 
-															"&invoiceNum=" + invoiceNum + 
-															"&pno=" + pno + 
-															"&dCom=" + dCom +
-															"&userId=" + userId;
-				 
-				
+			});
+			
+			//택배송장 취소
+				$("#applyCancelBtn").click(function(){
+				if(confirm("송장번호 입력 취소하시겠습니까?")){
+					
+					var status = new Array();
+					var dCom =  $("#dCom").val();
+					var rtNos = new Array();
+					var pnos = new Array();
+					var invoiceNum = $("#invoiceNum").val();
+					var rtStatus = "";
+					$(".odd").each(function() {
+						if($(this).find(".check").is(":checked")) {
+							status.push($(this).find("td").eq(1).text());
+							
+							rtNos.push($(this).find("td").eq(1).text());
+							pnos.push($(this).find("td").eq(2).text());
+							rtStatus = $(this).find("td").eq(8).text();
+							console.log(rtNos);
+						}
+					});
+					if(rtStatus != "RTS4"){
+						alert("송장번호가 입력되지 않은 물품입니다");
+						return false;
+					}
+					if(status.length == 0) {
+						alert("적용하실 물품을 한개이상 선택하세요");
+						return false;
+					}
+					//송장번호 받아오기
+					
+					location = "<%= request.getContextPath() %>/deleteInvcNum.rt?rtNos=" + rtNos + 
+																"&pnos=" + pnos;
+				}
 				
 			});
 		
+			$("#forwardingBtn").click(function(){
+				if(confirm("발송 처리 하시겠습니까?")){
+					var status = new Array();
+					var rtNos = new Array();
+					var pnos = new Array();
+					var rtStatus = "";
+					var rtStatusCheck = "";
+					$(".odd").each(function() {
+						if($(this).find(".check").is(":checked")) {
+							//운송장번호가 입력되지않은  물품이 있는경우
+							if($(this).find("td").eq(8).text() == "RTS2"){
+								rtStatusCheck = "RTS2";
+							}
+							
+							status.push($(this).find("td").eq(1).text());
+							
+							rtNos.push($(this).find("td").eq(1).text());
+							pnos.push($(this).find("td").eq(2).text());
+							rtStatus = $(this).find("td").eq(8).text();
+							console.log(rtNos);
+						}
+					});
+					if(rtStatusCheck == "RTS2"){
+						alert("송장번호가 입력되지 않은 물품이 있습니다");
+						return false;
+					}
+					if(status.length == 0) {
+						alert("적용하실 물품을 한개이상 선택하세요");
+						return false;
+					}
+					
+					location = "<%= request.getContextPath() %>/updateForwarding.rt?rtNos=" + rtNos + 
+																"&pnos=" + pnos;
+				}
+				
+				
+			});
 			
 	
 	</script>

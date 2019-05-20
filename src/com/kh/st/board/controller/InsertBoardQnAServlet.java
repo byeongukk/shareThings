@@ -10,19 +10,21 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import com.kh.st.board.model.service.BoardService;
+import com.kh.st.board.model.vo.Board;
 
 /**
- * Servlet implementation class SelectBoardListServlet
+ * Servlet implementation class InsertBoardQnAServlet
  */
-@WebServlet("/selectList.bo")
-public class SelectBoardListServlet extends HttpServlet {
+@WebServlet("/insertQnA.bo")
+public class InsertBoardQnAServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SelectBoardListServlet() {
+    public InsertBoardQnAServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,20 +33,32 @@ public class SelectBoardListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		String ctgLv2 = request.getParameter("ctgLv2");
+		String qnaContent = request.getParameter("qnaInput");
+		String qnaWriter = request.getParameter("qnaWriter");
+		int parentBno = Integer.parseInt(request.getParameter("parentBno"));
+		int pno = Integer.parseInt(request.getParameter("pno"));
 		
-		HashMap<String, Object> listMap = new BoardService().selectList(ctgLv2);
-		String page = "";
-		if(!listMap.isEmpty()) {
-			page = "views/main/productList.jsp";
-			request.setAttribute("listMap", listMap);
-			request.setAttribute("ctgLv2", ctgLv2);
+		Board newQnA = new Board();
+		newQnA.setbContent(qnaContent);
+		newQnA.setbWriter(qnaWriter);
+		newQnA.setParentBno(parentBno);
+		newQnA.setPno(pno);
+		int result = new BoardService().insertQnA(newQnA);
+		
+		response.setContentType("application/json");
+		response.setCharacterEncoding("UTF-8");
+		if(result > 0) {
+			ArrayList<HashMap<String, Object>> qnaList = new BoardService().selectQnAList(parentBno);
+			if(!qnaList.isEmpty()) {
+				new Gson().toJson(qnaList, response.getWriter());
+			}else {
+				response.getWriter().append("List not found");
+			}
+		
 		}else {
-			page = "views/common/errorPage.jsp";
-			request.setAttribute("msg", "상품 리스트 페이지 불러오기 실패..");
+			response.getWriter().append("insert fail");
 		}
-		request.getRequestDispatcher(page).forward(request, response);
+		
 	}
 
 	/**

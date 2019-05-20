@@ -1,7 +1,6 @@
 package com.kh.st.board.controller;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.servlet.ServletException;
@@ -13,16 +12,16 @@ import javax.servlet.http.HttpServletResponse;
 import com.kh.st.board.model.service.BoardService;
 
 /**
- * Servlet implementation class SelectBoardListServlet
+ * Servlet implementation class SelectOneBoardServlet
  */
-@WebServlet("/selectList.bo")
-public class SelectBoardListServlet extends HttpServlet {
+@WebServlet("/selectOne.bo")
+public class SelectOneBoardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SelectBoardListServlet() {
+    public SelectOneBoardServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,19 +31,19 @@ public class SelectBoardListServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		String ctgLv2 = request.getParameter("ctgLv2");
+		int bno = Integer.parseInt(request.getParameter("bno"));
 		
-		HashMap<String, Object> listMap = new BoardService().selectList(ctgLv2);
+		HashMap<String, Object> bDetailMap = new BoardService().selectOneBoard(bno);
 		String page = "";
-		if(!listMap.isEmpty()) {
-			page = "views/main/productList.jsp";
-			request.setAttribute("listMap", listMap);
-			request.setAttribute("ctgLv2", ctgLv2);
+		if(!bDetailMap.isEmpty()) {
+			page = "views/main/productDetail.jsp";
+			request.setAttribute("bDetailMap", bDetailMap);
 		}else {
 			page = "views/common/errorPage.jsp";
-			request.setAttribute("msg", "상품 리스트 페이지 불러오기 실패..");
+			request.setAttribute("msg", "물품 상세글 불러오기 실패..");
 		}
 		request.getRequestDispatcher(page).forward(request, response);
+		
 	}
 
 	/**
