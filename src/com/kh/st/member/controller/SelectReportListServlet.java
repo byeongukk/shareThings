@@ -38,13 +38,14 @@ public class SelectReportListServlet extends HttpServlet {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
 
-		limit = 20;
+		limit = 50;
 
 		int listCount = new MemberService().getReportListCount();
+		System.out.println(listCount);
+		
+		maxPage = (int)((double)listCount / limit + 0.98);
 
-		maxPage = (int)((double)listCount / limit + 0.95);
-
-		startPage = (((int)((double)currentPage / limit + 0.95)) - 1) * 10 + 1;
+		startPage = (((int)((double)currentPage / limit + 0.98)) - 1) * 10 + 1;
 
 		endPage = startPage + 10 - 1;
 

@@ -151,7 +151,7 @@ public class MemberDao {
 		try {
 			for(int i = 0; i < list.size(); i++) {
 				pstmt = con.prepareStatement(query);
-				pstmt.setString(1, list.get(i).getLevelName());
+				pstmt.setString(1, list.get(i).getLevelName()) ;
 				pstmt.setInt(2, list.get(i).getLevelStd());
 				pstmt.setInt(3, list.get(i).getPerPoint());
 				pstmt.setString(4, list.get(i).getLevelCode());
@@ -620,7 +620,7 @@ public class MemberDao {
 				pstmt = con.prepareStatement(query);
 				pstmt.setInt(1, Integer.parseInt(nums[i]));
 
-				result = pstmt.executeUpdate();
+				result += pstmt.executeUpdate();
 			}
 
 			if(result == nums.length) {
@@ -774,6 +774,10 @@ public class MemberDao {
 			allViewsChk = true;
 			queryArr.add(" 1 = ? ");
 			bindVal.add("1");
+			queryArr.add(" RNUM BETWEEN ? ");
+			queryArr.add(" ? ");
+			bindVal.add(startRow);
+			bindVal.add(endRow);
 		}else {
 
 			if(!(condition.get("userId").equals(""))) {
@@ -811,7 +815,6 @@ public class MemberDao {
 
 		query = prop.getProperty("memberFilter");
 
-		if(allViewsChk == false) {
 			for(int i = 0; i < queryArr.size(); i++) {
 				if(i == queryArr.size()-1) {
 					query += queryArr.get(i);
@@ -819,11 +822,6 @@ public class MemberDao {
 					query += queryArr.get(i) + " AND ";
 				}
 			}
-		}else {
-			query += queryArr.get(0);
-		}
-
-		System.out.println(query);
 
 		try {
 			pstmt = con.prepareStatement(query);
@@ -864,19 +862,17 @@ public class MemberDao {
 
 		return list;
 	}
-
-	//신고 조회 필터링용
-	public ArrayList<HashMap<String, Object>> selectReportFilter(Connection con, HashMap<String, Object> condition) {
-		ArrayList<HashMap<String,Object>> list = null;
-		HashMap<String,Object> hmap = null;
+	
+	//신고 조회 필터링 카운트용
+	public int getReportFilterCount(Connection con, HashMap<String, Object> condition) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-
+		int listCount = 0;
 		ArrayList<String> queryArr = new ArrayList<String>();
 		ArrayList<Object> bindVal = new ArrayList<Object>();
 		String query = null;
 		boolean allViewsChk = false;
-
+		
 		if(condition.get("userId").equals("") && condition.get("reportName").equals("0") 
 				&& condition.get("reportResult").equals("0") && condition.get("status").equals("0")
 				&& condition.get("startReD").equals("") && condition.get("startRsD").equals("")) {
@@ -925,7 +921,7 @@ public class MemberDao {
 
 		}
 		
-		query = prop.getProperty("reportFilter");
+		query = prop.getProperty("reportFilterCount");
 
 		if(allViewsChk ==false) {
 			for(int i = 0; i < queryArr.size(); i++) {
@@ -939,7 +935,112 @@ public class MemberDao {
 			query += queryArr.get(0);
 		}
 
-		query += "ORDER BY REPORT_NO DESC";
+		System.out.println(query);
+
+		try {
+			pstmt = con.prepareStatement(query);
+
+			for(int i = 0; i < bindVal.size(); i++) {
+				pstmt.setObject(i+1, bindVal.get(i));
+			}
+
+			rset = pstmt.executeQuery();
+
+			while(rset.next()) {
+				listCount = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+
+		return listCount;
+	}
+
+	//신고 조회 필터링용
+	public ArrayList<HashMap<String, Object>> selectReportFilter(Connection con, HashMap<String, Object> condition, PageInfo pi) {
+		ArrayList<HashMap<String,Object>> list = null;
+		HashMap<String,Object> hmap = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+
+		ArrayList<String> queryArr = new ArrayList<String>();
+		ArrayList<Object> bindVal = new ArrayList<Object>();
+		String query = null;
+		boolean allViewsChk = false;
+
+		int startRow = (pi.getCurrentPage() - 1) * pi.getLimit() + 1;
+		int endRow = startRow + pi.getLimit() - 1;
+		
+		if(condition.get("userId").equals("") && condition.get("reportName").equals("0") 
+				&& condition.get("reportResult").equals("0") && condition.get("status").equals("0")
+				&& condition.get("startReD").equals("") && condition.get("startRsD").equals("")) {
+			allViewsChk = true;
+			queryArr.add(" 1 = ? ");
+			bindVal.add("1");
+			queryArr.add(" RNUM BETWEEN ? ");
+			queryArr.add(" ? ");
+			bindVal.add(startRow);
+			bindVal.add(endRow);
+		}else {
+
+			if(!(condition.get("userId").equals(""))) {
+				queryArr.add(" USER1 LIKE ? ");
+				bindVal.add("%" + condition.get("userId") + "%");
+			}
+
+			if(!(condition.get("reportName").equals("0"))) {
+				queryArr.add(" REPORT_NAME = ? ");
+				bindVal.add(condition.get("reportName"));
+			}
+
+			if(!(condition.get("reportResult").equals("0"))) {
+				queryArr.add(" REPORT_RESULT = ? ");
+				bindVal.add(condition.get("reportResult"));
+			}
+
+			if(!(condition.get("status").equals("0"))) {
+				if(condition.get("status").equals("Y")) {
+					queryArr.add(" REPORT_RESULT IS NOT NULL ");
+				}else{
+					queryArr.add(" REPORT_RESULT IS NULL ");
+				}
+			}
+
+			if(!(condition.get("startReD").equals(""))) {
+				queryArr.add(" REPORT_DATE BETWEEN ? ");
+				queryArr.add(" ? ");
+				bindVal.add(condition.get("startReD"));
+				bindVal.add(condition.get("endReD"));
+			}
+
+			if(!(condition.get("startRsD").equals(""))) {
+				queryArr.add(" COMPLETE_DATE BETWEEN ? ");
+				queryArr.add(" ? ");
+				bindVal.add(condition.get("startRsD"));
+				bindVal.add(condition.get("endRsD"));
+			}
+			
+			queryArr.add(" RNUM BETWEEN ? ");
+			queryArr.add(" ? ");
+			bindVal.add(startRow);
+			bindVal.add(endRow);
+
+		}
+		
+		query = prop.getProperty("reportFilter");
+
+		
+		for(int i = 0; i < queryArr.size(); i++) {
+			if(i == queryArr.size()-1) {
+				query += queryArr.get(i);
+			}else {
+				query += queryArr.get(i) + " AND ";
+			}
+		}
+
 		System.out.println(query);
 
 		try {
@@ -986,17 +1087,15 @@ public class MemberDao {
 			close(pstmt);
 			close(rset);
 		}
-
+		
 		return list;
 	}
 	
-	//수익금 환급 조회 필터링용
-	public ArrayList<HashMap<String, Object>> selectPaybackFilter(Connection con, HashMap<String, Object> condition) {
-		ArrayList<HashMap<String,Object>> list = null;
-		HashMap<String,Object> hmap = null;
+	//수익금 환급 필터링 카운트용
+	public int getPaybackFilterCount(Connection con, HashMap<String, Object> condition) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-
+		int listCount = 0;
 		ArrayList<String> queryArr = new ArrayList<String>();
 		ArrayList<Object> bindVal = new ArrayList<Object>();
 		String query = null;
@@ -1044,7 +1143,7 @@ public class MemberDao {
 			
 		}
 		
-		query = prop.getProperty("paybackFilter");
+		query = prop.getProperty("paybackFilterCount");
 
 		if(allViewsChk ==false) {
 			for(int i = 0; i < queryArr.size(); i++) {
@@ -1058,7 +1157,105 @@ public class MemberDao {
 			query += queryArr.get(0);
 		}
 
-		query += "ORDER BY PB_NO DESC";
+		System.out.println(query);
+
+		try {
+			pstmt = con.prepareStatement(query);
+
+			for(int i = 0; i < bindVal.size(); i++) {
+				pstmt.setObject(i+1, bindVal.get(i));
+			}
+
+			rset = pstmt.executeQuery();
+
+			while(rset.next()) {
+				listCount = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		
+		return listCount;
+	}
+	
+	//수익금 환급 조회 필터링용
+	public ArrayList<HashMap<String, Object>> selectPaybackFilter(Connection con, HashMap<String, Object> condition, PageInfo pi) {
+		ArrayList<HashMap<String,Object>> list = null;
+		HashMap<String,Object> hmap = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+
+		ArrayList<String> queryArr = new ArrayList<String>();
+		ArrayList<Object> bindVal = new ArrayList<Object>();
+		String query = null;
+		boolean allViewsChk = false;
+		
+		int startRow = (pi.getCurrentPage() - 1) * pi.getLimit() + 1;
+		int endRow = startRow + pi.getLimit() - 1;
+		
+		if(condition.get("userId").equals("") && condition.get("status").equals("0")
+				&& condition.get("startM").equals("") && condition.get("startReq").equals("")
+				&& condition.get("startPb").equals("")) {
+			allViewsChk = true;
+			queryArr.add(" 1 = ? ");
+			bindVal.add("1");
+			queryArr.add(" RNUM BETWEEN ? ");
+			queryArr.add(" ? ");
+			bindVal.add(startRow);
+			bindVal.add(endRow);
+		}else {
+			
+			if(!(condition.get("userId").equals(""))) {
+				queryArr.add(" USER_ID LIKE ? ");
+				bindVal.add("%" + condition.get("userId") + "%");
+			}
+			
+			if(!(condition.get("status").equals("0"))) {
+				queryArr.add(" PB_STATUS = ? ");
+				bindVal.add(condition.get("status"));
+			}
+			
+			if(!(condition.get("startM").equals(""))) {
+				queryArr.add(" PB_AMOUNT BETWEEN ? ");
+				queryArr.add(" ? ");
+				bindVal.add(condition.get("startM"));
+				bindVal.add(condition.get("endM"));
+			}
+			
+			if(!(condition.get("startReq").equals(""))) {
+				queryArr.add(" REQ_DATE BETWEEN ? ");
+				queryArr.add(" ? ");
+				bindVal.add(condition.get("startReq"));
+				bindVal.add(condition.get("endReq"));
+			}
+			
+			if(!(condition.get("startPb").equals(""))) {
+				queryArr.add(" PB_DATE BETWEEN ? ");
+				queryArr.add(" ? ");
+				bindVal.add(condition.get("startPb"));
+				bindVal.add(condition.get("endPb"));
+			}
+			
+			queryArr.add(" RNUM BETWEEN ? ");
+			queryArr.add(" ? ");
+			bindVal.add(startRow);
+			bindVal.add(endRow);
+			
+		}
+		
+		query = prop.getProperty("paybackFilter");
+
+		for(int i = 0; i < queryArr.size(); i++) {
+			if(i == queryArr.size()-1) {
+				query += queryArr.get(i);
+			}else {
+				query += queryArr.get(i) + " AND ";
+			}
+		}
+		
 		System.out.println(query);
 
 		try {
@@ -1284,6 +1481,10 @@ public class MemberDao {
 		}
 		return result;
 	}
+
+	
+
+	
 
 	
 

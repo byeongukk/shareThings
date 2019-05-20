@@ -41,8 +41,8 @@ public class SelectMemberListServlet extends HttpServlet {
 		
 		limit = 50;
 		
-		int listCount = new MemberService().getReportListCount();
-		
+		int listCount = new MemberService().getListCount();
+		System.out.println(listCount);
 		maxPage = (int)((double)listCount / limit + 0.98);
 		
 		startPage = (((int)((double)currentPage / limit + 0.98)) - 1) * 10 + 1;
@@ -58,6 +58,7 @@ public class SelectMemberListServlet extends HttpServlet {
 		// -----------------------------------------------  페이징 처리 (50개)  -----------------------------------------------
 		
 		ArrayList<Member> list = new MemberService().selectList(pi);
+		System.out.println(startPage);
 		
 		String page = "";
 		if(list != null) {

@@ -82,7 +82,6 @@
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">조회 필터</div>
 								<div class="card-body">
-									<form id="filterArea">
 										<table class="col-lg-12" id="filter">
 											<tr>
 												<td width="5%">회원ID :</td>
@@ -113,11 +112,10 @@
 												</tr>
 										</table>
 										<div>
-											<button type="button" id="inquiry">조회하기</button>
+											<button type="button" onclick="filteringP(1)">조회하기</button>
 											&nbsp;&nbsp;&nbsp;
 											<button type="reset">초기화</button>
 										</div>
-									</form>
 								</div>
 							</div>
 							<div class="card shadow mb-4">
@@ -207,7 +205,7 @@
 													<div class="col-lg-12">
 														<div class="dataTables_paginate paging_simple_numbers"
 															id="dataTable_paginate">
-															<ul class="pagination">
+															<ul class="pagination" id="pagingUl">
 																<li class="paginate_button page-item"
 																	id="dataTable_first"><a
 																	href="<%=request.getContextPath()%>/selectPaybackList.me?currentPage=1"
@@ -297,6 +295,146 @@
 			<%@ include file="../common/logoutModal.jsp"%>
 
 			<script>
+			
+			function filteringP(currentPage){
+	        	var userId = $("#userIdF").val();
+	        	var status = $("#statusF").val();
+	        	var startMoney = $("#startMoneyF").val();
+	        	var endMoney = $("#endMoneyF").val();
+	        	var startReq = $("#startReqDF").val();
+	        	var endReq = $("#endReqDF").val();
+	        	var startPb = $("#startPbDF").val();
+	        	var endPb = $("#endPbDF").val();
+	        	
+	        	if(startMoney > endMoney || (endMoney != "" && startMoney == "")){
+	        		alert("금액 범위가 잘못 설정되었습니다.");
+	        		return;
+	        	}
+	        	
+	        	if(startReq > endReq || (endReq != "" && startReq == "")){
+	        		alert("신청일 기간이 잘못 설정되었습니다.");
+	        		return;
+	        	}
+	        	
+	        	if(startPb > endPb || (endPb != "" && startPb == "")){
+	        		alert("처리일 기간이 잘못 설정되었습니다.");
+	        		return;
+	        	}
+	        	
+	        	$.ajax({
+	        		url:"<%=request.getContextPath()%>/selectPaybackFilter.me",
+	        		data:{
+	        			userId:userId,
+	        			status:status,
+	        			startMoney:startMoney,
+	        			endMoney:endMoney,
+	        			startReq:startReq,
+	        			endReq:endReq,
+	        			startPb:startPb,
+	        			endPb:endPb,
+	        			currentPage:currentPage
+	        		},
+	        		type:"get",
+	        		success:function(data){
+						$("#dataTable > tbody > tr").remove();
+		    			$("#dataTable_paginate > ul > li").remove();
+		    				
+		    			var $dataTable = $("#dataTable");
+						var $paging = $("#pagingUl");
+							
+						console.log(data.pi.currentPage);
+							
+						if(data.list.length > 0){
+							var currentPage = data.pi.currentPage;
+							var maxPage = data.pi.maxPage;
+							var startPage = data.pi.startPage;
+							var endPage = data.pi.endPage;
+								
+							var $firstLi = $("<li class='paginate_button page-item' id='dataTable_first'>");
+							var $firstA = $("<a onclick='filteringP(1)' aria-controls='dataTable' data-dt-idx='0' tabindex='0' class='page-link'>").text("first");
+							$firstLi.append($firstA);
+							$paging.append($firstLi);
+								
+							if(currentPage <= 1){
+								var $preLi = $("<li class='paginate_button page-item disabled' id='dataTable_previous'>");
+								var $preA = $("<a onclick='filteringP(" + (currentPage - 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage - 1) + "' tabindex='0' class='page-link'>").text("Previous");
+								$preLi.append($preA);
+								$paging.append($preLi);
+							}else{
+								var $preLi = $("<li class='paginate_button page-item' id='dataTable_previous'>");
+								var $preA = $("<a onclick='filteringP(" + (currentPage - 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage - 1) + "' tabindex='0' class='page-link'>").text("Previous");
+								$preLi.append($preA);
+								$paging.append($preLi);
+							}
+								
+							for(var p = startPage; p <= endPage; p++){
+								if(p == currentPage){
+									var $numLi = $("<li class='paginate_button page-item disabled'>");
+									var $numA = $("<a onclick='filteringP(" + p + ")' aria-controls='dataTable' data-dt-idx='" + p + "' tabindex='0' class='page-link'>").text(p);
+									$numLi.append($numA);
+									$paging.append($numLi);
+								}else{
+									var $numLi = $("<li class='paginate_button page-item'>");
+									var $numA = $("<a onclick='filteringP(" + p + ")' aria-controls='dataTable' data-dt-idx='" + p + "' tabindex='0' class='page-link'>").text(p);
+									$numLi.append($numA);
+									$paging.append($numLi);
+								}
+							}
+								
+							if(currentPage >= maxPage){
+								var $nextLi = $("<li class='paginate_button page-item disabled' id='dataTable_next'>");
+								var $nextA = $("<a onclick='filteringP(" + (currentPage + 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage + 1) + "' tabindex='0' class='page-link'>").text("Next");
+								$nextLi.append($nextA);
+								$paging.append($nextLi);
+							}else{
+								var $nextLi = $("<li class='paginate_button page-item' id='dataTable_next'>");
+								var $nextA = $("<a onclick='filteringP(" + (currentPage + 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage + 1) + "' tabindex='0' class='page-link'>").text("Next");
+								$nextLi.append($nextA);
+								$paging.append($nextLi);
+							}
+								
+							var $endLi = $("<li class='paginate_button page-item' id='dataTable_end'>");
+							var $endA = $("<a onclick='filteringP(" + maxPage + ")' aria-controls='dataTable' data-dt-idx='" + maxPage + "' tabindex='0' class='page-link'>").text("End");
+							$endLi.append($endA);
+							$paging.append($endLi);
+								
+							for(var key in data.list){
+								var $tr = $("<tr role='row' class='even' align='center'>");
+								
+								var $checkTd = $("<td class='sorting_1'>");
+								var $checkIp = $("<input type='checkbox' class='check'>");
+								$checkTd.append($checkIp);
+								
+								var $noTd = $("<td>").text(data.list[key].pbNo);
+								var $idTd = $("<td>").text(data.list[key].userId);
+								var $accTd = $("<td>").text(data.list[key].account);
+								var $bankTd = $("<td>").text(data.list[key].bank);
+								var $anTd = $("<td>").text(data.list[key].accName);
+								var $amTd = $("<td>").text(data.list[key].pbAmount);
+								var $reqDTd = $("<td>").text(data.list[key].reqDate);
+								var $pbDTd = $("<td>").text(data.list[key].pbDate);
+								var $stTd = $("<td>").text(data.list[key].status);
+								
+								$tr.append($checkTd);
+								$tr.append($noTd);
+								$tr.append($idTd);
+								$tr.append($accTd);
+								$tr.append($bankTd);
+								$tr.append($anTd);
+								$tr.append($amTd);
+								$tr.append($reqDTd);
+								$tr.append($pbDTd);
+								$tr.append($stTd);
+								
+								$dataTable.append($tr);
+							}
+						}	
+	        		}
+	        	});
+	        	
+	         };
+			
+			
 			$(function () {
 		         $("#checkAll").click(function() {
 		            var check = $(this).is(":checked");
@@ -317,88 +455,6 @@
 		                }
 		             });
 		          });
-		         
-		         $("#inquiry").click(function(){
-		        	var userId = $("#userIdF").val();
-		        	var status = $("#statusF").val();
-		        	var startMoney = $("#startMoneyF").val();
-		        	var endMoney = $("#endMoneyF").val();
-		        	var startReq = $("#startReqDF").val();
-		        	var endReq = $("#endReqDF").val();
-		        	var startPb = $("#startPbDF").val();
-		        	var endPb = $("#endPbDF").val();
-		        	
-		        	if(startMoney > endMoney || (endMoney != "" && startMoney == "")){
-		        		alert("금액 범위가 잘못 설정되었습니다.");
-		        		return;
-		        	}
-		        	
-		        	if(startReq > endReq || (endReq != "" && startReq == "")){
-		        		alert("신청일 기간이 잘못 설정되었습니다.");
-		        		return;
-		        	}
-		        	
-		        	if(startPb > endPb || (endPb != "" && startPb == "")){
-		        		alert("처리일 기간이 잘못 설정되었습니다.");
-		        		return;
-		        	}
-		        	
-		        	$.ajax({
-		        		url:"<%=request.getContextPath()%>/selectPaybackFilter.me",
-		        		data:{
-		        			userId:userId,
-		        			status:status,
-		        			startMoney:startMoney,
-		        			endMoney:endMoney,
-		        			startReq:startReq,
-		        			endReq:endReq,
-		        			startPb:startPb,
-		        			endPb:endPb
-		        		},
-		        		type:"get",
-		        		success:function(data){
-		        			$("#dataTable > tbody > tr").remove();
-		        			$(".dataTables_paginate > ul > li").remove();
-							var $dataTable = $("#dataTable");
-							
-							if(data.length > 0){
-								for(var key in data){
-									var $tr = $("<tr role='row' class='even' align='center'>");
-									
-									var $checkTd = $("<td class='sorting_1'>");
-									var $checkIp = $("<input type='checkbox' class='check'>");
-									$checkTd.append($checkIp);
-									
-									var $noTd = $("<td>").text(data[key].pbNo);
-									var $idTd = $("<td>").text(data[key].userId);
-									var $accTd = $("<td>").text(data[key].account);
-									var $bankTd = $("<td>").text(data[key].bank);
-									var $anTd = $("<td>").text(data[key].accName);
-									var $amTd = $("<td>").text(data[key].pbAmount);
-									var $reqDTd = $("<td>").text(data[key].reqDate);
-									var $pbDTd = $("<td>").text(data[key].pbDate);
-									var $stTd = $("<td>").text(data[key].status);
-									
-									$tr.append($checkTd);
-									$tr.append($noTd);
-									$tr.append($idTd);
-									$tr.append($accTd);
-									$tr.append($bankTd);
-									$tr.append($anTd);
-									$tr.append($amTd);
-									$tr.append($reqDTd);
-									$tr.append($pbDTd);
-									$tr.append($stTd);
-									
-									$dataTable.append($tr);
-								}
-							}else{
-								
-							}
-		        		}
-		        	});
-		        	
-		         });
 		         
 		      });
 			

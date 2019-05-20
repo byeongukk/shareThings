@@ -69,6 +69,7 @@ public class SelectMemberFilterServlet extends HttpServlet {
 		
 		int listCount = new MemberService().getMemberFilterCount(condition);
 		
+		System.out.println(listCount);
 		
 		maxPage = (int)((double)listCount / limit + 0.98);
 		

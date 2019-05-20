@@ -24,6 +24,9 @@ public class UpdatePaybackOkServlet extends HttpServlet {
 		String[] nums = no.split(",");
 		
 		int result = new MemberService().updatePaybackOk(nums);
+		for(int i = 0; i < nums.length; i++) {
+			System.out.println(nums[i]);
+		}
 		
 		if(result > 0) {
 			response.sendRedirect("/st/selectPaybackList.me");
