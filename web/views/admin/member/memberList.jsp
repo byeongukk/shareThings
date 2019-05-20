@@ -56,7 +56,6 @@
 
 .MTR {
 	color: black;
-}lor:black;
 }
 </style>
 </head>
@@ -207,12 +206,12 @@
 											</div>
 											<div class="row">
 		<div class="paging">
-			<div class="col-lg-12">
+			<div class="col-sm-12 col-lg-12">
 				<div class="dataTables_paginate paging_simple_numbers"
 					id="dataTable_paginate">
 					<ul class="pagination" id="pagingUl">
 						<li class="paginate_button page-item"
-							id="dataTable_first"><a 
+							id="dataTable_first"><a
 							href="<%=request.getContextPath()%>/selectList.me?currentPage=1"
 							aria-controls="dataTable" data-dt-idx="0" tabindex="0"
 							class="page-link">First</a></li>
@@ -221,7 +220,7 @@
 								if (currentPage <= 1) {
 						%>
 						<li class="paginate_button page-item disabled"
-							id="dataTable_previous"><a 
+							id="dataTable_previous"><a
 							href="<%=request.getContextPath()%>/selectList.me?currentPage=<%=currentPage - 1%>"
 							aria-controls="dataTable" data-dt-idx="0" tabindex="0"
 							class="page-link">Previous</a></li>
@@ -240,9 +239,8 @@
 								for (int p = startPage; p <= endPage; p++) {
 								    if (p == currentPage) {
 						%>
-						<li class="paginate_button page-item disabled"><a 
-							href="<%=request.getContextPath()%>/selectList.me?currentPage=<%=p%>"
-							aria-controls="dataTable" data-dt-idx="" tabindex="0"
+						<li class="paginate_button page-item disabled"><a href="<%=request.getContextPath()%>/selectList.me?currentPage=<%=p%>"
+							aria-controls="dataTable" data-dt-idx="1" tabindex="0"
 							class="page-link"><%=p%></a></li>
 						<%
 								} else {
@@ -573,11 +571,7 @@
 	    	};
 			
 			
-			$(function(){
-				
-		    	
-		    	
-		    });
+			
 			</script>
 			<script
 				src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>

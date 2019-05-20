@@ -38,13 +38,13 @@ public class SelectPaybackListServlet extends HttpServlet {
 			currentPage = Integer.parseInt(request.getParameter("currentPage"));
 		}
 
-		limit = 20;
+		limit = 50;
 
 		int listCount = new MemberService().getPaybackListCount();
 
-		maxPage = (int)((double)listCount / limit + 0.95);
+		maxPage = (int)((double)listCount / limit + 0.98);
 
-		startPage = (((int)((double)currentPage / limit + 0.95)) - 1) * 10 + 1;
+		startPage = (((int)((double)currentPage / limit + 0.98)) - 1) * 10 + 1;
 
 		endPage = startPage + 10 - 1;
 

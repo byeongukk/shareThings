@@ -127,7 +127,7 @@
 											</tr>
 										</table>
 										<div>
-											<button type="button" id="inquiry">조회하기</button>
+											<button type="button" onclick="filteringP(1)">조회하기</button>
 											&nbsp;&nbsp;&nbsp;
 											<button type="reset">초기화</button>
 										</div>
@@ -240,7 +240,7 @@
 															<ul class="pagination" id="pagingUl">
 																<li class="paginate_button page-item"
 																	id="dataTable_first"><a
-																	href="<%=request.getContextPath()%>/selectReport.me?currentPage=1"
+																	href="<%=request.getContextPath()%>/selectReportList.me?currentPage=1"
 																	aria-controls="dataTable" data-dt-idx="0" tabindex="0"
 																	class="page-link">First</a></li>
 
@@ -249,7 +249,7 @@
 																%>
 																<li class="paginate_button page-item disabled"
 																	id="dataTable_previous"><a
-																	href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=currentPage - 1%>"
+																	href="<%=request.getContextPath()%>/selectReportList.me?currentPage=<%=currentPage - 1%>"
 																	aria-controls="dataTable" data-dt-idx="0" tabindex="0"
 																	class="page-link">Previous</a></li>
 																<%
@@ -257,7 +257,7 @@
 																%>
 																<li class="paginate_button page-item"
 																	id="dataTable_previous"><a
-																	href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=currentPage - 1%>"
+																	href="<%=request.getContextPath()%>/selectReportList.me?currentPage=<%=currentPage - 1%>"
 																	aria-controls="dataTable" data-dt-idx="0" tabindex="0"
 																	class="page-link">Previous</a></li>
 																<%
@@ -268,14 +268,14 @@
 																		if (p == currentPage) {
 																%>
 																<li class="paginate_button page-item disabled"><a
-																	href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=p%>"
+																	href="<%=request.getContextPath()%>/selectReportList.me?currentPage=<%=p%>"
 																	aria-controls="dataTable" data-dt-idx="1" tabindex="0"
 																	class="page-link"><%=p%></a></li>
 																<%
 																	} else {
 																%>
 																<li class="paginate_button page-item active"><a
-																	href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=p%>"
+																	href="<%=request.getContextPath()%>/selectReportList.me?currentPage=<%=p%>"
 																	aria-controls="dataTable" data-dt-idx="1" tabindex="0"
 																	class="page-link"><%=p%></a></li>
 																<%
@@ -292,7 +292,7 @@
 																%>
 																<li class="paginate_button page-item disabled"
 																	id="dataTable_next"><a
-																	href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=currentPage + 1%>"
+																	href="<%=request.getContextPath()%>/selectReportList.me?currentPage=<%=currentPage + 1%>"
 																	aria-controls="dataTable" data-dt-idx="7" tabindex="0"
 																	class="page-link">Next</a></li>
 																<%
@@ -300,7 +300,7 @@
 																%>
 																<li class="paginate_button page-item next"
 																	id="dataTable_next"><a
-																	href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=currentPage + 1%>"
+																	href="<%=request.getContextPath()%>/selectReportList.me?currentPage=<%=currentPage + 1%>"
 																	aria-controls="dataTable" data-dt-idx="7" tabindex="0"
 																	class="page-link">Next</a></li>
 																<%
@@ -308,7 +308,7 @@
 																%>
 																<li class="paginate_button page-item next"
 																	id="dataTable_end"><a
-																	href="<%=request.getContextPath()%>/selectReport.me?currentPage=<%=maxPage%>"
+																	href="<%=request.getContextPath()%>/selectReportList.me?currentPage=<%=maxPage%>"
 																	aria-controls="dataTable" data-dt-idx="7" tabindex="0"
 																	class="page-link">End</a></li>
 															</ul>
@@ -506,6 +506,144 @@
 				             });
 				          });
 						
+						function filteringP(currentPage){
+							var userId = $("#userIdF").val();
+							var reportName = $("#reportCodeF").val();
+							var reportResult = $("#reportResultF").val();
+							var status = $("#statusF").val();
+							var startReD = $("#startReDF").val();
+							var endReD = $("#endReDF").val();
+							var startRsD = $("#startRsDF").val();
+							var endRsD = $("#endRsDF").val();
+							
+							if(startReD > endReD || (endReD!="" && startReD=="")){
+								alert("신고일 기간이 잘못 선택되었습니다.");
+								return;
+							}
+							
+							if(startRsD > endRsD || (endRsD!="" && startRsD=="")){
+								alert("처리일 기간이 잘못 선택되었습니다.");
+								return;
+							}
+							
+							$.ajax({
+								url:"<%=request.getContextPath()%>/selectReportFilter.me",
+								data:{
+									userId:userId,
+									reportName:reportName,
+									reportResult:reportResult,
+									status:status,
+									startReD:startReD,
+									endReD:endReD,
+									startRsD:startRsD,
+									endRsD:endRsD,
+				    				currentPage:currentPage
+								},
+								type:"get",
+								success:function(data){
+									$("#dataTable > tbody > tr").remove();
+				    				$("#dataTable_paginate > ul > li").remove();
+				    				
+				    				var $dataTable = $("#dataTable");
+									var $paging = $("#pagingUl");
+									
+									console.log(data.pi.currentPage);
+									console.log(data.pi);
+									console.log(data.list);
+									
+									if(data.list.length > 0){
+										var currentPage = data.pi.currentPage;
+										var maxPage = data.pi.maxPage;
+										var startPage = data.pi.startPage;
+										var endPage = data.pi.endPage;
+										
+										var $firstLi = $("<li class='paginate_button page-item' id='dataTable_first'>");
+										var $firstA = $("<a onclick='filteringP(1)' aria-controls='dataTable' data-dt-idx='0' tabindex='0' class='page-link'>").text("first");
+										$firstLi.append($firstA);
+										$paging.append($firstLi);
+										
+										if(currentPage <= 1){
+											var $preLi = $("<li class='paginate_button page-item disabled' id='dataTable_previous'>");
+											var $preA = $("<a onclick='filteringP(" + (currentPage - 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage - 1) + "' tabindex='0' class='page-link'>").text("Previous");
+											$preLi.append($preA);
+											$paging.append($preLi);
+										}else{
+											var $preLi = $("<li class='paginate_button page-item' id='dataTable_previous'>");
+											var $preA = $("<a onclick='filteringP(" + (currentPage - 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage - 1) + "' tabindex='0' class='page-link'>").text("Previous");
+											$preLi.append($preA);
+											$paging.append($preLi);
+										}
+										
+										for(var p = startPage; p <= endPage; p++){
+											if(p == currentPage){
+												var $numLi = $("<li class='paginate_button page-item disabled'>");
+												var $numA = $("<a onclick='filteringP(" + p + ")' aria-controls='dataTable' data-dt-idx='" + p + "' tabindex='0' class='page-link'>").text(p);
+												$numLi.append($numA);
+												$paging.append($numLi);
+											}else{
+												var $numLi = $("<li class='paginate_button page-item'>");
+												var $numA = $("<a onclick='filteringP(" + p + ")' aria-controls='dataTable' data-dt-idx='" + p + "' tabindex='0' class='page-link'>").text(p);
+												$numLi.append($numA);
+												$paging.append($numLi);
+											}
+										}
+										
+										if(currentPage >= maxPage){
+											var $nextLi = $("<li class='paginate_button page-item disabled' id='dataTable_next'>");
+											var $nextA = $("<a onclick='filteringP(" + (currentPage + 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage + 1) + "' tabindex='0' class='page-link'>").text("Next");
+											$nextLi.append($nextA);
+											$paging.append($nextLi);
+										}else{
+											var $nextLi = $("<li class='paginate_button page-item' id='dataTable_next'>");
+											var $nextA = $("<a onclick='filteringP(" + (currentPage + 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage + 1) + "' tabindex='0' class='page-link'>").text("Next");
+											$nextLi.append($nextA);
+											$paging.append($nextLi);
+										}
+										
+										var $endLi = $("<li class='paginate_button page-item' id='dataTable_end'>");
+										var $endA = $("<a onclick='filteringP(" + maxPage + ")' aria-controls='dataTable' data-dt-idx='" + maxPage + "' tabindex='0' class='page-link'>").text("End");
+										$endLi.append($endA);
+										$paging.append($endLi);
+										
+										for(var key in data.list){
+											
+											var $tr = $("<tr role='row' class='even' align='center'>");
+											
+											var $checkTd = $("<td class='sorting_1'>");
+											var $checkIp = $("<input type='checkbox' class='check'>");
+											$checkTd.append($checkIp);
+											
+											var $noTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data.list[key].reportNo);
+											var $tgTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data.list[key].user1);
+											var $rnTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data.list[key].reportName);
+											var $rcTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data.list[key].reportContent);
+											var $ruTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data.list[key].user2);
+											var $rdTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data.list[key].reportDate);
+											var $stTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data.list[key].status);
+											var $cdTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data.list[key].completeDate);
+											var $rrTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data.list[key].reportResult);
+											var $ppTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data.list[key].penalty);
+											
+											$tr.append($checkTd);
+											$tr.append($noTd);
+											$tr.append($tgTd);
+											$tr.append($rnTd);
+											$tr.append($rcTd);
+											$tr.append($ruTd);
+											$tr.append($rdTd);
+											$tr.append($stTd);
+											$tr.append($cdTd);
+											$tr.append($rrTd);
+											$tr.append($ppTd);
+											
+											$dataTable.append($tr);
+										}
+									}
+								}
+							});
+							
+						};
+						
 						$(function () {
 					         
 							$("#checkAll").click(function() {
@@ -557,85 +695,7 @@
 								}
 							};
 							
-							$("#inquiry").click(function(){
-								var userId = $("#userIdF").val();
-								var reportName = $("#reportCodeF").val();
-								var reportResult = $("#reportResultF").val();
-								var status = $("#statusF").val();
-								var startReD = $("#startReDF").val();
-								var endReD = $("#endReDF").val();
-								var startRsD = $("#startRsDF").val();
-								var endRsD = $("#endRsDF").val();
-								
-								if(startReD > endReD || (endReD!="" && startReD=="")){
-									alert("신고일 기간이 잘못 선택되었습니다.");
-									return;
-								}
-								
-								if(startRsD > endRsD || (endRsD!="" && startRsD=="")){
-									alert("처리일 기간이 잘못 선택되었습니다.");
-									return;
-								}
-								
-								$.ajax({
-									url:"<%=request.getContextPath()%>/selectReportFilter.me",
-									data:{
-										userId:userId,
-										reportName:reportName,
-										reportResult:reportResult,
-										status:status,
-										startReD:startReD,
-										endReD:endReD,
-										startRsD:startRsD,
-										endRsD:endRsD
-									},
-									type:"get",
-									success:function(data){
-										$("#dataTable > tbody > tr").remove();
-										var $dataTable = $("#dataTable");
-										
-										if(data.length > 0){
-											for(var key in data){
-												
-												var $tr = $("<tr role='row' class='even' align='center'>");
-												
-												var $checkTd = $("<td class='sorting_1'>");
-												var $checkIp = $("<input type='checkbox' class='check'>");
-												$checkTd.append($checkIp);
-												
-												var $noTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data[key].reportNo);
-												var $tgTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data[key].user1);
-												var $rnTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data[key].reportName);
-												var $rcTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data[key].reportContent);
-												var $ruTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data[key].user2);
-												var $rdTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data[key].reportDate);
-												var $stTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data[key].status);
-												var $cdTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data[key].completeDate);
-												var $rrTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data[key].reportResult);
-												var $ppTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data[key].penalty);
-												
-												$tr.append($checkTd);
-												$tr.append($noTd);
-												$tr.append($tgTd);
-												$tr.append($rnTd);
-												$tr.append($rcTd);
-												$tr.append($ruTd);
-												$tr.append($rdTd);
-												$tr.append($stTd);
-												$tr.append($cdTd);
-												$tr.append($rrTd);
-												$tr.append($ppTd);
-												
-												$dataTable.append($tr);
-											}
-										}else{
-											
-										}
-									}
-								});
-								
-								
-							});
+							
 						</script>
 						<!-- 메인 콘텐트 영역 끝 -->
 						<!-- Footer 인클루드 -->

@@ -241,28 +241,47 @@ public class MemberService {
 		close(con);
 		return list;
 	}
-
-	//신고 조회 필터링 처리용
-	public ArrayList<HashMap<String, Object>> selectReportFilter(HashMap<String, Object> condition) {
+	
+	//신고 조회 필터링 카운트용
+	public int getReportFilterCount(HashMap<String, Object> condition) {
 		Connection con = getConnection();
 		
-		ArrayList<HashMap<String,Object>> list = new MemberDao().selectReportFilter(con, condition);
+		int listCount = new MemberDao().getReportFilterCount(con, condition);
+		
+		close(con);
+		
+		return listCount;
+	}
+
+	//신고 조회 필터링 처리용
+	public ArrayList<HashMap<String, Object>> selectReportFilter(HashMap<String, Object> condition, PageInfo pi) {
+		Connection con = getConnection();
+		
+		ArrayList<HashMap<String,Object>> list = new MemberDao().selectReportFilter(con, condition, pi);
 		
 		close(con);
 		
 		return list;
 	}
 	
-	
-	
-	public ArrayList<HashMap<String, Object>> selectPaybackFilter(HashMap<String, Object> condition) {
+	public ArrayList<HashMap<String, Object>> selectPaybackFilter(HashMap<String, Object> condition, PageInfo pi) {
 		Connection con = getConnection();
 		
-		ArrayList<HashMap<String,Object>> list = new MemberDao().selectPaybackFilter(con, condition);
+		ArrayList<HashMap<String,Object>> list = new MemberDao().selectPaybackFilter(con, condition, pi);
 		
 		close(con);
 		
 		return list;
+	}
+	
+	public int getPaybackFilterCount(HashMap<String, Object> condition) {
+		Connection con = getConnection();
+		
+		int listCount = new MemberDao().getPaybackFilterCount(con, condition);
+		
+		close(con);
+		
+		return listCount;
 	}
 	
 	
@@ -340,6 +359,10 @@ public class MemberService {
 	      
 	      return result;
 	   }
+
+	
+
+	
 
 	
 
