@@ -37,20 +37,22 @@
 	href="<%=request.getContextPath()%>/resource/css/sb-admin-2.min.css"
 	rel="stylesheet">
 <style>
-.even:hover {
-	cursor: pointer;
-}
 
-#filter {
-	margin-top: 50px;
-}
-
-#filterArea td {
+#filter td {
 	padding: 5px;
 }
+
 .paging {
-	margin-left:auto;
-	margin-right:auto;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#dataTables-detail td {
+	padding: 8px;
+}
+
+.MTR {
+	color: black;
 }
 
 </style>
@@ -80,32 +82,42 @@
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">조회 필터</div>
 								<div class="card-body">
-									<table class="col-lg-12" id="filterArea">
-										<tr>
-											<td width="5%">회원ID :</td>
-											<td><input type="text" name="memberId"
-												style="width: 80%"></td>
-											<td width="5%">환급일 :</td>
-											<td><input type="date" name="startDate"
-												style="width: 40%"> &nbsp; ~ &nbsp;<input
-												type="date" name="endDate" style="width: 40%"></td>
-											<td width="5%">금액 :</td>
-											<td><input type="number" name="startMoney"
-												style="width: 40%"> &nbsp; ~ &nbsp;<input
-												type="number" name="endMoney" style="width: 40%"></td>
-											<td width="5%">상태 :</td>
-											<td><select style="width: 80%">
-													<option value="A">전체</option>
-													<option value="N">환급대기</option>
-													<option value="Y">환급완료</option>
-											</select></td>
-										</tr>
-									</table>
-									<div>
-										<button>조회하기</button>
-										&nbsp;&nbsp;&nbsp;
-										<button>초기화</button>
-									</div>
+									<form id="filterArea">
+										<table class="col-lg-12" id="filter">
+											<tr>
+												<td width="5%">회원ID :</td>
+												<td><input type="text" id="userIdF"
+													style="width: 40%"></td>
+												<td width="5%">상태 :</td>
+												<td><select style="width: 40%" id="statusF">
+														<option value="0">전체</option>
+														<option value="N">환급대기</option>
+														<option value="Y">환급완료</option>
+												</select></td>
+												<td width="5%">금액 :</td>
+												<td colspan="3"><input type="number" id="startMoneyF"
+													style="width: 20%"> &nbsp; ~ &nbsp;<input
+													type="number" id="endMoneyF" style="width: 20%"></td>
+											</tr>
+											<tr>
+													<td width="6%">신청일 :</td>
+													<td colspan="3"><input type="date" id="startReqDF"
+														style="width: 40%"> &nbsp;&nbsp;&nbsp; ~
+														&nbsp;&nbsp;&nbsp; <input type="date" id="endReqDF"
+														style="width: 40%"></td>
+													<td width="6%">처리일 :</td>
+													<td colspan="3"><input type="date" id="startPbDF"
+														style="width: 40%"> &nbsp;&nbsp;&nbsp; ~
+														&nbsp;&nbsp;&nbsp; <input type="date" id="endPbDF"
+														style="width: 40%"></td>
+												</tr>
+										</table>
+										<div>
+											<button type="button" id="inquiry">조회하기</button>
+											&nbsp;&nbsp;&nbsp;
+											<button type="reset">초기화</button>
+										</div>
+									</form>
 								</div>
 							</div>
 							<div class="card shadow mb-4">
@@ -127,7 +139,7 @@
 														aria-describedby="dataTable_info" style="width: 100%;"
 														style="height:100px;">
 														<thead>
-															<tr role="row">
+															<tr role="row" align="center">
 																<th width="1%"><input type="checkbox" id="checkAll"></th>
 																<th class="sorting_asc" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
@@ -173,7 +185,7 @@
 														</thead>
 														<tbody>
 															<% for(Payback p : list){ %>
-																<tr class="even">
+																<tr role="row" class="even" align="center">
 																	<td class="sorting_1"><input type="checkbox" class="check"></td>
 																	<td><%= p.getPbNo() %></td>
 																	<td><%= p.getUserId() %></td>
@@ -191,7 +203,7 @@
 												</div>
 											</div>
 											<div class="row">
-												<div class="paging">
+												<div class="paging" id="pagingArea">
 													<div class="col-lg-12">
 														<div class="dataTables_paginate paging_simple_numbers"
 															id="dataTable_paginate">
@@ -305,6 +317,88 @@
 		                }
 		             });
 		          });
+		         
+		         $("#inquiry").click(function(){
+		        	var userId = $("#userIdF").val();
+		        	var status = $("#statusF").val();
+		        	var startMoney = $("#startMoneyF").val();
+		        	var endMoney = $("#endMoneyF").val();
+		        	var startReq = $("#startReqDF").val();
+		        	var endReq = $("#endReqDF").val();
+		        	var startPb = $("#startPbDF").val();
+		        	var endPb = $("#endPbDF").val();
+		        	
+		        	if(startMoney > endMoney || (endMoney != "" && startMoney == "")){
+		        		alert("금액 범위가 잘못 설정되었습니다.");
+		        		return;
+		        	}
+		        	
+		        	if(startReq > endReq || (endReq != "" && startReq == "")){
+		        		alert("신청일 기간이 잘못 설정되었습니다.");
+		        		return;
+		        	}
+		        	
+		        	if(startPb > endPb || (endPb != "" && startPb == "")){
+		        		alert("처리일 기간이 잘못 설정되었습니다.");
+		        		return;
+		        	}
+		        	
+		        	$.ajax({
+		        		url:"<%=request.getContextPath()%>/selectPaybackFilter.me",
+		        		data:{
+		        			userId:userId,
+		        			status:status,
+		        			startMoney:startMoney,
+		        			endMoney:endMoney,
+		        			startReq:startReq,
+		        			endReq:endReq,
+		        			startPb:startPb,
+		        			endPb:endPb
+		        		},
+		        		type:"get",
+		        		success:function(data){
+		        			$("#dataTable > tbody > tr").remove();
+		        			$(".dataTables_paginate > ul > li").remove();
+							var $dataTable = $("#dataTable");
+							
+							if(data.length > 0){
+								for(var key in data){
+									var $tr = $("<tr role='row' class='even' align='center'>");
+									
+									var $checkTd = $("<td class='sorting_1'>");
+									var $checkIp = $("<input type='checkbox' class='check'>");
+									$checkTd.append($checkIp);
+									
+									var $noTd = $("<td>").text(data[key].pbNo);
+									var $idTd = $("<td>").text(data[key].userId);
+									var $accTd = $("<td>").text(data[key].account);
+									var $bankTd = $("<td>").text(data[key].bank);
+									var $anTd = $("<td>").text(data[key].accName);
+									var $amTd = $("<td>").text(data[key].pbAmount);
+									var $reqDTd = $("<td>").text(data[key].reqDate);
+									var $pbDTd = $("<td>").text(data[key].pbDate);
+									var $stTd = $("<td>").text(data[key].status);
+									
+									$tr.append($checkTd);
+									$tr.append($noTd);
+									$tr.append($idTd);
+									$tr.append($accTd);
+									$tr.append($bankTd);
+									$tr.append($anTd);
+									$tr.append($amTd);
+									$tr.append($reqDTd);
+									$tr.append($pbDTd);
+									$tr.append($stTd);
+									
+									$dataTable.append($tr);
+								}
+							}else{
+								
+							}
+		        		}
+		        	});
+		        	
+		         });
 		         
 		      });
 			

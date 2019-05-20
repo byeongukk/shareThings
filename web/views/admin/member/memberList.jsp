@@ -41,22 +41,22 @@
 	cursor: pointer;
 }
 
-#filter {
-	margin-top: 50px;
-}
-
-#filterArea td {
+#filter td {
 	padding: 5px;
 }
+
 .paging {
-	margin-left:auto;
-	margin-right:auto;
+	margin-left: auto;
+	margin-right: auto;
 }
-#dataTables-detail td{
-	padding:8px;
+
+#dataTables-detail td {
+	padding: 8px;
 }
+
 .MTR {
-	color:black;
+	color: black;
+}lor:black;
 }
 </style>
 </head>
@@ -85,8 +85,8 @@
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">조회 필터</div>
 								<div class="card-body">
-									<form id="filterArea">
-										<table class="col-lg-12" id="filterArea">
+									
+										<table class="col-lg-12" id="filter">
 											<tr style="height: 20px">
 												<td style="width: 70px">회원ID :</td>
 												<td><input type="text" id="userIdF" style="width: 80%"></td>
@@ -115,11 +115,11 @@
 											</tr>
 										</table>
 										<div>
-											<button type="button" id="inquiry">조회하기</button>
+											<button id="inquiry" onclick="filteringP(1)">조회하기</button>
 											&nbsp;&nbsp;&nbsp;
 											<button type="reset">초기화</button>
 										</div>
-									</form>
+									
 								</div>
 							</div>
 							<div class="card shadow mb-4">
@@ -210,9 +210,9 @@
 			<div class="col-lg-12">
 				<div class="dataTables_paginate paging_simple_numbers"
 					id="dataTable_paginate">
-					<ul class="pagination">
+					<ul class="pagination" id="pagingUl">
 						<li class="paginate_button page-item"
-							id="dataTable_first"><a
+							id="dataTable_first"><a 
 							href="<%=request.getContextPath()%>/selectList.me?currentPage=1"
 							aria-controls="dataTable" data-dt-idx="0" tabindex="0"
 							class="page-link">First</a></li>
@@ -221,7 +221,7 @@
 								if (currentPage <= 1) {
 						%>
 						<li class="paginate_button page-item disabled"
-							id="dataTable_previous"><a
+							id="dataTable_previous"><a 
 							href="<%=request.getContextPath()%>/selectList.me?currentPage=<%=currentPage - 1%>"
 							aria-controls="dataTable" data-dt-idx="0" tabindex="0"
 							class="page-link">Previous</a></li>
@@ -240,8 +240,9 @@
 								for (int p = startPage; p <= endPage; p++) {
 								    if (p == currentPage) {
 						%>
-						<li class="paginate_button page-item disabled"><a href="<%=request.getContextPath()%>/selectList.me?currentPage=<%=p%>"
-							aria-controls="dataTable" data-dt-idx="1" tabindex="0"
+						<li class="paginate_button page-item disabled"><a 
+							href="<%=request.getContextPath()%>/selectList.me?currentPage=<%=p%>"
+							aria-controls="dataTable" data-dt-idx="" tabindex="0"
 							class="page-link"><%=p%></a></li>
 						<%
 								} else {
@@ -440,83 +441,141 @@
 					}
 				});
 	    	});
+			
 			$(document).on('mouseenter', '.even', function(){
 				$(this).css({"background":"lightblue", "color":"black" ,"cursor":"pointer"})
 			}).on('mouseout', '.even', function(){
 				$(this).css({"background":"white", "color":"gray"})
 			});
 			
+			
+			function filteringP(currentPage){
+	    		var userId = $("#userIdF").val();
+	    		var userName = $("#userNameF").val();
+	    		var userLv = $("#userLvF").val();
+	    		var userStatus = $("#statusF").val();
+	    		var startDate = $("#startD").val();
+	    		var endDate = $("#endD").val();
+	    		
+	    		if(startDate>endDate || (endDate!="" && startDate=="")){
+	    			alert("기간이 잘못 되었습니다");
+	    			return;
+	    		}
+	    		
+	    		$.ajax({
+	    			url:"<%=request.getContextPath()%>/selectMemberFilter.me",
+	    			data:{
+	    				userId:userId,
+	    				userName:userName,
+	    				userLv:userLv,
+	    				userStatus:userStatus,
+	    				startDate:startDate,
+	    				endDate:endDate,
+	    				currentPage:currentPage
+	    			},
+	    			type:"get",
+	    			success:function(data){
+	    				$("#dataTable > tbody > tr").remove();
+	    				$("#dataTable_paginate > ul > li").remove();
+	    				
+	    				var $dataTable = $("#dataTable");
+						var $paging = $("#pagingUl");
+						
+						
+						console.log(data.pi.currentPage);
+						
+						if(data.list.length > 0){
+							var currentPage = data.pi.currentPage;
+							var maxPage = data.pi.maxPage;
+							var startPage = data.pi.startPage;
+							var endPage = data.pi.endPage;
+							
+							var $firstLi = $("<li class='paginate_button page-item' id='dataTable_first'>");
+							var $firstA = $("<a onclick='filteringP(1)' aria-controls='dataTable' data-dt-idx='0' tabindex='0' class='page-link'>").text("first");
+							$firstLi.append($firstA);
+							$paging.append($firstLi);
+							
+							if(currentPage <= 1){
+								var $preLi = $("<li class='paginate_button page-item disabled' id='dataTable_previous'>");
+								var $preA = $("<a onclick='filteringP(" + (currentPage - 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage - 1) + "' tabindex='0' class='page-link'>").text("Previous");
+								$preLi.append($preA);
+								$paging.append($preLi);
+							}else{
+								var $preLi = $("<li class='paginate_button page-item' id='dataTable_previous'>");
+								var $preA = $("<a onclick='filteringP(" + (currentPage - 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage - 1) + "' tabindex='0' class='page-link'>").text("Previous");
+								$preLi.append($preA);
+								$paging.append($preLi);
+							}
+							
+							for(var p = startPage; p <= endPage; p++){
+								if(p == currentPage){
+									var $numLi = $("<li class='paginate_button page-item disabled'>");
+									var $numA = $("<a onclick='filteringP(" + p + ")' aria-controls='dataTable' data-dt-idx='" + p + "' tabindex='0' class='page-link'>").text(p);
+									$numLi.append($numA);
+									$paging.append($numLi);
+								}else{
+									var $numLi = $("<li class='paginate_button page-item'>");
+									var $numA = $("<a onclick='filteringP(" + p + ")' aria-controls='dataTable' data-dt-idx='" + p + "' tabindex='0' class='page-link'>").text(p);
+									$numLi.append($numA);
+									$paging.append($numLi);
+								}
+							}
+							
+							if(currentPage >= maxPage){
+								var $nextLi = $("<li class='paginate_button page-item disabled' id='dataTable_next'>");
+								var $nextA = $("<a onclick='filteringP(" + (currentPage + 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage + 1) + "' tabindex='0' class='page-link'>").text("Next");
+								$nextLi.append($nextA);
+								$paging.append($nextLi);
+							}else{
+								var $nextLi = $("<li class='paginate_button page-item' id='dataTable_next'>");
+								var $nextA = $("<a onclick='filteringP(" + (currentPage + 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage + 1) + "' tabindex='0' class='page-link'>").text("Next");
+								$nextLi.append($nextA);
+								$paging.append($nextLi);
+							}
+							
+							var $endLi = $("<li class='paginate_button page-item' id='dataTable_end'>");
+							var $endA = $("<a onclick='filteringP(" + maxPage + ")' aria-controls='dataTable' data-dt-idx='" + maxPage + "' tabindex='0' class='page-link'>").text("End");
+							$endLi.append($endA);
+							$paging.append($endLi);
+							
+							for(var key in data.list){
+								var $tr = $("<tr role='row' class='even' align='center' data-toggle='modal' data-target='#detail'>");
+								var $noTd = $("<td>").text(data.list[key].uno);
+								var $idTd = $("<td>").text(data.list[key].userId);
+								var $nameTd = $("<td>").text(data.list[key].userName);
+								var $phTd = $("<td>").text(data.list[key].phone);
+								var $addressTd = $("<td>").text(data.list[key].address);
+								var $profitsTd = $("<td>").text(data.list[key].profits);
+								var $tpTd = $("<td>").text(data.list[key].totalPoint);
+								var $ppTd = $("<td>").text(data.list[key].penaltyPoint);
+								var $edTd = $("<td>").text(data.list[key].enrollDate);
+								var $stTd = $("<td>").text(data.list[key].status);
+								
+								$tr.append($noTd);
+								$tr.append($idTd);
+								$tr.append($nameTd);
+								$tr.append($phTd);
+								$tr.append($addressTd);
+								$tr.append($profitsTd);
+								$tr.append($tpTd);
+								$tr.append($ppTd);
+								$tr.append($edTd);
+								$tr.append($stTd);
+								
+								$dataTable.append($tr);
+								 
+							}
+						}
+						
+	    			}
+	    		});
+	    		
+	    	};
+			
+			
 			$(function(){
 				
-		    	$("#inquiry").click(function(){
-		    		var userId = $("#userIdF").val();
-		    		var userName = $("#userNameF").val();
-		    		var userLv = $("#userLvF").val();
-		    		var userStatus = $("#statusF").val();
-		    		var startDate = $("#startD").val();
-		    		var endDate = $("#endD").val();
-		    		
-		    		if(startDate>endDate || (endDate!="" && startDate=="")){
-		    			alert("기간이 잘못 되었습니다");
-		    			return;
-		    		}
-		    		
-		    		$.ajax({
-		    			url:"<%=request.getContextPath()%>/selectMemberFilter.me",
-		    			data:{
-		    				userId:userId,
-		    				userName:userName,
-		    				userLv:userLv,
-		    				userStatus:userStatus,
-		    				startDate:startDate,
-		    				endDate:endDate
-		    			},
-		    			type:"get",
-		    			success:function(data){
-		    				$("#dataTable > tbody > tr").remove();
-		    				
-		    				var $dataTable = $("#dataTable");
-							/* 조회된 값이 없을때 출력할 공간 */
-							var $resultNull = $("#result-null");
-							/* 조회된 건수 출력할 공간 */
-							var $listSize = $("#listSize");
-							
-							$resultNull.html('');
-							$listSize.prop("innerHTML",'');
-							if(data.length>0){
-								for(var key in data){
-									
-									var $tr = $("<tr role='row' class='even' align='center' data-toggle='modal' data-target='#detail'>");
-									var $noTd = $("<td>").text(data[key].uno);
-									var $idTd = $("<td>").text(data[key].userId);
-									var $nameTd = $("<td>").text(data[key].userName);
-									var $phTd = $("<td>").text(data[key].phone);
-									var $addressTd = $("<td>").text(data[key].address);
-									var $profitsTd = $("<td>").text(data[key].profits);
-									var $tpTd = $("<td>").text(data[key].totalPoint);
-									var $ppTd = $("<td>").text(data[key].penaltyPoint);
-									var $edTd = $("<td>").text(data[key].enrollDate);
-									var $stTd = $("<td>").text(data[key].status);
-									
-									$tr.append($noTd);
-									$tr.append($idTd);
-									$tr.append($nameTd);
-									$tr.append($phTd);
-									$tr.append($addressTd);
-									$tr.append($profitsTd);
-									$tr.append($tpTd);
-									$tr.append($ppTd);
-									$tr.append($edTd);
-									$tr.append($stTd);
-									
-									$dataTable.append($tr);
-								}
-							}else{
-								
-							}
-		    			}
-		    		});
-		    	});
+		    	
 		    	
 		    });
 			</script>

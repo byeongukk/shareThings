@@ -92,11 +92,11 @@
 												<td width="19%"><select
 													style="heigth: 30px; width: 80%;" id="reportCodeF">
 														<option value="0">전체</option>
-														<option value="RR1">파손</option>
-														<option value="RR2">분실</option>
-														<option value="RR3">욕설</option>
-														<option value="RR4">광고</option>
-														<option value="RR5">기타</option>
+														<option value="파손">파손</option>
+														<option value="분실">분실</option>
+														<option value="욕설">욕설</option>
+														<option value="광고">광고</option>
+														<option value="기타">기타</option>
 												</select></td>
 												<td width="8%">처리결과 :</td>
 												<td width="17%"><select
@@ -107,22 +107,22 @@
 												</select></td>
 												<td width="5%">상태 :</td>
 												<td width="20%"><select
-													style="heigth: 30px; width: 80%;" id="status">
+													style="heigth: 30px; width: 80%;" id="statusF">
 														<option value="0">전체</option>
 														<option value="N">처리대기</option>
 														<option value="Y">처리완료</option>
 												</select></td>
 											</tr>
 											<tr>
-												<td width="8%">누적벌점 :</td>
-												<td><input type="number" id="startP"
-													style="width: 25%"> &nbsp;&nbsp;&nbsp; ~
-													&nbsp;&nbsp;&nbsp; <input type="number" id="endP"
-													style="width: 25%"></td>
 												<td width="6%">신고일 :</td>
-												<td colspan="3"><input type="date" id="startD"
+												<td colspan="3"><input type="date" id="startReDF"
 													style="width: 40%"> &nbsp;&nbsp;&nbsp; ~
-													&nbsp;&nbsp;&nbsp; <input type="date" id="endD"
+													&nbsp;&nbsp;&nbsp; <input type="date" id="endReDF"
+													style="width: 40%"></td>
+												<td width="6%">처리일 :</td>
+												<td colspan="3"><input type="date" id="startRsDF"
+													style="width: 40%"> &nbsp;&nbsp;&nbsp; ~
+													&nbsp;&nbsp;&nbsp; <input type="date" id="endRsDF"
 													style="width: 40%"></td>
 											</tr>
 										</table>
@@ -214,16 +214,16 @@
 															<tr role="row" class="even" align="center">
 																<td class="sorting_1"><input type="checkbox"
 																	class="check"></td>
-																<td data-toggle="modal" data-target="#detail"><%=r.getReportNo()%></td>
-																<td data-toggle="modal" data-target="#detail"><%=r.getTargetUser()%></td>
-																<td data-toggle="modal" data-target="#detail"><%=r.getReportName()%></td>
-																<td data-toggle="modal" data-target="#detail"><%=r.getReportContent()%></td>
-																<td data-toggle="modal" data-target="#detail"><%=r.getReportUser()%></td>
-																<td data-toggle="modal" data-target="#detail"><%=r.getReportDate()%></td>
-																<td data-toggle="modal" data-target="#detail"><%=r.getStatus()%></td>
-																<td data-toggle="modal" data-target="#detail"><%=r.getComplateDate()%></td>
-																<td data-toggle="modal" data-target="#detail"><%=r.getReportResult()%></td>
-																<td data-toggle="modal" data-target="#detail"><%=r.getPenalty()%></td>
+																<td class="sorting_2" data-toggle="modal" data-target="#detail"><%=r.getReportNo()%></td>
+																<td class="sorting_2" data-toggle="modal" data-target="#detail"><%=r.getTargetUser()%></td>
+																<td class="sorting_2" data-toggle="modal" data-target="#detail"><%=r.getReportName()%></td>
+																<td class="sorting_2" data-toggle="modal" data-target="#detail"><%=r.getReportContent()%></td>
+																<td class="sorting_2" data-toggle="modal" data-target="#detail"><%=r.getReportUser()%></td>
+																<td class="sorting_2" data-toggle="modal" data-target="#detail"><%=r.getReportDate()%></td>
+																<td class="sorting_2" data-toggle="modal" data-target="#detail"><%=r.getStatus()%></td>
+																<td class="sorting_2" data-toggle="modal" data-target="#detail"><%=r.getComplateDate()%></td>
+																<td class="sorting_2" data-toggle="modal" data-target="#detail"><%=r.getReportResult()%></td>
+																<td class="sorting_2" data-toggle="modal" data-target="#detail"><%=r.getPenalty()%></td>
 															</tr>
 															<%
 																}
@@ -237,7 +237,7 @@
 													<div class="col-lg-12">
 														<div class="dataTables_paginate paging_simple_numbers"
 															id="dataTable_paginate">
-															<ul class="pagination">
+															<ul class="pagination" id="pagingUl">
 																<li class="paginate_button page-item"
 																	id="dataTable_first"><a
 																	href="<%=request.getContextPath()%>/selectReport.me?currentPage=1"
@@ -441,8 +441,74 @@
 
 
 						<script>
+						$(document).on('mouseenter', '.even', function(){
+							$(this).css({"background":"lightblue", "color":"black" ,"cursor":"pointer"})
+						}).on('mouseout', '.even', function(){
+							$(this).css({"background":"white", "color":"gray"})
+						});
+						
+						$(document).on('click', '.sorting_2', function(){
+							var no = $(this).parent().children().eq(1).text();
+							console.log(no);
+							$.ajax({
+								url:"selectOneReport.me?no=" + no,
+								type:"post",
+								success:function(data){
+									$(".hide").hide();
+									for(var key in data){
+										if(data[key].status == "처리대기"){
+											$("#noTd").text("No." + data[key].reportNo);
+											$("#ftTd").text(data[key].reportName);
+											$("#stTd").text(data[key].status);
+											$("#rdTd").text(data[key].reportDate);
+											$("#tiTd").text(data[key].targetId + "(" + data[key].targetName + ")");
+											$("#riTd").text(data[key].repId + "(" + data[key].repName + ")");
+											$("#ctTa").val(data[key].reportContent);
+										}else{
+											if(data[key].reportResult == "적합"){
+												$(".hideOk").show();
+												$("#noTd").text("No." + data[key].reportNo);
+												$("#ftTd").text(data[key].reportName);
+												$("#stTd").text(data[key].status);
+												$("#rdTd").text(data[key].reportDate);
+												$("#cdTd").text(data[key].completeDate);
+												$("#tiTd").text(data[key].targetId + "(" + data[key].targetName + ")");
+												$("#riTd").text(data[key].repId + "(" + data[key].repName + ")");
+												$("#ctTa").val(data[key].reportContent);
+											}else{
+												$(".hide").show();
+												$("#noTd").text("No." + data[key].reportNo);
+												$("#ftTd").text(data[key].reportName);
+												$("#stTd").text(data[key].status);
+												$("#rdTd").text(data[key].reportDate);
+												$("#cdTd").text(data[key].completeDate);
+												$("#tiTd").text(data[key].targetId + "(" + data[key].targetName + ")");
+												$("#riTd").text(data[key].repId + "(" + data[key].repName + ")");
+												$("#ctTa").val(data[key].reportContent);
+												$("#rejectTd").val(data[key].reject);
+											}
+										}
+									}
+									
+								}
+							
+							});
+						});
+						
+						$(document).on('click', '.sorting_1', function(){
+				             $(this).parent().each(function() {
+				                var check = $(this).find(".check").is(":checked");
+				                if(!check) {
+				                   $(this).find(".check").prop("checked", true);
+				                } else {
+				                   $(this).find(".check").prop("checked", false);
+				                }
+				             });
+				          });
+						
 						$(function () {
-					         $("#checkAll").click(function() {
+					         
+							$("#checkAll").click(function() {
 					            var check = $(this).is(":checked");
 					            if(check) {
 					               $(".check").prop("checked", true);
@@ -451,89 +517,26 @@
 					            }
 					         });
 					         
-					         $(".sorting_1").click(function() {
-					             $(this).parent().each(function() {
-					                var check = $(this).find(".check").is(":checked");
-					                if(!check) {
-					                   $(this).find(".check").prop("checked", true);
-					                } else {
-					                   $(this).find(".check").prop("checked", false);
-					                }
-					             });
-					          });
-					         
-					         $(".even").mouseenter(function(){
-						    		$(this).css({"background":"lightblue", "color":"black" ,"cursor":"pointer"})
-						    	}).mouseout(function(){
-						    		$(this).css({"background":"white", "color":"gray"})
-						    	});
-					         
-					         $(".sorting_1").siblings().click(function(){
-							    		var no = $(this).parent().children().eq(1).text();
-										console.log(no);
-										$.ajax({
-											url:"selectOneReport.me?no=" + no,
-											type:"post",
-											success:function(data){
-												$(".hide").hide();
-												for(var key in data){
-													if(data[key].status == "처리대기"){
-														$("#noTd").text("No." + data[key].reportNo);
-														$("#ftTd").text(data[key].reportName);
-														$("#stTd").text(data[key].status);
-														$("#rdTd").text(data[key].reportDate);
-														$("#tiTd").text(data[key].targetId + "(" + data[key].targetName + ")");
-														$("#riTd").text(data[key].repId + "(" + data[key].repName + ")");
-														$("#ctTa").val(data[key].reportContent);
-													}else{
-														if(data[key].reportResult == "적합"){
-															$(".hideOk").show();
-															$("#noTd").text("No." + data[key].reportNo);
-															$("#ftTd").text(data[key].reportName);
-															$("#stTd").text(data[key].status);
-															$("#rdTd").text(data[key].reportDate);
-															$("#cdTd").text(data[key].completeDate);
-															$("#tiTd").text(data[key].targetId + "(" + data[key].targetName + ")");
-															$("#riTd").text(data[key].repId + "(" + data[key].repName + ")");
-															$("#ctTa").val(data[key].reportContent);
-														}else{
-															$(".hide").show();
-															$("#noTd").text("No." + data[key].reportNo);
-															$("#ftTd").text(data[key].reportName);
-															$("#stTd").text(data[key].status);
-															$("#rdTd").text(data[key].reportDate);
-															$("#cdTd").text(data[key].completeDate);
-															$("#tiTd").text(data[key].targetId + "(" + data[key].targetName + ")");
-															$("#riTd").text(data[key].repId + "(" + data[key].repName + ")");
-															$("#ctTa").val(data[key].reportContent);
-															$("#rejectTd").val(data[key].reject);
-														}
-													}
-												}
-												
-											}
-										
-										});
-							   		 });
-					         
-					        	 $("#no").click(function(){
-							    	$("#numsTd").text("");
-							    	var result = "";
-							    	$(".even").each(function(){
-							    		if($(this).find(".check").is(":checked")){
-							    			result += $(this).find("td").eq(1).text() + " ";
-							    		}	
-							    	});
+					         $("#no").click(function(){
+							    $("#numsTd").text("");
+							    var result = "";
+							    $(".even").each(function(){
+							    	if($(this).find(".check").is(":checked")){
+							    		result += $(this).find("td").eq(1).text() + " ";
+							    	}	
+							   	});
 							    	$("#numsTd").text(result);
-							    });
+							});
 								
-							    $("#completeNo").click(function(){
-							    	var nums = $("#numsTd").text();
-							    	console.log(nums);
-							    	var inputReject = $("#inputReject").val();
-							    	console.log(inputReject);
-							    	location = "<%=request.getContextPath()%>/reportNo.me?nums=" + nums + "&inputReject=" + inputReject;
-							    });
+							$("#completeNo").click(function(){
+							    var nums = $("#numsTd").text();
+							    console.log(nums);
+							    var inputReject = $("#inputReject").val();
+							    console.log(inputReject);
+							    location = "<%=request.getContextPath()%>/reportNo.me?nums=" + nums + "&inputReject=" + inputReject;
+							});
+							
+							
 					      });
 						
 						function ok() {
@@ -553,6 +556,86 @@
 									location = location;
 								}
 							};
+							
+							$("#inquiry").click(function(){
+								var userId = $("#userIdF").val();
+								var reportName = $("#reportCodeF").val();
+								var reportResult = $("#reportResultF").val();
+								var status = $("#statusF").val();
+								var startReD = $("#startReDF").val();
+								var endReD = $("#endReDF").val();
+								var startRsD = $("#startRsDF").val();
+								var endRsD = $("#endRsDF").val();
+								
+								if(startReD > endReD || (endReD!="" && startReD=="")){
+									alert("신고일 기간이 잘못 선택되었습니다.");
+									return;
+								}
+								
+								if(startRsD > endRsD || (endRsD!="" && startRsD=="")){
+									alert("처리일 기간이 잘못 선택되었습니다.");
+									return;
+								}
+								
+								$.ajax({
+									url:"<%=request.getContextPath()%>/selectReportFilter.me",
+									data:{
+										userId:userId,
+										reportName:reportName,
+										reportResult:reportResult,
+										status:status,
+										startReD:startReD,
+										endReD:endReD,
+										startRsD:startRsD,
+										endRsD:endRsD
+									},
+									type:"get",
+									success:function(data){
+										$("#dataTable > tbody > tr").remove();
+										var $dataTable = $("#dataTable");
+										
+										if(data.length > 0){
+											for(var key in data){
+												
+												var $tr = $("<tr role='row' class='even' align='center'>");
+												
+												var $checkTd = $("<td class='sorting_1'>");
+												var $checkIp = $("<input type='checkbox' class='check'>");
+												$checkTd.append($checkIp);
+												
+												var $noTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data[key].reportNo);
+												var $tgTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data[key].user1);
+												var $rnTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data[key].reportName);
+												var $rcTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data[key].reportContent);
+												var $ruTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data[key].user2);
+												var $rdTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data[key].reportDate);
+												var $stTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data[key].status);
+												var $cdTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data[key].completeDate);
+												var $rrTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data[key].reportResult);
+												var $ppTd = $("<td class='sorting_2' data-toggle='modal' data-target='#detail'>").text(data[key].penalty);
+												
+												$tr.append($checkTd);
+												$tr.append($noTd);
+												$tr.append($tgTd);
+												$tr.append($rnTd);
+												$tr.append($rcTd);
+												$tr.append($ruTd);
+												$tr.append($rdTd);
+												$tr.append($stTd);
+												$tr.append($cdTd);
+												$tr.append($rrTd);
+												$tr.append($ppTd);
+												
+												$dataTable.append($tr);
+											}
+										}else{
+											
+										}
+									}
+								});
+								
+								
+							});
 						</script>
 						<!-- 메인 콘텐트 영역 끝 -->
 						<!-- Footer 인클루드 -->

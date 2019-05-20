@@ -149,6 +149,7 @@ public class MemberService {
 		return result;
 	}
 	
+	//신고이력 상세보기용
 	public ArrayList<HashMap<String, Object>> selectOneReport(int reportNo) {
 		Connection con = getConnection();
 		
@@ -159,6 +160,7 @@ public class MemberService {
 		return list;
 	}
 	
+	//신고 부적합 처리용
 	public int updateReportNo(String[] num, String inputReject) {
 		Connection con = getConnection();
 		
@@ -175,6 +177,7 @@ public class MemberService {
 		return result;
 	}
 
+	//회원 상세보기용
 	public HashMap<String, Object> selectOneMember(int no) {
 		Connection con = getConnection();
 		
@@ -185,6 +188,7 @@ public class MemberService {
 		return hmap;
 	}
 
+	//수익금 환급완료 처리용
 	public int updatePaybackOk(String[] nums) {
 		Connection con = getConnection();
 		
@@ -201,6 +205,7 @@ public class MemberService {
 		return result;
 	}
 	
+	//회원 환불완료 처리용
 	public int updateRefundOk(String[] nums) {
 		Connection con = getConnection();
 		
@@ -217,15 +222,50 @@ public class MemberService {
 		return result;
 	}
 	
-	public ArrayList<HashMap<String, Object>> selectMemberFilter(HashMap<String, Object> condition) {
+	//회원 조회 필터링 목록 카운트
+	public int getMemberFilterCount(HashMap<String, Object> condition) {
 		Connection con = getConnection();
-		ArrayList<HashMap<String,Object>> list = new MemberDao().selectMemberFilter(con, condition);
+			
+		int listCount = new MemberDao().getMemberFilterCount(con, condition);
+		
+		close(con);
+		
+		return listCount;
+	}
+	
+	//회원 조회 필터링 처리용
+	public ArrayList<HashMap<String, Object>> selectMemberFilter(HashMap<String, Object> condition, PageInfo pi) {
+		Connection con = getConnection();
+		ArrayList<HashMap<String,Object>> list = new MemberDao().selectMemberFilter(con, condition, pi);
 		
 		close(con);
 		return list;
 	}
 
-
+	//신고 조회 필터링 처리용
+	public ArrayList<HashMap<String, Object>> selectReportFilter(HashMap<String, Object> condition) {
+		Connection con = getConnection();
+		
+		ArrayList<HashMap<String,Object>> list = new MemberDao().selectReportFilter(con, condition);
+		
+		close(con);
+		
+		return list;
+	}
+	
+	
+	
+	public ArrayList<HashMap<String, Object>> selectPaybackFilter(HashMap<String, Object> condition) {
+		Connection con = getConnection();
+		
+		ArrayList<HashMap<String,Object>> list = new MemberDao().selectPaybackFilter(con, condition);
+		
+		close(con);
+		
+		return list;
+	}
+	
+	
 	
 	//---------------------------------------------- 민지 ----------------------------------------------
 	public Member login(String userId, String userPwd) {
@@ -300,6 +340,12 @@ public class MemberService {
 	      
 	      return result;
 	   }
+
+	
+
+	
+
+	
 	
 
 	
