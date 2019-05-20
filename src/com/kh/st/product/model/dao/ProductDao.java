@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -57,6 +58,8 @@ public class ProductDao {
 		return ctgList;
 	}
 
+	
+	/* ------------------------준혁 */
 	public int productInsert(Connection con, Product p) {
 		
 		PreparedStatement pstmt = null;
@@ -93,6 +96,34 @@ public class ProductDao {
 		
 		return result;
 	}
+
+	public int getProductNo(Connection con) {
+		Statement stmt = null;
+		ResultSet rset = null;
+		int pno = 0;
+		String query = prop.getProperty("selectCurrval");
+		
+		try {
+			stmt = con.createStatement();
+			rset = stmt.executeQuery(query);
+			
+			if(rset.next()) {
+				pno = rset.getInt("NEXTVAL");
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(stmt);
+		}
+		
+		
+		return pno;
+	}
+
+		
 }
 
 
