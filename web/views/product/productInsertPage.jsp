@@ -206,7 +206,7 @@ table {
 
 <hr>
 <div id="photo">
-<form name="productInsertForm" action="<%=request.getContextPath() %>/productInsert.pd" encType="multipart/form-data">
+<form name="productInsertForm" action="<%=request.getContextPath() %>/productInsert.pd" encType="multipart/form-data" method="post">
 <table align="center">
 
 <tr>
@@ -306,7 +306,7 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 </select> 
 
 </td>
-<td colspan="1"><div  style="display:none;"> <input type="text" id="ctgId" name="ctgId"></div></td>
+<td colspan="1"><div  style="display:none;"> <input type="text" id="userNo" name="userNo" value="<%= loginUser.getUno() %>"><input type="text" id="ctgId" name="ctgId"></div></td>
 </tr>
 
 <tr>

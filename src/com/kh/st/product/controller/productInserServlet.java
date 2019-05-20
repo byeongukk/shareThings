@@ -25,7 +25,6 @@ import com.kh.st.member.model.vo.Member;
 import com.kh.st.product.model.service.ProductService;
 import com.kh.st.product.model.vo.Product;
 import com.oreilly.servlet.MultipartRequest;
-
 import oracle.sql.DATE;
 
 /**
@@ -47,23 +46,7 @@ public class productInserServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String title = request.getParameter("title");
-		
-		System.out.println(title);
-		
-		/*int ctgId = request.getParameter("")*/ //카테고리게요
-		
-		DateFormat formatter;
-		 formatter = new SimpleDateFormat("yyyy-MM-dd");
-		
-		/*try {
-			Date stDate = (Date)formatter.parse(request.getParameter("startDay"));
-			Date edDate = (Date)formatter.parse(request.getParameter("endDay"));
-			Date buyDate = (Date)formatter.parse(request.getParameter("buyDay"));
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
+		/*String title = request.getParameter("title");
 		 
 		 Date stDate = Date.valueOf((request.getParameter("startDay")));
 		 Date edDate = Date.valueOf((request.getParameter("endDay")));
@@ -99,7 +82,7 @@ public class productInserServlet extends HttpServlet {
 		
 		int result = new ProductService().productInsert(p);
 		
-		
+		*/
 		if(ServletFileUpload.isMultipartContent(request)) {
 	         //System.out.println("multipart로 request 요청");
 	         //전송 파일 용량 제한 : 10Mbyte로 제한
@@ -114,8 +97,9 @@ public class productInserServlet extends HttpServlet {
 	         System.out.println("root : " + root);
 	         
 	         //파일 저장 경로 설정
-	         String filePath = root + "thumbnail_upload/";
+	         String filePath = root + "attach_upload/";
 	         
+	        
 	         //객체를 생성할 때 부터 파일을 저장하고 그에 대한 정보를 가져오는 형태이다.
 	         //즉 파일의 정보를 검사하여 저장하는 형태가 아닌,
 	         //저장한 다음 검사 후 삭제를 해야 한다.
@@ -159,6 +143,43 @@ public class productInserServlet extends HttpServlet {
 	         String multiTitle = multiRequest.getParameter("title");
 	         String multiContent = multiRequest.getParameter("content");
 	         
+	         //---------------------------------------------------프로덕트 폼데이터
+	         Date stDate = Date.valueOf((multiRequest.getParameter("startDay")));
+			 Date edDate = Date.valueOf((multiRequest.getParameter("endDay")));
+			 Date buyDate = Date.valueOf((multiRequest.getParameter("buyDay")));
+			
+			String content = multiRequest.getParameter("content");
+			String phone = multiRequest.getParameter("hp1");
+			String phone2 = multiRequest.getParameter("em1");
+			String zipCode = multiRequest.getParameter("zipNo");
+			String address1 = multiRequest.getParameter("address1");
+			String address2 = multiRequest.getParameter("address2");
+			String address = zipCode + "|" + address1 + "|" + address2;
+			String model = multiRequest.getParameter("pmodel");
+			int purchasePrice = Integer.parseInt(multiRequest.getParameter("purchasePrice"));
+			String asHistory = multiRequest.getParameter("asHistory");
+			int rentPrice = Integer.parseInt(multiRequest.getParameter("rentPrice"));
+			int ctgId = Integer.parseInt(multiRequest.getParameter("ctgId"));		
+			int deposit = Integer.parseInt(multiRequest.getParameter("deposit"));
+			int uno = Integer.parseInt(multiRequest.getParameter("userNo"));
+			
+			Product p = new Product();
+			p.setUno(uno);
+			p.setpStartDate(stDate);
+			p.setpEndDate(edDate);
+			p.setPrice(rentPrice);
+			p.setDeposite(deposit);
+			p.setModel(model);
+			p.setCtgId(ctgId);
+			p.setPurchaseDate(buyDate);
+			p.setPurchasePrice(purchasePrice);
+			p.setAsHistory(asHistory);
+			
+			
+			int presult = new ProductService().productInsert(p);
+	         
+			int pno = (new ProductService().getProductNo()) - 1;
+			
 	         System.out.println("multiTitle : " + multiTitle);
 	         System.out.println("multiContent : " + multiContent);
 	         
@@ -167,6 +188,7 @@ public class productInserServlet extends HttpServlet {
 	         b.setbTitle(multiTitle);
 	         b.setbContent(multiContent);
 	         b.setbWriter(String.valueOf(((Member)(request.getSession().getAttribute("loginUser"))).getUno()));
+	         b.setPno(pno);
 	         
 	         ArrayList<Attachment> fileList = new ArrayList<Attachment>();
 	         for(int i = originFiles.size() - 1; i >= 0; i--) {
@@ -181,7 +203,7 @@ public class productInserServlet extends HttpServlet {
 	         int bresult = new BoardService().insertProductBoard(b, fileList);
 	         
 	         if(bresult > 0) {
-	            response.sendRedirect(request.getContextPath() + "/selectList.tn");
+	            response.sendRedirect(request.getContextPath() + "/views/product/complete.jsp");
 	         }else {
 	            for(int i = 0; i < saveFiles.size(); i++) {
 	               File failedFile = new File(filePath + saveFiles.get(i));

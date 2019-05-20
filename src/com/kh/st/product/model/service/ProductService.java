@@ -24,4 +24,13 @@ public class ProductService {
 		return result;
 	}
 
+	public int getProductNo() {
+		Connection con = getConnection();
+		int pno = new ProductDao().getProductNo(con);
+		
+		close(con);
+
+		return pno;
+	}
+
 }
