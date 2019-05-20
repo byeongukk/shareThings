@@ -22,4 +22,13 @@ public class CategoryListService {
 
 	}
 
+	public int getCtgId(String small) {
+		Connection con = getConnection();
+		
+		int ctgid = new CategoryListDao().getCtgId(con, small);
+		
+		close(con);
+		return ctgid;
+	}
+
 }

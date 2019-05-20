@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 import com.kh.st.product.model.vo.PCategory;
+import com.kh.st.product.model.vo.Product;
 
 public class ProductDao {
 	
@@ -54,6 +55,43 @@ public class ProductDao {
 		
 		
 		return ctgList;
+	}
+
+	public int productInsert(Connection con, Product p) {
+		
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("productInsert");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, p.getUno());
+			pstmt.setDate(2, p.getpStartDate());
+			pstmt.setDate(3, p.getpEndDate());
+			pstmt.setInt(4, p.getPrice());
+			pstmt.setInt(5, p.getDeposite());
+			pstmt.setString(6, p.getModel());
+			pstmt.setInt(7, p.getCtgId());
+			pstmt.setDate(8, p.getPurchaseDate());
+			pstmt.setInt(9, p.getPurchasePrice());
+			pstmt.setString(10, p.getAsHistory());
+			pstmt.setString(11, "최상");
+			
+			result = pstmt.executeUpdate();
+			
+			
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			
+		}
+		
+		
+		return result;
 	}
 }
 
