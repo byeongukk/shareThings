@@ -11,6 +11,9 @@
 	int maxPage = pi.getMaxPage();
 	int startPage = pi.getStartPage();
 	int endPage = pi.getEndPage();
+	
+	ArrayList<HashMap<String, Object>> listMap =
+			(ArrayList<HashMap<String, Object>>) request.getAttribute("list");
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -85,36 +88,40 @@
 											<td><input type="text" name="userName"
 												style="width: 80%"></td> -->
 											<td style="width: 90px">승인상태 :</td>
-											<td><select style="heigth: 30px; width: 40%;">
-													<option>승인</option>
-													<option>승인대기</option>
-													<option>거절</option>
+											<td><select style="heigth: 30px; width: 40%;"
+											id="okStatus" name="okStatus">
+													<option value="0">전체</option>
+													<option value="PS1">승인대기</option>
+													<option value="PS4">거절</option>
 											</select></td>
 											<td style="width: 90px">상세조건 :</td>
-											<td><select style="heigth: 30px; width: 20%;">
-													<option>요청번호</option>
-													<option>등록자명</option>
-													<option>물품명</option>
-											</select>&nbsp;&nbsp;&nbsp; <input type="text" name="userId"
+											<td><select style="heigth: 30px; width: 20%;"
+											id="details" name="details" onchange = "detailsChg();">
+													<option value="0">전체</option>
+													<option value="reqNo">요청번호</option>
+													<option value="name">등록자명</option>
+													<option value="reqName">물품명</option>
+											</select>&nbsp;&nbsp;&nbsp; <input type="text" placeholder="상세정보입력" disabled id="filterContent" name="filterContent"
 												style="width: 20%"></td>
 										</tr>
 										<tr>
 											<td style="width: 70px">등록기간 :</td>
-											<td colspan="3"><input type="date" name="startD">&nbsp;&nbsp;&nbsp;
-												~ &nbsp;&nbsp;&nbsp; <input type="date" name="endD">
+											<td colspan="3"><input type="date" id="startD" name="startD">
+											&nbsp;&nbsp;&nbsp;
+												~ &nbsp;&nbsp;&nbsp; <input type="date" id="endD"name="endD">
 											</td>
 										</tr>
 									</table>
-									<div>
-										<button>조회하기</button>
+									<div align="center">
+										<button type="button" id="inquiry">조회하기</button>
 										&nbsp;&nbsp;&nbsp;
-										<button>초기화</button>
+										<button type="reset" id="initial">초기화</button>
 									</div>
 								</div>
 							</div>
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary"><%= listCount %>건</h6>
+									<h6 class="m-0 font-weight-bold text-primary" id="listSize"><%= listCount %>건</h6>
 								</div>
 								<div class="card-body">
 									<a href="#" class="btn btn-info btn-icon-split" id="ok"
@@ -138,7 +145,7 @@
 														id="dataTable" width="100%" cellspacing="0" role="grid"
 														aria-describedby="dataTable_info" style="width: 100%;">
 														<thead>
-															<tr role="row">
+															<tr role="row" align="center">
 																<th tabindex="0" class="sorting"
 																	aria-controls="dataTable" style="width: 10px;"
 																	aria-label="Name: activate to sort column ascending"
@@ -176,7 +183,7 @@
 
 														<tbody>
 														<% for(ReqProduct rp : list) { %>
-															<tr role="row" class="even">
+															<tr role="row" class="even" align="center">
 																<td class="sorting_1"><input type="checkbox" class="check"></td>
 																<td><%= rp.getbNo() %></td>
 																<td><%= rp.getUpNo() %></td>
@@ -189,9 +196,16 @@
 															<% } %>
 														</tbody>
 													</table>
+													<div id="result-null">
+													<% if(list.size() <= 0){ %>
+														<br><br><br><br><br><br>
+														<h3 align="center"> 조회 결과가 없습니다.</h3>
+														<br><br><br><br><br><br>
+													<% } %>
+													</div>
 												</div>
 											</div>
-											<div class="row">
+	<div class="row">
 		<div class="paging">
 			<div class="col-sm-12 col-md-3">
 				<div class="dataTables_paginate paging_simple_numbers"
@@ -424,8 +438,14 @@
 					}
 				});
 			});
+			
+			//조회  필터 초기화
+			$("#initial").click(function() {
+				
+			});
 		});
 		
+		//요청 승인
 		$("#ok").click(function() {
 			var status = new Array();
 			$(".even").each(function() {
@@ -538,6 +558,109 @@
 			console.log(nums);
 			location = "<%= request.getContextPath() %>/reqNo.bo?nums=" + nums + "&textResult=" + textResult;
 		});
+		
+		//조건 검색
+		$("#inquiry").click(function() {
+			var okStatus = $("#okStatus").val();
+			var details = $("#details").val();
+			var filterContent = $("#filterContent").val();
+			var startD = $("#startD").val();
+			var endD = $("#endD").val();
+			
+			//조회기간 잘못 설정
+			if(startD > endD || (endD !="" && startD=="")) {
+				alert("기간이 잘못되었습니다");
+				return false;
+			}
+			
+			//상세보기 전체 아닐 겨우
+			if(details != "0"){
+				if(filterContent == ""){
+					alert("상세정보를 입력하세요");
+					return false;
+				}
+			}
+			$.ajax({
+				url:"<%= request.getContextPath()%>/selectReqFilter.bo",
+				data:{
+					okStatus:okStatus,
+					details:details,
+					filterContent:filterContent,
+					startD:startD,
+					endD:endD
+				},
+				type:"get",
+				success:function(data) {
+					console.log(data);
+					/* 기존 테이블 행 제거 */
+					$("#dataTable > tbody > tr").remove();
+					
+					var $dataTable = $("#dataTable");
+					/* 조회된 값이 없을때 출력할 공간 */
+					var $resultNull = $("#result-null");
+					/* 조회된 건수 출력할 공간 */
+					var $listSize = $("#listSize");
+					
+					//값 넣을 공간 비우기
+					$resultNull.html('');
+					$listSize.prop("innerHTML", '');
+					if(data.length > 0) {
+						for(var key in data) {
+							//data값 td에 입력
+							var $check = $("<td class='sorting_1'><input type='checkbox' class='check'>");
+							var $tr = $("<tr class='even' role='row' align='center'>");
+							var $bNoTd = $("<td>").text(data[key].bNo);
+							var $reqNoTd = $("<td>").text(data[key].reqNo);
+							var $userNameTd = $("<td>").text(data[key].userName);
+							var $ctgNameTd = $("<td>").text(data[key].ctgName);
+							var $reqD = $("<td>").text(data[key].reqD);
+							var $bTitleTd = $("<td>").text(data[key].bTitle);
+							var $statusTd = $("<td>").text(data[key].status);
+							
+							//tr에 td추가
+							$tr.append($check);
+							$tr.append($bNoTd);
+							$tr.append($reqNoTd);
+							$tr.append($userNameTd);
+							$tr.append($ctgNameTd);
+							$tr.append($reqD);
+							$tr.append($bTitleTd);
+							$tr.append($statusTd);
+							
+							//table에 tr추가
+							$dataTable.append($tr);
+						}
+					} else {
+						//조회결과 없을때
+						$resultNull.append("<br><br><br><br><br><br>");
+						$resultNull.append("<h3 align='center'> 조회 결과가 없습니다.</h3>");
+						$resultNull.append("<br><br><br><br><br><br>");
+					}
+					$listSize.prop("innerHTML",data.length+"건");
+					$(".paging").remove();
+					$(".sorting_1").siblings().click(function() {
+						$(this).parent().each(function() {
+							console.log($(this).find("td").eq(1).text());
+							var reqNum = $(this).find("td").eq(1).text();
+							location = "<%= request.getContextPath()%>/reqProductDetail.bo?reqNum=" + reqNum;
+						});
+					});
+				},
+				error:function(data) {
+					console.log("실패");
+				}
+			});
+		});
+		//상세조회 전체 아닐때 disabled 변경
+		function detailsChg(){
+			if($("#details").val()=="0"){
+				$("#filterContent").attr("disabled",true);
+				$("#filterContent").val("");
+			}else {
+				$("#filterContent").attr("disabled",false);
+				$("#filterContent").val("");
+			}
+		}
 		</script>
 			<script
 				src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>

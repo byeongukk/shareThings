@@ -5,6 +5,9 @@
 	ArrayList<PCategory> ctgList = (ArrayList<PCategory>)listMap.get("ctgList");
 	ArrayList<HashMap<String, Object>> bList = (ArrayList<HashMap<String, Object>>)listMap.get("bList");
 	String ctgLv2 = (String)request.getAttribute("ctgLv2");
+	
+	HashMap<String, Object> filterMap = (HashMap<String, Object>)request.getAttribute("filterMap");
+	
 %>
 <!DOCTYPE html>
 <html>
@@ -37,9 +40,12 @@
 		margin:5px;
 		height:350px;
 	}
+	.thumbnail:hover {
+		cursor:pointer;
+	}
 	.thumbnailImg {
 		width:100% !important;
-		height:70% !important;
+		height:60% !important;
 		border:1px solid lightgray;
 		background-size:cover; 
 		background-position:center; 
@@ -86,6 +92,7 @@
 
 			<br><br>
 			<div class="row filterArea">
+			<form id="filterForm" method="post">
 				<div class="filter">
 					<div class="ui red ribbon label" style="font-size:100%">
 	        			<i class="check icon"></i> 상세검색
@@ -104,13 +111,13 @@
 					<div class="row">
 						<div class="col col-lg-6 col-md-6 col-sm-12 col-xs-12" style="margin-bottom:5px;">
 							<label>대여 날짜 검색</label>
-							<div class="ui left icon fluid input datePicker" style="display:inline-block; margin-right:10px; width:150px;">
-								<input type="text" name="startFilter" id="startFilter" placeholder="시작일">
+							<div class="ui left icon fluid input datePicker" style="display:inline-block; margin-right:10px; width:130px;">
+								<input type="text" name="startFilter" id="startFilter" placeholder="시작일" autoComplete="off">
 								<i class="calendar alternate outline icon"></i>
 							</div>
 							
-							<div class="ui left icon fluid input datePicker" style="display:inline-block; margin:0; width:150px;">
-								<input type="text" name="endFilter" id="endFilter" placeholder="종료일">
+							<div class="ui left icon fluid input datePicker" style="display:inline-block; margin:0; width:130px;">
+								<input type="text" name="endFilter" id="endFilter" placeholder="종료일" autoComplete="off">
 								<i class="calendar alternate outline icon"></i>
 							</div>
 							<label style="font-size:0.8em; color:gray; font-style:italic">
@@ -119,7 +126,7 @@
 						<div class="col col-lg-6 col-md-6 col-sm-12 col-xs-12">
 							<p>
 								<label for="priceFilter">대여 가격 설정(/주)</label>
-								<input type="text" id="priceFilter" readonly style="border:0; color:#F44A0C; font-weight:bold;">
+								<input type="text" name="priceFilter" id="priceFilter" readonly style="border:0; color:#F44A0C; font-weight:bold;">
 							</p>
 							<div id="slider-range"></div>
 						</div>
@@ -144,6 +151,7 @@
 					</div>
 				</div>
 				<br>
+			</form>
 			</div> <!-- end of filterArea -->
 			
 			<div class="row thumbnailArea">
@@ -165,12 +173,21 @@
 	      					</a>
 						</div>
 						<div class="thumbnailCaption">
-							<input type="hidden" name="bno" value="<%= hmap.get("bno") %>">
-							<p style="font-size:1.2em; font-weight:bold"><%= hmap.get("bTitle") %></p>
-							<p align="right">
+							<input type="hidden" name="bno" id="bno" value="<%= hmap.get("bno") %>">
+							<p style="font-size:1.2em; font-weight:bold">
+							<%= hmap.get("bTitle") %></p>
+							<p style="color:#F44A0C">
+								<b><%= hmap.get("price") %>원</b>
+								<label style="font-size:0.8em; color:black"> / 보증금 <%= hmap.get("deposit") %>원</label>
+							</p>
+							<%-- <p style="font-size:0.8em; color:orange;"> / 보증금 <%= hmap.get("deposit") %>원</p> --%>
+							<p align="right" style="font-size:0.8em; color:gray;">
 								등록일 : <%= hmap.get("bDate") %> / 조회수 : <%= hmap.get("bCount") %>
 							</p>
-							<p align="right">대여후기 : <%= hmap.get("reviewStar") %>점</p>
+							<p align="right" style="font-size:0.8em; color:gray;">
+							총 대여횟수:<%= hmap.get("rtCount") %>회</p>
+							<p align="right" style="font-size:0.8em; color:gray;">
+							대여후기 : <%= hmap.get("rvStar") %>점(<%= hmap.get("rvCount") %>개)</p>
 						</div>
 					</div>
 				</div>
@@ -194,6 +211,7 @@
 	<script>
 		
 		$(function() {
+			
 			//대여 시작일, 종료일 지정
 			var startDate;
 			var endDate;
@@ -260,6 +278,75 @@
 			});
 			$("#priceFilter").val($("#slider-range").slider("values", 0) +
 			      "원-" + $("#slider-range").slider("values", 1) + "원");
+			
+			
+			//필터 유지
+			<% 
+				
+				if(filterMap != null) { 
+					String ctgLv3Str = (String)filterMap.get("ctgLv3Str");
+					String[] ctgLv3Arr = ctgLv3Str.split(",");
+					for(int i = 0; i < ctgLv3Arr.length; i++) {
+						for(int j = 0;  j < ctgList.size(); j++) {
+							if(ctgLv3Arr[i].equals(ctgList.get(i).getCtgName())) {
+								String selected = ctgLv3Arr[i];
+			%>
+			$(".ctgLv3Btn").each(function() {
+				if($(this).find("label").text() == '<%= selected %>') {
+					$(this).css("background", "#0CB6F4");
+					$(this).find("i").css("color", "red");
+				}
+			});
+			
+			
+			
+			<%
+								break;
+							}
+						}
+					}
+					
+					Date startDate = (Date)filterMap.get("startDate");
+					Date endDate = (Date)filterMap.get("endDate");
+					int minPrice = (int)filterMap.get("minPrice");
+					int maxPrice = (int)filterMap.get("maxPrice");
+					String orderBy = filterMap.get("orderBy").toString();
+					if(startDate != null) {
+			%>
+			$("#startFilter").val("<%= startDate %>");
+			
+			<% 
+					}
+					if(endDate != null) {
+			%>
+			$("#endFilter").val("<%= endDate %>");
+			<% 
+					}
+			%>
+			$( "#slider-range" ).slider({
+			      range:true,
+			      min:0,
+			      max:100000,
+			      step:1000,
+			      values:[<%= minPrice %>, <%= maxPrice %>],
+			      slide:function(event, ui) {
+			        $("#priceFilter").val(ui.values[0] + "원-" + ui.values[1] + "원");
+			      }
+			});
+			$("#priceFilter").val($("#slider-range").slider("values", 0) +
+			      "원-" + $("#slider-range").slider("values", 1) + "원");
+			
+			$("input[name=orderBy]").each(function() {
+				if($(this).val() == '<%= orderBy %>') {
+					$(this).prop("checked", true);
+				}
+			});
+			<%
+			
+				}
+			%>
+			
+			
 		});
 		
 		//하위카테고리 선택시 css변화
@@ -283,28 +370,42 @@
 					ctgLv3Arr.push(ctgName);
 				}
 			});
-			var start = $("#startFilter").val();
-			var end = $("#endFilter").val();
-			var priceRange = $("#priceFilter").val();
-			var orderBy = $("input[name=orderBy]").filter(":checked").val();
-			console.log(order);
-			$.ajax({
+			var ctgLv3Str = ctgLv3Arr.toString();
+			//encodeURIComponent
+			var ctgLv2 = '<%= ctgLv2 %>';
+			var ctgLv2query = encodeURIComponent(ctgLv2);
+			var ctgLv3query = encodeURIComponent(ctgLv3Str);
+			$("#filterForm").attr("action", "<%= request.getContextPath()%>/filter.bo?ctgLv2=<%= ctgLv2 %>" + "&ctgLv3Arr=" + ctgLv3Str);
+			$("#filterForm").submit();
+			
+			
+			<%-- location.href="<%= request.getContextPath() %>/filter.bo"; --%>
+			//var start = $("#startFilter").val();
+			//var end = $("#endFilter").val();
+			//var priceRange = $("#priceFilter").val();
+			//var orderBy = $("input[name=orderBy]").filter(":checked").val();
+			//console.log(orderBy);
+			<%-- $.ajax({
 				url:"<%= request.getContextPath() %>/filter.bo",
 				type:"post",
 				data:{ctgLv2:<%= ctgLv2 %>, ctgLv3Arr:ctgLv3Arr, start:start, end:end, priceRange:priceRange, orderBy:orderBy},
 				success:function(data) {
-					
+					<% bList = (ArrayList<HashMap<String, Object>>)data; %>
+					for(var i = 0; i < data.length; i++) {
+						data[i];
+						<% HashMap<String, Object> hmap = data[i]; %>
+					}
 				}, error:function() {
 					alert("서버전송 실패..!");
 				}
-			});
+			}); --%>
 			
 		});
-		
-		
+
 		
 		$(".thumbnail").click(function() {
-			location.href="/st/views/main/productDetail.jsp";
+			var bno = $(this).find("input[id=bno]").val();
+			location.href="<%= request.getContextPath() %>/selectOne.bo?bno=" + bno;
 		});
 		
 	</script>

@@ -29,22 +29,38 @@ public class InsertInvoiceNumServlet extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		 
-		 int rtNo = Integer.parseInt(request.getParameter("rtNo"));
-		 int invoiceNum = Integer.parseInt(request.getParameter("invoiceNum"));
-		 int pno = Integer.parseInt(request.getParameter("pno"));
-		 String dCom = request.getParameter("dCom");
-		 String userId = request.getParameter("userId");
+		/* int rtNo = Integer.parseInt(request.getParameter("rtNo"));
+		 int pno = Integer.parseInt(request.getParameter("pno"));*/
+		String rtNos = request.getParameter("rtNos");
+		String[] rtNo = rtNos.split(",");
+		String pnos = request.getParameter("pnos");
+		String[] pno = pnos.split(",");
+		String invoiceNum = request.getParameter("invoiceNum");
+		String dCom = request.getParameter("dCom");
+		String userId = request.getParameter("userId");
+		//변경할 대여 상태 코드
+		String rtStatus = "RTS4";
 		 
-		 HashMap<String,Object> invoiceVal = new HashMap<String,Object>();
+		HashMap<String,Object> invoiceVal = new HashMap<String,Object>();
 		 
-		 invoiceVal.put("rtNo", rtNo);
-		 invoiceVal.put("invoiceNum",invoiceNum);
-		 invoiceVal.put("pno",pno);
-		 invoiceVal.put("dCom",dCom);
-		 invoiceVal.put("userId",userId);
+		invoiceVal.put("rtNo", rtNo);
+		invoiceVal.put("invoiceNum",invoiceNum);
+		invoiceVal.put("pno",pno);
+		invoiceVal.put("dCom",dCom);
+		invoiceVal.put("userId",userId);
+		invoiceVal.put("rtStatus",rtStatus);
 		 
-		 int result = new RentalService().insertInvcNum(invoiceVal);
+		int result = new RentalService().insertInvcNum(invoiceVal);
 		
+		String page = "";
+		 
+		if(result > 0) {
+			response.sendRedirect(request.getContextPath() + "/selectShpMngList.rt");
+		}else {
+			page = "views/common/errorPage.jsp";
+		request.setAttribute("msg", "송장 입력 오류");
+			request.getRequestDispatcher(page).forward(request, response);
+		}
 		 
 	
 	}

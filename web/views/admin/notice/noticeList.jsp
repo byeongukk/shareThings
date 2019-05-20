@@ -61,14 +61,19 @@
 						<div class="card-body">
 							<div class="table-responsive">
 								<div id="dataTable_wrapper"
-									class="dataTables_wrapper dt-bootstrap4">
-									<div class="row">
-										<div class="col-sm-12">
-											<table class="table table-bordered dataTable" id="dataTable"
+									class="dataTables_wrapper dt-bootstrap4" >
+									<div class="row" >
+										<div class="col-sm-12" > 
+											<table class="table table-bordered dataTable" id="dataTable" 
 												width="100%" cellspacing="0" role="grid"
-												aria-describedby="dataTable_info" style="width: 100%;">
+												aria-describedby="dataTable_info" style="width: 100%;"
+												>
 												<thead>
 													<tr role="row">
+														<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 3px;"
+																aria-label="Name: activate to sort column ascending"
+														rowspan="1" colspan="1"><input type="checkBox" id="checkAll"></th>
 														<th class="sorting_asc" tabindex="0"
 															aria-controls="dataTable" rowspan="1" colspan="1"
 															aria-label="Name: activate to sort column descending"
@@ -81,65 +86,29 @@
 															rowspan="1" colspan="1"
 															aria-label="Office: activate to sort column ascending"
 															style="width: 10px;">제목</th>
-														<th class="sorting" tabindex="0" aria-controls="dataTable"
-															rowspan="1" colspan="1"
-															aria-label="Age: activate to sort column ascending"
-															style="width: 10px;">내용</th>
 													</tr>
 												</thead>
 
 												<tbody>
 													<tr role="row" class="even">
+														<td><input type="checkBox" class="check"></td>
 														<td class="sorting_1">01</td>
 														<td>user01</td>
 														<td>이달의 업데이트</td>
-														<td>업데이트 내용</td>
-													</tr>
-													<tr role="row" class="even">
-														<td class="sorting_1">02</td>
-														<td>user02</td>
-														<td>이달의 업데이트</td>
-														<td>업데이트 내용</td>
-													</tr>
-													<tr role="row" class="even">
-														<td class="sorting_1">03</td>
-														<td>user03</td>
-														<td>이달의 업데이트</td>
-														<td>업데이트 내용</td>
-													</tr>
-													<tr role="row" class="even">
-														<td class="sorting_1">01</td>
-														<td>user01</td>
-														<td>이달의 업데이트</td>
-														<td>업데이트 내용</td>
-													</tr>
-													<tr role="row" class="even">
-														<td class="sorting_1">01</td>
-														<td>user01</td>
-														<td>이달의 업데이트</td>
-														<td>업데이트 내용</td>
-													</tr>
-													<tr role="row" class="even">
-														<td class="sorting_1">01</td>
-														<td>user01</td>
-														<td>이달의 업데이트</td>
-														<td>업데이트 내용</td>
-													</tr>
-													<tr role="row" class="even">
-														<td class="sorting_1">01</td>
-														<td>user01</td>
-														<td>이달의 업데이트</td>
-														<td>업데이트 내용</td>
 													</tr>
 												</tbody>
 											</table>
 										</div>
 									</div>
-									 <a href="<%= request.getContextPath() %>/views/admin/notice/noticeInsert.jsp";
-						class="btn btn-success btn-icon-split"><span
-						class="icon text-white-50"> <i class="fas fa-check"></i></span> <span
-						class="text">공지 등록</span> </a>
-									<%@ include file="../common/paging.jsp"%>
+									 <a href="<%= request.getContextPath() %>/views/admin/notice/noticeInsert.jsp"
+										class="btn btn-success btn-icon-split"><span
+										class="icon text-white-50"> <i class="fas fa-check"></i></span> <span
+										class="text">공지 등록</span> </a>
+									<a href="<%= request.getContextPath() %>/views/admin/notice/noticeInsert.jsp"
+										class="btn btn-success btn-icon-split"><span
+										class="icon text-white-50"> <i class="fas fa-check"></i></span> <span
+										class="text">공지 삭제</span> </a>
+									<%-- <%@ include file="../common/paging.jsp"%> --%>
 								</div>
 							</div>
 						</div>

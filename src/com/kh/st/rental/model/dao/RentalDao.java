@@ -6,15 +6,17 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
-import com.kh.st.request.model.vo.ReqProduct;
+import org.apache.tomcat.dbcp.dbcp2.datasources.InstanceKeyDataSource;
 
 /**
  * @author uukk
@@ -22,10 +24,6 @@ import com.kh.st.request.model.vo.ReqProduct;
  */
 public class RentalDao {
 	private Properties prop = new Properties();
-	private static final String RT_NO = " R.RT_NO ";
-	private static final String USER_NAME = " M.USER_NAME ";
-	private static final String MODEL = " P.MODEL ";
-	private static final String PNO = " P.PNO ";
 	
 	
 	public RentalDao() {
@@ -114,19 +112,19 @@ public class RentalDao {
 					//R.RT_STATUS 컬럼을 조회하게 문자열 합치기
 					queryArr.add(" R.RT_STATUS = ? ");
 					bindVal.add(condition.get("rentalStatus"));
+					System.out.println(condition.get("rentalStatus"));
 				}
 				//상세조건이 전체가 아닐때
 				if(!(detailsContent.get("details").equals("0"))) {
-
 					//상세조건 선택하여 컬럼명 입력
 					if(detailsContent.get("details").equals("rtNo")) {
-						queryArr.add(RT_NO + " = ? ");
+						queryArr.add(" R.RT_NO "+ " = ? ");
 					} else if(detailsContent.get("details").equals("rtUserName")) {
-						queryArr.add(USER_NAME + " = ? ");
+						queryArr.add(" M.USER_NAME " + " = ? ");
 					} else if(detailsContent.get("details").equals("model")) {
-						queryArr.add(MODEL +" = ? ");
+						queryArr.add(" P.MODEL "+" = ? ");
 					} else if(detailsContent.get("details").equals("pno")) {
-						queryArr.add(PNO + " = ? ");
+						queryArr.add(" P.PNO "+ " = ? ");
 					}
 					bindVal.add(detailsContent.get("filterContent"));
 				}
@@ -225,6 +223,7 @@ public class RentalDao {
 				hmap.put("address", rset.getString("ADDRESS"));
 				hmap.put("rtStatus", rset.getString("RT_STATUS"));
 				
+				
 				list.add(hmap);
 			}
 			
@@ -281,55 +280,21 @@ public class RentalDao {
 		return list;
 	}
 	
-	//물품취소처리 
-	public int updateRentalStatus(Connection con, String[] rtNo, String textResult) {
-		PreparedStatement pstmt = null;
-		int result = 0;
+	
 
-		String query = prop.getProperty("updateRentalStatus");
-		
-		try {
-			System.out.println(rtNo);
-			for(int i=0; i < rtNo.length; i++) {
-				pstmt = con.prepareStatement(query);
-				
-				//취소사유 , 대여번호 순서
-				pstmt.setString(1, textResult);
-				pstmt.setInt(2, Integer.parseInt(rtNo[i]));			
-				
-				result = pstmt.executeUpdate();
-				
-				//한개라도 값이 잘못 됐을때 리턴
-				if(result == 0) {
-					break;
-				}
-			}
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			close(pstmt);
-		}
-		// 결과값과 맞지 않을때 0을 리턴
-		if(rtNo.length != result) {
-			result = 0;
-		}
-		return result;
-	}
-
-	public int updateProductStatus(Connection con, String[] pno) {
+	public int updateProductStatus(Connection con,HashMap<String, Object> hmap) {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		String query = prop.getProperty("updatePdStatus");
 		
+		String[] pno = (String[]) hmap.get("pno");
 		try {
-			System.out.println(pno);
 			for(int i=0; i < pno.length; i++) {
 				pstmt = con.prepareStatement(query);
-				
+				//물품상태
+				pstmt.setObject(1, hmap.get("pStatus"));
 				//물품번호
-				pstmt.setInt(1, Integer.parseInt(pno[i]));			
+				pstmt.setInt(2, Integer.parseInt(pno[i]));			
 				
 				result += pstmt.executeUpdate();
 
@@ -342,7 +307,6 @@ public class RentalDao {
 			close(pstmt);
 		}
 		
-		System.out.println(result);
 		// 결과값과 맞지 않을때 0을 리턴
 		if(pno.length != result) {
 			result = 0;
@@ -355,13 +319,13 @@ public class RentalDao {
 		PreparedStatement pstmt = null;
 		int result = 0;
 		String query = prop.getProperty("insertInvcNum");
-		
+		String[] rtNo = (String[]) invoiceVal.get("rtNo");
 		try {
 			pstmt = con.prepareStatement(query);
 			//송장번호
 			pstmt.setObject(1, invoiceVal.get("invoiceNum"));
 			pstmt.setObject(2, invoiceVal.get("dCom"));
-			pstmt.setObject(3, invoiceVal.get("rtNo"));
+			pstmt.setObject(3, rtNo[0]);
 			pstmt.setObject(4, invoiceVal.get("userId"));
 			
 			
@@ -376,20 +340,25 @@ public class RentalDao {
 		return result;
 	}
 
-	/* 대여상태 으로 바꾸기*/
-	public int updateRentalStatusSw(Connection con, HashMap<String, Object> invoiceVal) {
+	/* 대여상태  바꾸기*/
+	public int updateRentalStatus(Connection con, HashMap<String, Object> invoiceVal) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		String query = prop.getProperty("updateRentalStatusSw");
+		String query = prop.getProperty("updateRentalStatus");
+		
+		String[] rtNo = (String[])invoiceVal.get("rtNo");
 		
 		try {
-			
-			pstmt = con.prepareStatement(query);
-			
-			//물품번호
-			pstmt.setObject(1, invoiceVal.get("rtNo"));			
-			
-			result = pstmt.executeUpdate();
+			for(int i=0; i < rtNo.length; i++) {
+				pstmt = con.prepareStatement(query);
+				System.out.println(invoiceVal.get("rtStatus"));
+				//대여상태 코드
+				pstmt.setObject(1, invoiceVal.get("rtStatus"));	
+				//물품번호
+				pstmt.setObject(2, rtNo[i]);			
+				
+				result += pstmt.executeUpdate();
+			}
 
 			
 		} catch (SQLException e) {
@@ -398,47 +367,265 @@ public class RentalDao {
 		} finally {
 			close(pstmt);
 		}
+		// 결과값과 맞지 않을때 0을 리턴
+		if(rtNo.length != result) {
+			result = 0;
+		}
 		return result;
 	}
-	/* 물품 상태 대여중으로 바꿈*/
-	public int updatePdStatusS(Connection con, HashMap<String, Object> invoiceVal) {
+	/* 물품 상태  변경*/
+	public int updatePdStatus(Connection con, HashMap<String, Object> invoiceVal) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		String query = prop.getProperty("updatePdStatusS");
+		String query = prop.getProperty("updatePdStatus");
 		
+		String[] pno = (String[]) invoiceVal.get("pno");
 		try {
-			
-			pstmt = con.prepareStatement(query);
-			
-			//물품번호
-			pstmt.setObject(1, invoiceVal.get("pno"));			
-			
-			result = pstmt.executeUpdate();
-
+			for(int i=0; i < pno.length; i++) {
+				pstmt = con.prepareStatement(query);
+				//물품 상태 코드
+				pstmt.setObject(1, invoiceVal.get("pStatus"));	
+				//물품번호
+				pstmt.setObject(2, pno[i]);			
+				result += pstmt.executeUpdate();
+			}
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} finally {
 			close(pstmt);
 		}
+		
+		// 결과값과 맞지 않을때 0을 리턴
+		if(pno.length != result) {
+			result = 0;
+		}
 		return result;
 	}
+
+	/* 송장번호 삭제  */
+	public int deleteInvcNum(Connection con, HashMap<String, Object> invoiceVal) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("deleteInvcNum");
+		String[] rtNo = (String[]) invoiceVal.get("rtNo");
+		System.out.println(rtNo.length);
+		try {
+			for(int i=0; i < rtNo.length; i++) {
+				
+				pstmt = con.prepareStatement(query);
+				pstmt.setObject(1, rtNo[i]);
+				
+				
+				result += pstmt.executeUpdate();
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		// 결과값과 맞지 않을때 0을 리턴
+		if(rtNo.length != result) {
+			result = 0;
+		}
+		
+		return result;
+	}
+
+	/* 대여 취소사유 입력 */
+	public int updateRentalRemark(Connection con, HashMap<String, Object> hmap) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+
+		String query = prop.getProperty("updateRentalRemark");
+		String[] rtNo = (String[]) hmap.get("rtNo");
+		try {
+			for(int i=0; i < rtNo.length; i++) {
+				pstmt = con.prepareStatement(query);
+				
+				//취소사유 , 대여번호 순서
+				pstmt.setObject(1, hmap.get("textResult"));
+				pstmt.setInt(2, Integer.parseInt(rtNo[i]));			
+				
+				result = pstmt.executeUpdate();
+				
+				//한개라도 값이 잘못 됐을때 리턴
+				if(result == 0) {
+					break;
+				}
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		// 결과값과 맞지 않을때 0을 리턴
+		if(rtNo.length != result) {
+			result = 0;
+		}
+		return result;
+	}
+
+	//배송조회 리스트
+	public ArrayList<HashMap<String, Object>> selectSendList(Connection con) {
+		ArrayList<HashMap<String,Object>> list = null;
+		HashMap<String,Object> hmap = null;
+		Statement stmt = null;
+		ResultSet rset = null;
+		
+		String query = prop.getProperty("selectSendList");
+		
+		try {
+			stmt = con.createStatement();
+			rset = stmt.executeQuery(query);
+			
+			list = new ArrayList<HashMap<String,Object>>();
+			
+			while(rset.next()) {
+				hmap = new HashMap<String,Object>();
+				
+				hmap.put("rtNo", rset.getInt("RT_NO"));
+				hmap.put("pno", rset.getInt("PNO"));
+				hmap.put("dCom", rset.getString("delivery_company"));
+				hmap.put("invc", rset.getString("invoice"));
+				hmap.put("spDate", rset.getDate("SHIPPING_DATE"));
+				hmap.put("reqDate", rset.getDate("RT_REQ_DATE"));
+				hmap.put("userId", rset.getString("USER_ID"));
+				hmap.put("userName", rset.getString("USER_NAME"));
+				hmap.put("phone", rset.getString("PHONE"));
+				hmap.put("address", rset.getString("ADDRESS"));
+				hmap.put("inOut", rset.getString("INOUT"));
+				
+				list.add(hmap);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(stmt);
+			close(rset);	
+		}
 	
+		
+		
+		System.out.println(list);
+		return list;
+	}
+
+	//수거 조회
+	public ArrayList<HashMap<String, Object>> selectReturnPdMngList(Connection con) {
+		ArrayList<HashMap<String,Object>> list = null;
+		HashMap<String,Object> hmap = null;
+		Statement stmt = null;
+		ResultSet rset = null;
+		
+		String query = prop.getProperty("selectReturnPdMngList");
+		
+		try {
+			stmt = con.createStatement();
+			rset = stmt.executeQuery(query);
+			
+			list = new ArrayList<HashMap<String,Object>>();
+			
+			while(rset.next()) {
+				hmap = new HashMap<String,Object>();
+		        Date stDate = rset.getDate("RT_ST_DATE");
+		        Date endDate = rset.getDate("RT_END_DATE");
+		         
+		        // 시간차이를 시간,분,초를 곱한 값으로 나누면 하루 단위가 나옴
+		        long diff = endDate.getTime() - stDate.getTime();
+		        long diffDays = diff / (24 * 60 * 60 * 1000);
+		        
+		        System.out.println(diffDays);
+				
+				hmap.put("rtNo", rset.getInt("RT_NO"));
+				hmap.put("pno", rset.getInt("PNO"));
+				hmap.put("rtStDate", rset.getDate("RT_ST_DATE"));
+				hmap.put("rtEndDate", rset.getDate("RT_END_DATE"));
+				hmap.put("endDay", diffDays);
+				hmap.put("userId", rset.getString("USER_ID"));
+				hmap.put("userName", rset.getString("USER_NAME"));
+				hmap.put("phone", rset.getString("PHONE"));
+				hmap.put("rtStatus", rset.getString("RT_STATUS"));
+				
+				list.add(hmap);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(stmt);
+			close(rset);	
+		}
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
+		
+		System.out.println(list);
+		return list;
+	}
+
+	//반품 송장 입력
+	public int insertReturnInvcNum(Connection con, HashMap<String, Object> invoiceVal) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = prop.getProperty("insertReturnInvcNum");
+		String[] rtNo = (String[]) invoiceVal.get("rtNo");
+		try {
+			pstmt = con.prepareStatement(query);
+			//송장번호
+			pstmt.setObject(1, invoiceVal.get("invoiceNum"));
+			pstmt.setObject(2, invoiceVal.get("dCom"));
+			pstmt.setObject(3, rtNo[0]);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		return result;
+	}
+
+	//반품 송장 취소 상태 
+	public int deleteReturnInvcNum(Connection con, HashMap<String, Object> invoiceVal) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("deleteReturnInvcNum");
+		String[] rtNo = (String[]) invoiceVal.get("rtNo");
+		System.out.println(rtNo.length);
+		try {
+			for(int i=0; i < rtNo.length; i++) {
+				
+				pstmt = con.prepareStatement(query);
+				pstmt.setObject(1, rtNo[i]);
+				
+				
+				result += pstmt.executeUpdate();
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		// 결과값과 맞지 않을때 0을 리턴
+		if(rtNo.length != result) {
+			result = 0;
+		}
+		
+		return result;
+	}
+
 	
 	
 	

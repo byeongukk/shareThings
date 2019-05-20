@@ -78,9 +78,9 @@
 															<td width="10%">대여상태</td>
 															<td width="15%"><select class="form-control" id="rentalStatus" name="rentalStatus">
 																	<option value="0">전체</option>
-																	<option value="WT">대여대기</option>
-																	<option value="S">대여중</option> 
-																	<option value="COM">대여완료</option>
+																	<option value="RTS1">대여완료</option>
+																	<option value="RTS2">대여대기</option>
+																	<option value="RTS3">대여중</option> 
 																	
 															</select></td>
 															<td width="10%">상세조건</td>
@@ -246,7 +246,7 @@
 				var filterContent = $("#filterContent").val();
 				var startDate = $("#startDate").val();
 				var endDate = $("#endDate").val();
-				console.log($("#startDate"));
+				console.log(rentalStatus);
 				/* 조회기간을 한쪽만 설정하거나 시작일이 더 클 때 alert 창 띄운후 리턴 */
 				if(startDate>endDate || (endDate!="" && startDate=="")){
 					alert("기간이 잘못 되었습니다");

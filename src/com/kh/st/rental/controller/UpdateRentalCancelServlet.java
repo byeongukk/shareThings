@@ -29,16 +29,29 @@ public class UpdateRentalCancelServlet extends HttpServlet {
 		String rtNos = request.getParameter("rtNos");
 		String[] rtNo = rtNos.split(",");
 		String pnos = request.getParameter("pnos");
-		String[] pno = rtNos.split(",");
+		String[] pno = pnos.split(",");
+		
+		String pStatus = "PS10";
+		String rtStatus = "RTS1";
 	
-		int result = new RentalService().updateCancel(rtNo,pno,textResult);
+		HashMap<String,Object> hmap = new HashMap<String,Object>();
+		
+		hmap.put("pno", pno);
+		hmap.put("textResult", textResult);
+		hmap.put("rtNo", rtNo);
+		hmap.put("pStatus", pStatus);
+		hmap.put("rtStatus", rtStatus);
+		
+		
+		int result = new RentalService().updateCancel(hmap);
+		
 		
 		String page = "";
 		if(result > 0) {
 			response.sendRedirect(request.getContextPath() + "/selectShpMngList.rt");
 		} else {
 			page = "views/common/errorPage.jsp";
-			request.setAttribute("msg", "거절 오류");
+			request.setAttribute("msg", "상태 업데이트 오류");
 			request.getRequestDispatcher(page).forward(request, response);
 		}
 	}

@@ -45,7 +45,7 @@ public class ReqNoSelectServlet extends HttpServlet {
 		String page = "";
 		if(statuses.equals("")) {
 			page = "views/common/errorPage.jsp";
-			request.setAttribute("msg", "승인 물품을 선택하세요");
+			request.setAttribute("msg", "거절 물품을 선택하세요");
 			request.getRequestDispatcher(page).forward(request, response);
 		}
 		

@@ -1,18 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8" import="java.util.*,
+	com.kh.st.attachment.model.vo.*,
 	com.kh.st.product.model.vo.*,
-	com.kh.st.member.model.vo.*"%>
+	com.kh.st.member.model.vo.*,
+	com.kh.st.request.model.vo.ReqProduct, 
+	com.kh.st.common.*"%>
 <%
 	Product reqProduct = (Product) request.getAttribute("reqProduct");
 	Member m = (Member) request.getAttribute("m");
-	//ArrayList<Attachment> fileList = (ArrayList<Attachment>) request.getAttribute("fileList");
+	ArrayList<Attachment> fileList = (ArrayList<Attachment>) request.getAttribute("fileList");
 	HashMap<String, Object> req =
 			(HashMap<String, Object>) request.getAttribute("req");
-	//Attachment img1 = fileList.get(0);
-	//Attachment img2 = fileList.get(1);
-	//Attachment img3 = fileList.get(2);
 %>
-<!-- com.kh.st.attachment.vo.*, -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -43,11 +42,6 @@
 	margin-left: center;
 	width: 100%;
 }
-
-/* .button {
-	margin-top: 15%;
-} */
-
 .productPic {
 	width: 100%;
 	height: 100%;
@@ -59,6 +53,7 @@ table {
 }
 textarea {
 	border:0;
+	resize:none;
 }
 .img {
 	width: 150px;
@@ -90,8 +85,9 @@ textarea {
 					<br> <br>
 					<div class="row">
 						<div class="col-lg-10">
+							<form action="<%= request.getContextPath()%>/reqNo.bo" method="post" id="go">
 							<div class="card shadow mb-4">
-							<div style="display:none" id="pno"><%= reqProduct.getPno() %></div>
+							<input type="hidden" name="nums" id="nums" value="<%= reqProduct.getPno() %>">
 								<div class="card-header py-3">
 									<h6 class="m-0 font-weight-bold text-primary">
 										요청날짜 : <%= req.get("reqpDate") %><br>
@@ -103,21 +99,13 @@ textarea {
 								<div class="card-body">
 									<table class="col-lg-10">
 										<tr>
+										<% for(int i = 0; i < fileList.size(); i ++)  { %>
 											<td>
 												<div class="productPic">
-													<%-- <img id="img1" class="img" src="<%= request.getContextPath()%>/attach_upload/<%= img1.getChangeName() %>"> --%>
+													<img id="img1" class="img" src="<%= request.getContextPath()%>/attach_upload/<%= fileList.get(i).getChangeName() %>">
 												</div>
 											</td>
-											<td>
-												<div class="productPic">
-													<%-- <img id="img1" class="img" src="<%= request.getContextPath()%>/attach_upload/<%= img2.getChangeName() %>"> --%>
-												</div>
-											</td>
-											<td>
-												<div class="productPic">
-													<%-- <img id="img1" class="img" src="<%= request.getContextPath()%>/attach_upload/<%= img3.getChangeName() %>"> --%>
-												</div>
-											</td>
+										<% } %>
 										</tr>
 										<tr>
 											<td colspan="3">구입시기 : <%= reqProduct.getPurchaseDate() %></td>
@@ -159,81 +147,82 @@ textarea {
 								</div>
 								<div class="card-body">
 								<% if(req.get("rejectReason") == null) { %>
-								<textarea class="col-lg-12" rows="5" id="noResult"></textarea>
+								<textarea class="col-lg-12" rows="5" id="noResult" name="textResult"></textarea>
 								<% } else { %>
-								<textarea class="col-lg-12" rows="5" id="noResult"><%= req.get("rejectReason") %></textarea>
+								<textarea class="col-lg-12" rows="5" id="noResult" name="textResult"><%= req.get("rejectReason") %></textarea>
 								<% } %>
 								</div>
 							</div>
 						</div>
 					</div>
+					</form>
 					<div class="button">
 						<a
 							href="<%= request.getContextPath() %>/reqProduct.bo"
 							class="btn btn-success btn-icon-split"><span
 							class="icon text-white-50"> <i class="fas fa-check"></i></span> <span
 							class="text">돌아가기</span> </a>
-						<%-- <% if(loginUser != null && 
-							loginUser.getUserId().equals("admin"))  { %> --%>
-						<a href="#" class="btn btn-info btn-icon-split" onclick="ok();"> <span
-							class="icon text-white-50"> <i class="fas fa-info-circle"></i>
-						</span> <span class="text">승인하기</span></a> <a href="#" id="no"
+						<a href="#" class="btn btn-info btn-icon-split" id="ok"
+							data-toggle="modal" data-target="#okModal">
+								<span class="icon text-white-50"> <i
+									class="fas fa-info-circle"></i>
+								</span>
+									<span class="text">요청 승인</span>
+						</a>
+						<a href="#" id="no"
 							class="btn btn-danger btn-icon-split" data-toggle="modal" 
 							data-target="#cancelModal"> <span
 							class="icon text-white-50"> <i class="fas fa-trash"></i>
 						</span> <span class="text">거절하기</span>
 						</a>
-						<%-- <% } %> --%>
 					</div>
 				</div>
 				<div class="modal fade" id="okModal" role="dialog">
-		<div class="modal-dialog">
-
-			<!-- Modal content-->
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">요청 거절 처리</h4>
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-				</div>
-				<div class="row">
-					<div class="col-md-12 col-lg-12">
-						<div class="modal-body">
-							<p>물품명과 승인상태를 확인하고 처리하세요</p>
-							<div class="panel-body">
-								<table width="100%"
-									class="table table-striped table-bordered table-hover"
-									id="dataTables-example">
-									<thead>
-										<tr>
-											<th style="text-align: center;" class="text-black-50 small">등록요청번호</th>
-											<th style="text-align: center;" class="text-black-50 small">물품명</th>
-											<th style="text-align: center;" class="text-black-50 small">등록자</th>
-											<th style="text-align: center; width: 130px" class="text-black-50 small">거절사유</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr class="odd gradeX">
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-										</tr>
-									</tbody>
-								</table>
+							<div class="modal-dialog">
+								<!-- Modal content-->
+								<div class="modal-content">
+									<div class="modal-header">
+										<h4 class="modal-title">요청 승인 처리</h4>
+										<button type="button" class="close" data-dismiss="modal">&times;</button>
+									</div>
+									<div class="row">
+										<div class="col-md-12 col-lg-12">
+											<div class="modal-body">
+												<p>물품명과 승인상태를 확인하고 처리하세요</p>
+												<div class="panel-body">
+													<table width="100%"
+														class="table table-striped table-bordered table-hover"
+														id="dataTablesOk">
+														<thead>
+															<tr>																
+																<th style="text-align: center;"
+																	class="text-black-50 small">등록요청번호</th>
+																<th style="text-align: center;"
+																	class="text-black-50 small">물품명</th>
+																<th style="text-align: center;"
+																	class="text-black-50 small">등록자</th>
+															</tr>
+														</thead>
+														<tbody>
+														</tbody>
+													</table>
+												</div>
+												<h5>*택배사</h5>
+												<textarea id="delivery" name="delivery" class="col-lg-12" placeholder="EX)CJ대한통운"></textarea>
+												<h5>*송장번호</h5>
+												<textarea id="dNo" name="dNo" class="col-lg-12" placeholder="EX)송장번호 입력"></textarea>
+											</div>
+											<div class="modal-footer">
+												<button type="submit" class="btn btn-default"
+													data-dismiss="modal" id="okResult">승인처리</button>
+												<button type="button" class="btn btn-default"
+													data-dismiss="modal">닫기</button>
+											</div>
+										</div>
+									</div>
+								</div>
 							</div>
-							<h5>*거절상세사유</h5>	
-								<textarea rows="10" cols="55" placeholder="EX)거짓 정보 등록"></textarea>
 						</div>
-						<div class="modal-footer">
-							<button type="submit" class="btn btn-default" data-dismiss="modal">거절처리</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-						</div>
-					</div>
-				</div>
-			</div>
-
-		</div>
-	</div>
 				<!-- 메인 콘텐트 영역 끝 -->
 				<!-- Footer 인클루드 -->
 			</div>
@@ -252,16 +241,55 @@ textarea {
 
 	<script>
 		$("#no").click(function() {
-			console.log($("#pno").text());
-			var noResult = $("#noResult").text();
-			
-			alert(noResult);
+			$("#go").submit();
 		});
 	
-		function ok() {
-			alert("정말 승인하시겠습니까?");
-			location = "<%= request.getContextPath()%>/views/admin/request/reqProduct.jsp";
-		}
+		
+		$("#ok").click(function() {
+			var status = $("#nums").val();
+			$.ajax({
+				url:"reqOkSelect.bo?status=" + status,
+				type:"get",
+				success:function(data) {
+					console.log(data);
+					
+					var $dataTables = $("#dataTablesOk tbody");
+					var $delivery = $("<textarea id='delivery' name='delivery' class='col-lg-12' placeholder='EX)CJ대한통운'></textarea>");
+					var $dNo = $("<textarea id='dNo' name='dNo' class='col-lg-12' placeholder='EX)송장번호 입력'></textarea>"); 		
+			
+					//기존 테이블 행 제거
+					$("#dataTablesOk > tbody > tr").remove();
+					$delivery.remove();
+					$dNo.remove();
+					
+					var $tr = $("<tr class='odd gradeX'>");
+					var $upNoTd = $("<td>").text(data.upNo);
+					var $productNameTd = $("<td>").text(data.productName);
+					var $bWriterTd = $("<td>").text(data.bWriter);
+						
+					$tr.append($upNoTd);
+					$tr.append($productNameTd);
+					$tr.append($bWriterTd);
+						
+					$dataTables.append($tr);
+				},
+				error:function(data) {
+					console.log("실패");
+				}
+			});
+		});
+		
+		$("#okResult").click(function() {
+			var num = $(".gradeX").find("td").eq(0).text();
+			
+			var delivery = $("#delivery").val();
+			var dNo = $("#dNo").val();
+			console.log(delivery);
+			console.log(dNo);
+			console.log(num)
+			var textResult = $("#textResult").val();
+			location = "<%= request.getContextPath() %>/reqOk.bo?num=" + num + "&delivery=" + delivery + "&dNo=" + dNo;
+		});
 	</script>
 	<script
 		src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>

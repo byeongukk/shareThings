@@ -37,10 +37,13 @@ public class ReqNoServlet extends HttpServlet {
 		for(int i = 0; i < num.length; i++) {
 			System.out.println(num[i]);
 		}
+
+		System.out.println(textResult);
 		int result = new ReqService().reqNo(num, textResult);
 		
 		String page = "";
 		if(result > 0) {
+			System.out.println("성공");
 			response.sendRedirect(request.getContextPath() + "/reqProduct.bo");
 		} else {
 			page = "views/common/errorPage.jsp";

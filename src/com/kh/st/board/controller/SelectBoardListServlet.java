@@ -39,6 +39,7 @@ public class SelectBoardListServlet extends HttpServlet {
 		if(!listMap.isEmpty()) {
 			page = "views/main/productList.jsp";
 			request.setAttribute("listMap", listMap);
+			request.setAttribute("ctgLv2", ctgLv2);
 		}else {
 			page = "views/common/errorPage.jsp";
 			request.setAttribute("msg", "상품 리스트 페이지 불러오기 실패..");

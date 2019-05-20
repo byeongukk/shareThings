@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-//import com.kh.st.attachment.vo.Attachment;
+import com.kh.st.attachment.model.vo.Attachment;
 import com.kh.st.member.model.vo.Member;
 import com.kh.st.product.model.vo.Product;
 import com.kh.st.request.model.service.ReqService;
@@ -43,8 +43,8 @@ public class ReqProductDetailServlet extends HttpServlet {
 		HashMap<String, Object> hmap = new ReqService().reqProductDetail(reqNum);
 		
 		Product reqProduct = (Product) hmap.get("reqProduct");
-		//ArrayList<Attachment> fileList =
-		//		(ArrayList<Attachment>) hmap.get("attachment");
+		ArrayList<Attachment> fileList =
+				(ArrayList<Attachment>) hmap.get("attachment");
 		Member m = (Member) hmap.get("member");
 		
 		HashMap<String,Object> req = new HashMap<String,Object>();
@@ -62,7 +62,7 @@ public class ReqProductDetailServlet extends HttpServlet {
 		if(hmap != null) {
 			page = "views/admin/request/reqProductDetail.jsp";
 			request.setAttribute("reqProduct", reqProduct);
-			//request.setAttribute("fileList", fileList);
+			request.setAttribute("fileList", fileList);
 			request.setAttribute("m", m);
 			request.setAttribute("req", req);
 		} else {

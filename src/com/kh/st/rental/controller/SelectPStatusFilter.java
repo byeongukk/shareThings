@@ -31,10 +31,10 @@ public class SelectPStatusFilter extends HttpServlet {
 		
 		String rentalStatus = request.getParameter("rentalStatus");
 		//조회 해서 받아올 리스트
-		ArrayList<HashMap<String,Object>> list = new RentalService().selectPStatusList(rentalStatus);
+		//ArrayList<HashMap<String,Object>> list = new RentalService().selectPStatusList(rentalStatus);
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
-		new Gson().toJson(list, response.getWriter());
+		//new Gson().toJson(list, response.getWriter());
 		
 		
 	}
