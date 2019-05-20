@@ -35,7 +35,7 @@ public class ReqOkServlet extends HttpServlet {
 		
 		int num = Integer.parseInt(request.getParameter("num"));
 		String delivery = request.getParameter("delivery");
-		int dNo = Integer.parseInt(request.getParameter("dNo"));
+		String dNo = request.getParameter("dNo");
 		
 		System.out.println(num);
 		System.out.println(delivery);

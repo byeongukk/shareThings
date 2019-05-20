@@ -66,6 +66,8 @@ public class ConfirmProductDetailServlet extends HttpServlet {
 				ArrayList<Attachment> confirmList =
 						(ArrayList<Attachment>) hmap1.get("confirmList");
 				page = "views/admin/request/reqDataDetail.jsp";
+				req.put("condition", hmap1.get("condition"));
+				req.put("chkContent", hmap1.get("chkContent"));
 				request.setAttribute("reqProduct", reqProduct);
 				request.setAttribute("fileList", fileList);
 				request.setAttribute("m", m);

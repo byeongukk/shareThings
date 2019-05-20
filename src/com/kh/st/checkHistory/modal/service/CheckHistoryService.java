@@ -12,7 +12,7 @@ import static com.kh.st.common.JDBCTemplate.*;
 public class CheckHistoryService {
 
 	//검수 거절 이미지 등록 메소드
-	public int insertRejectImg(CheckHistory ch, ArrayList<Attachment> fileList) {
+	public int insertRejectImg(CheckHistory ch, ArrayList<Attachment> fileList, String multiDelivery, String multiDno) {
 		Connection con = getConnection();
 		int result = 0;
 		
@@ -29,16 +29,21 @@ public class CheckHistoryService {
 					fileList.get(i).setChkNo(chkNo);
 					System.out.println(fileList.get(i).getChkNo());
 				}
-				//사진 인서트
-				int result3 = new CheckHistoryDao().insertChkImg(con, fileList);
-				if(result3 == fileList.size()) {
-					System.out.println("사진 성공");
-					commit(con);
-					result = 1;
-				} else {
-					System.out.println("사진 실패");
-					rollback(con);
-					result = 0;
+				//검수거절 배송 인서트
+				int result3 = new CheckHistoryDao().updateRejectDelivery(con, ch, multiDelivery, multiDno);
+				if(result3 > 0) {
+					System.out.println("검수거절 배송 성공");
+					//사진 인서트
+					int result4 = new CheckHistoryDao().insertChkImg(con, fileList);
+					if(result4 == fileList.size()) {
+						System.out.println("사진 성공");
+						commit(con);
+						result = 1;
+					} else {
+						System.out.println("사진 실패");
+						rollback(con);
+						result = 0;
+					}
 				}
 			}
 		}	

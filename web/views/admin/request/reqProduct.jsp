@@ -78,15 +78,12 @@
 						width="100%">
 					<div class="row" class="col-lg-12">
 						<div class="col-sm-12 col-lg-12">
+						<form action="#">
 							<div class="card shadow mb-4" id="filter" align="center" >
 								<div class="card-header py-3">조회 필터</div>
 								<div class="card-body">
 									<table class="col-lg-12" id="filterArea">
 										<tr style="height: 20px">
-											<!-- <td style="width: 70px">회원ID :</td>
-											<td style="width: 70px">회원명 :</td>
-											<td><input type="text" name="userName"
-												style="width: 80%"></td> -->
 											<td style="width: 90px">승인상태 :</td>
 											<td><select style="heigth: 30px; width: 40%;"
 											id="okStatus" name="okStatus">
@@ -101,7 +98,8 @@
 													<option value="reqNo">요청번호</option>
 													<option value="name">등록자명</option>
 													<option value="reqName">물품명</option>
-											</select>&nbsp;&nbsp;&nbsp; <input type="text" placeholder="상세정보입력" disabled id="filterContent" name="filterContent"
+											</select>&nbsp;&nbsp;&nbsp;
+											<input type="text" placeholder="상세정보입력" disabled id="filterContent" name="filterContent"
 												style="width: 20%"></td>
 										</tr>
 										<tr>
@@ -113,12 +111,13 @@
 										</tr>
 									</table>
 									<div align="center">
-										<button type="button" id="inquiry">조회하기</button>
+										<button type="button" id="inquiry" onclick="filteringP(1)">조회하기</button>
 										&nbsp;&nbsp;&nbsp;
 										<button type="reset" id="initial">초기화</button>
 									</div>
 								</div>
 							</div>
+						</form>
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
 									<h6 class="m-0 font-weight-bold text-primary" id="listSize"><%= listCount %>건</h6>
@@ -210,7 +209,7 @@
 			<div class="col-sm-12 col-md-3">
 				<div class="dataTables_paginate paging_simple_numbers"
 					id="dataTable_paginate">
-					<ul class="pagination">
+					<ul class="pagination" id="pagingUl">
 						<li class="paginate_button page-item"
 							id="dataTable_first"><a
 							href="<%=request.getContextPath()%>/reqProduct.bo?currentPage=1"
@@ -322,7 +321,10 @@
 													</table>
 												</div>
 												<h5>*택배사</h5>
-												<textarea id="delivery" name="delivery" class="col-lg-12" placeholder="EX)CJ대한통운"></textarea>
+												<select id="delivery" name="delivery">
+													<option value="04">CJ대한통운</option>
+													<option value="05">로젠택배</option>
+												</select>
 												<h5>*송장번호</h5>
 												<textarea id="dNo" name="dNo" class="col-lg-12" placeholder="EX)송장번호 입력"></textarea>
 											</div>
@@ -367,11 +369,6 @@
 															</tr>
 														</thead>
 														<tbody>
-															<!-- <tr class="odd gradeX">
-																<td><input type="checkBox">
-																<td></td>
-																<td></td>
-															</tr> -->
 														</tbody>
 													</table>
 												</div>
@@ -437,11 +434,6 @@
 						$(this).find(".check").prop("checked", false);
 					}
 				});
-			});
-			
-			//조회  필터 초기화
-			$("#initial").click(function() {
-				
 			});
 		});
 		
@@ -560,7 +552,7 @@
 		});
 		
 		//조건 검색
-		$("#inquiry").click(function() {
+		function filteringP(currentPage) {
 			var okStatus = $("#okStatus").val();
 			var details = $("#details").val();
 			var filterContent = $("#filterContent").val();
@@ -580,6 +572,7 @@
 					return false;
 				}
 			}
+			
 			$.ajax({
 				url:"<%= request.getContextPath()%>/selectReqFilter.bo",
 				data:{
@@ -587,13 +580,15 @@
 					details:details,
 					filterContent:filterContent,
 					startD:startD,
-					endD:endD
+					endD:endD,
+					currentPage:currentPage
 				},
 				type:"get",
 				success:function(data) {
 					console.log(data);
 					/* 기존 테이블 행 제거 */
 					$("#dataTable > tbody > tr").remove();
+					$("#dataTable_paginate > ul > li").remove();
 					
 					var $dataTable = $("#dataTable");
 					/* 조회된 값이 없을때 출력할 공간 */
@@ -604,18 +599,30 @@
 					//값 넣을 공간 비우기
 					$resultNull.html('');
 					$listSize.prop("innerHTML", '');
-					if(data.length > 0) {
-						for(var key in data) {
+					
+					console.log(data.pi.currentPage);
+					console.log(data.pi);
+					console.log(data.list);
+					
+					if(data.list.length > 0) {
+							var currentPage = data.pi.currentPage;
+							var maxPage = data.pi.maxPage;
+							var startPage = data.pi.startPage;
+							var endPage = data.pi.endPage;
+						
+							
+						for(var key in data.list) {
 							//data값 td에 입력
 							var $check = $("<td class='sorting_1'><input type='checkbox' class='check'>");
 							var $tr = $("<tr class='even' role='row' align='center'>");
-							var $bNoTd = $("<td>").text(data[key].bNo);
-							var $reqNoTd = $("<td>").text(data[key].reqNo);
-							var $userNameTd = $("<td>").text(data[key].userName);
-							var $ctgNameTd = $("<td>").text(data[key].ctgName);
-							var $reqD = $("<td>").text(data[key].reqD);
-							var $bTitleTd = $("<td>").text(data[key].bTitle);
-							var $statusTd = $("<td>").text(data[key].status);
+							
+							var $bNoTd = $("<td>").text(data.list[key].bNo);
+							var $reqNoTd = $("<td>").text(data.list[key].reqNo);
+							var $userNameTd = $("<td>").text(data.list[key].userName);
+							var $ctgNameTd = $("<td>").text(data.list[key].ctgName);
+							var $reqD = $("<td>").text(data.list[key].reqD);
+							var $bTitleTd = $("<td>").text(data.list[key].bTitle);
+							var $statusTd = $("<td>").text(data.list[key].status);
 							
 							//tr에 td추가
 							$tr.append($check);
@@ -636,7 +643,7 @@
 						$resultNull.append("<h3 align='center'> 조회 결과가 없습니다.</h3>");
 						$resultNull.append("<br><br><br><br><br><br>");
 					}
-					$listSize.prop("innerHTML",data.length+"건");
+					$listSize.prop("innerHTML", data.list.length+"건");
 					$(".paging").remove();
 					$(".sorting_1").siblings().click(function() {
 						$(this).parent().each(function() {
@@ -650,7 +657,7 @@
 					console.log("실패");
 				}
 			});
-		});
+		};
 		//상세조회 전체 아닐때 disabled 변경
 		function detailsChg(){
 			if($("#details").val()=="0"){

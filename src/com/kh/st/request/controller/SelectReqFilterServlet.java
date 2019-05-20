@@ -67,6 +67,33 @@ public class SelectReqFilterServlet extends HttpServlet {
 		System.out.println(condition.get("startD"));
 		System.out.println(condition.get("endD"));
 		
+		//페이징 처리
+		int currentPage;
+		int limit;
+		int maxPage;
+		int startPage;
+		int endPage;
+		
+		currentPage = 1;
+		
+		if(!(request.getParameter("currentPage").equals("1"))) {
+			currentPage = Integer.parseInt(request.getParameter("currentPage"));
+		}
+		
+		limit = 10;
+		
+		int listCount = new ReqService().getReqFilterCount(condition);
+		System.out.println(listCount);
+		
+		maxPage = (int)((double) listCount / limit + 0.9);
+		startPage = (((int)((double) currentPage / limit + 0.9)) -1) * 10 + 1;
+		endPage = startPage + 10 - 1;
+		
+		if(maxPage < endPage) {
+			endPage = maxPage;
+		}
+		//
+		
 		ArrayList<HashMap<String, Object>> list = new ReqService().selectReqFilter(condition);
 		
 		response.setContentType("application/json");
