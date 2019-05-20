@@ -250,7 +250,7 @@ public class ReqDao {
 	}
 	
 	//요청 승인 배송 처리
-	public int delWait(Connection con, int num, String delivery, int dNo) {
+	public int delWait(Connection con, int num, String delivery, String dNo) {
 		PreparedStatement pstmt = null;
 		int result2 = 0;
 		String reg = "등록";
@@ -259,7 +259,7 @@ public class ReqDao {
 		String query = prop.getProperty("delWait");
 		try {
 			pstmt = con.prepareStatement(query);
-			pstmt.setInt(1, dNo);
+			pstmt.setString(1, dNo);
 			pstmt.setString(2, delivery);
 			pstmt.setString(3, reg);
 			pstmt.setInt(4, num);

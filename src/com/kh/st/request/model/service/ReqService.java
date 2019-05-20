@@ -66,7 +66,7 @@ public class ReqService {
 		return rp;
 	}
 
-	public int reqOk(int num, String delivery, int dNo) {
+	public int reqOk(int num, String delivery, String dNo) {
 		Connection con = getConnection();
 		
 		int result = new ReqDao().reqOk(con, num);
@@ -147,5 +147,11 @@ public class ReqService {
 		
 		close(con);
 		return rp;
+	}
+
+	//조건 검색 페이징 처리
+	public int getReqFilterCount(HashMap<String, Object> condition) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

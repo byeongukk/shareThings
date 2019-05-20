@@ -101,31 +101,35 @@
 									<table class="col-lg-12" id="filterArea">
 										<tr style="height: 20px">
 											<td style="width: 90px">검수상태 :</td>
-											<td><select style="heigth: 30px; width: 40%;">
-													<option>승인</option>
-													<option>승인대기</option>
-													<option>거절</option>
+											<td><select style="heigth: 30px; width: 40%;"
+											id="okStatus" name="okStatus">
+													<option value="0">전체</option>
+													<option value="PS6">승인대기</option>
+													<option value="PS7">승인</option>
+													<option value="PS8">거절</option>
 											</select></td>
 											<td style="width: 90px">상세조건 :</td>
-											<td><select style="heigth: 30px; width: 20%;">
-													<option>요청번호</option>
-													<option>등록자명</option>
-													<option>물품명</option>
+											<td><select style="heigth: 30px; width: 20%;"
+											id="details" name="details" onchange = "detailsChg();">
+													<option value="0">전체</option>
+													<option value="reqNo">요청번호</option>
+													<option value="name">등록자명</option>
+													<option value="reqName">물품명</option>
 											</select>&nbsp;&nbsp;&nbsp;
-											<input type="text" name="userId" style="width: 20%">
+											<input type="text" placeholder="상세정보입력" disabled id="filterContent" name="filterContent" style="width: 20%">
 											</td>
 										</tr>
 										<tr>
 											<td style="width: 70px">등록기간 :</td>
-											<td colspan="3"><input type="date" name="startD">&nbsp;&nbsp;&nbsp;
-												~ &nbsp;&nbsp;&nbsp; <input type="date" name="endD">
+											<td colspan="3"><input type="date" id="startD" name="startD">&nbsp;&nbsp;&nbsp;
+												~ &nbsp;&nbsp;&nbsp; <input type="date" id="endD"name="endD">
 											</td>
 										</tr>
 									</table>
-									<div>
-										<button>조회하기</button>
+									<div align="center">
+										<button type="button" id="inquiry">조회하기</button>
 										&nbsp;&nbsp;&nbsp;
-										<button>초기화</button>
+										<button type="reset" id="initial">초기화</button>
 									</div>
 								</div>
 							</div>
@@ -346,6 +350,13 @@
 													<input type="file" id="img4" name="img4" onchange="loadImg(this, 4);">
 												</div>
 											<hr>
+											<h5>*택배사</h5>
+												<select id="delivery" name="delivery">
+													<option value="04">CJ대한통운</option>
+													<option value="05">로젠택배</option>
+												</select>
+											<h5>*송장번호</h5>
+												<textarea id="dNo" name="dNo" class="col-lg-12" placeholder="EX)송장번호 입력"></textarea>
 											<h5>*거절상세사유</h5>
 												<input type="hidden" name="checker" value="<%= loginUser.getUno() %>">
 												<textarea id="textResult" required name="textResult" class="col-lg-12" placeholder="EX)거짓 정보 등록"></textarea>
@@ -647,6 +658,109 @@
 					}
 				}
 				reader.readAsDataURL(value.files[0]);
+			}
+		}
+		
+		//조건 검색
+		$("#inquiry").click(function() {
+			var okStatus = $("#okStatus").val();
+			var details = $("#details").val();
+			var filterContent = $("#filterContent").val();
+			var startD = $("#startD").val();
+			var endD = $("#endD").val();
+			
+			//조회기간 잘못 설정
+			if(startD > endD || (endD !="" && startD=="")) {
+				alert("기간이 잘못되었습니다");
+				return false;
+			}
+			
+			//상세보기 전체 아닐 겨우
+			if(details != "0"){
+				if(filterContent == ""){
+					alert("상세정보를 입력하세요");
+					return false;
+				}
+			}
+			$.ajax({
+				url:"<%= request.getContextPath()%>/selectConfirmFilter.bo",
+				data:{
+					okStatus:okStatus,
+					details:details,
+					filterContent:filterContent,
+					startD:startD,
+					endD:endD
+				},
+				type:"get",
+				success:function(data) {
+					console.log(data);
+					/* 기존 테이블 행 제거 */
+					$("#dataTable > tbody > tr").remove();
+					
+					var $dataTable = $("#dataTable");
+					/* 조회된 값이 없을때 출력할 공간 */
+					var $resultNull = $("#result-null");
+					/* 조회된 건수 출력할 공간 */
+					var $listSize = $("#listSize");
+					
+					//값 넣을 공간 비우기
+					$resultNull.html('');
+					$listSize.prop("innerHTML", '');
+					if(data.length > 0) {
+						for(var key in data) {
+							//data값 td에 입력
+							var $check = $("<td class='sorting_1'><input type='checkbox' class='check'>");
+							var $tr = $("<tr class='even' role='row' align='center'>");
+							var $bNoTd = $("<td>").text(data[key].bNo);
+							var $reqNoTd = $("<td>").text(data[key].reqNo);
+							var $userNameTd = $("<td>").text(data[key].userName);
+							var $ctgNameTd = $("<td>").text(data[key].ctgName);
+							var $reqD = $("<td>").text(data[key].reqD);
+							var $bTitleTd = $("<td>").text(data[key].bTitle);
+							var $statusTd = $("<td>").text(data[key].status);
+							
+							//tr에 td추가
+							$tr.append($check);
+							$tr.append($bNoTd);
+							$tr.append($reqNoTd);
+							$tr.append($userNameTd);
+							$tr.append($ctgNameTd);
+							$tr.append($reqD);
+							$tr.append($bTitleTd);
+							$tr.append($statusTd);
+							
+							//table에 tr추가
+							$dataTable.append($tr);
+						}
+					} else {
+						//조회결과 없을때
+						$resultNull.append("<br><br><br><br><br><br>");
+						$resultNull.append("<h3 align='center'> 조회 결과가 없습니다.</h3>");
+						$resultNull.append("<br><br><br><br><br><br>");
+					}
+					$listSize.prop("innerHTML",data.length+"건");
+					$(".paging").remove();
+					$(".sorting_1").siblings().click(function() {
+						$(this).parent().each(function() {
+							console.log($(this).find("td").eq(1).text());
+							var reqNum = $(this).find("td").eq(1).text();
+							location = "<%= request.getContextPath()%>/reqProductDetail.bo?reqNum=" + reqNum;
+						});
+					});
+				},
+				error:function(data) {
+					console.log("실패");
+				}
+			});
+		});
+		//상세조회 전체 아닐때 disabled 변경
+		function detailsChg(){
+			if($("#details").val()=="0"){
+				$("#filterContent").attr("disabled",true);
+				$("#filterContent").val("");
+			}else {
+				$("#filterContent").attr("disabled",false);
+				$("#filterContent").val("");
 			}
 		}
 		</script>

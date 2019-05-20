@@ -85,12 +85,14 @@ public class CheckHistoryDao {
 	//물품 상태 업데이트(검수 불통과)
 	public int updateRejectSid(Connection con, CheckHistory ch) {
 		PreparedStatement pstmt = null;
+		String ha = "하";
 		int result = 0;
 		
 		String query = prop.getProperty("updateRejectSid");
 		try {
 			pstmt = con.prepareStatement(query);
-			pstmt.setInt(1, ch.getPno());
+			pstmt.setString(1, ha);
+			pstmt.setInt(2, ch.getPno());
 			
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
@@ -99,6 +101,31 @@ public class CheckHistoryDao {
 		return result;
 	}
 	
+	//배송테이블 인서트
+	public int updateRejectDelivery(Connection con, CheckHistory ch, String multiDelivery, String multiDno) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String reg = "등록";
+		String out = "출고";
+		
+		String query = prop.getProperty("updateRejectDelivery");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, multiDno);	//송장번호
+			pstmt.setString(2, multiDelivery);	//택배사
+			pstmt.setString(3, reg);	//등록
+			pstmt.setInt(4, ch.getPno());	//요청번호
+			pstmt.setString(5, out);	//출고
+			pstmt.setInt(6, ch.getPno());	//요청번호
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
 	//이미지 인서트
 	public int insertChkImg(Connection con, ArrayList<Attachment> fileList) {
 		PreparedStatement pstmt = null;
@@ -162,6 +189,9 @@ public class CheckHistoryDao {
 			while(rset.next()) {
 				at = new Attachment();
 				at.setChangeName(rset.getString("CHANGE_NAME"));
+				
+				hmap.put("condition", rset.getString("CONDITION"));
+				hmap.put("chkContent", rset.getString("CHK_CONTENT"));
 				
 				list.add(at);
 			}

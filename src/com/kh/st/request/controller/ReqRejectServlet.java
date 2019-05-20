@@ -87,10 +87,14 @@ public class ReqRejectServlet extends HttpServlet {
 			int multiReqNo = Integer.parseInt(multiRequest.getParameter("reqNo"));	//물품번호
 			String multiTextResult = multiRequest.getParameter("textResult");	//검수내용
 			String multiChecker = multiRequest.getParameter("checker");	//검수자 회원번호
+			String multiDelivery = multiRequest.getParameter("delivery");	//택배사
+			String multiDno = multiRequest.getParameter("dNo");	//송장번호
 			
 			System.out.println("요청번호 : " + multiReqNo);
 			System.out.println("거절사유: " + multiTextResult);
 			System.out.println("검수자 회원 번호   : " + multiChecker);
+			System.out.println("택배사 코드 : " + multiDelivery);
+			System.out.println("송장번호 : " + multiDno);
 			
 			//검수 이력 객체 생성
 			CheckHistory ch = new CheckHistory();
@@ -116,7 +120,8 @@ public class ReqRejectServlet extends HttpServlet {
 				System.out.println(fileList.get(i));
 			}
 			
-			int result = new CheckHistoryService().insertRejectImg(ch, fileList);
+			int result = new CheckHistoryService().insertRejectImg(ch, fileList, multiDelivery,
+																	multiDno);
 			
 			String page = "";
 			if(result > 0) {
