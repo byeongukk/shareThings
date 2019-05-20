@@ -1,4 +1,4 @@
-package com.kh.st.request.controller;
+package com.kh.st.checkHistory.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -11,21 +11,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.kh.st.attachment.model.vo.Attachment;
+import com.kh.st.checkHistory.modal.service.CheckHistoryService;
 import com.kh.st.member.model.vo.Member;
 import com.kh.st.product.model.vo.Product;
 import com.kh.st.request.model.service.ReqService;
 
 /**
- * Servlet implementation class ReqProductDetailServlet
+ * Servlet implementation class ConfirmProductDetailServlet
  */
-@WebServlet("/reqProductDetail.bo")
-public class ReqProductDetailServlet extends HttpServlet {
+@WebServlet("/confirmProductDetail.bo")
+public class ConfirmProductDetailServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public ReqProductDetailServlet() {
+    public ConfirmProductDetailServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -60,11 +61,20 @@ public class ReqProductDetailServlet extends HttpServlet {
 		
 		String page = "";
 		if(hmap != null) {
-			page = "views/admin/request/reqProductDetail.jsp";
-			request.setAttribute("reqProduct", reqProduct);
-			request.setAttribute("fileList", fileList);
-			request.setAttribute("m", m);
-			request.setAttribute("req", req);
+			HashMap<String, Object> hmap1 = new CheckHistoryService().confirmProductDetail(reqNum);
+			if(hmap1 != null) {
+				ArrayList<Attachment> confirmList =
+						(ArrayList<Attachment>) hmap1.get("confirmList");
+				page = "views/admin/request/reqDataDetail.jsp";
+				request.setAttribute("reqProduct", reqProduct);
+				request.setAttribute("fileList", fileList);
+				request.setAttribute("m", m);
+				request.setAttribute("req", req);
+				request.setAttribute("confirmList", confirmList);
+			} else {
+				page = "views/common/errorPage.jsp";
+				request.setAttribute("msg", "상세보기 실패");
+			}
 		} else {
 			page = "views/common/errorPage.jsp";
 			request.setAttribute("msg", "상세보기 실패");

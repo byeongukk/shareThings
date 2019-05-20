@@ -1,9 +1,6 @@
 package com.kh.st.request.model.service;
 
-import static com.kh.st.common.JDBCTemplate.close;
-import static com.kh.st.common.JDBCTemplate.commit;
-import static com.kh.st.common.JDBCTemplate.getConnection;
-import static com.kh.st.common.JDBCTemplate.rollback;
+import static com.kh.st.common.JDBCTemplate.*;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -104,4 +101,51 @@ public class ReqService {
 		return hmap;
 	}
 
+	//요청 리스트 조건 검색
+	public ArrayList<HashMap<String, Object>> selectReqFilter(HashMap<String, Object> condition) {
+		Connection con = getConnection();
+		
+		ArrayList<HashMap<String, Object>> list = new ReqDao().selectReqFilter(con, condition);
+		close(con);
+		return list;
+	}
+
+
+	//요청 승인 페이징처리 게시글 숫자
+	public int getListOkCount() {
+		Connection con = getConnection();
+		int listOkCount = new ReqDao().getListOkCount(con);
+		
+		close(con);
+		return listOkCount;
+	}
+	
+	//페이징처리 요청승인 전체 물품
+	public ArrayList<ReqProduct> reqOkList(PageInfo pi) {
+		Connection con = getConnection();
+		ArrayList<ReqProduct> list = new ReqDao().reqOkList(con, pi);
+		
+		close(con);
+		return list;
+	}
+
+	//선택 검수 거절
+	public ReqProduct reqRejectSelect(String status) {
+		Connection con = getConnection();
+		
+		ReqProduct rp = new ReqDao().reqRejectSelect(con, status);
+		
+		close(con);
+		return rp;
+	}
+	
+	//선택 검수 승인
+	public ReqProduct reqConfirmSelect(String status) {
+		Connection con = getConnection();
+		
+		ReqProduct rp = new ReqDao().reqConfirmSelect(con, status);
+		
+		close(con);
+		return rp;
+	}
 }

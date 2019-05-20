@@ -8,9 +8,12 @@
 <%
 	Product reqProduct = (Product) request.getAttribute("reqProduct");
 	Member m = (Member) request.getAttribute("m");
-	ArrayList<Attachment> fileList = (ArrayList<Attachment>) request.getAttribute("fileList");
+	ArrayList<Attachment> fileList = 
+			(ArrayList<Attachment>) request.getAttribute("fileList");
 	HashMap<String, Object> req =
 			(HashMap<String, Object>) request.getAttribute("req");
+	ArrayList<Attachment> confirmList =
+			(ArrayList<Attachment>) request.getAttribute("confirmList");
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -59,6 +62,13 @@ textarea {
 	width: 150px;
 	height: 150px;
 }
+.confirmImg {
+	display:inline-block;
+	margin:30px;
+}
+#fileConfirmArea:hover {
+	cursor:pointer;
+}
 </style>
 </head>
 
@@ -102,7 +112,7 @@ textarea {
 										<% for(int i = 0; i < fileList.size(); i ++)  { %>
 											<td>
 												<div class="productPic">
-													<img id="img1" class="img" src="<%= request.getContextPath()%>/attach_upload/<%= fileList.get(i).getChangeName() %>">
+													<img class="img" src="<%= request.getContextPath()%>/attach_upload/<%= fileList.get(i).getChangeName() %>">
 												</div>
 											</td>
 										<% } %>
@@ -139,18 +149,62 @@ textarea {
 							</div>
 						</div>
 					</div>
+					<div class="col-lg-10">
+						<div class="card shadow mb-4">
+							<div class="card-header py-3">
+								<h6 class="m-0 font-weight-bold text-primary">검수 사진</h6>
+							</div>
+							<div class="card-body">
+								<div id="fileConfirmArea" class="col-md-12 col-lg-12">
+								<% if(confirmList.size() >= 1)  { 
+								 		for(int i = 0; i < confirmList.size(); i ++)  { %>
+											<div class="confirmImg" id="confirm<%= i + 1 %>">
+												<img id="confirmImg<%= i + 1 %>" 
+													 src="<%= request.getContextPath()%>/attach_upload/<%= confirmList.get(i).getChangeName() %>"
+													 width="150" height="150">
+											</div>
+									<% } %>
+								<% } else { %>
+									<div class="confirmImg" id="confirm1">
+										<img id="confirmImg1" width="150" height="150">
+									</div>
+									<div class="confirmImg" id="confirm2">
+										<img id="confirmImg2" width="150" height="150">
+									</div>
+									<div class="confirmImg" id="confirm3">
+										<img id="confirmImg3" width="150" height="150">
+									</div>
+									<div class="confirmImg" id="confirm4">
+										<img id="confirmImg4" width="150" height="150">
+									</div>
+								<% } %>
+								</div>
+								<div id="fileArea">
+									<input type="file" id="img1" name="img1" onchange="loadImg(this, 1);">
+									<input type="file" id="img2" name="img2" onchange="loadImg(this, 2);">
+									<input type="file" id="img3" name="img3" onchange="loadImg(this, 3);">
+									<input type="file" id="img4" name="img4" onchange="loadImg(this, 4);">
+								</div>
+							</div>
+							<div>
+								<label>물품상태 : </label>
+								<select>
+									<option>최상급</option>
+									<option>상급</option>
+									<option>중급</option>
+									<option>하급</option>
+								</select>
+							</div>
+						</div>
+					</div>
 					<div class="row answer">
 						<div class="col-lg-4">
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">거절 사유</h6>
+									<h6 class="m-0 font-weight-bold text-primary">검수 내용</h6>
 								</div>
 								<div class="card-body">
-								<% if(req.get("rejectReason") == null) { %>
-								<textarea class="col-lg-12" rows="5" id="noResult" name="textResult"></textarea>
-								<% } else { %>
-								<textarea class="col-lg-12" rows="5" id="noResult" name="textResult"><%= req.get("rejectReason") %></textarea>
-								<% } %>
+								<textarea class="col-lg-12" rows="5" id="noResult" name="textResult">검수 내용</textarea>
 								</div>
 							</div>
 						</div>
@@ -240,6 +294,47 @@ textarea {
 
 
 	<script>
+		$(function() {
+			//검수사진
+			$("#fileArea").hide();
+			$("#confirm1").click(function() {
+				$("#img1").click();
+			});
+			$("#confirm2").click(function() {
+				$("#img2").click();
+			});
+			$("#confirm3").click(function() {
+				$("#img3").click();
+			});
+			$("#confirm4").click(function() {
+				$("#img4").click();
+			});
+		});
+		
+		//사진 등록
+		function loadImg(value, num) {
+			if(value.files && value.files[0]) {
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					switch(num) {
+					case 1 :
+						$("#confirmImg1").attr("src", e.target.result);
+						break;
+					case 2 :
+						$("#confirmImg2").attr("src", e.target.result);
+						break;
+					case 3 :
+						$("#confirmImg3").attr("src", e.target.result);
+						break;
+					case 4 :
+						$("#confirmImg4").attr("src", e.target.result);
+						break;
+					}
+				}
+				reader.readAsDataURL(value.files[0]);
+			}
+		}
+		
 		$("#no").click(function() {
 			$("#go").submit();
 		});

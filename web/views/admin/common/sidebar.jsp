@@ -48,7 +48,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
 
             <a class="collapse-item" href="<%= request.getContextPath() %>/reqProduct.bo">등록 요청 관리</a>
-            <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/request/reqData.jsp">등록현황</a>
+            <a class="collapse-item" href="<%= request.getContextPath() %>/reqOkProduct.bo">등록현황</a>
             <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/request/returnProduct.jsp">반품현황</a>
 
           </div>

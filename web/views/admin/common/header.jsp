@@ -1,5 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="com.kh.st.member.model.vo.Member"%>
+<%
+	Member loginUser = (Member)session.getAttribute("loginUser");
+	
+	String emailVerif = "";
+	if(loginUser != null) {
+		emailVerif = loginUser.getEmailVerif();
+	}
+	
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -63,8 +72,15 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">조도연 관리자님<br>
+                <% if(loginUser != null && loginUser.getUserId().equals("admin")) { %>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><%= loginUser.getUserName() %>님<br>
                                                환영합니다</span>
+				<% } else {
+					request.setAttribute("msg", "잘못된 경로로 접근했습니다.");
+					request.getRequestDispatcher("../../common/errorPage.jsp")
+						   .forward(request, response);
+				%>
+				<% } %>
                 <img class="img-profile rounded-circle" src="<%= request.getContextPath() %>/resource/img/profile.png">
               </a>
               <!-- Dropdown - User Information -->
