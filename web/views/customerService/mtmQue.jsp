@@ -147,7 +147,7 @@ width:100%;
 </div> <!-- 자주 묻는 질문 -->
 
 <div class="vertical-menu" style=" align:center; ">
- <a href="#" >자주 묻는 질문 FAQ</a>
+ <a href="cs.jsp" >자주 묻는 질문 FAQ</a>
            <a href="mtmQue.jsp">1 : 1 문의하기</a>
            <a href="#">나의 문의 관리</a>
 
