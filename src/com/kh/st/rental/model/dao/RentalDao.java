@@ -110,7 +110,7 @@ public class RentalDao {
 				
 				if(!(condition.get("rentalStatus").equals("0"))) {
 					//STATUS 컬럼을 조회하게 문자열 합치기
-					queryArr.add(" RT_SID = ? ");
+					queryArr.add(" R.RT_SID = ? ");
 					bindVal.add(condition.get("rentalStatus"));
 					System.out.println(condition.get("rentalStatus"));
 				}

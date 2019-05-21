@@ -31,6 +31,20 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 #filterArea td {
 	padding: 20px;
 }
+/* 모달 */
+.examineImg {
+   display:inline-block;
+   margin:30px;
+}
+#fileExamineArea:hover {
+   cursor:pointer;
+}
+#hidden {
+   display:none;
+}
+.hidden {
+	display:none;
+}
 </style>
 
 <!-- Custom fonts for this template-->
@@ -276,10 +290,10 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 	<%@ include file="../common/logoutModal.jsp"%>
 
 	<!-- 검수  Modal -->
-	<div class="modal fade" id="returnModal" role="dialog">
+	<!-- <div class="modal fade" id="returnModal" role="dialog">
 		<div class="modal-dialog">
 
-			<!-- Modal content-->
+			Modal content
 			<div class="modal-content">
 				<div class="modal-header">
 					<h4 class="modal-title">검수완료 처리</h4>
@@ -334,8 +348,91 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 			</div>
 
 		</div>
-	</div>
+	</div> -->
+	
+	<form action="<%= request.getContextPath() %>/returnPdexamine.rt" method="post"
+	     encType="multipart/form-data">
+		<div class="modal fade" id="returnModal" role="dialog">
+		  <div class="modal-dialog">
+		     <!-- Modal content-->
+		     <div class="modal-content">
+		        <div class="modal-header">
+		           <h4 class="modal-title">수거 처리(검수 처리)</h4>
+		           <button type="button" class="close" >&times;</button>
+		        </div>
+		        <div class="row">
+		           <div class="col-md-12 col-lg-12">
+		              <div class="modal-body">
+		                 <p>물품명과 검수상태를 확인하고 처리하세요</p>
+		                 <div class="panel-body">
+		                    <table width="100%"
+		                       class="table table-striped table-bordered table-hover"
+		                       id="dataTables-example">
+		                       <thead>
+		                          <tr>
+		                             <th style="text-align: center;" class="text-black-50 small">등록요청번호</th>
+		                             <th style="text-align: center;" class="text-black-50 small">물품번호</th>
+		                             <th style="text-align: center;" class="text-black-50 small">물품명</th>
+		                             <th style="text-align: center;" class="text-black-50 small">등록자</th>
+		                             <th style="text-align: center;" class="text-black-50 small">등록아이디</th>
+		                          </tr>
+		                       </thead>
+		                       <tbody>
+		                       </tbody>
+		                    </table>
+		                 </div>
+		                 <hr>
+		                 <h5>*검수사진</h5>   
+		                    <div id="fileExamineArea" class="col-md-12 col-lg-12">
+		                       <div class="examineImg" id="examineImg1">
+		                          <img id="examineImg1" width="150" height="150">
+		                       </div>
+		                       <div class="examineImg" id="examineImg2">
+		                          <img id="examineImg2" width="150" height="150">
+		                       </div>
+		                       <div class="examineImg" id="examineImg3">
+		                          <img id="examineImg3" width="150" height="150">
+		                       </div>
+		                       <div class="examineImg" id="examineImg4">
+		                          <img id="examineImg4" width="150" height="150">
+		                       </div>
+		                    </div>
+		                    <div id="fileArea">
+		                       <input type="file" id="img1" name="img1" onchange="loadImg(this, 1);">
+		                       <input type="file" id="img2" name="img2" onchange="loadImg(this, 2);">
+		                       <input type="file" id="img3" name="img3" onchange="loadImg(this, 3);">
+		                       <input type="file" id="img4" name="img4" onchange="loadImg(this, 4);">
+		                    </div>
+		                 <hr>
+		                 <h5>*검수내용</h5>
+		                	 <input type="hidden" name="checker" value="<%= loginUser.getUno() %>">
+		                    <textarea id="textResult" name="textResult" class="col-lg-12" placeholder="EX)이상없음"></textarea>
+		              </div>
+		              <div class="modal-footer">
+		                 <button type="submit" class="btn btn-default"
+		                     id="result">수거처리</button>
+		                 <button type="button" class="btn btn-default"
+		                    data-dismiss="modal">닫기</button>
+		              </div>
+		           </div>
+		        </div>
+		     </div>
+		  </div>
+		</div>
+	</form>
 	<script>
+	//대여상태 코드
+	var RTS1 = "대여대기";
+	var RTS2 = "대여승인";
+	var RTS3 = "대여취소";
+	var RTS4 = "대여송장입력(발송대기)";
+	var RTS5 = "대여중";
+	var RTS6 = "수거송장입력(발송대기)";
+	var RTS7 = "수거중";
+	var RTS8 = "대여완료";
+	var RTS9 = "대여취소요청";
+	var RTS10 = "대여취소";
+	
 	//체크박스 전체 선택
 	$("#checkAll").click(function() {
 		var check = $(this).is(":checked");
@@ -379,7 +476,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 				}
 			});
 			console.log(rtStatus);
-			if(rtStatus == "RTS6"){
+			if(rtStatus == RTS6){
 				alert("이미 입력된 물품입니다");
 				return false;
 			}
@@ -419,7 +516,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 				rtStatus = $(this).find("td").eq(9).text();
 			}
 		});
-		if(rtStatus != "RTS5"){
+		if(rtStatus != RTS5){
 			alert("송장번호가 입력되지 않은 물품입니다");
 			return false;
 		}
@@ -445,7 +542,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 			$(".even").each(function() {
 				if($(this).find(".check").is(":checked")) {
 					//운송장번호가 입력되지않은  물품이 있는경우
-					if($(this).find("td").eq(9).text() != "RTS6"){
+					if($(this).find("td").eq(9).text() != RTS6){
 						console.log($(this).find("td").eq(9).text());
 						rtStatusCheck = false;
 					}
@@ -474,6 +571,45 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 	});
 	
 	/****************************************************************************/
+		//검수사진
+        $("#fileArea").hide();
+        $("#examineImg1").click(function() {
+           $("#img1").click();
+        });
+        $("#examineImg2").click(function() {
+           $("#img2").click();
+        });
+        $("#examineImg3").click(function() {
+           $("#img3").click();
+        });
+        $("#examineImg4").click(function() {
+           $("#img4").click();
+        });
+	
+		//사진, 검수내용 등록
+      function loadImg(value, num) {
+         if(value.files && value.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+               switch(num) {
+               case 1 :
+                  $("#examineImg1").attr("src", e.target.result);
+                  break;
+               case 2 :
+                  $("#examineImg2").attr("src", e.target.result);
+                  break;
+               case 3 :
+                  $("#examineImg3").attr("src", e.target.result);
+                  break;
+               case 4 :
+                  $("#examineImg4").attr("src", e.target.result);
+                  break;
+               }
+            }
+            reader.readAsDataURL(value.files[0]);
+         }
+      }
+	
 	//수거처리 버튼
 	$("#returnBtn").click(function() {
 		var status = new Array();
@@ -483,7 +619,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 		$(".even").each(function() {
 			if($(this).find(".check").is(":checked")) {	
 				//상태가 수거중이 아닌  물품이 있는경우
-				if($(this).find("td").eq(9).text() != "RTS7"){
+				if($(this).find("td").eq(9).text() != RTS7){
 					rtStatusCheck = false;
 				}
 				status.push($(this).find("td").eq(1).text());
@@ -491,8 +627,8 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 				pno.push($(this).find("td").eq(2).text());
 			}
 		});
-		if(status.length == 0) {
-			alert("적용하실 물품을 한개이상 선택하세요");
+		if(status.length != 1) {
+			alert("적용하실 물품을 한개 선택하세요");
 			return false;
 		}
 		if(rtStatusCheck==false){
@@ -520,6 +656,10 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 					var $modelTd =  $("<td>").text(data[key].model);
 					var $userNameTd =  $("<td>").text(data[key].userName);
 					var $userIdTd =  $("<td>").text(data[key].userId);
+					var $hidden1 = $("<textarea class='hidden' name='rno'>").text(data[key].rno);
+					var $hidden2 = $("<textarea class='hidden' name='pno'>").text(data[key].pno);
+					var $hidden3 = $("<textarea class='hidden' name='userId'>").text(data[key].userId);
+					
 					
 					$tr.append($rnoTd);
 					$tr.append($pnoTd);
@@ -527,28 +667,15 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 					$tr.append($userNameTd);
 					$tr.append($userIdTd);
 					$dataTables.append($tr);
+					$dataTables.append($hidden1);
+					$dataTables.append($hidden2);
+					$dataTables.append($hidden3);
 				}
 			},
 			error:function(data){
 				console.log("에러");
 			}
 		});
-	});
-	
-	//모달 취소처리button
-	$("#cancel").click(function(){
-		var conResult = confirm("취소처리 하시겠습니까?");
-		if(conResult == true){
-			var rtNos = new Array();
-			var pnos = new Array();
-			//취소선택된 테이블 가져오기
-			$(".gradeX").each(function(){
-				rtNos.push($(this).find("td").eq(0).text());
-				pnos.push($(this).find("td").eq(0).text());
-			});
-			var textResult = $("#textResult").val();
-			location = "<%= request.getContextPath() %>/cancel.rt?rtNos=" + rtNos + "&textResult=" + textResult + "&pnos=" + pnos;
-		}
 	});
 	
 	
