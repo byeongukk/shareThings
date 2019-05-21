@@ -33,4 +33,20 @@ public class ProductService {
 		return pno;
 	}
 
+	public int regreqProduct(int pno) {
+		
+		Connection con = getConnection();
+		int rqresult = new ProductDao().regreqProduct(con, pno);
+		
+		if(rqresult > 0) {
+			commit(con);
+		}else {
+			rollback(con);
+		}
+		
+		close(con);
+		
+		return rqresult;
+	}
+
 }
