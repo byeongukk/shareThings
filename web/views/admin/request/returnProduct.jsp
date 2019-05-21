@@ -50,7 +50,7 @@
 				<%@ include file="../common/header.jsp"%>
 				<!-- 컨텐츠바디 영역 실제 작성 영역 -->
 				<div class="container-fluid">
-					<h1 class="h3 mb-2 text-gray-800">반품현황 관리</h1>
+					<h1 class="h3 mb-2 text-gray-800">배송현황 관리</h1>
 					<img src="<%=request.getContextPath()%>/resource/img/adminHr.png"
 						width="100%">
 					<div class="row" class="col-lg-12">
@@ -58,55 +58,53 @@
 							<div class="card shadow mb-4" id="filter" align="center">
 								<div class="card-header py-3">조회 필터</div>
 								<div class="card-body">
-									<table class="col-lg-12" id="filterArea">
-										<tr style="height: 20px">
-											<td style="width: 90px">발송상태 :</td>
-											<td><select style="heigth: 30px; width: 22%;">
-													<option>발송 완료</option>
-													<option>발송 대기</option>
-											</select></td>
-											<td style="width: 90px">상세조건 :</td>
-											<td><select style="heigth: 30px; width: 20%;">
-													<option>요청번호</option>
-													<option>등록자명</option>
-													<option>물품명</option>
-											</select>&nbsp;&nbsp;&nbsp;
-											<input type="text" name="userId" style="width: 30%">
-											</td>
-										</tr>
-										<tr>
-										<td style="width: 90px">송장번호 :</td>
-											<td><select style="heigth: 30px; width: 20%;">
-													<option>CJ대한통운</option>
-													<option>한진택배</option>
-													<option>로젠</option>
-											</select>&nbsp;&nbsp;&nbsp;
-											<input type="text" name="userId" style="width: 30%">
-											</td>
-										</tr>
-										<tr>
-											<td style="width: 70px">등록기간 :</td>
-											<td colspan="3"><input type="date" name="startD">&nbsp;&nbsp;&nbsp;
-												~ &nbsp;&nbsp;&nbsp; <input type="date" name="endD">
-											</td>
-										</tr>
-									</table>
-									<div>
-										<button>조회하기</button>
-										&nbsp;&nbsp;&nbsp;
-										<button>초기화</button>
-									</div>
-								</div>
+												<form id="filterArea">
+													<table class="col-lg-12" id="filter">
+														<tr>
+															<td width="10%">물품상태</td>
+															<td width="15%"><select class="form-control">
+																	<option value="hidden">물품상태</option>
+																	<option value="0">요청 승인</option>
+																	<option value="10">검수 거절</option>
+															</select></td>
+															<td width="10%">상세조건</td>
+															<td width="15%"><select class="form-control">
+																	<option>상세조건</option>
+																	<option value="0">요청번호</option>
+																	<option value="10">등록자이름</option>
+																	<option value="20">물품명</option>
+																	<option value="30">물품번호</option>
+															</select></td>
+															<td width="15%"><input type="text"
+																class="form-control" placeholder="상세정보입력"></td>
+
+														</tr>
+														<tr>
+															<td>요청기간</td>
+															<td width="25%"><input type="date" name="startDate"
+																style="width: 140px"> &nbsp; ~ &nbsp;<input
+																type="date" name="endDate" style="width: 140px">
+															</td>
+															<!-- <td></td>
+															<td></td>
+															<td></td> -->
+														</tr>
+													</table>
+													<br>
+													<div align="center">
+														<button type="submit">조회하기</button>
+														&nbsp;&nbsp;
+														<button type="reset">초기화</button>
+													</div>
+												</form>
+											</div>
+
 							</div>
 							<div class="card shadow mb-4">
                   <div class="card-header py-3">
                      <h6 class="m-0 font-weight-bold text-primary">00건</h6>
                   </div>
                   <div class="card-body">
-                     <a href="#" class="btn btn-info btn-icon-split"> <span
-                        class="icon text-white-50"> <i class="fas fa-info-circle"></i>
-                     </span> <span class="text">발송 처리</span>
-                     </a>
                      <div class="table-responsive">
                         <div id="dataTable_wrapper"
                            class="dataTables_wrapper dt-bootstrap4">
@@ -119,51 +117,48 @@
                                     <thead>
                                        <tr role="row">
                                           <th tabindex="0" class="sorting"
-                                                aria-controls="dataTable" style="width: 10px;"
-                                                aria-label="Name: activate to sort column ascending"
-                                                rowspan="1" colspan="1"><input type="checkBox"></th>
-                                          <th class="sorting_asc" tabindex="0"
-                                             aria-controls="dataTable" rowspan="1" colspan="1"
-                                             aria-label="Name: activate to sort column descending"
-                                             aria-sort="ascending" style="width:60px;">요청번호</th>
-                                          <th class="sorting" tabindex="0" aria-controls="dataTable"
-                                             rowspan="1" colspan="1"
-                                             aria-label="Position: activate to sort column ascending"
-                                             style="width: 10px;">등록자</th>
-                                          <th class="sorting" tabindex="0" aria-controls="dataTable"
-                                             rowspan="1" colspan="1"
-                                             aria-label="Office: activate to sort column ascending"
-                                             style="width: 10px;">물품명</th>
-                                          <th class="sorting" tabindex="0" aria-controls="dataTable"
-                                             rowspan="1" colspan="1"
-                                             aria-label="Age: activate to sort column ascending"
-                                             style="width: 10px;">요청날짜</th>
-                                          <th class="sorting" tabindex="0" aria-controls="dataTable"
-                                             rowspan="1" colspan="1"
-                                             aria-label="Start date: activate to sort column ascending"
-                                             style="width: 10px;">택배사</th>
-                                          <th class="sorting" tabindex="0" aria-controls="dataTable"
-                                             rowspan="1" colspan="1"
-                                             aria-label="Salary: activate to sort column ascending"
-                                             style="width: 30px;">송장번호</th>
-                                          <th class="sorting" tabindex="0" aria-controls="dataTable"
-                                             rowspan="1" colspan="1"
-                                             aria-label="Salary: activate to sort column ascending"
-                                             style="width: 50px;">발송상태</th>
-                                          <th class="sorting" tabindex="0" aria-controls="dataTable"
-                                             rowspan="1" colspan="1"
-                                             aria-label="Salary: activate to sort column ascending"
-                                             style="width: 50px;">배송상태</th>
-                                          <th class="sorting" tabindex="0" aria-controls="dataTable"
-                                             rowspan="1" colspan="1"
-                                             aria-label="Salary: activate to sort column ascending"
-                                             style="width: 50px;">처리상태</th>
-                                       </tr>
+																aria-controls="dataTable" style="width: 68px;"
+																rowspan="1" colspan="1">요청번호</th>
+															<th tabindex="0" class="sorting_asc"
+																aria-controls="dataTable" style="width: 50px;"
+																aria-sort="ascending" rowspan="1" colspan="1">물품번호</th>
+															<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 50px;"
+																rowspan="1" colspan="1">택배사</th>
+															<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 67px;"
+																rowspan="1" colspan="1">송장번호</th>
+															<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 55px;"
+																rowspan="1" colspan="1">발송일</th>
+
+															<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 67px;"
+																rowspan="1" colspan="1">등록요청 일시</th>
+															<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 45px;"
+																rowspan="1" colspan="1">등록자 ID</th>
+															<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 45px;"
+																rowspan="1" colspan="1">등록자 이름</th>
+															<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 55px;"
+																rowspan="1" colspan="1">등록자 연락처</th>
+															<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 68px;"
+																rowspan="1" colspan="1">배송지</th>
+															<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 67px;"
+																rowspan="1" colspan="1">배송타입</th>
+															<th tabindex="0" class="sorting"
+																aria-controls="dataTable" style="width: 67px;"
+																rowspan="1" colspan="1">배송상태</th>
+                                       	</tr>
                                     </thead>
 
                                     <tbody>
                                        <tr role="row" class="even">
-                                          <td class="sorting_1"><input type="checkbox"></td>
+                                          <!-- <td class="sorting_1"><input type="checkbox"></td>
                                           <td>01</td>
                                           <td>user01</td>
                                           <td>노트북</td>
@@ -172,31 +167,7 @@
                                           <td>123456789</td>
                                           <td>발송완료</td>
                                           <td>배송중</td>
-                                          <td>처리완료</td>
-                                       </tr>
-                                       <tr role="row" class="even">
-                                          <td class="sorting_1"><input type="checkbox"></td>
-                                          <td>01</td>
-                                          <td>user01</td>
-                                          <td>노트북</td>
-                                          <td>2019/05/05</td>
-                                          <td>CJ대한통운</td>
-                                          <td>123456789</td>
-                                          <td>발송중</td>
-                                          <td>배송중</td>
-                                          <td>처리완료</td>
-                                       </tr>
-                                       <tr role="row" class="even">
-                                          <td class="sorting_1"><input type="checkbox"></td>
-                                          <td>01</td>
-                                          <td>user01</td>
-                                          <td>노트북</td>
-                                          <td>2019/05/05</td>
-                                          <td>CJ대한통운</td>
-                                          <td>123456789</td>
-                                          <td>발송대기</td>
-                                          <td>배송대기</td>
-                                          <td>처리대기</td>
+                                          <td>처리완료</td> -->
                                        </tr>
                                     </tbody>
                                  </table>
@@ -207,63 +178,6 @@
                      </div>
                   </div>
                </div>
-					</div>
-					<div class="modal fade" id="cancelModal" role="dialog">
-						<div class="modal-dialog">
-
-							<!-- Modal content-->
-							<div class="modal-content">
-								<div class="modal-header">
-									<h4 class="modal-title">요청 거절 처리</h4>
-									<button type="button" class="close" data-dismiss="modal">&times;</button>
-								</div>
-								<div class="row">
-									<div class="col-md-12 col-lg-12">
-										<div class="modal-body">
-											<p>물품명과 승인상태를 확인하고 처리하세요</p>
-											<div class="panel-body">
-												<table width="100%"
-													class="table table-striped table-bordered table-hover"
-													id="dataTables-example">
-													<thead>
-														<tr>
-															<th style="width: 40px; text-align: center;"><input
-																type="checkBox"></th>
-															<th style="text-align: center;"
-																class="text-black-50 small">등록요청번호</th>
-															<th style="text-align: center;"
-																class="text-black-50 small">물품명</th>
-															<th style="text-align: center;"
-																class="text-black-50 small">등록자</th>
-															<th style="text-align: center; width: 130px"
-																class="text-black-50 small">거절사유</th>
-														</tr>
-													</thead>
-													<tbody>
-														<tr class="odd gradeX">
-															<td><input type="checkBox">
-															<td></td>
-															<td></td>
-															<td></td>
-															<td></td>
-														</tr>
-													</tbody>
-												</table>
-											</div>
-											<h5>*거절상세사유</h5>
-											<textarea rows="10" cols="55" placeholder="EX)거짓 정보 등록"></textarea>
-										</div>
-										<div class="modal-footer">
-											<button type="submit" class="btn btn-default"
-												data-dismiss="modal">거절처리</button>
-											<button type="button" class="btn btn-default"
-												data-dismiss="modal">닫기</button>
-										</div>
-									</div>
-								</div>
-							</div>
-
-						</div>
 					</div>
 					<!-- 메인 콘텐트 영역 끝 -->
 					<!-- Footer 인클루드 -->

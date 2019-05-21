@@ -1,12 +1,16 @@
 package com.kh.st.adProduct.model.service;
 
+import static com.kh.st.common.JDBCTemplate.close;
+import static com.kh.st.common.JDBCTemplate.commit;
+import static com.kh.st.common.JDBCTemplate.getConnection;
+import static com.kh.st.common.JDBCTemplate.rollback;
+
 import java.sql.Connection;
 import java.util.ArrayList;
 
 import com.kh.st.adProduct.model.dao.AdProductDao;
 import com.kh.st.adProduct.model.vo.AdProduct;
 import com.kh.st.common.PageInfo;
-import static com.kh.st.common.JDBCTemplate.*;
 
 public class AdProductService {
 
@@ -16,8 +20,10 @@ public class AdProductService {
 		int result = new AdProductDao().adProductOk(con, num);
 		
 		if(result == num.length) {
+			System.out.println("물품 등록 성공");
 			commit(con);
 		} else {
+			System.out.println("물품 등록 실패");
 			rollback(con);
 		}
 		
@@ -37,8 +43,10 @@ public class AdProductService {
 	public ArrayList<AdProduct> adProductList(PageInfo pi) {
 		Connection con = getConnection();
 		
-		//ArrayList<AdProduct> list = new AdProductDao()
-		return null;
+		ArrayList<AdProduct> list = new AdProductDao().adProductList(con, pi);
+		
+		close(con);
+		return list;
 	}
 
 	

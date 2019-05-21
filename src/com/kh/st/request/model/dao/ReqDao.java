@@ -259,6 +259,7 @@ public class ReqDao {
 		String in = "입고";
 		
 		String query = prop.getProperty("delWait");
+		System.out.println(query);
 		try {
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, dNo);

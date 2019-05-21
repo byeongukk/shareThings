@@ -10,8 +10,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Properties;
 
+import com.kh.st.adProduct.model.vo.AdProduct;
+import com.kh.st.common.PageInfo;
 import com.kh.st.request.model.dao.ReqDao;
 
 public class AdProductDao {
@@ -72,6 +75,52 @@ public class AdProductDao {
 			close(rset);
 		}
 		return listCount;
+	}
+	
+	//페이징 처리 물품 조회
+	public ArrayList<AdProduct> adProductList(Connection con, PageInfo pi) {
+		//등록번호, 등록자, 물품명, 등록기간, 상태
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		AdProduct ap = null;
+		ArrayList<AdProduct> list = null;
+		
+		String query = prop.getProperty("adProductList");
+		
+		int startRow = (pi.getCurrentPage() - 1) * pi.getLimit() + 1;
+		int endRow = startRow + pi.getLimit() - 1;
+		
+		System.out.println(query);
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+			
+			rset = pstmt.executeQuery();
+			
+			list = new ArrayList<AdProduct>();
+			
+			while(rset.next()) {
+				ap = new AdProduct();
+				//등록번호, 등록자, 모델명, 카테고리, 등록기간, 상태(렌탈중/창고적재)
+				ap.setPno(rset.getInt("PNO"));
+				ap.setpWriter(rset.getString("USER_NAME"));
+				ap.setModel(rset.getString("MODEL"));
+				ap.setCtgName(rset.getString("CTG_NAME"));
+				ap.setPstartDate(rset.getDate("PSTART_DATE"));
+				ap.setPendDate(rset.getDate("PEND_DATE"));
+				ap.setStatus(rset.getString("STATUS"));
+				
+				list.add(ap);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return list;
 	}
 
 

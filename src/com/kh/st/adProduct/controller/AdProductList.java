@@ -47,6 +47,7 @@ public class AdProductList extends HttpServlet {
 		limit = 10;
 		
 		int listCount = new AdProductService().getListCount();
+		System.out.println("등록 물품 갯수 : " + listCount);
 		
 		maxPage = (int)((double) listCount / limit + 0.9);
 		
@@ -64,7 +65,11 @@ public class AdProductList extends HttpServlet {
 		
 		String page = "";
 		if(list != null) {
+			System.out.println(list);
 			page = "views/admin/product/productList.jsp";
+			request.setAttribute("list", list);
+			request.setAttribute("pi", pi);
+			request.setAttribute("listCount", listCount);
 		} else {
 			page = "views/common/errorPage.jsp";
 			request.setAttribute("msg", "등록 물품 조회 실패");
