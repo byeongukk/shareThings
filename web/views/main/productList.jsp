@@ -379,27 +379,6 @@
 			$("#filterForm").submit();
 			
 			
-			<%-- location.href="<%= request.getContextPath() %>/filter.bo"; --%>
-			//var start = $("#startFilter").val();
-			//var end = $("#endFilter").val();
-			//var priceRange = $("#priceFilter").val();
-			//var orderBy = $("input[name=orderBy]").filter(":checked").val();
-			//console.log(orderBy);
-			<%-- $.ajax({
-				url:"<%= request.getContextPath() %>/filter.bo",
-				type:"post",
-				data:{ctgLv2:<%= ctgLv2 %>, ctgLv3Arr:ctgLv3Arr, start:start, end:end, priceRange:priceRange, orderBy:orderBy},
-				success:function(data) {
-					<% bList = (ArrayList<HashMap<String, Object>>)data; %>
-					for(var i = 0; i < data.length; i++) {
-						data[i];
-						<% HashMap<String, Object> hmap = data[i]; %>
-					}
-				}, error:function() {
-					alert("서버전송 실패..!");
-				}
-			}); --%>
-			
 		});
 
 		

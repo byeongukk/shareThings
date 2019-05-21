@@ -3,6 +3,7 @@ package com.kh.st.board.controller;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 
+import com.google.gson.Gson;
 import com.kh.st.attachment.model.vo.Attachment;
 import com.kh.st.board.model.service.BoardService;
 import com.kh.st.board.model.vo.Board;
@@ -94,7 +96,20 @@ public class InsertBoardReviewServlet extends HttpServlet {
 			
 			
 			int result = new BoardService().insertReview(newReview, rvImgList);
-			
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			if(result > 0) {
+				ArrayList<HashMap<String, Object>> reviewList = new BoardService().selectReviewList(Integer.parseInt(parentBno));
+				if(!reviewList.isEmpty()) {
+					new Gson().toJson(reviewList, response.getWriter());
+				}else {
+					response.getWriter().append("List not found");
+				}
+				
+				
+			}else {
+				
+			}
 			
 		}
 	

@@ -42,6 +42,7 @@ public class BoardDao {
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, ctgLv2);
 			pstmt.setString(2,"등록");
+			pstmt.setString(3, "후기");
 			rset = pstmt.executeQuery();
 			
 			bList = new ArrayList<HashMap<String, Object>>();
@@ -53,7 +54,6 @@ public class BoardDao {
 				hmap.put("bWriter", rset.getString("USER_NAME"));
 				hmap.put("bCount", rset.getInt("BCOUNT"));
 				hmap.put("bDate", rset.getDate("BDATE"));
-				hmap.put("reviewStar", rset.getInt("REVIEW_STAR"));
 				hmap.put("ano", rset.getInt("ANO"));
 				hmap.put("changeName", rset.getString("CHANGE_NAME"));
 				hmap.put("filePath", rset.getString("FILE_PATH"));
@@ -356,6 +356,7 @@ public class BoardDao {
 				hmap.put("rvDate", rset.getDate("BDATE"));
 				hmap.put("rvModifyDate", rset.getDate("MODIFY_DATE"));
 				hmap.put("rvLevel", rset.getInt("BLEVEL"));
+				hmap.put("rvStar", rset.getInt("REVIEW_STAR"));
 				hmap.put("ansNo", rset.getInt("ANSNO"));
 				hmap.put("ansTitle", rset.getString("ANSTITLE"));
 				hmap.put("ansContent", rset.getString("ANSCONTENT"));
@@ -446,7 +447,7 @@ public class BoardDao {
 	public int insertRvImgList(Connection con, ArrayList<Attachment> rvImgList) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		String query = prop.getProperty("insertAttachment");
+		String query = prop.getProperty("insertReviewAtt");
 		
 		try {
 			for(int i = 0; i < rvImgList.size(); i++) {
@@ -475,6 +476,73 @@ public class BoardDao {
 		return result;
 	}
 
+	
+	public int checkZzim(Connection con, int uno, int pno) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = 0;
+		String query = prop.getProperty("checkZzim");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, pno);
+			pstmt.setInt(2, uno);
+			
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				result = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	
+	public int insertZzim(Connection con, int uno, int pno) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = prop.getProperty("insertZzim");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, pno);
+			pstmt.setInt(2, uno);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	
+	public int getZzimCnt(Connection con, int pno) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int zzimCnt = 0;
+		String query = prop.getProperty("selectZzimCnt");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, pno);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				zzimCnt = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return zzimCnt;
+	}
+	
+	
+	
 	
 	
 	
@@ -564,6 +632,10 @@ public class BoardDao {
 	      
 	      return result;
 	   }
+
+	
+	
+
 	
 	
 }
