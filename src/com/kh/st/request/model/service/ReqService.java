@@ -102,10 +102,10 @@ public class ReqService {
 	}
 
 	//요청 리스트 조건 검색
-	public ArrayList<HashMap<String, Object>> selectReqFilter(HashMap<String, Object> condition) {
+	public ArrayList<HashMap<String, Object>> selectReqFilter(HashMap<String, Object> condition, PageInfo pi) {
 		Connection con = getConnection();
 		
-		ArrayList<HashMap<String, Object>> list = new ReqDao().selectReqFilter(con, condition);
+		ArrayList<HashMap<String, Object>> list = new ReqDao().selectReqFilter(con, condition, pi);
 		close(con);
 		return list;
 	}
@@ -151,7 +151,11 @@ public class ReqService {
 
 	//조건 검색 페이징 처리
 	public int getReqFilterCount(HashMap<String, Object> condition) {
-		// TODO Auto-generated method stub
-		return 0;
+		Connection con = getConnection();
+		
+		int listCount = new ReqDao().getReqFilterCount(con, condition);
+		
+		close(con);
+		return listCount;
 	}
 }

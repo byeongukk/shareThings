@@ -7,6 +7,8 @@ import java.util.HashMap;
 import com.kh.st.attachment.model.vo.Attachment;
 import com.kh.st.checkHistory.modal.dao.CheckHistoryDao;
 import com.kh.st.checkHistory.modal.vo.CheckHistory;
+import com.kh.st.common.PageInfo;
+
 import static com.kh.st.common.JDBCTemplate.*;
 
 public class CheckHistoryService {
@@ -93,5 +95,23 @@ public class CheckHistoryService {
 				new CheckHistoryDao().confirmProductDetail(con, reqNum);
 		close(con);
 		return hmap;
+	}
+
+	//필터 조회 게시글 수
+	public int getConfirmFilterCount(HashMap<String, Object> condition) {
+		Connection con = getConnection();
+		int listCount = new CheckHistoryDao().getConfirmFilterCount(con, condition);
+		
+		close(con);
+		return listCount;
+	}
+
+	public ArrayList<HashMap<String, Object>> selectConfirmFilter(HashMap<String, Object> condition, PageInfo pi) {
+		Connection con = getConnection();
+		
+		ArrayList<HashMap<String, Object>> list = new CheckHistoryDao().selectConfirmFilter(con, condition, pi);
+		
+		close(con);
+		return list;
 	}
 }

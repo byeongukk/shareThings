@@ -1,4 +1,4 @@
-package com.kh.st.request.controller;
+package com.kh.st.checkHistory.controller;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -12,20 +12,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.google.gson.Gson;
+import com.kh.st.checkHistory.modal.service.CheckHistoryService;
 import com.kh.st.common.PageInfo;
-import com.kh.st.request.model.service.ReqService;
 
 /**
- * Servlet implementation class SelectReqFilterServlet
+ * Servlet implementation class SelectConfirmFilterServlet
  */
-@WebServlet("/selectReqFilter.bo")
-public class SelectReqFilterServlet extends HttpServlet {
+@WebServlet("/selectConfirmFilter.bo")
+public class SelectConfirmFilterServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SelectReqFilterServlet() {
+    public SelectConfirmFilterServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -83,7 +83,7 @@ public class SelectReqFilterServlet extends HttpServlet {
 		
 		limit = 10;
 		
-		int listCount = new ReqService().getReqFilterCount(condition);
+		int listCount = new CheckHistoryService().getConfirmFilterCount(condition);
 		System.out.println(listCount);
 		
 		maxPage = (int)((double) listCount / limit + 0.9);
@@ -97,7 +97,7 @@ public class SelectReqFilterServlet extends HttpServlet {
 		PageInfo pi = new PageInfo(currentPage, limit, maxPage, startPage, endPage);
 		//----------- 페이징 처리
 		
-		ArrayList<HashMap<String, Object>> list = new ReqService().selectReqFilter(condition, pi);
+		ArrayList<HashMap<String, Object>> list = new CheckHistoryService().selectConfirmFilter(condition, pi);
 		
 		HashMap<String,Object> hmap = new HashMap<String,Object>();
 		hmap.put("list", list);

@@ -418,8 +418,8 @@
 			//체크박스 클릭해도 동작 X(해당 번호 가져옴)
 			$(".sorting_1").siblings().click(function() {
 				$(this).parent().each(function() {
-					console.log($(this).find("td").eq(1).text());
-					var reqNum = $(this).find("td").eq(1).text();
+					console.log($(this).find("td").eq(2).text());
+					var reqNum = $(this).find("td").eq(2).text();
 					location = "<%= request.getContextPath()%>/reqProductDetail.bo?reqNum=" + reqNum;
 				});
 			});
@@ -442,8 +442,8 @@
 			var status = new Array();
 			$(".even").each(function() {
 				if($(this).find(".check").is(":checked")) {	
-					console.log($(this).find("td").eq(1).text());
-					status.push($(this).find("td").eq(1).text());
+					console.log($(this).find("td").eq(2).text());
+					status.push($(this).find("td").eq(2).text());
 				}
 			});
 			if(status.length > 1) {
@@ -475,9 +475,6 @@
 					$tr.append($productNameTd);
 						
 					$dataTables.append($tr);
-					//$("#modal-body").append($dataTables);
-					/* $("#modal-body").append($delivery);
-					$("#modal-body").append($dNo); */
 				},
 				error:function(data) {
 					console.log("실패");
@@ -501,8 +498,8 @@
 			var status = new Array();
 			$(".even").each(function() {
 				if($(this).find(".check").is(":checked")) {	
-					//console.log($(this).find("td").eq(1).text());
-					status.push($(this).find("td").eq(1).text());
+					console.log($(this).find("td").eq(2).text());
+					status.push($(this).find("td").eq(2).text());
 				}
 					
 			});
@@ -531,7 +528,6 @@
 						
 						$dataTables.append($tr);
 					}
-					//$("#modal-body").append($textarea);
 				},
 				error:function(data) {
 					console.log("실패");
@@ -595,6 +591,8 @@
 					var $resultNull = $("#result-null");
 					/* 조회된 건수 출력할 공간 */
 					var $listSize = $("#listSize");
+					/* 페이징 */
+					var $paging = $("#pagingUl");
 					
 					//값 넣을 공간 비우기
 					$resultNull.html('');
@@ -610,6 +608,53 @@
 							var startPage = data.pi.startPage;
 							var endPage = data.pi.endPage;
 						
+							var $firstLi = $("<li class='paginate_button page-item' id='dataTable_first'>");
+							var $firstA = $("<a onclick='filteringP(1)' aria-controls='dataTable' data-dt-idx='0' tabindex='0' class='page-link'>").text("first");
+							$firstLi.append($firstA);
+							$paging.append($firstLi);
+							
+							if(currentPage <= 1){
+								var $preLi = $("<li class='paginate_button page-item disabled' id='dataTable_previous'>");
+								var $preA = $("<a onclick='filteringP(" + (currentPage - 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage - 1) + "' tabindex='0' class='page-link'>").text("Previous");
+								$preLi.append($preA);
+								$paging.append($preLi);
+							}else{
+								var $preLi = $("<li class='paginate_button page-item' id='dataTable_previous'>");
+								var $preA = $("<a onclick='filteringP(" + (currentPage - 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage - 1) + "' tabindex='0' class='page-link'>").text("Previous");
+								$preLi.append($preA);
+								$paging.append($preLi);
+							}
+							
+							for(var p = startPage; p <= endPage; p++){
+								if(p == currentPage){
+									var $numLi = $("<li class='paginate_button page-item disabled'>");
+									var $numA = $("<a onclick='filteringP(" + p + ")' aria-controls='dataTable' data-dt-idx='" + p + "' tabindex='0' class='page-link'>").text(p);
+									$numLi.append($numA);
+									$paging.append($numLi);
+								}else{
+									var $numLi = $("<li class='paginate_button page-item'>");
+									var $numA = $("<a onclick='filteringP(" + p + ")' aria-controls='dataTable' data-dt-idx='" + p + "' tabindex='0' class='page-link'>").text(p);
+									$numLi.append($numA);
+									$paging.append($numLi);
+								}
+							}
+							
+							if(currentPage >= maxPage){
+								var $nextLi = $("<li class='paginate_button page-item disabled' id='dataTable_next'>");
+								var $nextA = $("<a onclick='filteringP(" + (currentPage + 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage + 1) + "' tabindex='0' class='page-link'>").text("Next");
+								$nextLi.append($nextA);
+								$paging.append($nextLi);
+							}else{
+								var $nextLi = $("<li class='paginate_button page-item' id='dataTable_next'>");
+								var $nextA = $("<a onclick='filteringP(" + (currentPage + 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage + 1) + "' tabindex='0' class='page-link'>").text("Next");
+								$nextLi.append($nextA);
+								$paging.append($nextLi);
+							}
+							
+							var $endLi = $("<li class='paginate_button page-item' id='dataTable_end'>");
+							var $endA = $("<a onclick='filteringP(" + maxPage + ")' aria-controls='dataTable' data-dt-idx='" + maxPage + "' tabindex='0' class='page-link'>").text("End");
+							$endLi.append($endA);
+							$paging.append($endLi);
 							
 						for(var key in data.list) {
 							//data값 td에 입력
@@ -644,11 +689,11 @@
 						$resultNull.append("<br><br><br><br><br><br>");
 					}
 					$listSize.prop("innerHTML", data.list.length+"건");
-					$(".paging").remove();
+					
 					$(".sorting_1").siblings().click(function() {
 						$(this).parent().each(function() {
-							console.log($(this).find("td").eq(1).text());
-							var reqNum = $(this).find("td").eq(1).text();
+							console.log($(this).find("td").eq(2).text());
+							var reqNum = $(this).find("td").eq(2).text();
 							location = "<%= request.getContextPath()%>/reqProductDetail.bo?reqNum=" + reqNum;
 						});
 					});
