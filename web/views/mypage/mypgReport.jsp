@@ -65,6 +65,7 @@
 		float:left;
 		width:80%;
 		margin-left: 3%;
+		
 	}
 	.detail .titletb {
 		background:#0CB6F4;
@@ -113,17 +114,25 @@
 			<h1 align="left"><a href="mypgMain.jsp" style="text-decoration: none; background: white; margin:-10px;"><img id="mlogo" src="../../resource/img/mypage/mypage.png"></a></h1>
  			  <a href="mypgUser.jsp" >내 정보 조회</a>
 			  <a href="mypgUpPd.jsp" >내 등록 물품</a>
- 			 <a href="mypgRtPd.jsp" class="active">내 대여 현황</a>
+ 			 <a href="mypgRtPd.jsp">내 대여 현황</a>
   			<a href="mypgUserPd.jsp">관심물품</a>
  			 <a href="mypgPoint.jsp">적립금 현황</a>
- 			 <a href="mypgUser.jsp">내 문의 내역</a>
+ 			 <a href="mypgReport.jsp" class="active">내 문의 내역</a>
  			 
 			</div>
 		
 			<div class="detail">
+				<ul class="nav nav-tabs">
+					<li class="active"><a data-toggle="tab" href="#productDetailTab">신고 내역</a></li>
+					<li><a data-toggle="tab" href="#productQnATab">QnA 내역</a></li>
+					<li><a data-toggle="tab" href="#productReviewTab">후기 내역</a></li>
+				</ul>
+				<br><br>
 				
-				<label style="font-size:20px;"> 나의 신고 내역 </label>
-			<table class="table table-striped">
+				<div class="tab-content">
+					<!-- 상품 상세설명 탭 -->
+					<div id="productDetailTab" class="tab-pane fade in active" align="center">
+						<table class="table table-striped" >
     <thead>
       <tr>
         <th >신고 접수 일자</th>
@@ -187,24 +196,82 @@
   </table>
 
 
-			<%-- 	<% for(no n : list){ %>
-				<tr>
-					<td><%= n.getNno() %></td>
-					<td><%= n.getnTitle() %></td>
-					<td><%= n.getnWriter() %></td>
-					<td><%= n.getnCount() %></td>
-					<td><%= n.getnDate() %></td>
-				</tr>
-				<% } %> --%>
-			</table>
+				
+		
+			
+					</div> <!-- end of productDetailTab -->
+					
+					<!-- QnA탭 -->
+					<div id="productQnATab" class="tab-pane fade" align="center">
+						<table class="table table-striped" >
+    <thead>
+      <tr>
+        <th style="width:15%;">작성일</th>
+        <th>작성자</th>
+        <th style="width:60%;">내용</th>
+       
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>2019-05-21</td>
+        <td >차소희</td>
+        <td>이거 새건가요?</td>
+       
+      </tr>
+      <tr>
+        <td>2019-05-19</td>
+        <td>차소희</td>
+        <td>이거 기능 좋아요?</td>
+     
+      </tr>
+      
+    </tbody>
+  </table>
+						
+					</div> <!-- end of productQnATab -->
+					
+					<!-- 상품 리뷰 탭 -->
+					<div id="productReviewTab" class="tab-pane fade" align="center">
+						<table class="table table-striped" >
+    <thead>
+      <tr>
+        <th style="width:15%;">작성일</th>
+        <th>작성자</th>
+        <th style="width:60%;">내용</th>
+       
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>2019-05-21</td>
+        <td >차소희</td>
+        <td>좋아요!</td>
+       
+      </tr>
+      <tr>
+        <td>2019-05-19</td>
+        <td>차소희</td>
+        <td>이상해요!</td>
+     
+      </tr>
+      
+    </tbody>
+  </table>
+					</div> <!-- end of productReviewTab -->
+					
+					
+				</div><!-- detail -->
+				
 			
 			
-			</div>
-	
-	</div>
+			</div> <!-- main -->
+			
 	<div id="footer">
 			<%@ include file="../common/footer.jsp" %>
 		</div>
+	
+	</div>
 		
 	<div class="col-lg-1 col-md-1">
 	</div>
