@@ -98,6 +98,7 @@ textarea {
 							<input type="hidden" name="nums" id="nums" value="<%= reqProduct.getPno() %>">
 								<div class="card-header py-3">
 									<h6 class="m-0 font-weight-bold text-primary">
+										상태 : 창고적재
 										요청날짜 : <%= req.get("reqpDate") %><br>
 										등록자 : <%= m.getUserName() %><br>
 										물품 : <%= req.get("pName") %><br>

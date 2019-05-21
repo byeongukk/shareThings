@@ -1,5 +1,17 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import="java.util.*, com.kh.st.adProduct.model.vo.AdProduct, 
+	com.kh.st.common.*"%>
+<%
+	ArrayList<AdProduct> list =
+		(ArrayList<AdProduct>) request.getAttribute("list");
+	PageInfo pi = (PageInfo) request.getAttribute("pi");
+	int listCount = (int) request.getAttribute("listCount");
+	
+	int currentPage = pi.getCurrentPage();
+	int maxPage = pi.getMaxPage();
+	int startPage = pi.getStartPage();
+	int endPage = pi.getEndPage();
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -34,6 +46,10 @@
 
 #dataTable_wrapper {
 	overflow: hidden;
+}
+.paging {
+	margin-left: auto;
+	margin-right: auto;
 }
 </style>
 </head>
@@ -114,7 +130,10 @@
 									</div>
 								</div>
 							</div>
-							<div class="card shadow mb-4">
+				<div class="card shadow mb-4">
+					<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary" id="listSize"><%= listCount %>건</h6>
+					</div>
                   <div class="card-body">
                      <div class="table-responsive">
                         <div id="dataTable_wrapper"
@@ -125,9 +144,8 @@
                                     width="100%" cellspacing="0" role="grid"
                                     aria-describedby="dataTable_info" style="width: 100%;">
                                     <thead>
-                                       <tr role="row">
-
-                                          <th class="sorting_asc" tabindex="0"
+                                       <tr role="row" align="center">
+                                          <th class="sorting" tabindex="0"
                                              aria-controls="dataTable" rowspan="1" colspan="1"
                                              aria-label="Name: activate to sort column descending"
                                              aria-sort="ascending" style="width: 30px;">등록번호</th>
@@ -135,6 +153,10 @@
                                              rowspan="1" colspan="1"
                                              aria-label="Position: activate to sort column ascending"
                                              style="width: 30px;">등록자</th>
+                                          <th class="sorting" tabindex="0" aria-controls="dataTable"
+                                             rowspan="1" colspan="1"
+                                             aria-label="Office: activate to sort column ascending"
+                                             style="width: 30px;">모델명</th>
                                           <th class="sorting" tabindex="0" aria-controls="dataTable"
                                              rowspan="1" colspan="1"
                                              aria-label="Office: activate to sort column ascending"
@@ -151,32 +173,94 @@
                                     </thead>
 
                                     <tbody>
-                                       <tr role="row" class="even">
-                                          <td class="sorting_1">20190508</td>
-                                          <td>user01</td>
-                                          <td>노트북</td>
-                                          <td>2019/05/10 ~ 2019/07/10</td>
-                                          <td>렌탈중</td>
+                                    <% for(AdProduct ap : list) { %>
+                                       <tr role="row" class="even" align="center">
+                                          <td class="sorting_1"><%= ap.getPno() %></td>
+                                          <td><%= ap.getpWriter() %></td>
+                                          <td><%= ap.getModel() %></td>
+                                          <td><%= ap.getCtgName() %></td>
+                                          <td><%= ap.getPstartDate() %> ~ <%= ap.getPendDate() %></td>
+                                          <td><%= ap.getStatus() %></td>
                                        </tr>
-                                       <tr role="row" class="even">
-                                          <td class="sorting_1">20190508</td>
-                                          <td>user01</td>
-                                          <td>노트북</td>
-                                          <td>2019/05/10 ~ 2019/07/10</td>
-                                          <td>렌탈중</td>
-                                       </tr>
-                                       <tr role="row" class="even">
-                                          <td class="sorting_1">20190508</td>
-                                          <td>user01</td>
-                                          <td>노트북</td>
-                                          <td>2019/05/10 ~ 2019/07/10</td>
-                                          <td>렌탈중</td>
-                                       </tr>
+                                   <% } %>
                                     </tbody>
                                  </table>
                               </div>
                            </div>
-                           <%-- <%@ include file="../common/paging.jsp"%> --%>
+                           <div class="row">
+		<div class="paging">
+			<div class="col-sm-12 col-md-3">
+				<div class="dataTables_paginate paging_simple_numbers"
+					id="dataTable_paginate">
+					<ul class="pagination" id="pagingUl">
+						<li class="paginate_button page-item"
+							id="dataTable_first"><a
+							href="<%=request.getContextPath()%>/adProductList.bo?currentPage=1"
+							aria-controls="dataTable" data-dt-idx="0" tabindex="0"
+							class="page-link">First</a></li>
+
+						<%
+								if (currentPage <= 1) {
+						%>
+						<li class="paginate_button page-item disabled"
+							id="dataTable_previous"><a
+							href="<%=request.getContextPath()%>/adProductList.bo?currentPage=<%=currentPage - 1%>"
+							aria-controls="dataTable" data-dt-idx="0" tabindex="0"
+							class="page-link">Previous</a></li>
+						<%
+								} else {
+						%>
+						<li class="paginate_button page-item"
+							id="dataTable_previous"><a
+							href="<%=request.getContextPath()%>/adProductList.bo?currentPage=<%=currentPage - 1%>"
+							aria-controls="dataTable" data-dt-idx="0" tabindex="0"
+							class="page-link">Previous</a></li>
+						<%
+								}
+						%>
+						<%
+								for (int p = startPage; p <= endPage; p++) {
+								    if (p == currentPage) {
+						%>
+						<li class="paginate_button page-item disabled"><a href="<%=request.getContextPath()%>/adProductList.bo?currentPage=<%=p%>"
+							aria-controls="dataTable" data-dt-idx="1" tabindex="0"
+							class="page-link"><%=p%></a></li>
+						<%
+								} else {
+						%>
+						<li class="paginate_button page-item active"><a href="<%=request.getContextPath()%>/adProductList.bo?currentPage=<%=p%>"
+							aria-controls="dataTable" data-dt-idx="1" tabindex="0"
+							class="page-link"><%=p%></a></li>
+						<%
+								}
+						%>
+
+
+						<%
+								}
+						%>
+						
+						<%
+								if (currentPage >= maxPage) {
+						%>
+						<li class="paginate_button page-item disabled" id="dataTable_next"><a
+							href="<%=request.getContextPath()%>/adProductList.bo?currentPage=<%=currentPage + 1%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+							class="page-link">Next</a></li>
+						<%
+								} else {
+						%>
+						<li class="paginate_button page-item next" id="dataTable_next"><a
+							href="<%=request.getContextPath()%>/adProductList.bo?currentPage=<%=currentPage + 1%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+							class="page-link">Next</a></li>
+						<%      }     %>
+						<li class="paginate_button page-item next" id="dataTable_end"><a
+							href="<%=request.getContextPath()%>/adProductList.bo?currentPage=<%=maxPage%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+							class="page-link">End</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
                         </div>
                      </div>
                   </div>
@@ -214,13 +298,13 @@
 															</tr>
 														</thead>
 														<tbody>
-															<tr class="odd gradeX">
+															<!-- <tr class="odd gradeX">
 																<td><input type="checkBox">
 																<td></td>
 																<td></td>
 																<td></td>
 																<td></td>
-															</tr>
+															</tr> -->
 														</tbody>
 													</table>
 												</div>
@@ -257,36 +341,37 @@
 			<script>
 		$(function() {
 			$(".even").click(function() {
-				location = "<%=request.getContextPath()%>/views/admin/request/reqProductDetail.jsp";
-				});
-			});
+				var num = $(this).find("td").eq(0).text();
+				location = "<%= request.getContextPath()%>/adProductDetail.bo?num=" + num;
+			});	
+		});
 
-			function ok() {
+			/* function ok() {
 				alert("정말 승인하시겠습니까?");
-			}
+			} */
 			</script>
 			<script
-				src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>
+				src="<%=request.getContextPath() %>/resource/vendor/jquery/jquery.min.js"></script>
 			<script
-				src="<%=request.getContextPath()%>/resource/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+				src="<%=request.getContextPath() %>/resource/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 			<!-- Core plugin JavaScript-->
 			<script
-				src="<%=request.getContextPath()%>/resource/vendor/jquery-easing/jquery.easing.min.js"></script>
+				src="<%=request.getContextPath() %>/resource/vendor/jquery-easing/jquery.easing.min.js"></script>
 
 			<!-- Custom scripts for all pages-->
 			<script
-				src="<%=request.getContextPath()%>/resource/js/sb-admin-2.min.js"></script>
+				src="<%=request.getContextPath() %>/resource/js/sb-admin-2.min.js"></script>
 
 			<!-- Page level plugins -->
 			<script
-				src="<%=request.getContextPath()%>/resource/vendor/chart.js/Chart.min.js"></script>
+				src="<%=request.getContextPath() %>/resource/vendor/chart.js/Chart.min.js"></script>
 
 			<!-- Page level custom scripts -->
 			<script
-				src="<%=request.getContextPath()%>/resource/js/demo/chart-area-demo.js"></script>
+				src="<%=request.getContextPath() %>/resource/js/demo/chart-area-demo.js"></script>
 			<script
-				src="<%=request.getContextPath()%>/resource/js/demo/chart-pie-demo.js"></script>
+				src="<%=request.getContextPath() %>/resource/js/demo/chart-pie-demo.js"></script>
 </body>
 
 </html>

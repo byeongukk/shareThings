@@ -46,9 +46,18 @@ public class CheckHistoryService {
 						rollback(con);
 						result = 0;
 					}
+				} else {
+					System.out.println("검수거절 배송 실패");
+					rollback(con);
 				}
+			} else {
+				System.out.println("상태 업데이트 실패");
+				rollback(con);
 			}
-		}	
+		} else {
+			System.out.println("검수 내용, 검수자 인서트 실패");
+			rollback(con);
+		}
 		close(con);
 		return result;
 	}
