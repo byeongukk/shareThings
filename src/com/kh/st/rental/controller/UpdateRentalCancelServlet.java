@@ -32,7 +32,7 @@ public class UpdateRentalCancelServlet extends HttpServlet {
 		String[] pno = pnos.split(",");
 		
 		String pStatus = "PS10";
-		String rtStatus = "RTS1";
+		String rtStatus = "RTS7";
 	
 		HashMap<String,Object> hmap = new HashMap<String,Object>();
 		

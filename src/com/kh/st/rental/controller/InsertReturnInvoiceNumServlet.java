@@ -35,7 +35,7 @@ public class InsertReturnInvoiceNumServlet extends HttpServlet {
 		//변경할 물품 상태 코드
 		String pStatus = "PS11";
 		//변경할 대여 상태 코드
-		String rtStatus = "RTS5";
+		String rtStatus = "RTS6";
 		 
 		HashMap<String,Object> invoiceVal = new HashMap<String,Object>();
 		 

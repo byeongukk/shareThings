@@ -63,7 +63,7 @@ public class RentalDao {
 				hmap.put("model", rset.getString("MODEL"));
 				hmap.put("userName", rset.getString("USER_NAME"));
 				hmap.put("rtReqDate", rset.getDate("RT_REQ_DATE"));
-				hmap.put("rtStatus", rset.getString("RT_STATUS"));
+				hmap.put("rtStatus", rset.getString("STATUS"));
 				
 				list.add(hmap);
 			}
@@ -109,8 +109,8 @@ public class RentalDao {
 				//상태조건이 전체가 아닐때
 				
 				if(!(condition.get("rentalStatus").equals("0"))) {
-					//R.RT_STATUS 컬럼을 조회하게 문자열 합치기
-					queryArr.add(" R.RT_STATUS = ? ");
+					//STATUS 컬럼을 조회하게 문자열 합치기
+					queryArr.add(" RT_SID = ? ");
 					bindVal.add(condition.get("rentalStatus"));
 					System.out.println(condition.get("rentalStatus"));
 				}
@@ -175,7 +175,7 @@ public class RentalDao {
 					hmap.put("model", rset.getString("MODEL"));
 					hmap.put("userName", rset.getString("USER_NAME"));
 					hmap.put("rtReqDate", rset.getDate("RT_REQ_DATE"));
-					hmap.put("rtStatus", rset.getString("RT_STATUS"));
+					hmap.put("rtStatus", rset.getString("STATUS"));
 					
 					list.add(hmap);
 				}
@@ -221,7 +221,7 @@ public class RentalDao {
 				hmap.put("userName", rset.getString("USER_NAME"));
 				hmap.put("phone", rset.getString("PHONE"));
 				hmap.put("address", rset.getString("ADDRESS"));
-				hmap.put("rtStatus", rset.getString("RT_STATUS"));
+				hmap.put("rtStatus", rset.getString("STATUS"));
 				
 				
 				list.add(hmap);
@@ -265,7 +265,7 @@ public class RentalDao {
 					hmap.put("model", rset.getString("MODEL"));
 					hmap.put("userId", rset.getString("USER_ID"));
 					hmap.put("userName", rset.getString("USER_NAME"));
-					hmap.put("rtStatus", rset.getString("RT_STATUS"));
+					hmap.put("rtStatus", rset.getString("STATUS"));
 					
 					list.add(hmap);
 				}
@@ -551,7 +551,7 @@ public class RentalDao {
 				hmap.put("userId", rset.getString("USER_ID"));
 				hmap.put("userName", rset.getString("USER_NAME"));
 				hmap.put("phone", rset.getString("PHONE"));
-				hmap.put("rtStatus", rset.getString("RT_STATUS"));
+				hmap.put("rtStatus", rset.getString("STATUS"));
 				
 				list.add(hmap);
 			}
