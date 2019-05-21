@@ -197,8 +197,17 @@ public class productInserServlet extends HttpServlet {
 	            at.setOriginName(originFiles.get(i));
 	            at.setChangeName(saveFiles.get(i));
 	            
-	            fileList.add(at);
+	            if(originFiles.get(i) != null) {
+	            	fileList.add(at);
+	            	
+	            }
 	         }
+	         int rqresult = new ProductService().regreqProduct(pno);
+	         if(rqresult > 0) {
+		         }else {
+		            request.setAttribute("msg", "물품등록게시판 등록 실패!");
+		            request.getRequestDispatcher("views/common/errorPage.jsp").forward(request, response);
+		         }
 	         
 	         int bresult = new BoardService().insertProductBoard(b, fileList);
 	         

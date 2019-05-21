@@ -52,11 +52,7 @@ table {
 	width:1000px;
 	
 	}
-	 td{
-	border:1.5px solid #c4c4c0;
 	
-	
-	} 
 	#title1{
 	height:100px;
 	text-align:center;

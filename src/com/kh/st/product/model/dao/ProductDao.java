@@ -123,6 +123,30 @@ public class ProductDao {
 		return pno;
 	}
 
+	public int regreqProduct(Connection con, int pno) {
+		PreparedStatement pstmt =null;
+		int rqresult = 0;
+		String query = prop.getProperty("reqProduct");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, pno);
+			
+			rqresult = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+
+		
+		
+		return rqresult;
+	}
+
 		
 }
 
