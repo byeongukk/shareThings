@@ -33,7 +33,7 @@ public class UpdateReturnPdServlet extends HttpServlet {
 		//물품코드 대여 입고(반환) 배송
 		String pStatus = "PS13";
 		//대여상태 수거중
-		String rtStatus = "RTS6";
+		String rtStatus = "RTS7";
 	
 		HashMap<String,Object> hmap = new HashMap<String,Object>();
 		

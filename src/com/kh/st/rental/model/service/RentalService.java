@@ -79,7 +79,6 @@ public class RentalService {
 	public int insertInvcNum(HashMap<String, Object> invoiceVal) {
 		Connection con = getConnection();
 		int result = 0;
-		System.out.println("insertInvcNum");
 		// delivery insert
 		int dvResult = new RentalDao().insertInvcNum(con,invoiceVal);
 		

@@ -6,28 +6,30 @@ import java.sql.Date;
 public class Refund implements Serializable{
 	private int rfNo;
 	private String userId;
-	private String userName;
-	private int payNo;
+	private String verifyCode;
+	private String rfReason;
+	private int price;
 	private String rfType;
 	private Date reqDate;
-	private String rfStatus;
+	private String rfResult;
 	private Date rfDate;
-	private String rfReason;
+	private String rfStatus;
 	
 	public Refund() {}
 
-	public Refund(int rfNo, String userId, String userName, int payNo, String rfType, Date reqDate, String rfStatus,
-			Date rfDate, String rfReason) {
+	public Refund(int rfNo, String userId, String verifyCode, String rfReason, int price, String rfType, Date reqDate,
+			String rfResult, Date rfDate, String rfStatus) {
 		super();
 		this.rfNo = rfNo;
 		this.userId = userId;
-		this.userName = userName;
-		this.payNo = payNo;
+		this.verifyCode = verifyCode;
+		this.rfReason = rfReason;
+		this.price = price;
 		this.rfType = rfType;
 		this.reqDate = reqDate;
-		this.rfStatus = rfStatus;
+		this.rfResult = rfResult;
 		this.rfDate = rfDate;
-		this.rfReason = rfReason;
+		this.rfStatus = rfStatus;
 	}
 
 	public int getRfNo() {
@@ -38,12 +40,16 @@ public class Refund implements Serializable{
 		return userId;
 	}
 
-	public String getUserName() {
-		return userName;
+	public String getVerifyCode() {
+		return verifyCode;
 	}
 
-	public int getPayNo() {
-		return payNo;
+	public String getRfReason() {
+		return rfReason;
+	}
+
+	public int getPrice() {
+		return price;
 	}
 
 	public String getRfType() {
@@ -54,16 +60,16 @@ public class Refund implements Serializable{
 		return reqDate;
 	}
 
-	public String getRfStatus() {
-		return rfStatus;
+	public String getRfResult() {
+		return rfResult;
 	}
 
 	public Date getRfDate() {
 		return rfDate;
 	}
 
-	public String getRfReason() {
-		return rfReason;
+	public String getRfStatus() {
+		return rfStatus;
 	}
 
 	public void setRfNo(int rfNo) {
@@ -74,12 +80,16 @@ public class Refund implements Serializable{
 		this.userId = userId;
 	}
 
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setVerifyCode(String verifyCode) {
+		this.verifyCode = verifyCode;
 	}
 
-	public void setPayNo(int payNo) {
-		this.payNo = payNo;
+	public void setRfReason(String rfReason) {
+		this.rfReason = rfReason;
+	}
+
+	public void setPrice(int price) {
+		this.price = price;
 	}
 
 	public void setRfType(String rfType) {
@@ -90,24 +100,26 @@ public class Refund implements Serializable{
 		this.reqDate = reqDate;
 	}
 
-	public void setRfStatus(String rfStatus) {
-		this.rfStatus = rfStatus;
+	public void setRfResult(String rfResult) {
+		this.rfResult = rfResult;
 	}
 
 	public void setRfDate(Date rfDate) {
 		this.rfDate = rfDate;
 	}
 
-	public void setRfReason(String rfReason) {
-		this.rfReason = rfReason;
+	public void setRfStatus(String rfStatus) {
+		this.rfStatus = rfStatus;
 	}
 
 	@Override
 	public String toString() {
-		return "Refund [rfNo=" + rfNo + ", userId=" + userId + ", userName=" + userName + ", payNo=" + payNo
-				+ ", rfType=" + rfType + ", reqDate=" + reqDate + ", rfStatus=" + rfStatus + ", rfDate=" + rfDate
-				+ ", rfReason=" + rfReason + "]";
+		return "Refund [rfNo=" + rfNo + ", userId=" + userId + ", verifyCode=" + verifyCode + ", rfReason=" + rfReason
+				+ ", price=" + price + ", rfType=" + rfType + ", reqDate=" + reqDate + ", rfResult=" + rfResult
+				+ ", rfDate=" + rfDate + ", rfStatus=" + rfStatus + "]";
 	}
+
+	
 	
 	
 	

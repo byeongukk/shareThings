@@ -30,7 +30,7 @@ public class BoardDao {
 		}
 	}
 	
-	//민지
+//민지
 	   //중분류 카테고리로 하위 물품 리스트 불러오기
 	   public ArrayList<HashMap<String, Object>> selectList(Connection con, String ctgLv2) {
 	      PreparedStatement pstmt = null;
@@ -542,12 +542,7 @@ public class BoardDao {
 	      return zzimCnt;
 	   }
 	   
-	   
 
-	
-	
-	
-	
 	/*-------------------준혁 */
 	   public int insertThumnailContent(Connection con, Board b) {
 	      PreparedStatement pstmt = null;
@@ -633,6 +628,10 @@ public class BoardDao {
 	      
 	      return result;
 	   }
+
+	
+	
+
 	
 	
 }

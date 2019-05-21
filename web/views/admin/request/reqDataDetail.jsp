@@ -59,12 +59,14 @@ textarea {
 	resize:none;
 }
 .img {
-	width: 150px;
-	height: 150px;
+	width: 100%;
+	height: 100%;
 }
 .confirmImg {
 	display:inline-block;
 	margin:30px;
+	width:100%;
+	height:100%;
 }
 </style>
 </head>
@@ -103,7 +105,7 @@ textarea {
 									</h6>
 								</div>
 								<div class="card-body">
-									<table class="col-lg-10">
+									<table class="col-lg-12">
 										<tr>
 										<% for(int i = 0; i < fileList.size(); i ++)  { %>
 											<td>
@@ -156,8 +158,7 @@ textarea {
 								 		for(int i = 0; i < confirmList.size(); i ++)  { %>
 											<div class="confirmImg" id="confirm<%= i + 1 %>">
 												<img id="confirmImg<%= i + 1 %>" 
-													 src="<%= request.getContextPath()%>/attach_upload/<%= confirmList.get(i).getChangeName() %>"
-													 width="150" height="150">
+													 src="<%= request.getContextPath()%>/attach_upload/<%= confirmList.get(i).getChangeName() %>">
 											</div>
 									<% } %>
 								<% } else { %>

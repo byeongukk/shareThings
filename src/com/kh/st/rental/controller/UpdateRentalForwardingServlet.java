@@ -32,7 +32,7 @@ public class UpdateRentalForwardingServlet extends HttpServlet {
 		//물품코드 대여중
 		String pStatus = "PS12";
 		//대여상태 서비스중
-		String rtStatus = "RTS3";
+		String rtStatus = "RTS5";
 	
 		HashMap<String,Object> hmap = new HashMap<String,Object>();
 		

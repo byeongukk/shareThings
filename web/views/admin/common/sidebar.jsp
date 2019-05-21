@@ -82,7 +82,7 @@
         <div id="collapseThree" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
 
-            <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/product/productList.jsp">물품조회</a>
+            <a class="collapse-item" href="<%= request.getContextPath() %>/adProductList.bo">물품조회</a>
             <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/product/checkStandard.jsp">검수기준</a>
             <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/product/check.jsp">검수관리</a>
 

@@ -379,7 +379,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 				}
 			});
 			console.log(rtStatus);
-			if(rtStatus == "RTS5 "){
+			if(rtStatus == "RTS6"){
 				alert("이미 입력된 물품입니다");
 				return false;
 			}
@@ -445,7 +445,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 			$(".even").each(function() {
 				if($(this).find(".check").is(":checked")) {
 					//운송장번호가 입력되지않은  물품이 있는경우
-					if($(this).find("td").eq(9).text() != "RTS5"){
+					if($(this).find("td").eq(9).text() != "RTS6"){
 						console.log($(this).find("td").eq(9).text());
 						rtStatusCheck = false;
 					}
@@ -483,7 +483,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 		$(".even").each(function() {
 			if($(this).find(".check").is(":checked")) {	
 				//상태가 수거중이 아닌  물품이 있는경우
-				if($(this).find("td").eq(9).text() != "RTS6"){
+				if($(this).find("td").eq(9).text() != "RTS7"){
 					rtStatusCheck = false;
 				}
 				status.push($(this).find("td").eq(1).text());

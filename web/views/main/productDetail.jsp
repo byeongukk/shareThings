@@ -204,10 +204,13 @@
 								<tr>
 									<td colspan="4" align="right">
 										<div class="ui labeled button" tabindex="0">
-											<div class="ui red button">
+											<div class="ui red button" id="zzimBtn">
 												<i class="heart icon"></i> 찜하기
 											</div>
-											<a class="ui basic red left pointing label"> <%= bmap.get("zzimCount") %> </a>
+											<a class="ui basic red left pointing label" id="zzimCtn"> <%= bmap.get("zzimCount") %> </a>
+											<div class="ui custom popup top left transition hidden">관심물품으로 등록되었습니다.
+												<div class="ui yellow button" id="goToMyZzim">내 관심목록으로 이동</div>
+											</div>
 										</div>
 										<div class="ui labeled button" tabindex="0">
 											<div class="ui basic blue button">
@@ -318,7 +321,7 @@
 					<div id="productQnATab" class="tab-pane fade" align="center">
 						<div class="row QnAInputArea" align="left">
 							
-							<h3>Q&A(<%= QnAList.size() %>)</h3>
+							<h3 id="QnAHead">Q & A (<%= QnAList.size() %>)</h3>
 							<br>
 							<p><b>나의 질문</b></p>
 							<textarea class="QnAInput" rows="5" style="width: 100%"
@@ -377,11 +380,11 @@
 					<!-- 상품 리뷰 탭 -->
 					<div id="productReviewTab" class="tab-pane fade" align="center">
 						<div class="row reviewInputArea" align="left">
-							<h3>대여 후기(<%= reviewList.size() %>)</h3>
+							<h3 id="reviewHead">대여 후기 (<%= reviewList.size() %>)</h3>
 							<br>
 							<p><b>나의 후기</b></p>
 							<form id="reviewForm" method="POST" enctype="multipart/form-data">
-								<div class="ui star huge rating" data-rating="3" data-max-rating="5"></div>
+								<div class="ui star huge rating" id="ratingInput" data-rating="3" data-max-rating="5"></div>
 								<input type="hidden" name="bno" value="<%= (int)bmap.get("bno") %>">
 								<input type="hidden" name="pno" value="<%= (int)bmap.get("pno") %>">
 								<input type="hidden" name="reviewStar">
@@ -405,7 +408,7 @@
 										<i class="camera icon" style="position:absolute; top:30%;left:35%;"></i>
 										<img id="rvImg4"width="100%" height="100%">
 									</div>
-									<div class="rvImageArea rvImageAre5">
+									<div class="rvImageArea rvImageArea5">
 										<i class="camera icon" style="position:absolute; top:30%;left:35%;"></i>
 										<img id="rvImg5"width="100%" height="100%">
 									</div>
@@ -434,8 +437,6 @@
 								<tbody>
 									<%
 										for(int i = 0; i < reviewList.size(); i++) {
-											
-												
 									%>
 									<tr>
 										<td>
@@ -471,11 +472,11 @@
 											}
 									%>
 										</td>
-										<td></td>
+										<td><div class="ui star large rating ratingContent" data-rating="<%= reviewList.get(i).get("rvStar") %>" data-max-rating="5"></div></td>
 										<td></td>
 									</tr>
 									<%
-											if(reviewList.get(j).get("ansTitle") != null) {
+											if(reviewList.get(i).get("ansTitle") != null) {
 									%>
 									<tr>
 										<td style="color:orangered">&nbsp;&nbsp;[답글 :]<%= reviewList.get(i).get("ansTitle") %></td>
@@ -521,9 +522,13 @@
 		    $("#startDay").datepicker();
 		    $("#endDay").datepicker();
 			hideContent();
-			$(".ui.rating").rating();
+			$("#ratingInput").rating();
+			$(".ratingContent").rating("disable");
 			$("#fileArea").hide();
-			
+			$("#zzimBtn").popup({
+				popup:$(".custom.popup"),
+				on:'click'
+			});
 			
 	 	});
 	 	$(".rvImageArea1").click(function() {
@@ -559,6 +564,7 @@
 		 		$("#reviewList").find("tbody>tr:odd").hide();
 		 		$(this).next().slideDown();
 		 	});
+		 	$(".ratingContent").rating("disable");
 	 	}
 	 	
 	 	function loadImg(value, num) {
@@ -566,8 +572,7 @@
 	 			var reader = new FileReader();
 	 			reader.onload = function(e) {
 	 				switch (num) {
-	 				case 1 : $("#rvImg1").attr("src", e.target.result);
-	 						$("#rvImg1").css("zIndex", "100");break;
+	 				case 1 : $("#rvImg1").attr("src", e.target.result);break;
 	 				case 2 : $("#rvImg2").attr("src", e.target.result);break;
 	 				case 3 : $("#rvImg3").attr("src", e.target.result);break;
 	 				case 4 : $("#rvImg4").attr("src", e.target.result);break;
@@ -624,7 +629,9 @@
 				success:function(data) {
 					var $tbody = $("#QnAList>tbody");
 					$tbody.html("");
+					var ctn = 0;
 					for(var key in data) {
+						ctn++;
 						var $tr = $("<tr>");
 						var $titleTd = $("<td>").text(data[key].qnaTitle);
 						var $writerTd = $("<td>").text(data[key].qnaWriter);
@@ -662,6 +669,7 @@
 					}
 					$("#QnAinput").val("");
 					hideContent();
+					$("#QnAHead").text("Q & A (" + ctn + ")");
 					alert("QnA 등록 완료");
 				}, error:function(data) {
 					alert("서버 전송 실패");
@@ -677,12 +685,11 @@
 			<% if(loginUser == null) {%>
 			location.href="<%= request.getContextPath() %>/views/member/loginPage.jsp";
 			<% }else {%>
-			var reviewStar = $(".ui.rating").rating("get rating");
+			var reviewStar = $("#ratingInput").rating("get rating");
 			$("input[name=reviewStar]").val(reviewStar);
 			var form = $("#reviewForm")[0];
 			var formData = new FormData(form);
-			//console.log(reviewStar);
-			/* formData.reviewStar = reviewStar; */
+			
 			$.ajax({
 				url:"<%= request.getContextPath() %>/insertReview.bo",
 				type:"post",
@@ -694,9 +701,18 @@
 				success:function(data) {
 					var $tbody = $("#reviewList>tbody");
 					$tbody.html("");
+					var ctn = 0;
 					for(var key in data) {
+						ctn++;
 						var $tr = $("<tr>");
 						var $titleTd = $("<td>").text(data[key].rvTitle);
+						for(var key2 in data[key].rvAttList) {
+							var rvAtt = data[key].rvAttList[key2];
+							if(rvAtt.fileLevel == 0) {
+								var $titleImg = $("<img src='/st/attach_upload/" + rvAtt.changeName + "' width='40px' height='40px'>");
+								$titleTd.prepend($titleImg);
+							}
+						}
 						var $writerTd = $("<td>").text(data[key].rvWriter);
 						var $dateTd = $("<td>").text(data[key].rvDate);
 						$tr.append($titleTd);
@@ -706,8 +722,17 @@
 						
 						var $contentTr = $("<tr>");
 						var $contentTd = $("<td>").text(data[key].rvContent);
-						var $emptyTd = $("<td colspan='2'>");
+						for(var key2 in data[key].rvAttList) {
+							var rvAtt = data[key].rvAttList[key2];
+							var $imgs = $("<img src='/st/attach_upload/" + rvAtt.changeName + "' width='80px' height='80px'>");
+							$contentTd.append($imgs);
+						}
+						var $starTd = $("<td>");
+						var $starContent = $("<div class='ui star huge rating ratingContent' data-max-rating='5' data-rating='" + data[key].rvStar + "'>")
+						var $emptyTd = $("<td>");
+						$starTd.append($starContent);
 						$contentTr.append($contentTd);
+						$contentTr.append($starTd);
 						$contentTr.append($emptyTd);
 						$tbody.append($contentTr);
 
@@ -732,6 +757,28 @@
 					}
 					$(".reviewInput").val("");
 					hideContent();
+					$("#reviewHead").text("대여 후기 (" + ctn + ")");
+					$("#rvImg1").remove();
+					var img1 = $("<img id='rvImg1' width='100%' height='100%'>");
+					$(".rvImageArea1").append(img1);
+					$("#rvImg2").remove();
+					var img2 = $("<img id='rvImg2' width='100%' height='100%'>");
+					$(".rvImageArea2").append(img2);
+					$("#rvImg3").remove();
+					var img3 = $("<img id='rvImg3' width='100%' height='100%'>");
+					$(".rvImageArea3").append(img3);
+					$("#rvImg4").remove();
+					var img4 = $("<img id='rvImg4' width='100%' height='100%'>");
+					$(".rvImageArea4").append(img4);
+					$("#rvImg5").remove();
+					var img5 = $("<img id='rvImg5' width='100%' height='100%'>");
+					$(".rvImageArea5").append(img5);
+					$("#img1").val("");
+					$("#img2").val("");
+					$("#img3").val("");
+					$("#img4").val("");
+					$("#img5").val("");
+					$("#ratingInput").rating("set rating", 3);
 					alert("대여 후기 등록 완료");
 				}, error:function(data) {
 					alert("서버 전송 실패");
@@ -741,6 +788,33 @@
 			<% } %>
 		});
 		
+		$("#zzimBtn").click(function() {
+			<% if(loginUser == null) {%>
+			location.href="<%= request.getContextPath() %>/views/member/loginPage.jsp";
+			<% }else {%>
+			$.ajax ({
+				url:"<%= request.getContextPath() %>/insert.zz",
+				type:"POST",
+				data:{uno:<%= loginUser.getUno() %>, pno:<%= bmap.get("pno") %>},
+				success:function(data) {
+					if(data == "already exist") {
+						alert("이미 관심목록에 추가한 아이템입니다.");
+						//$("#zzimBtn").popup("distroy");
+					}else if(data != "insert fail") {
+						$("#zzimCtn").text(data);
+						
+					}
+				}, error:function(data) {
+					alert("서버전송 실패");
+				}
+			});
+			
+			<% } %>
+		});
+		
+		$("#goToMyZzim").click(function() {
+			location.href="/st/views/mypage/mypgUserPd.jsp";
+		});
 		
 	</script>
 	

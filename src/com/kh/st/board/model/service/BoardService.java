@@ -14,7 +14,7 @@ import com.kh.st.product.model.vo.PCategory;
 
 public class BoardService {
 
-	//민지
+//민지
 	   //카테고리 메뉴 선택시 상품 리스트 불러오기
 	   public HashMap<String, Object> selectList(String ctgLv2) {
 	      Connection con = getConnection();
@@ -160,6 +160,49 @@ public class BoardService {
 	   }
 	   
 	
+=======
+	public ArrayList<HashMap<String, Object>> selectReviewList(int parentBno) {
+		Connection con = getConnection();
+		//HashMap<String, Object> rvmap = new HashMap<String, Object>();
+		ArrayList<HashMap<String, Object>> reviewList = new BoardDao().selectReviewList(con, parentBno);
+		//HashMap<String, Object> rvAttmap = new HashMap<String, Object>();
+		for(int i = 0; i < reviewList.size(); i++) {
+			HashMap<String, Object> reviewmap = reviewList.get(i);
+			int rvno = (int)reviewmap.get("rvNo");
+			ArrayList<Attachment> rvAttList = new BoardDao().selectBoardImages(con, rvno);
+			reviewmap.put("rvAttList", rvAttList);
+			//rvAttmap.put(String.valueOf(rvno), rvAttList);
+		}
+		//rvmap.put("reviewList", reviewList);
+		//rvmap.put("rvAttmap", rvAttmap);
+		close(con);
+		return reviewList;
+	}
+	
+	
+	public int insertZzim(int uno, int pno) {
+		Connection con = getConnection();
+		int result1 = new BoardDao().checkZzim(con, uno, pno);
+		if(result1 > 0) {
+			return -1;
+		}else {
+			int result = new BoardDao().insertZzim(con, uno, pno);
+			if(result > 0) {
+				commit(con);
+			}else {
+				rollback(con);
+			}
+			close(con);
+			return result;
+		}
+	}
+	
+	public int getZzimCnt(int pno) {
+		Connection con = getConnection();
+		int zzimCnt = new BoardDao().getZzimCnt(con, pno);
+		close(con);
+		return zzimCnt;
+	}
 	
 	
 	
@@ -193,6 +236,12 @@ public class BoardService {
 	      
 	      return result;
 	   }
+
+	
+
+	
+
+	
 
 	
 	

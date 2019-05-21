@@ -381,32 +381,50 @@ public class MemberDao {
 			rset = pstmt.executeQuery();
 
 			list = new ArrayList<Refund>();
-
+			
+			
+			
 			while(rset.next()) {
 				Refund r = new Refund();
-
+				
+				int total = rset.getInt("TOTAL_DATE");
+				int left = rset.getInt("LEFT_DATE");
+				
 				r.setRfNo(rset.getInt("RF_NO"));
 				r.setUserId(rset.getString("USER_ID"));
-				r.setUserName(rset.getString("USER_NAME"));
-				r.setPayNo(rset.getInt("PAY_NO"));
-
-
-				if(rset.getString("RF_TYPE").equals("RF1")) {
-					r.setRfType("전체환불");
+				r.setVerifyCode(rset.getString("VERIFY_CODE"));
+				r.setRfReason(rset.getString("RF_REASON"));
+				
+				
+				if(rset.getString("RF_TYPE").equals("RF2")) {
+					r.setPrice((rset.getInt("PRICE")/total) * left);
 				}else {
-					r.setRfType("부분환불");
+					
+				}
+				
+				if(rset.getString("RF_TYPE").equals("RF1")) {
+					r.setRfType("예약취소");
+				}else {
+					r.setRfType("중간환불");
 				}
 
 				r.setReqDate(rset.getDate("REQ_DATE"));
-
+				
+				if(rset.getString("RF_RESULT") == null) {
+					r.setRfResult(rset.getString("RF_RESULT"));
+				}else if(rset.getString("RF_RESULT").equals("N")) {
+					r.setRfResult("부적합");
+				}else {
+					r.setRfResult("적합");
+				}
+				
+				r.setRfDate(rset.getDate("RF_DATE"));
+				
 				if(rset.getString("RF_STATUS").equals("N")) {
 					r.setRfStatus("처리대기");
 				}else {
 					r.setRfStatus("처리완료");
 				}
-
-				r.setRfDate(rset.getDate("RF_DATE"));
-				r.setRfReason(rset.getString("RF_REASON"));
 
 				list.add(r);
 			}
@@ -416,7 +434,7 @@ public class MemberDao {
 			close(pstmt);
 			close(rset);
 		}
-
+		System.out.println(list);
 		return list;
 	}
 

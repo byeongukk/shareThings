@@ -35,7 +35,7 @@ public class DeleteReturnInvoiceNumServlet extends HttpServlet {
 		//변경할 물품상태
 		String pStatus = "PS12";
 		//변경할 대여상태
-		String rtStatus = "RTS3";
+		String rtStatus = "RTS5";
 		 
 		 
 		HashMap<String,Object> invoiceVal = new HashMap<String,Object>();

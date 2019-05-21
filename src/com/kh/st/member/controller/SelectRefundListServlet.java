@@ -25,7 +25,7 @@ public class SelectRefundListServlet extends HttpServlet {
 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// -----------------------------------------------  페이징 처리 (20개)  -----------------------------------------------
+		// -----------------------------------------------  페이징 처리 (50개)  -----------------------------------------------
 				int currentPage;
 				int limit;
 				int maxPage;
@@ -38,13 +38,13 @@ public class SelectRefundListServlet extends HttpServlet {
 					currentPage = Integer.parseInt(request.getParameter("currentPage"));
 				}
 
-				limit = 20;
+				limit = 50;
 
 				int listCount = new MemberService().getRefundListCount();
 
-				maxPage = (int)((double)listCount / limit + 0.95);
+				maxPage = (int)((double)listCount / limit + 0.98);
 
-				startPage = (((int)((double)currentPage / limit + 0.95)) - 1) * 10 + 1;
+				startPage = (((int)((double)currentPage / limit + 0.98)) - 1) * 10 + 1;
 
 				endPage = startPage + 10 - 1;
 
@@ -54,9 +54,12 @@ public class SelectRefundListServlet extends HttpServlet {
 
 				PageInfo pi = new PageInfo(currentPage, limit, maxPage, startPage, endPage);
 
-				// -----------------------------------------------  페이징 처리 (20개)  -----------------------------------------------
+				// -----------------------------------------------  페이징 처리 (50개)  -----------------------------------------------
 				
 				ArrayList<Refund> list = new MemberService().selectRefundList(pi);
+				
+				System.out.println(list);
+				System.out.println(pi);
 				
 				String page = "";
 				if(list != null) {
@@ -68,8 +71,7 @@ public class SelectRefundListServlet extends HttpServlet {
 					request.setAttribute("msg", "회원환불 전체 조회 실패!!");
 				}
 				
-				System.out.println(list);
-				System.out.println(pi);
+				
 				request.getRequestDispatcher(page).forward(request, response);
 				
 				
