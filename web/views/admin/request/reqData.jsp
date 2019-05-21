@@ -95,6 +95,7 @@
 						width="100%">
 					<div class="row" class="col-lg-12">
 						<div class="col-sm-12 col-lg-12">
+						<form action="#">
 							<div class="card shadow mb-4"  id="filter" align="center">
 								<div class="card-header py-3">조회 필터</div>
 								<div class="card-body">
@@ -127,15 +128,16 @@
 										</tr>
 									</table>
 									<div align="center">
-										<button type="button" id="inquiry">조회하기</button>
+										<button type="button" id="inquiry" onclick="filteringP(1)">조회하기</button>
 										&nbsp;&nbsp;&nbsp;
 										<button type="reset" id="initial">초기화</button>
 									</div>
 								</div>
 							</div>
+							</form>
 							<div class="card shadow mb-4">
 						<div class="card-header py-3">
-							<h6 class="m-0 font-weight-bold text-primary"><%= listOkCount %>건</h6>
+							<h6 class="m-0 font-weight-bold text-primary" id="listSize"><%= listOkCount %>건</h6>
 						</div>
 							<div class="card-body">
 							<a href="#" class="btn btn-info btn-icon-split" id="ok" data-toggle="modal" data-target="#okModal">
@@ -146,6 +148,11 @@
 								data-toggle="modal" data-target="#cancelModal"> <span
 								class="icon text-white-50"> <i class="fas fa-trash"></i>
 							</span> <span class="text">검수 거절</span>
+							</a> &nbsp;&nbsp;&nbsp;
+							<a href="#" class="btn btn-success btn-icon-split btn-sm" id="apply">
+								<span class="icon text-white-50">
+									<i class="fas fas fa-check"></i>
+								</span> <span class="text">물품 등록</span>
 							</a>
 								<div class="table-responsive">
 									<div id="dataTable_wrapper"
@@ -222,7 +229,7 @@
 			<div class="col-sm-12 col-md-3">
 				<div class="dataTables_paginate paging_simple_numbers"
 					id="dataTable_paginate">
-					<ul class="pagination">
+					<ul class="pagination" id="pagingUl">
 						<li class="paginate_button page-item"
 							id="dataTable_first"><a
 							href="<%=request.getContextPath()%>/reqOkProduct.bo?currentPage=1"
@@ -477,8 +484,8 @@
 			//체크박스 클릭해도 동작 X(해당 번호 가져옴)
 			$(".sorting_1").siblings().click(function() {
 				$(this).parent().each(function() {
-					console.log($(this).find("td").eq(1).text());
-					var reqNum = $(this).find("td").eq(1).text();
+					console.log($(this).find("td").eq(2).text());
+					var reqNum = $(this).find("td").eq(2).text();
 					location = "<%= request.getContextPath()%>/confirmProductDetail.bo?reqNum=" + reqNum;
 				});
 			});
@@ -662,7 +669,7 @@
 		}
 		
 		//조건 검색
-		$("#inquiry").click(function() {
+		function filteringP(currentPage) {
 			var okStatus = $("#okStatus").val();
 			var details = $("#details").val();
 			var filterContent = $("#filterContent").val();
@@ -682,6 +689,7 @@
 					return false;
 				}
 			}
+			
 			$.ajax({
 				url:"<%= request.getContextPath()%>/selectConfirmFilter.bo",
 				data:{
@@ -689,35 +697,98 @@
 					details:details,
 					filterContent:filterContent,
 					startD:startD,
-					endD:endD
+					endD:endD,
+					currentPage:currentPage
 				},
 				type:"get",
 				success:function(data) {
 					console.log(data);
 					/* 기존 테이블 행 제거 */
 					$("#dataTable > tbody > tr").remove();
+					$("#dataTable_paginate > ul > li").remove();
 					
 					var $dataTable = $("#dataTable");
 					/* 조회된 값이 없을때 출력할 공간 */
 					var $resultNull = $("#result-null");
 					/* 조회된 건수 출력할 공간 */
 					var $listSize = $("#listSize");
+					/* 페이징 */
+					var $paging = $("#pagingUl");
 					
 					//값 넣을 공간 비우기
 					$resultNull.html('');
 					$listSize.prop("innerHTML", '');
-					if(data.length > 0) {
-						for(var key in data) {
+					
+					console.log(data.pi.currentPage);
+					console.log(data.pi);
+					console.log(data.list);
+					
+					if(data.list.length > 0) {
+							var currentPage = data.pi.currentPage;
+							var maxPage = data.pi.maxPage;
+							var startPage = data.pi.startPage;
+							var endPage = data.pi.endPage;
+						
+							var $firstLi = $("<li class='paginate_button page-item' id='dataTable_first'>");
+							var $firstA = $("<a onclick='filteringP(1)' aria-controls='dataTable' data-dt-idx='0' tabindex='0' class='page-link'>").text("first");
+							$firstLi.append($firstA);
+							$paging.append($firstLi);
+							
+							if(currentPage <= 1){
+								var $preLi = $("<li class='paginate_button page-item disabled' id='dataTable_previous'>");
+								var $preA = $("<a onclick='filteringP(" + (currentPage - 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage - 1) + "' tabindex='0' class='page-link'>").text("Previous");
+								$preLi.append($preA);
+								$paging.append($preLi);
+							}else{
+								var $preLi = $("<li class='paginate_button page-item' id='dataTable_previous'>");
+								var $preA = $("<a onclick='filteringP(" + (currentPage - 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage - 1) + "' tabindex='0' class='page-link'>").text("Previous");
+								$preLi.append($preA);
+								$paging.append($preLi);
+							}
+							
+							for(var p = startPage; p <= endPage; p++){
+								if(p == currentPage){
+									var $numLi = $("<li class='paginate_button page-item disabled'>");
+									var $numA = $("<a onclick='filteringP(" + p + ")' aria-controls='dataTable' data-dt-idx='" + p + "' tabindex='0' class='page-link'>").text(p);
+									$numLi.append($numA);
+									$paging.append($numLi);
+								}else{
+									var $numLi = $("<li class='paginate_button page-item'>");
+									var $numA = $("<a onclick='filteringP(" + p + ")' aria-controls='dataTable' data-dt-idx='" + p + "' tabindex='0' class='page-link'>").text(p);
+									$numLi.append($numA);
+									$paging.append($numLi);
+								}
+							}
+							
+							if(currentPage >= maxPage){
+								var $nextLi = $("<li class='paginate_button page-item disabled' id='dataTable_next'>");
+								var $nextA = $("<a onclick='filteringP(" + (currentPage + 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage + 1) + "' tabindex='0' class='page-link'>").text("Next");
+								$nextLi.append($nextA);
+								$paging.append($nextLi);
+							}else{
+								var $nextLi = $("<li class='paginate_button page-item' id='dataTable_next'>");
+								var $nextA = $("<a onclick='filteringP(" + (currentPage + 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage + 1) + "' tabindex='0' class='page-link'>").text("Next");
+								$nextLi.append($nextA);
+								$paging.append($nextLi);
+							}
+							
+							var $endLi = $("<li class='paginate_button page-item' id='dataTable_end'>");
+							var $endA = $("<a onclick='filteringP(" + maxPage + ")' aria-controls='dataTable' data-dt-idx='" + maxPage + "' tabindex='0' class='page-link'>").text("End");
+							$endLi.append($endA);
+							$paging.append($endLi);
+							
+						for(var key in data.list) {
 							//data값 td에 입력
 							var $check = $("<td class='sorting_1'><input type='checkbox' class='check'>");
-							var $tr = $("<tr class='even' role='row' align='center'>");
-							var $bNoTd = $("<td>").text(data[key].bNo);
-							var $reqNoTd = $("<td>").text(data[key].reqNo);
-							var $userNameTd = $("<td>").text(data[key].userName);
-							var $ctgNameTd = $("<td>").text(data[key].ctgName);
-							var $reqD = $("<td>").text(data[key].reqD);
-							var $bTitleTd = $("<td>").text(data[key].bTitle);
-							var $statusTd = $("<td>").text(data[key].status);
+							var $tr = $("<tr class='even' role='row' align='center id='check'>");
+							
+							var $bNoTd = $("<td>").text(data.list[key].bNo);
+							var $reqNoTd = $("<td>").text(data.list[key].reqNo);
+							var $userNameTd = $("<td>").text(data.list[key].userName);
+							var $ctgNameTd = $("<td>").text(data.list[key].ctgName);
+							var $reqD = $("<td>").text(data.list[key].reqD);
+							var $bTitleTd = $("<td>").text(data.list[key].bTitle);
+							var $statusTd = $("<td>").text(data.list[key].status);
 							
 							//tr에 td추가
 							$tr.append($check);
@@ -738,13 +809,13 @@
 						$resultNull.append("<h3 align='center'> 조회 결과가 없습니다.</h3>");
 						$resultNull.append("<br><br><br><br><br><br>");
 					}
-					$listSize.prop("innerHTML",data.length+"건");
-					$(".paging").remove();
+					$listSize.prop("innerHTML", data.list.length + "건");
+					
 					$(".sorting_1").siblings().click(function() {
 						$(this).parent().each(function() {
-							console.log($(this).find("td").eq(1).text());
-							var reqNum = $(this).find("td").eq(1).text();
-							location = "<%= request.getContextPath()%>/reqProductDetail.bo?reqNum=" + reqNum;
+							console.log($(this).find("td").eq(2).text());
+							var reqNum = $(this).find("td").eq(2).text();
+							location = "<%= request.getContextPath()%>/confirmProductDetail.bo?reqNum=" + reqNum;
 						});
 					});
 				},
@@ -752,7 +823,7 @@
 					console.log("실패");
 				}
 			});
-		});
+		};
 		//상세조회 전체 아닐때 disabled 변경
 		function detailsChg(){
 			if($("#details").val()=="0"){
@@ -763,6 +834,34 @@
 				$("#filterContent").val("");
 			}
 		}
+		
+		//물품 등록
+		$("#apply").click(function() {
+			var status = new Array();
+			var confirmNum = new Array();
+			var result = 0;
+			$(".even").each(function() {
+				if($(this).find(".check").is(":checked")) {	
+					status.push($(this).find("td").eq(2).text());
+					if($(this).find("td").eq(7).text() == "등록 검수") {
+						alert("검수 승인만 등록 가능합니다.");
+						return false;
+					} else if($(this).find("td").eq(7).text() == "등록 검수 불통과") {
+						alert("검수 승인만 등록 가능합니다.");
+						return false;
+					} else {
+						result = 1;
+						confirmNum.push($(this).find("td").eq(2).text());
+					}
+				}
+				
+			});
+			if(result == 1) {
+				location = "<%= request.getContextPath()%>/adProductOk.bo?confirmNum=" + confirmNum;
+			} else {
+				<%-- location = "<%= request.getContextPath()%>/adProductList.bo"; --%>
+			}
+		});
 		</script>
 		<script
 			src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>

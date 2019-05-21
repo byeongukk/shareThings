@@ -56,8 +56,8 @@ textarea {
 	resize:none;
 }
 .img {
-	width: 150px;
-	height: 150px;
+	width: 100%;
+	height: 100%;
 }
 </style>
 </head>
@@ -102,7 +102,7 @@ textarea {
 										<% for(int i = 0; i < fileList.size(); i ++)  { %>
 											<td>
 												<div class="productPic">
-													<img id="img1" class="img" src="<%= request.getContextPath()%>/attach_upload/<%= fileList.get(i).getChangeName() %>">
+													<img class="img" src="<%= request.getContextPath()%>/attach_upload/<%= fileList.get(i).getChangeName() %>">
 												</div>
 											</td>
 										<% } %>
@@ -208,7 +208,10 @@ textarea {
 													</table>
 												</div>
 												<h5>*택배사</h5>
-												<textarea id="delivery" name="delivery" class="col-lg-12" placeholder="EX)CJ대한통운"></textarea>
+												<select id="delivery" name="delivery">
+													<option value="04">CJ대한통운</option>
+													<option value="05">로젠택배</option>
+												</select>
 												<h5>*송장번호</h5>
 												<textarea id="dNo" name="dNo" class="col-lg-12" placeholder="EX)송장번호 입력"></textarea>
 											</div>
