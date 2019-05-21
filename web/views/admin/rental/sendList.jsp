@@ -204,6 +204,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 															<td><%= hmap.get("phone")%></td>
 															<td><%= hmap.get("address")%></td>
 															<td><%= hmap.get("inOut")%></td>
+															<td class="tracking">dd</td>
 														</tr>
 														<% } %>
 													</tbody>
@@ -263,50 +264,59 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 		                    });
 		                    $("#tekbeCompnayList").html(myData);
 		                    
+		                    var t_code = new Array();
+				            var t_invoice = new Array();
+		                    
 		                    //택배 / 운송장 번호 
-		                    var t_code = $(".even").find("td").eq(2).text();
-				            var t_invoice = $(".even").find("td").eq(3).text();
+		                    /* $(".even").each(function(){
+		                    	console.log("dd");
+		                    	t_code.push($(this).find("td").eq(2).text());
+					            t_invoice.push($(this).find("td").eq(3).text());
+		                    }); */
+		                    
 							//var t_invoice =  348540216731;
-				           
-				           
-				            console.log(t_code);
+		           			 $(".even").each(function(){
+		           				var t_code = $(this).find("td").eq(2).text();
+					            var t_invoice = $(this).find("td").eq(3).text();
+					            //var t_inovice = 3485402167312;
+					            var $trackingTd = $(this).find("td").eq(11);
+					            
+		           		
 				            $.ajax({
 				                type:"GET",
 				                dataType : "json",
 				                url:"http://info.sweettracker.co.kr/api/v1/trackingInfo?t_key="+myKey+"&t_code="+t_code+"&t_invoice="+t_invoice,
 				                success:function(data){
-				                    console.log(data);
 				                    var $dataTable = $(".dataTable");
-				                    var $tr = $(".even");
-				                    var $trackingTd = $("<td>");
-				                    console.log(data.level);
+				                    
+				                    console.log($trackingTd);
 				                    
 				                    console.log(data.status);
 				                    if(data.status == false){
-				                        $trackingTd = $("<td>").text("운송장번호오류");
-				                        console.log("$trackingTd : " + $trackingTd)
+				                        $trackingTd = $trackingTd.text("운송장번호오류");
 				                    }else {
 				                    	switch(data.level){
-				                    	case 1 : $trackingTd = $("<td>").text("배송준비중"); break;
-				                    	case 2 : $trackingTd = $("<td>").text("집화완료"); break;
-				                    	case 3 : $trackingTd = $("<td>").text("배송중"); break;
-				                    	case 4 : $trackingTd = $("<td>").text("지점 도착"); break;
-				                    	case 5 : $trackingTd = $("<td>").text("배송출발"); break;
-				                    	case 6 : $trackingTd = $("<td>").text("배송 완료"); break;
+				                    	case 1 : $trackingTd = $trackingTd.text("배송준비중"); break;
+				                    	case 2 : $trackingTd = $trackingTd.text("집화완료"); break;
+				                    	case 3 : $trackingTd = $trackingTd.text("배송중"); break;
+				                    	case 4 : $trackingTd = $trackingTd.text("지점 도착"); break;
+				                    	case 5 : $trackingTd = $trackingTd.text("배송출발"); break;
+				                    	case 6 : $trackingTd = $trackingTd.text("배송 완료"); break;
 				                    	}
 				                    }
-				                    $tr.append($trackingTd);
-			                    	$dataTable.append($tr);
+				                    //$tr.append($trackingTd);
+			                    	//$dataTable.append($tr);
 				                }
-				            });
+				            	});
+		           			});
+		           			
 		            }
 		        });
 		        // 배송정보와 배송추적 tracking-api
 		        $("#trackingNumBtn").click(function() {
 		            var t_code = $(".even").find("td").eq(2).text();
 		            var t_invoice = $(".even").find("td").eq(3).text();
-		
-		            console.log(t_code);
+					
 		            $.ajax({
 		                type:"GET",
 		                dataType : "json",
