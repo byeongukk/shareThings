@@ -130,9 +130,9 @@
 <body>
 	<% if(loginUser == null) { %>
 	<div class="row top" align="right" id="beforeLogin">
-		<a href="../member/loginPage.jsp">로그인</a> 
+		<a href="/st/views/member/loginPage.jsp">로그인</a> 
 		<label>l</label> 
-		<a href="../member/memberJoinPage.jsp">회원가입</a> 
+		<a href="/st/views/member/memberJoinPage.jsp">회원가입</a> 
 		<label>l</label>
 		<a href="/st/views/customerService/cs.jsp">고객센터</a> 
 		<label>l</label> 
