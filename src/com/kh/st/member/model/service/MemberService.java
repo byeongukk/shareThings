@@ -284,6 +284,24 @@ public class MemberService {
 		return listCount;
 	}
 	
+	public int getRefundFilterCount(HashMap<String, Object> condition) {
+		Connection con = getConnection();
+		
+		int listCount = new MemberDao().getRefundFilterCount(con, condition);
+		
+		close(con);
+		return listCount;
+	}
+	
+	public ArrayList<HashMap<String, Object>> selectRefundFilter(HashMap<String, Object> condition, PageInfo pi) {
+		Connection con = getConnection();
+		
+		ArrayList<HashMap<String,Object>> list = new MemberDao().selectRefundFilter(con, condition, pi);
+		
+		close(con);
+		
+		return list;
+	}
 	
 	
 	//---------------------------------------------- 민지 ----------------------------------------------
@@ -359,6 +377,10 @@ public class MemberService {
 	      
 	      return result;
 	   }
+
+	
+
+	
 
 	
 

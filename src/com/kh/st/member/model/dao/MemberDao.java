@@ -383,40 +383,38 @@ public class MemberDao {
 			list = new ArrayList<Refund>();
 			
 			
-			
 			while(rset.next()) {
 				Refund r = new Refund();
 				
 				int total = rset.getInt("TOTAL_DATE");
 				int left = rset.getInt("LEFT_DATE");
+				int price = rset.getInt("PRICE") - rset.getInt("DEPOSIT");
 				
 				r.setRfNo(rset.getInt("RF_NO"));
 				r.setUserId(rset.getString("USER_ID"));
 				r.setVerifyCode(rset.getString("VERIFY_CODE"));
 				r.setRfReason(rset.getString("RF_REASON"));
 				
-				
-				if(rset.getString("RF_TYPE").equals("RF2")) {
-					r.setPrice((rset.getInt("PRICE")/total) * left);
-				}else {
-					
-				}
-				
-				if(rset.getString("RF_TYPE").equals("RF1")) {
+				if(rset.getString("RT_SID").equals("RTS8")) {
+					r.setRfType("보증급 환급");
+				}else if(rset.getString("RT_SID").equals("RTS10")) {
 					r.setRfType("예약취소");
 				}else {
-					r.setRfType("중간환불");
+					r.setRfType("중간반납");
 				}
-
-				r.setReqDate(rset.getDate("REQ_DATE"));
 				
-				if(rset.getString("RF_RESULT") == null) {
-					r.setRfResult(rset.getString("RF_RESULT"));
-				}else if(rset.getString("RF_RESULT").equals("N")) {
-					r.setRfResult("부적합");
+				
+				if(rset.getString("RT_SID").equals("RTS12")) {
+					r.setPrice((price/total) * left + rset.getInt("DEPOSIT"));
 				}else {
-					r.setRfResult("적합");
+					if(rset.getString("RT_SID").equals("RTS10")) {
+						r.setPrice(rset.getInt("PRICE"));
+					}else {
+						r.setPrice(rset.getInt("DEPOSIT"));
+					}
 				}
+				
+				r.setReqDate(rset.getDate("REQ_DATE"));
 				
 				r.setRfDate(rset.getDate("RF_DATE"));
 				
@@ -1315,6 +1313,235 @@ public class MemberDao {
 
 		return list;
 	}
+	
+	public int getRefundFilterCount(Connection con, HashMap<String, Object> condition) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int listCount = 0;
+		ArrayList<String> queryArr = new ArrayList<String>();
+		ArrayList<Object> bindVal = new ArrayList<Object>();
+		String query = null;
+		boolean allViewsChk = false;
+		
+		if(condition.get("userId").equals("") && condition.get("type").equals("0")
+				&& condition.get("status").equals("0") && condition.get("startReqD").equals("")
+				&& condition.get("startRfD").equals("")) {
+			allViewsChk = true;
+			queryArr.add(" 1 = ? ");
+			bindVal.add("1");
+			System.out.println("전체조회  ");
+		}else {
+			if(!(condition.get("userId").equals(""))) {
+				queryArr.add(" USER_ID LIKE ? ");
+				bindVal.add("%" + condition.get("userId") + "%");
+			}
+			
+			if(!(condition.get("type").equals("0"))) {
+				queryArr.add(" RF_TYPE = ? ");
+				bindVal.add(condition.get("status"));
+			}
+			
+			if(!(condition.get("status").equals("0"))) {
+				queryArr.add(" RF_STATUS = ? ");
+				bindVal.add(condition.get("status"));
+			}
+			
+			if(!(condition.get("startReqD").equals(""))) {
+				queryArr.add(" REQ_DATE BETWEEN ? ");
+				queryArr.add(" ? ");
+				bindVal.add(condition.get("startReqD"));
+				bindVal.add(condition.get("endReqD"));
+			}
+			
+			if(!(condition.get("startRfD").equals(""))) {
+				queryArr.add(" RF_DATE BETWEEN ? ");
+				queryArr.add(" ? ");
+				bindVal.add(condition.get("startRfD"));
+				bindVal.add(condition.get("endRfD"));
+			}
+			
+		}
+		
+		query = prop.getProperty("refundFilterCount");
+
+		if(allViewsChk ==false) {
+			for(int i = 0; i < queryArr.size(); i++) {
+				if(i == queryArr.size()-1) {
+					query += queryArr.get(i);
+				}else {
+					query += queryArr.get(i) + " AND ";
+				}
+			}
+		}else {
+			query += queryArr.get(0);
+		}
+
+		System.out.println(query);
+
+		try {
+			pstmt = con.prepareStatement(query);
+
+			for(int i = 0; i < bindVal.size(); i++) {
+				pstmt.setObject(i+1, bindVal.get(i));
+			}
+
+			rset = pstmt.executeQuery();
+
+			while(rset.next()) {
+				listCount = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		
+		return listCount;
+			
+	}
+	
+	public ArrayList<HashMap<String, Object>> selectRefundFilter(Connection con, HashMap<String, Object> condition, PageInfo pi) {
+		ArrayList<HashMap<String,Object>> list = null;
+		HashMap<String,Object> hmap = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+
+		ArrayList<String> queryArr = new ArrayList<String>();
+		ArrayList<Object> bindVal = new ArrayList<Object>();
+		String query = null;
+		boolean allViewsChk = false;
+		
+		int startRow = (pi.getCurrentPage() - 1) * pi.getLimit() + 1;
+		int endRow = startRow + pi.getLimit() - 1;
+		
+		if(condition.get("userId").equals("") && condition.get("type").equals("0")
+				&& condition.get("status").equals("0") && condition.get("startReqD").equals("")
+				&& condition.get("startRfD").equals("")) {
+			allViewsChk = true;
+			queryArr.add(" 1 = ? ");
+			bindVal.add("1");
+			System.out.println("전체조회  ");
+			queryArr.add(" RNUM BETWEEN ? ");
+			queryArr.add(" ? ");
+			bindVal.add(startRow);
+			bindVal.add(endRow);
+			
+		}else {
+			if(!(condition.get("userId").equals(""))) {
+				queryArr.add(" USER_ID LIKE ? ");
+				bindVal.add("%" + condition.get("userId") + "%");
+			}
+			
+			if(!(condition.get("type").equals("0"))) {
+				queryArr.add(" RF_TYPE = ? ");
+				bindVal.add(condition.get("status"));
+			}
+			
+			if(!(condition.get("status").equals("0"))) {
+				queryArr.add(" RF_STATUS = ? ");
+				bindVal.add(condition.get("status"));
+			}
+			
+			if(!(condition.get("startReqD").equals(""))) {
+				queryArr.add(" REQ_DATE BETWEEN ? ");
+				queryArr.add(" ? ");
+				bindVal.add(condition.get("startReqD"));
+				bindVal.add(condition.get("endReqD"));
+			}
+			
+			if(!(condition.get("startRfD").equals(""))) {
+				queryArr.add(" RF_DATE BETWEEN ? ");
+				queryArr.add(" ? ");
+				bindVal.add(condition.get("startRfD"));
+				bindVal.add(condition.get("endRfD"));
+			}
+			
+			queryArr.add(" RNUM BETWEEN ? ");
+			queryArr.add(" ? ");
+			bindVal.add(startRow);
+			bindVal.add(endRow);
+		}
+		
+		query = prop.getProperty("refundFilter");
+
+		
+		for(int i = 0; i < queryArr.size(); i++) {
+			if(i == queryArr.size()-1) {
+				query += queryArr.get(i);
+			}else {
+				query += queryArr.get(i) + " AND ";
+			}
+		}
+		
+		
+		System.out.println(query);
+
+		try {
+			pstmt = con.prepareStatement(query);
+
+			for(int i = 0; i < bindVal.size(); i++) {
+				pstmt.setObject(i+1, bindVal.get(i));
+			}
+
+			rset = pstmt.executeQuery();
+			list = new ArrayList<HashMap<String,Object>>();
+			
+			while(rset.next()) {
+				hmap = new HashMap<String,Object>();
+				
+				int total = rset.getInt("TOTAL_DATE");
+				int left = rset.getInt("LEFT_DATE");
+				int price = rset.getInt("PRICE") - rset.getInt("DEPOSIT");
+				
+				hmap.put("rfNo", rset.getInt("RF_NO"));
+				hmap.put("userId", rset.getString("USER_ID"));
+				hmap.put("verifyCode", rset.getString("VERIFY_CODE"));
+				hmap.put("rfReason", rset.getString("RF_REASON"));
+				
+				if(rset.getString("RF_TYPE").equals("RF3")) {
+					hmap.put("type", "보증급 환급");
+				}else if(rset.getString("RF_TYPE").equals("RF1")) {
+					hmap.put("type", "예약취소");
+				}else {
+					hmap.put("type", "중간반납");
+				}
+				
+				
+				if(rset.getString("RT_SID").equals("RTS12")) {
+					hmap.put("price", (price/total) * left + rset.getInt("DEPOSIT"));
+				}else {
+					if(rset.getString("RT_SID").equals("RTS10")) {
+						hmap.put("price", rset.getInt("PRICE"));
+					}else {
+						hmap.put("price", rset.getInt("DEPOSIT"));
+					}
+				}
+				
+				hmap.put("reqDate", rset.getDate("REQ_DATE"));
+				
+				hmap.put("rfDate", rset.getDate("RF_DATE"));
+				
+				if(rset.getString("RF_STATUS").equals("N")) {
+					hmap.put("status", "처리대기");
+				}else {
+					hmap.put("status", "처리완료");
+				}
+
+				list.add(hmap);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		
+		return list;
+		
+	}
+		
+	
 
 	//---------------------------------------------- 민지 ----------------------------------------------
 	public Member login(Connection con, String userId, String userPwd) {
@@ -1499,6 +1726,10 @@ public class MemberDao {
 		}
 		return result;
 	}
+
+	
+
+	
 
 	
 

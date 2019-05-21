@@ -37,20 +37,21 @@
 	href="<%=request.getContextPath()%>/resource/css/sb-admin-2.min.css"
 	rel="stylesheet">
 <style>
-.even:hover {
-	cursor: pointer;
-}
-
-#filter {
-	margin-top: 50px;
-}
-
-#filterArea td {
+#filter td {
 	padding: 5px;
 }
+
 .paging {
-	margin-left:auto;
-	margin-right:auto;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#dataTables-detail td {
+	padding: 8px;
+}
+
+.MTR {
+	color: black;
 }
 </style>
 </head>
@@ -85,19 +86,14 @@
 											<td><input type="text" id="userIdF"
 												style="width: 50%"></td>
 											<td width="5%">구분 :</td>
-											<td><select style="width: 50%" id="typeF">
+											<td><select style="width: 60%" id="typeF">
 													<option value="0">전체</option>
-													<option value="A">예약취소</option>
-													<option value="P">중간환불</option>
-											</select></td>
-											<td width="5%">판정 :</td>
-											<td><select style="width: 50%" id="typeF">
-													<option value="0">전체</option>
-													<option value="Y">적합</option>
-													<option value="N">부적합</option>
+													<option value="RF1">예약취소</option>
+													<option value="RF2">중간반납</option>
+													<option value="RF3">보증급 반환</option>
 											</select></td>
 											<td width="5%">상태 :</td>
-											<td><select style="width: 50%" id="statusF">
+											<td><select style="width: 25%" id="statusF">
 													<option value="0">전체</option>
 													<option value="N">처리대기</option>
 													<option value="Y">처리완료</option>
@@ -110,9 +106,9 @@
 												&nbsp;&nbsp;&nbsp; <input type="date" id="endReqDF"
 												style="width: 40%"></td>
 											<td width="6%">처리일 :</td>
-											<td colspan="3"><input type="date" id="startPbDF"
+											<td colspan="3"><input type="date" id="startRfDF"
 												style="width: 40%"> &nbsp;&nbsp;&nbsp; ~
-												&nbsp;&nbsp;&nbsp; <input type="date" id="endPbDF"
+												&nbsp;&nbsp;&nbsp; <input type="date" id="endRfDF"
 												style="width: 40%"></td>
 										</tr>
 									</table>
@@ -132,9 +128,7 @@
 												<div class="col-sm-12">
 													<div align="left">
 														<a href="#" class="btn btn-success btn-circle btn-sm" onclick="ok()">
-										                    <i class="fas fa-check"></i></a> &nbsp;
-														<a href="#" class="btn btn-info btn-circle btn-sm">
-										                    <i class="fas fa-flag"></i> </a>
+										                    <i class="fas fa-check"></i></a>
 													</div>
 													<br>
 													<table class="table table-bordered dataTable"
@@ -166,20 +160,16 @@
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Salary: activate to sort column ascending"
-																	style="width: 10%;">금액</th>
+																	style="width: 8%;">금액</th>
 																<th class="sorting_asc" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-sort="ascending"
 																	aria-label="Name: activate to sort column descending"
-																	style="width: 5%;">구분</th>
+																	style="width: 8%;">구분</th>
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Office: activate to sort column ascending"
 																	style="width: 10%;">신청일</th>
-																<th class="sorting" tabindex="0"
-																	aria-controls="dataTable" rowspan="1" colspan="1"
-																	aria-label="Salary: activate to sort column ascending"
-																	style="width: 7%;">판정</th>
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Age: activate to sort column ascending"
@@ -194,16 +184,15 @@
 															<% for(Refund r : list){ %>
 																<tr align="center" class="even">
 																	<td class="sorting_1"><input type="checkbox" class="check"></td>
-																	<td class="sorting_2" data-toggle="modal" data-target="#detail"><%= r.getRfNo() %></td>
-																	<td class="sorting_2" data-toggle="modal" data-target="#detail"><%= r.getUserId() %></td>
-																	<td class="sorting_2" data-toggle="modal" data-target="#detail"><%= r.getVerifyCode() %></td>
-																	<td class="sorting_2" data-toggle="modal" data-target="#detail"><%= r.getRfReason() %></td>
-																	<td class="sorting_2" data-toggle="modal" data-target="#detail"><%= r.getPrice() %></td>
-																	<td class="sorting_2" data-toggle="modal" data-target="#detail"><%= r.getRfType() %></td>
-																	<td class="sorting_2" data-toggle="modal" data-target="#detail"><%= r.getReqDate() %></td>
-																	<td class="sorting_2" data-toggle="modal" data-target="#detail"><%= r.getRfResult() %></td>
-																	<td class="sorting_2" data-toggle="modal" data-target="#detail"><%= r.getRfDate() %></td>
-																	<td class="sorting_2" data-toggle="modal" data-target="#detail"><%= r.getRfStatus() %></td>
+																	<td><%= r.getRfNo() %></td>
+																	<td><%= r.getUserId() %></td>
+																	<td><%= r.getVerifyCode() %></td>
+																	<td><%= r.getRfReason() %></td>
+																	<td><%= r.getPrice() %></td>
+																	<td><%= r.getRfType() %></td>
+							      									<td><%= r.getReqDate() %></td>
+																	<td><%= r.getRfDate() %></td>
+																	<td><%= r.getRfStatus() %></td>
 																</tr>
 															<% } %>
 														</tbody>
@@ -290,72 +279,6 @@
 							</div>
 						</div>
 						
-						<div class="modal fade" id="detail" role="dialog">
-							<div class="modal-dialog">
-
-								<!-- Modal content-->
-								<div class="modal-content">
-									<div class="modal-header">
-										<h4 class="modal-title MTR">환불내역 상세보기</h4>
-										<button type="button" class="close" data-dismiss="modal">&times;</button>
-									</div>
-									<div class="row">
-										<div class="col-md-12 col-lg-12">
-											<div class="modal-body">
-												<div class="panel-body">
-													<table width="100%" id="dataTables-detail">
-														<tbody>
-															<tr>
-																<td width="20%" class="MTR">환불No.</td>
-																<td id="noTd" width="13%"></td>
-																<td width="15%" class="MTR">구분</td>
-																<td id="ftTd" width="13%"></td>
-																<td width="20%" class="MTR">처리상태</td>
-																<td id="stTd" width="18%"></td>
-															</tr>
-															<tr>
-																<td class="MTR">신청일</td>
-																<td id="rdTd" colspan="2"></td>
-																<td class="MTR hide hideOk" style="display: none">처리일</td>
-																<td class="hide hideOk" id="cdTd" colspan="2"
-																	style="display: none"></td>
-
-															</tr>
-															<tr>
-																<td class="MTR">신청인</td>
-																<td id="tiTd" colspan="2"></td>
-																<td class="MTR">결제No.</td>
-																<td id="riTd" colspan="2"></td>
-															</tr>
-															<tr>
-																<td colspan="6" class="MTR">- 환불 사유</td>
-															</tr>
-															<tr>
-																<td colspan="6"><textarea id="ctTa"
-																		class="col-lg-12" rows="3" readonly></textarea></td>
-															</tr>
-															<tr class="hide" style="display: none">
-																<td colspan="6" class="MTR">- 부적합 사유</td>
-															</tr>
-															<tr class="hide" style="display: none">
-																<td colspan="6"><textarea id="rejectTd"
-																		class="col-lg-12" rows="3" readonly></textarea></td>
-															</tr>
-														</tbody>
-													</table>
-												</div>
-												<br> <br>
-											</div>
-											<div class="modal-footer">
-												<button type="button" class="btn btn-default"
-													data-dismiss="modal">닫기</button>
-											</div>
-										</div>
-									</div>
-								</div>
-
-							</div>
-						</div>
 						<!-- 메인 콘텐트 영역 끝 -->
 						<!-- Footer 인클루드 -->
 					</div>
@@ -399,6 +322,141 @@
 			    		$(this).css({"background":"white", "color":"gray"})
 			    	});
 		        });
+				
+				function filteringP(currentPage){
+					var userId = $("#userIdF").val();
+					var type = $("#typeF").val();
+					var status = $("#statusF").val();
+					var startReqD = $("#startReqDF").val();
+					var endReqD = $("#endReqDF").val();
+					var startRfD = $("#startRfDF").val();
+					var endRfD = $("#endRfDF").val();
+					
+					if(startReqD > endReqD || (endReqD!="" && startReqD=="")){
+						alert("신청일 기간이 잘못 선택되었습니다.");
+						return;
+					}
+					
+					if(startRfD > endRfD || (endRfD!="" && startRfD=="")){
+						alert("처리일 기간이 잘못 선택되었습니다.");
+						return;
+					}
+					
+					$.ajax({
+						url:"<%=request.getContextPath()%>/selectRefundFilter.me",
+						data:{
+							userId:userId,
+							type:type,
+							status:status,
+							startReqD:startReqD,
+							endReqD:endReqD,
+							startRfD:startRfD,
+							endRfD:endRfD,
+							currentPage:currentPage
+						},
+						type:"get",
+						success:function(data){
+							$("#dataTable > tbody > tr").remove();
+		    				$("#dataTable_paginate > ul > li").remove();
+		    				
+		    				var $dataTable = $("#dataTable");
+							var $paging = $("#pagingUl");
+							
+							if(data.list.length > 0){
+								var currentPage = data.pi.currentPage;
+								var maxPage = data.pi.maxPage;
+								var startPage = data.pi.startPage;
+								var endPage = data.pi.endPage;
+								
+								var $firstLi = $("<li class='paginate_button page-item' id='dataTable_first'>");
+								var $firstA = $("<a onclick='filteringP(1)' aria-controls='dataTable' data-dt-idx='0' tabindex='0' class='page-link'>").text("first");
+								$firstLi.append($firstA);
+								$paging.append($firstLi);
+								
+								if(currentPage <= 1){
+									var $preLi = $("<li class='paginate_button page-item disabled' id='dataTable_previous'>");
+									var $preA = $("<a onclick='filteringP(" + (currentPage - 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage - 1) + "' tabindex='0' class='page-link'>").text("Previous");
+									$preLi.append($preA);
+									$paging.append($preLi);
+								}else{
+									var $preLi = $("<li class='paginate_button page-item' id='dataTable_previous'>");
+									var $preA = $("<a onclick='filteringP(" + (currentPage - 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage - 1) + "' tabindex='0' class='page-link'>").text("Previous");
+									$preLi.append($preA);
+									$paging.append($preLi);
+								}
+								
+								for(var p = startPage; p <= endPage; p++){
+									if(p == currentPage){
+										var $numLi = $("<li class='paginate_button page-item disabled'>");
+										var $numA = $("<a onclick='filteringP(" + p + ")' aria-controls='dataTable' data-dt-idx='" + p + "' tabindex='0' class='page-link'>").text(p);
+										$numLi.append($numA);
+										$paging.append($numLi);
+									}else{
+										var $numLi = $("<li class='paginate_button page-item'>");
+										var $numA = $("<a onclick='filteringP(" + p + ")' aria-controls='dataTable' data-dt-idx='" + p + "' tabindex='0' class='page-link'>").text(p);
+										$numLi.append($numA);
+										$paging.append($numLi);
+									}
+								}
+								
+								if(currentPage >= maxPage){
+									var $nextLi = $("<li class='paginate_button page-item disabled' id='dataTable_next'>");
+									var $nextA = $("<a onclick='filteringP(" + (currentPage + 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage + 1) + "' tabindex='0' class='page-link'>").text("Next");
+									$nextLi.append($nextA);
+									$paging.append($nextLi);
+								}else{
+									var $nextLi = $("<li class='paginate_button page-item' id='dataTable_next'>");
+									var $nextA = $("<a onclick='filteringP(" + (currentPage + 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage + 1) + "' tabindex='0' class='page-link'>").text("Next");
+									$nextLi.append($nextA);
+									$paging.append($nextLi);
+								}
+								
+								var $endLi = $("<li class='paginate_button page-item' id='dataTable_end'>");
+								var $endA = $("<a onclick='filteringP(" + maxPage + ")' aria-controls='dataTable' data-dt-idx='" + maxPage + "' tabindex='0' class='page-link'>").text("End");
+								$endLi.append($endA);
+								$paging.append($endLi);
+								
+								for(var key in data.list){
+									
+									var $tr = $("<tr role='row' class='even' align='center'>");
+									
+									var $checkTd = $("<td class='sorting_1'>");
+									var $checkIp = $("<input type='checkbox' class='check'>");
+									$checkTd.append($checkIp);
+									
+									var $noTd = $("<td>").text(data.list[key].rfNo);
+									var $idTd = $("<td>").text(data.list[key].userId);
+									var $vcTd = $("<td>").text(data.list[key].verifyCode);
+									var $rsTd = $("<td>").text(data.list[key].rfReason);
+									var $prTd = $("<td>").text(data.list[key].price);
+									var $tpTd = $("<td>").text(data.list[key].type);
+									var $qdTd = $("<td>").text(data.list[key].reqDate);
+									var $rdTd = $("<td>").text(data.list[key].rfDate);
+									var $stTd = $("<td>").text(data.list[key].status);
+									
+									$tr.append($checkTd);
+									$tr.append($noTd);
+									$tr.append($idTd);
+									$tr.append($vcTd);
+									$tr.append($rsTd);
+									$tr.append($prTd);
+									$tr.append($tpTd);
+									$tr.append($qdTd);
+									$tr.append($rdTd);
+									$tr.append($stTd);
+									
+									$dataTable.append($tr);
+								}
+							}
+						}
+					});
+					
+					
+					
+					
+					
+					
+				};
 				
 				
 				function ok() {
