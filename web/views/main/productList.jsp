@@ -288,7 +288,7 @@
 					String[] ctgLv3Arr = ctgLv3Str.split(",");
 					for(int i = 0; i < ctgLv3Arr.length; i++) {
 						for(int j = 0;  j < ctgList.size(); j++) {
-							if(ctgLv3Arr[i].equals(ctgList.get(i).getCtgName())) {
+							if(ctgLv3Arr[i].equals(ctgList.get(j).getCtgName())) {
 								String selected = ctgLv3Arr[i];
 			%>
 			$(".ctgLv3Btn").each(function() {

@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="java.util.*, com.kh.st.attachment.model.vo.Attachment"%>
+    pageEncoding="UTF-8" import="java.util.HashMap, java.util.ArrayList, java.sql.*, com.kh.st.attachment.model.vo.Attachment, com.kh.st.rental.model.vo.Rental"%>
 <%
 	HashMap<String, Object> pDetailMap = (HashMap<String, Object>)request.getAttribute("bDetailMap");
 	HashMap<String, Object> bmap = (HashMap<String, Object>)pDetailMap.get("bmap");
@@ -8,6 +8,7 @@
 	ArrayList<HashMap<String, Object>> QnAList = (ArrayList<HashMap<String, Object>>)pDetailMap.get("QnAList");
 	ArrayList<HashMap<String, Object>> reviewList = (ArrayList<HashMap<String, Object>>)pDetailMap.get("reviewList");
 	HashMap<String, Object> rvAttmap = (HashMap<String, Object>)pDetailMap.get("rvAttmap");
+	ArrayList<Rental> rentList = (ArrayList<Rental>)pDetailMap.get("rentList");
 	
 
 %>
@@ -110,6 +111,9 @@
 	.productInfo tr {
 		height:50px;
 	}
+	#small {
+		height:10px;
+	}
 	.productInfo td {
 		padding:5px;
 	}
@@ -149,6 +153,16 @@
 	}
 	#rvImg1:hover, #rvImg2:hover, #rvImg3:hover, #rvImg4:hover, #rvImg5:hover {
 		/* box-shadow:1px 1px #0CB6F4; */
+	}
+ 	.enable a{
+		background-color:yellowgreen  !important;
+	  	background-image :none !important;
+	   	color: black !important;
+	}
+	.disable a{
+		background-color:gray  !important;
+	  	background-image :none !important;
+	   	color: black !important;
 	}
 </style>
 </head>
@@ -227,10 +241,11 @@
 								</tr>
 								<tr>
 									<td>
-										<label style="color:#0CB6F4; font-wieght:bold; font-size:2em"><%= bmap.get("price") %>원/주</label>
+										<label style="color:#0CB6F4; font-wieght:bold; font-size:2em"><%= bmap.get("price") %>원/week</label>
 									</td>
 									<td>
-										<label style="color:gray; font-wieght:bold;">/ 보증금 <%= bmap.get("deposit") %>원</label>
+										<label style="color:gray; font-wieght:bold;">/ 보증금 <%= bmap.get("deposit") %>원
+										</label><label style="color:gray; font-size:0.7em">(보증금은 대여기간 종료 후 전액 환불됩니다.)</label>
 									</td>
 								</tr>
 								<tr>
@@ -243,20 +258,29 @@
 								<tr>
 									<td width="50%">
 										<div class="ui left icon fluid input datePicker" style="margin:0; width:100%">
-											<input type="text" name="endDay" id="startDay" placeholder="대여 시작일">
+											<input type="text" name="endPick" id="startPick" placeholder="대여 시작일">
 											<i class="calendar alternate outline icon"></i>
 										</div>
 									</td>
 									<td width="50%">
 										<div class="ui left icon fluid input datePicker" style="margin:0; width:100%">
-											<input type="text" name="endDay" id="endDay" placeholder="대여 종료일">
+											<input type="text" name="endPick" id="endPick" placeholder="대여 종료일">
 											<i class="calendar alternate outline icon"></i>
 										</div>
 									</td>
 								</tr>
+								<tr id="small">
+									<td colspan="2">
+										<label style="font-size:0.8em; color:lightgray; font-style:italic">일주일 단위로 대여 가능하며, 최소 대여기간은 일주일(7일)입니다.</label>
+									</td>
+								</tr>
 								<tr>
-									<td><label>대여가격 : --</label></td>
+									<td>대여가격 : <label id="priceCalc" style="color:#0CB6F4;"></label>원</td>
 									<td><label>(+ 배송비 : 3000원)</label></td>
+								</tr>
+								<tr>
+									<td></td>
+									<td><label>(+ 보증금 : <%= bmap.get("deposit") %>원)</label></td>
 								</tr>
 								<tr>
 									<td colspan="2" align="right">
@@ -530,7 +554,135 @@
 				on:'click'
 			});
 			
+			
+			//대여 시작일, 종료일 지정
+			var startDate;
+			var endDate;
+			var startDay;
+			var endDay;
+			var today = new Date();
+			var end;
+			var st;
+			function checkStDate(date) {
+				<% 
+				for(int i = 0; i < rentList.size(); i++) {
+					Rental rt = rentList.get(i);
+					Date rtStartDate = rt.getRtStartDate();
+					Date rtEndDate = rt.getRtEndDate();
+				%>
+				st = new Date(<%= rtStartDate.getTime() %>);
+				end = new Date(<%= rtEndDate.getTime() %>);
+				end.setDate(end.getDate() + 2);
+				if(date >= st && date <= end) {
+					return [false, "disable", "대여 불가"];
+				}
+				<% } %>
+				
+			}
+			$("#startPick").datepicker({
+				defaultDate:"+1w",
+				changeMonth:true,
+				minDate:today,
+				onSelect:function(selectedDate) {
+					startDate = $(this).datepicker('getDate');
+					endDate = new Date(startDate);
+					endDate.setDate(startDate.getDate() + 6);
+					if(checkStDate(endDate)) {
+						alert("원하시는 날짜에 대여가 불가합니다! 다른이의 예약 일정으로 인해 대여하시려는 날짜부터 최소 대여기간 일주일을 채울 수 없습니다.");
+						$(this).val("");
+						endDay = null;
+					}else {
+						endDay = endDate.getDay();
+						$("#endPick").datepicker("option", "minDate", endDate);
+					}
+				}, 
+				beforeShowDay:function(date) {
+					/* return [true, "enable", "대여가능"]; */
+					<% 
+						for(int i = 0; i < rentList.size(); i++) {
+							Rental rt = rentList.get(i);
+							Date rtStartDate = rt.getRtStartDate();
+							Date rtEndDate = rt.getRtEndDate();
+					%>
+					st = new Date(<%= rtStartDate.getTime() %>);
+					end = new Date(<%= rtEndDate.getTime() %>);
+					end.setDate(end.getDate() + 2);
+					if(date >= st && date <= end) {
+						return [false, "disable", "대여 불가"];
+					}
+					<% } %>
+					if(startDay != null) {
+						if(date.getDay() != startDay) {
+							return [false, "disable", "대여 불가"];
+						}else {
+							return [true, "enable", "대여 가능"];
+						}
+					}else {
+						return [true, "enable", "대여 가능"];
+					}
+				}
+			});
+		    $("#endPick").datepicker({
+		    	defaultDate:"+1w",
+		    	changeMonth:true,
+		    	onSelect:function(selectedDate) {
+		    		endDate = $(this).datepicker('getDate');
+		    		startDate = new Date(endDate);
+		    		startDate.setDate(endDate.getDate() - 6);
+		    		startDay = startDate.getDay();
+		    		$("#startPick").datepicker("option", "maxDate", startDate);
+		    		
+		    		if($(this).datepicker("getDate") != null && $("#startPick").datepicker("getDate") != null) {
+		    			var rtStart = $("#startPick").datepicker("getDate");
+			 			var rtEnd = $(this).datepicker("getDate");
+			 			if(rtStart != null && rtEnd != null) {
+				 			var period = Math.ceil((rtEnd.getTime() - rtStart.getTime() + 1) / (1000 * 60 * 60 * 24));
+		    				$("#priceCalc").text((period/7) * <%= bmap.get("price") %>);
+			 			}
+		    		}
+		    	},
+		    	beforeShowDay:function(date) {
+		    		<% 
+						for(int i = 0; i < rentList.size(); i++) {
+							Rental rt = rentList.get(i);
+							Date rtStartDate = rt.getRtStartDate();
+							Date rtEndDate = rt.getRtEndDate();
+					%>
+					st = new Date(<%= rtStartDate.getTime() %>);
+					end = new Date(<%= rtEndDate.getTime() %>);
+					if(date >= st && date <= end) {
+						return [false, "", "대여 불가"];
+					}
+					<% } %>	
+		    		
+		    		if(endDay != null) {
+			    		if(date.getDay() != endDay) {
+			    			return [false];
+			    		}else {
+			    			return [true, "enable", "대여 가능"];
+			    		}
+		    		}else {
+		    			return [true, "enable", "대여 가능"];
+		    		}
+		    	}
+		    });
 	 	});
+	 	
+	 	$("#endPick").on("change", function() {
+	 		if($(this).val() != null && $("#startPick").val() != null) {
+	 			var rtStart = $("#startPick").datepicker("getDate");
+	 			var rtEnd = $(this).datepicker("getDate");
+	 			console.log(rtStart);
+	 			console.log(rtEnd);
+	 			if(rtStart != null && rtEnd != null) {
+		 			var period = rtStart.getTime() - rtEnd.getTime();
+		 			console.log(period);
+		 			console.log(period / (1000 * 60 * 60 * 24));
+	 			}
+	 		}
+	 	});
+	 	
+	 	
 	 	$(".rvImageArea1").click(function() {
 	 		$("#img1").click();
 	 	});

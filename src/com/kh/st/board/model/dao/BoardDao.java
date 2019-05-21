@@ -17,6 +17,7 @@ import java.util.Properties;
 
 import com.kh.st.attachment.model.vo.Attachment;
 import com.kh.st.board.model.vo.Board;
+import com.kh.st.rental.model.vo.Rental;
 
 public class BoardDao {
 
@@ -633,6 +634,40 @@ public class BoardDao {
 	      
 	      return result;
 	   }
+
+	public ArrayList<Rental> selectRentList(Connection con, int pno) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<Rental> rentList = null;
+		String query = prop.getProperty("selectRentList");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, pno);
+			rset = pstmt.executeQuery();
+
+			rentList = new ArrayList<Rental>();
+			while(rset.next()) {
+				Rental rt = new Rental();
+				rt.setRtno(rset.getInt("RT_NO"));
+				rt.setPno(rset.getInt("PNO"));
+				rt.setUno(rset.getInt("UNO"));
+				rt.setRtStartDate(rset.getDate("RT_ST_DATE"));
+				rt.setRtEndDate(rset.getDate("RT_END_DATE"));
+				rt.setRtReqDate(rset.getDate("RT_REQ_DATE"));
+				rt.setRtAccDate(rset.getDate("RT_ACC_DATE"));
+				rt.setRtSid(rset.getString("RT_SID"));
+				rentList.add(rt);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		
+		return rentList;
+	}
 
 	
 	

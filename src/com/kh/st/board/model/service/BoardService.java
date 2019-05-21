@@ -11,6 +11,7 @@ import com.kh.st.board.model.dao.BoardDao;
 import com.kh.st.board.model.vo.Board;
 import com.kh.st.product.model.dao.ProductDao;
 import com.kh.st.product.model.vo.PCategory;
+import com.kh.st.rental.model.vo.Rental;
 
 public class BoardService {
 
@@ -60,6 +61,8 @@ public class BoardService {
 					ArrayList<Attachment> rvAttList = new BoardDao().selectBoardImages(con, rvno);
 					rvAttmap.put(String.valueOf(rvno), rvAttList);
 				}
+				int pno = (int)bmap.get("pno");
+				ArrayList<Rental> rentList = new BoardDao().selectRentList(con, pno);
 				
 				bDetailMap.put("bmap", bmap);
 				bDetailMap.put("attList", attList);
@@ -67,6 +70,7 @@ public class BoardService {
 				bDetailMap.put("QnAList", QnAList);
 				bDetailMap.put("reviewList", reviewList);
 				bDetailMap.put("rvAttmap", rvAttmap);
+				bDetailMap.put("rentList", rentList);
 			}
 		}else {
 			rollback(con);

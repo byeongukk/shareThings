@@ -8,78 +8,168 @@ import java.sql.Date;
  */
 public class Rental implements java.io.Serializable {
 
-	private int rno;
-	private Date reqDate;
-	private Date rentalDate;
-	private Date rentalEndDate;
+	private int rtno;
 	private int pno;
 	private int uno;
+	private Date rtStartDate;
+	private Date rtEndDate;
+	private Date rtReqDate;
+	private Date rtAccDate;
+	private String rtSid;
+	private String rtReason;
 	
 	public Rental() {}
 
-	public Rental(int rno, Date reqDate, Date rentalDate, Date rentalEndDate, int pno, int uno) {
+	public Rental(int rtno, int pno, int uno, Date rtStartDate, Date rtEndDate, Date rtReqDate, Date rtAccDate,
+			String rtSid, String rtReason) {
 		super();
-		this.rno = rno;
-		this.reqDate = reqDate;
-		this.rentalDate = rentalDate;
-		this.rentalEndDate = rentalEndDate;
+		this.rtno = rtno;
 		this.pno = pno;
 		this.uno = uno;
+		this.rtStartDate = rtStartDate;
+		this.rtEndDate = rtEndDate;
+		this.rtReqDate = rtReqDate;
+		this.rtAccDate = rtAccDate;
+		this.rtSid = rtSid;
+		this.rtReason = rtReason;
 	}
 
-	public int getRno() {
-		return rno;
+	/**
+	 * @return the rtno
+	 */
+	public int getRtno() {
+		return rtno;
 	}
 
-	public void setRno(int rno) {
-		this.rno = rno;
-	}
-
-	public Date getReqDate() {
-		return reqDate;
-	}
-
-	public void setReqDate(Date reqDate) {
-		this.reqDate = reqDate;
-	}
-
-	public Date getRentalDate() {
-		return rentalDate;
-	}
-
-	public void setRentalDate(Date rentalDate) {
-		this.rentalDate = rentalDate;
-	}
-
-	public Date getRentalEndDate() {
-		return rentalEndDate;
-	}
-
-	public void setRentalEndDate(Date rentalEndDate) {
-		this.rentalEndDate = rentalEndDate;
-	}
-
+	/**
+	 * @return the pno
+	 */
 	public int getPno() {
 		return pno;
 	}
 
-	public void setPno(int pno) {
-		this.pno = pno;
-	}
-
+	/**
+	 * @return the uno
+	 */
 	public int getUno() {
 		return uno;
 	}
 
+	/**
+	 * @return the rtStartDate
+	 */
+	public Date getRtStartDate() {
+		return rtStartDate;
+	}
+
+	/**
+	 * @return the rtEndDate
+	 */
+	public Date getRtEndDate() {
+		return rtEndDate;
+	}
+
+	/**
+	 * @return the rtReqDate
+	 */
+	public Date getRtReqDate() {
+		return rtReqDate;
+	}
+
+	/**
+	 * @return the rtAccDate
+	 */
+	public Date getRtAccDate() {
+		return rtAccDate;
+	}
+
+	/**
+	 * @return the rtSid
+	 */
+	public String getRtSid() {
+		return rtSid;
+	}
+
+	/**
+	 * @return the rtReason
+	 */
+	public String getRtReason() {
+		return rtReason;
+	}
+
+	/**
+	 * @param rtno the rtno to set
+	 */
+	public void setRtno(int rtno) {
+		this.rtno = rtno;
+	}
+
+	/**
+	 * @param pno the pno to set
+	 */
+	public void setPno(int pno) {
+		this.pno = pno;
+	}
+
+	/**
+	 * @param uno the uno to set
+	 */
 	public void setUno(int uno) {
 		this.uno = uno;
 	}
 
+	/**
+	 * @param rtStartDate the rtStartDate to set
+	 */
+	public void setRtStartDate(Date rtStartDate) {
+		this.rtStartDate = rtStartDate;
+	}
+
+	/**
+	 * @param rtEndDate the rtEndDate to set
+	 */
+	public void setRtEndDate(Date rtEndDate) {
+		this.rtEndDate = rtEndDate;
+	}
+
+	/**
+	 * @param rtReqDate the rtReqDate to set
+	 */
+	public void setRtReqDate(Date rtReqDate) {
+		this.rtReqDate = rtReqDate;
+	}
+
+	/**
+	 * @param rtAccDate the rtAccDate to set
+	 */
+	public void setRtAccDate(Date rtAccDate) {
+		this.rtAccDate = rtAccDate;
+	}
+
+	/**
+	 * @param rtSid the rtSid to set
+	 */
+	public void setRtSid(String rtSid) {
+		this.rtSid = rtSid;
+	}
+
+	/**
+	 * @param rtReason the rtReason to set
+	 */
+	public void setRtReason(String rtReason) {
+		this.rtReason = rtReason;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#toString()
+	 */
 	@Override
 	public String toString() {
-		return "Rental [rno=" + rno + ", reqDate=" + reqDate + ", rentalDate=" + rentalDate + ", rentalEndDate="
-				+ rentalEndDate + ", pno=" + pno + ", uno=" + uno + "]";
+		return "Rental [rtno=" + rtno + ", pno=" + pno + ", uno=" + uno + ", rtStartDate=" + rtStartDate
+				+ ", rtEndDate=" + rtEndDate + ", rtReqDate=" + rtReqDate + ", rtAccDate=" + rtAccDate + ", rtSid="
+				+ rtSid + ", rtReason=" + rtReason + "]";
 	}
+
 	
 	
 	

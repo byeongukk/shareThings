@@ -28,7 +28,7 @@
 		<div class="header">
 			<%@ include file="../common/header.jsp"%>
 		</div>
-
+		
 		<div class="main" align="center">
 			<br><br>
 			<h1 class="ui center aligned icon header">
