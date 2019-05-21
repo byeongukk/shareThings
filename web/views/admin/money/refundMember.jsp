@@ -82,28 +82,44 @@
 									<table class="col-lg-12" id="filterArea">
 										<tr>
 											<td width="5%">회원ID :</td>
-											<td><input type="text" name="memberId"
-												style="width: 80%"></td>
-											<td width="5%">환급일 :</td>
-											<td><input type="date" name="startDate"
-												style="width: 40%"> &nbsp; ~ &nbsp; <input
-												type="date" name="endDate" style="width: 40%"></td>
-											<td width="5%">금액 :</td>
-											<td><input type="number" name="startMoney"
-												style="width: 40%"> &nbsp; ~ &nbsp; <input
-												type="number" name="endMoney" style="width: 40%"></td>
-											<td width="5%">상태 :</td>
-											<td><select style="width: 80%">
-													<option value="A">전체</option>
-													<option value="N">환급대기</option>
-													<option value="Y">환급완료</option>
+											<td><input type="text" id="userIdF"
+												style="width: 50%"></td>
+											<td width="5%">구분 :</td>
+											<td><select style="width: 50%" id="typeF">
+													<option value="0">전체</option>
+													<option value="A">예약취소</option>
+													<option value="P">중간환불</option>
 											</select></td>
+											<td width="5%">판정 :</td>
+											<td><select style="width: 50%" id="typeF">
+													<option value="0">전체</option>
+													<option value="Y">적합</option>
+													<option value="N">부적합</option>
+											</select></td>
+											<td width="5%">상태 :</td>
+											<td><select style="width: 50%" id="statusF">
+													<option value="0">전체</option>
+													<option value="N">처리대기</option>
+													<option value="Y">처리완료</option>
+											</select></td>
+										</tr>
+										<tr>
+											<td width="6%">신청일 :</td>
+											<td colspan="3"><input type="date" id="startReqDF"
+												style="width: 40%"> &nbsp;&nbsp;&nbsp; ~
+												&nbsp;&nbsp;&nbsp; <input type="date" id="endReqDF"
+												style="width: 40%"></td>
+											<td width="6%">처리일 :</td>
+											<td colspan="3"><input type="date" id="startPbDF"
+												style="width: 40%"> &nbsp;&nbsp;&nbsp; ~
+												&nbsp;&nbsp;&nbsp; <input type="date" id="endPbDF"
+												style="width: 40%"></td>
 										</tr>
 									</table>
 									<div>
-										<button>조회하기</button>
+										<button type="button" onclick="filteringP(1)">조회하기</button>
 										&nbsp;&nbsp;&nbsp;
-										<button>초기화</button>
+										<button type="reset">초기화</button>
 									</div>
 								</div>
 							</div>
@@ -147,10 +163,10 @@
 																	aria-sort="ascending"
 																	aria-label="Name: activate to sort column descending"
 																	style="width: 20%;">환불사유</th>
-																<!-- <th class="sorting" tabindex="0"
+																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Salary: activate to sort column ascending"
-																	style="width: 10%;">금액</th> -->	
+																	style="width: 10%;">금액</th>
 																<th class="sorting_asc" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-sort="ascending"
@@ -160,6 +176,10 @@
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Office: activate to sort column ascending"
 																	style="width: 10%;">신청일</th>
+																<th class="sorting" tabindex="0"
+																	aria-controls="dataTable" rowspan="1" colspan="1"
+																	aria-label="Salary: activate to sort column ascending"
+																	style="width: 7%;">판정</th>
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Age: activate to sort column ascending"
@@ -174,15 +194,16 @@
 															<% for(Refund r : list){ %>
 																<tr align="center" class="even">
 																	<td class="sorting_1"><input type="checkbox" class="check"></td>
-																	<td data-toggle="modal" data-target="#detail"><%= r.getRfNo() %></td>
-																	<td data-toggle="modal" data-target="#detail"><%= r.getUserId() %></td>
-																	<td data-toggle="modal" data-target="#detail"><%= r.getPayNo() %></td>
-																	<td data-toggle="modal" data-target="#detail"><%= r.getRfReason() %></td>
-																	
-																	<td data-toggle="modal" data-target="#detail"><%= r.getRfType() %></td>
-																	<td data-toggle="modal" data-target="#detail"><%= r.getReqDate() %></td>
-																	<td data-toggle="modal" data-target="#detail"><%= r.getRfDate() %></td>
-																	<td data-toggle="modal" data-target="#detail"><%= r.getRfStatus() %></td>
+																	<td class="sorting_2" data-toggle="modal" data-target="#detail"><%= r.getRfNo() %></td>
+																	<td class="sorting_2" data-toggle="modal" data-target="#detail"><%= r.getUserId() %></td>
+																	<td class="sorting_2" data-toggle="modal" data-target="#detail"><%= r.getVerifyCode() %></td>
+																	<td class="sorting_2" data-toggle="modal" data-target="#detail"><%= r.getRfReason() %></td>
+																	<td class="sorting_2" data-toggle="modal" data-target="#detail"><%= r.getPrice() %></td>
+																	<td class="sorting_2" data-toggle="modal" data-target="#detail"><%= r.getRfType() %></td>
+																	<td class="sorting_2" data-toggle="modal" data-target="#detail"><%= r.getReqDate() %></td>
+																	<td class="sorting_2" data-toggle="modal" data-target="#detail"><%= r.getRfResult() %></td>
+																	<td class="sorting_2" data-toggle="modal" data-target="#detail"><%= r.getRfDate() %></td>
+																	<td class="sorting_2" data-toggle="modal" data-target="#detail"><%= r.getRfStatus() %></td>
 																</tr>
 															<% } %>
 														</tbody>
@@ -194,7 +215,7 @@
 													<div class="col-lg-12">
 														<div class="dataTables_paginate paging_simple_numbers"
 															id="dataTable_paginate">
-															<ul class="pagination">
+															<ul class="pagination" id="pagingUl">
 																<li class="paginate_button page-item"
 																	id="dataTable_first"><a
 																	href="<%=request.getContextPath()%>/selectRefundList.me?currentPage=1"
