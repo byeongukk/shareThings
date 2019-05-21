@@ -352,6 +352,18 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 		</div>
 	</div>
 	<script>
+	//대여상태 코드
+	var RTS1 = "대여대기";
+	var RTS2 = "대여승인";
+	var RTS3 = "대여취소";
+	var RTS4 = "대여송장입력(발송대기)";
+	var RTS5 = "대여중";
+	var RTS6 = "수거송장입력(발송대기)";
+	var RTS7 = "수거중";
+	var RTS8 = "대여완료";
+	var RTS9 = "대여취소요청";
+	var RTS10 = "대여취소";
+	
 			//대여취소 버튼
 			$("#cancelBtn").click(function() {
 				var status = new Array();
@@ -360,7 +372,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 				$(".odd").each(function() {
 					if($(this).find(".check").is(":checked")) {	
 						//대여상태가 발송대기인 물품이 있는경우
-						if($(this).find("td").eq(8).text() == "RTS4"){
+						if($(this).find("td").eq(8).text() == RTS4){
 							rtStatusCheck = "RTS4";
 						}
 						status.push($(this).find("td").eq(1).text());
@@ -371,7 +383,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 					alert("적용하실 물품을 한개이상 선택하세요");
 					return false;
 				}
-				if(rtStatusCheck=="SW"){
+				if(rtStatusCheck=="RTS4"){
 					alert("송장정보가 있는 물품이 있습니다.");
 					return false;
 				}
@@ -439,6 +451,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 				} else {
 					$(".check").prop("checked", false);
 				}
+				console.log(RTS1);
 			});
 			
 			//택배송장 입력 
@@ -462,7 +475,11 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 						}
 					});
 					console.log(rtStatus);
-					if(rtStatus == "RTS4"){
+					if(rtStatus == RTS1){
+						alert("대여 승인되지않은 물품입니다");
+						return false;
+					}
+					if(rtStatus == RTS4){
 						alert("이미 입력된 물품입니다");
 						return false;
 					}
@@ -505,7 +522,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 							console.log(rtNos);
 						}
 					});
-					if(rtStatus != "RTS4"){
+					if(rtStatus != RTS4){
 						alert("송장번호가 입력되지 않은 물품입니다");
 						return false;
 					}
@@ -520,19 +537,19 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 				}
 				
 			});
-		
+			//발송처리 
 			$("#forwardingBtn").click(function(){
 				if(confirm("발송 처리 하시겠습니까?")){
 					var status = new Array();
 					var rtNos = new Array();
 					var pnos = new Array();
 					var rtStatus = "";
-					var rtStatusCheck = "";
+					var rtStatusCheck = true;
 					$(".odd").each(function() {
 						if($(this).find(".check").is(":checked")) {
 							//운송장번호가 입력되지않은  물품이 있는경우
-							if($(this).find("td").eq(8).text() == "RTS2"){
-								rtStatusCheck = "RTS2";
+							if($(this).find("td").eq(8).text() != RTS4){
+								rtStatusCheck = false;
 							}
 							
 							status.push($(this).find("td").eq(1).text());
@@ -543,7 +560,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 							console.log(rtNos);
 						}
 					});
-					if(rtStatusCheck == "RTS2"){
+					if(rtStatusCheck == false){
 						alert("송장번호가 입력되지 않은 물품이 있습니다");
 						return false;
 					}
