@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="com.kh.st.product.model.vo.*, java.util.*"%>
+<%
+	ArrayList<Product> list = (ArrayList<Product>)request.getAttribute("list");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -87,6 +90,12 @@
 		width:1000px;
 	}
 	#mlogo { width:100%;}
+		
+	.pdlist{
+		text-align: center;
+		padding: 5px;
+	}
+	
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -115,14 +124,23 @@
 				<label>나의 등록 내역 </label> <button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none;">?</button>
 			<table align="center" width="100%">
 				<tr class="titletb">
+					<td >순번</td>
 					<td >날짜</td>
 					<td  width="60%">상품정보</td>
 					<td >상태</td>
 					<td>등록/대여</td>
 				</tr>
-				<tr>
+				<!-- <tr>
 					<td colspan=12 style="text-align:center; padding:50px; height:500px">등록한 상품이 없습니다.</td>
+				</tr> -->
+				<%for(Product p : list) {%>
+				<tr class="pdlist">
+					<td><%= p.getPno() %></td>
+					<td><%= p.getpStartDate() %> ~ <%= p.getpEndDate() %></td>
+					<td><%= p.getModel() %></td>
+					<td><%= p.getSid() %></td>
 				</tr>
+				<%} %>
 			<%-- 	<% for(no n : list){ %>
 				<tr>
 					<td><%= n.getNno() %></td>

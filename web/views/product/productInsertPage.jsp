@@ -188,6 +188,11 @@ table {
 	margin:14px;
 	
 	}
+	.noshow{
+		display:none;
+	}
+	
+	
 </style>
 </head>
 <body>
@@ -211,7 +216,7 @@ table {
 
 <tr>
 <td colspan="1"></td>
-<td class="teduri" colspan="3" id="pic1">사진등록</td>
+<td class="teduri" colspan="3" id="pic1">* 사진등록</td>
 <td colspan="7" id="pic2">
 
 <div class="pho0">
@@ -265,7 +270,7 @@ table {
 
 <tr>
 <td colspan="1"></td>
-<td colspan="3" id="title1">제목</td>
+<td colspan="3" id="title1">* 제목</td>
 <td colspan="7" id="title2">
 
 <input class="tb" type="text" name="title" style="width:700px; 
@@ -278,7 +283,7 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 
 <tr>
 <td colspan="1"></td>
-<td colspan="3" id="category1">카테고리</td>
+<td colspan="3" id="category1">* 카테고리</td>
 
 
 <td colspan="7" id="category2">
@@ -288,7 +293,6 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 <option >대분류</option>
 <option>전자기기</option>
 <option>취미/레저</option>
-<option>리빙</option>
 <option>유아동</option>
 <option>반려동물</option>
 
@@ -363,10 +367,17 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 					
 					<td colspan="1"></td>
 					<td colspan="3" rowspan="2" style="text-align:center;">주소지</td>
-					<td colspan="7">
-					    <input type="hidden" id="confmKey" name="confmKey" value=""  >
-						<input type="text" id="zipCode" name="zipNo" readonly style="width:100px;  text-align:center; margin-left:2.5%;">
-						<input type="button"  value="주소검색" id="addressSearch">
+					<td colspan="7" >
+					<%
+					String add[] = loginUser.getAddress().split("[|]");
+					String zipCode =  add[0];
+					String address1 = add[1];
+					String address2 = add[2];%>
+						<div id="ad1" class="show">
+					    <input type="hidden" id="confmKey" name="confmKey" value=""  > 
+						<input type="text" id="zipCode" name="zipNo" readonly value="<%= zipCode %>" style="width:100px;  text-align:center; margin-left:2.5%;">
+						<input type="button"  value="주소검색" id="addressSearch"> <input type="button"  value="새로운 배송지" id="nlocation">
+						</div>
 					</td>
 					<td colspan="1"></td>
 				</tr>
@@ -375,8 +386,8 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 				<tr>
 					<td colspan="1"></td>
 						<td colspan="7">
-							<input type="text" id="address1" name="address1" style="width:40%; margin:2%; margin-left:2.5%;" value="">
-							<input type="text" id="address2" name="address2" style="width:40%; text-align:center;" value="">
+							<input type="text" id="address1" name="address1" style="width:40%; margin:2%; margin-left:2.5%;" value="<%= address1 %>">
+							<input type="text" id="address2" name="address2" style="width:40%; text-align:center;" value="<%= address2 %>">
 						</td>
 							<td colspan="1"></td>
 				</tr>
@@ -674,7 +685,15 @@ height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
 		}
 		
 		</script>
-	
+		
+	<!-- 	주소지 라디오버튼 -->
+		<script>
+			$("#nlocation").click(function(){
+				$("#zipCode").removeAttr("value");
+				$("#address1").removeAttr("value");
+				$("#address2").removeAttr("value");
+			})
+		</script>
 		
 		<script>
    $("#big").change(function(){
