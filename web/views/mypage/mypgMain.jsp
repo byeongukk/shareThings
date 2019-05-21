@@ -104,7 +104,7 @@
 			<div class="vertical-menu">
 			<h1 align="left"><a href="mypgMain.jsp" style="text-decoration: none; background: white; margin:-10px;"><img id="mlogo" src="../../resource/img/mypage/mypage.png"></a></h1>
  			 <a href="mypgUser.jsp" >내 정보 조회</a>
-			  <a href="mypgUpPd.jsp">내 등록 물품</a>
+			  <a href="#" onclick="myUpPd();">내 등록 물품</a>
  			 <a href="mypgRtPd.jsp">내 대여 현황</a>
   			<a href="mypgUserPd.jsp">관심물품</a>
  			 <a href="mypgPoint.jsp">적립금 현황</a>
@@ -206,6 +206,11 @@
 		
 	<div class="col-lg-1 col-md-1">
 	</div>
+	<script>
+		function myUpPd(){
+			location.href="/st/selectList.pd";
+		}
+	</script>
 </body>
 </html>
 			

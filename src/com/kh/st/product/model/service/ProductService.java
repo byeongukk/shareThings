@@ -3,6 +3,7 @@ package com.kh.st.product.model.service;
 import static com.kh.st.common.JDBCTemplate.*;
 
 import java.sql.Connection;
+import java.util.ArrayList;
 
 import com.kh.st.product.model.dao.ProductDao;
 import com.kh.st.product.model.vo.Product;
@@ -33,10 +34,10 @@ public class ProductService {
 		return pno;
 	}
 
-	public int regreqProduct(int pno) {
+	public int regreqProduct(int pno, String address, String phone, String phone2) {
 		
 		Connection con = getConnection();
-		int rqresult = new ProductDao().regreqProduct(con, pno);
+		int rqresult = new ProductDao().regreqProduct(con, pno, address, phone, phone2);
 		
 		if(rqresult > 0) {
 			commit(con);
@@ -47,6 +48,18 @@ public class ProductService {
 		close(con);
 		
 		return rqresult;
+	}
+
+	
+	/*---------------- 내 등록 내역 조회---------------*/
+	public ArrayList<Product> selectList(int uno) {
+		Connection con = getConnection();
+		
+		ArrayList<Product> list = new ProductDao().selectList(con, uno);
+		
+		close(con);
+		
+		return list;
 	}
 
 }
