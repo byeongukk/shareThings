@@ -118,14 +118,14 @@ width:100%;
 <div>
 <label class="que" style="font-size:30px;">자주 묻는 질문</label>
 
-<input type="text" style="width:200px; height:50px; margin-left:60%; margin-bottom:">
+
 
 </div>
 
 <div class="vertical-menu" style=" align:center; ">
  <a href="#" >자주 묻는 질문 FAQ</a>
            <a href="mtmQue.jsp">1 : 1 문의하기</a>
-           <a href="#">나의 문의 관리</a>
+           <a href="../mypage/mypgReport.jsp">나의 문의 관리</a>
 
 </div>
 

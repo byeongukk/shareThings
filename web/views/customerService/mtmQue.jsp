@@ -84,7 +84,24 @@ width:100%;
 	margin-left:2.5%;
 	margin-bottom:1.5%;
 	}
+	.rvImageArea {
+		border:1px solid lightgray;
+		display:inline-block;
+		width:50px;
+		height:50px;
+		margin-bottom:10px;
+		position:relative;
+	}
+	.rvImageArea:hover {
+		border:1px solid #0CB6F4;
+		cursor:pointer;
+	}
+	#rvImg1:hover, #rvImg2:hover, #rvImg3:hover, #rvImg4:hover, #rvImg5:hover {
+		/* box-shadow:1px 1px #0CB6F4; */
+	}
+	#insertQue {
 	
+	}
 </style>
 
 </head>
@@ -149,14 +166,14 @@ width:100%;
 <div class="vertical-menu" style=" align:center; ">
  <a href="cs.jsp" >자주 묻는 질문 FAQ</a>
            <a href="mtmQue.jsp">1 : 1 문의하기</a>
-           <a href="#">나의 문의 관리</a>
+           <a href="../mypage/mypgReport.jsp">나의 문의 관리</a>
 
 </div> <!-- 옆에 메뉴 -->
 
     <!-- 여기부터 하면 됨! -->
     
     <div class="detail">
-    <form action="/action_page.php">
+    <form action="<%= request.getContextPath() %>/csInsert.cs">
     <div class="form-group" style="width:40%" >
       <label for="csName">이름</label>
       <input type="text" class="form-control" id="csName" placeholder="내용을 입력하세요" name="csName">
@@ -172,10 +189,11 @@ width:100%;
     
     
     <div align="center" >
-    <select style="width:130px; height:30px; float:right;" >
+    <select style="width:130px; height:30px; float:right;" name="csCategory" >
     <option>배송</option>
-    <option>결제</option>
-    <option>물품등록</option>
+    <option>반품</option>
+    <option>물품</option>
+    <option>기타</option>
    
     
     
@@ -186,7 +204,7 @@ width:100%;
     
     
     <div>
-    <textarea style="width:100%; height:400px; text-align:left; margin-top:18px;" placeholder="내용을 입력하세요" ></textarea>
+    <textarea name="content" style="width:100%; height:400px; text-align:left; margin-top:18px;" placeholder="내용을 입력하세요" ></textarea>
     
     
     </div> <!-- 내용 -->
@@ -197,11 +215,44 @@ width:100%;
       <label><input type="checkbox" name="remember"> Remember me</label>
     </div> -->
     
-    
-    <button type="submit" class="btn btn-default">Submit</button>
+    <div class="rvAttachArea">
+									<label>사진 첨부</label><br>
+									<div class="rvImageArea rvImageArea1">
+										<i class="camera icon" style="position:absolute; top:30%;left:35%;"></i>
+										<img id="rvImg1"width="100%" height="100%">
+									</div>
+									<div class="rvImageArea rvImageArea2" >
+										<i class="camera icon" style="position:absolute; top:30%;left:35%;"></i>
+										<img id="rvImg2"width="100%" height="100%">
+									</div>
+									<div class="rvImageArea rvImageArea3">
+										<i class="camera icon" style="position:absolute; top:30%;left:35%;"></i>
+										<img id="rvImg3"width="100%" height="100%">
+									</div>
+									<div class="rvImageArea rvImageArea4">
+										<i class="camera icon" style="position:absolute; top:30%;left:35%;"></i>
+										<img id="rvImg4"width="100%" height="100%">
+									</div>
+									<div class="rvImageArea rvImageArea5">
+										<i class="camera icon" style="position:absolute; top:30%;left:35%;"></i>
+										<img id="rvImg5"width="100%" height="100%">
+									</div>
+									<div id="fileArea">
+										<input type="file" id="img1" name="img1" onchange="loadImg(this, 1);">
+										<input type="file" id="img2" name="img2" onchange="loadImg(this, 2);">
+										<input type="file" id="img3" name="img3" onchange="loadImg(this, 3);">
+										<input type="file" id="img4" name="img4" onchange="loadImg(this, 4);">
+										<input type="file" id="img5" name="img5" onchange="loadImg(this, 5);">
+										
+									</div>
+								</div>
+								<div class="ui large blue button" id="insertQue">등록하기</div>
+								
+    <!-- <button type="submit" class="btn btn-default">Submit</button> -->
   </form>
+  
     
-     <div style="margin-top:5%;">
+   <!--   <div style="margin-top:5%;">
   <div class="pho2" id="img1Area">
 <img id="img1" style="width:100%; height:100%%; ">
 </div>
@@ -224,7 +275,7 @@ width:100%;
     
     
     
-    </div> <!-- 사진첨부 -->
+    </div> --> <!-- 사진첨부 -->
     
     </div> <!-- detail -->
     
@@ -242,7 +293,7 @@ width:100%;
 	<div class="col-lg-1 col-md-1">
 	</div>
 	
-	<div  id="fileArea" style="display: none;">
+	<!-- <div  id="fileArea" style="display: none;">
 		<input type="file" id="fileimg1" name="fileimg1" onchange="loadImg(this,1)">
 		<input type="file" id="fileimg2" name="fileimg2" onchange="loadImg(this,2)">
 		<input type="file" id="fileimg3" name="fileimg3" onchange="loadImg(this,3)">
@@ -250,7 +301,7 @@ width:100%;
 		<input type="file" id="fileimg5" name="fileimg5" onchange="loadImg(this,5)">
 		<input type="file" id="fileimg6" name="fileimg6" onchange="loadImg(this,6)">
 	
-		</div> 
+		</div>  -->
 <script>
 		$(function(){
 			
