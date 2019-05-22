@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.HashMap;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -82,9 +83,13 @@ public class InsertPdexamineServlet extends HttpServlet {
 									+ multiRequest.getOriginalFileName(name));
 			}
 			
-			System.out.println("물품번호 " + multiRequest.getParameter("pno"));
-			int pno = Integer.parseInt(multiRequest.getParameter("pno"));	//물품번호
-			int rno = Integer.parseInt(multiRequest.getParameter("rno"));	//대여번호
+			String rtNos = multiRequest.getParameter("rno");
+			String[] rtNo = rtNos.split(",");
+			String pnos = multiRequest.getParameter("pno");
+			String[] pno = pnos.split(",");
+			
+			int pnum = Integer.parseInt(pnos);
+			
 			String textResult = multiRequest.getParameter("textResult");	//검수내용
 			String checker = multiRequest.getParameter("checker");	//검수자 회원번호
 			String userId = multiRequest.getParameter("userId");
@@ -92,7 +97,12 @@ public class InsertPdexamineServlet extends HttpServlet {
 			
 			
 			
-			System.out.println("요청번호 : " + rno);
+			//변경할 물품상태 (창고적재)
+			String pStatus = "PS10";
+			//변경할 대여상태 (대여완료)
+			String rtStatus = "RTS8";
+			
+			System.out.println("요청번호 : " + rtNo);
 			System.out.println("물품번호 : " + pno);
 			System.out.println("거절사유: " + textResult);
 			System.out.println("검수자 회원 번호   : " + checker);
@@ -100,9 +110,15 @@ public class InsertPdexamineServlet extends HttpServlet {
 			
 			//검수 이력 객체 생성
 			CheckHistory ch = new CheckHistory	 ();
-			ch.setPno(pno);	//물품번호
+			ch.setPno(pnum);	//물품번호
 			ch.setChkContent(textResult);	//검수내용
 			ch.setChecker(checker);	//검수자
+			
+			HashMap<String, Object> hmap = new HashMap<>();
+			hmap.put("pno", pno);
+			hmap.put("rtNo",rtNo);
+			hmap.put("pStatus", pStatus);
+			hmap.put("rtStatus", rtStatus);
 			
 			System.out.println(ch);
 			
@@ -122,12 +138,11 @@ public class InsertPdexamineServlet extends HttpServlet {
 				System.out.println(fileList.get(i));
 			}
 			
-			//이부분부터 시작**********************************************************************
-			int result = new CheckHistoryService().insertRejectImg(ch, fileList);
+			int result = new CheckHistoryService().insertExamineImg(ch, fileList , hmap);
 			
 			String page = "";
 			if(result > 0) {
-				response.sendRedirect(request.getContextPath() + "/reqOkProduct.bo");
+				response.sendRedirect(request.getContextPath() + "/selectReturnPdMngList.rt");
 			} else {
 				for(int i = 0; i < saveFiles.size(); i++) {
 					File failedFile = new File(filePath + saveFiles.get(i));
@@ -137,16 +152,14 @@ public class InsertPdexamineServlet extends HttpServlet {
 				}
 				page = "views/common/errorPage.jsp";
 				
-				request.setAttribute("msg", "검수 거절 실패");
+				request.setAttribute("msg", "수거 실패");
 				request.getRequestDispatcher(page).forward(request, response);
 			}
 		} else {
 			System.out.println("실패");
 		}
-      
-      
 	   }
-	}
+	
 
 	/**
 	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)

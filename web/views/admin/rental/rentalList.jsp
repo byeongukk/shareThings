@@ -75,8 +75,8 @@
 												<form id="filterArea">
 													<table class="col-lg-12" id="filter">
 														<tr>
-															<td width="10%">대여상태</td>
-															<td width="15%"><select class="form-control" id="rentalStatus" name="rentalStatus">
+															<td width="5%">대여상태</td>
+															<td width="5%"><select class="form-control" id="rentalStatus" name="rentalStatus">
 																	<option value="0">전체</option>
 																	<option value="RTS1">대여대기</option>
 																	<option value="RTS2">대여승인</option>
@@ -89,15 +89,15 @@
 																	<option value="RTS9">대여취소요청</option>
 																	<option value="RTS10">대여취소</option>  
 															</select></td>
-															<td width="10%">상세조건</td>
-															<td width="15%"><select class="form-control" id="details" name="details" onchange = detailsChg();>
+															<td width="5%">상세조건</td>
+															<td width="25%"><select class="form-control" id="details" name="details" onchange = detailsChg();>
 																	<option value="0">전체</option>
 																	<option value="rtNo">대여주문번호</option>
 																	<option value="rtUserName">대여자이름</option>
 																	<option value="model">물품명</option>
 																	<option value="pno">물품번호</option>
 															</select></td>
-															<td width="15%">
+															<td width="30%">
 																<input type="text" class="form-control" placeholder="상세정보입력" disabled id="filterContent" name="filterContent">
 															</td>
 															<td>
@@ -105,9 +105,9 @@
 														</tr>
 
 														<tr>
-															<td>대여기간</td>
-															<td width="25%"><input type="date" id="startDate" name="startDate"
-																style="width: 140px"> &nbsp; ~ &nbsp;<input
+															<td>대여요청일</td>
+															<td width="30%"><input type="date" id="startDate" name="startDate"
+																style="width: 140px"> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ~ &nbsp;<input
 																type="date" id="endDate" name="endDate" style="width: 140px">
 															</td>
 															<td></td>
@@ -164,7 +164,7 @@
 																rowspan="1" colspan="1">물품명</th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 68px;"
-																rowspan="1" colspan="1">요청일자</th>
+																rowspan="1" colspan="1">대여요청일</th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 67px;"
 																rowspan="1" colspan="1">대여상태</th>
@@ -196,28 +196,6 @@
 												</div>
 											</div>
 										</div>
-										<!-- 페이징 -->
-										<div class="row">
-											<div class="col-sm-12 col-md-7">
-												<div class="dataTables_paginate paging_simple_numbers"
-													id="dataTable_paginate">
-													<ul class="pagination">
-														<li class="paginate_button page-item previous disabled"
-															id="dataTable_previous"><a tabindex="0"
-															class="page-link" aria-controls="dataTable" href="#"
-															data-dt-idx="0">Previous</a></li>
-														<li class="paginate_button page-item active"><a
-															tabindex="0" class="page-link" aria-controls="dataTable"
-															href="#" data-dt-idx="1">1</a></li>
-														<li class="paginate_button page-item next"
-															id="dataTable_next"><a tabindex="0"
-															class="page-link" aria-controls="dataTable" href="#"
-															data-dt-idx="7">Next</a></li>
-													</ul>
-												</div>
-											</div>
-										</div>
-										<!-- 페이징 끝부분 -->
 									</div>
 								</div>
 							</div>

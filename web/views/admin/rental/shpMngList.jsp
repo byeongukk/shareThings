@@ -33,6 +33,8 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 #filterArea td {
 	padding: 20px;
 }
+
+
 </style>
 
 <!-- Custom fonts for this template-->
@@ -84,21 +86,22 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 												<form id="filterArea">
 													<table class="col-lg-12" id="filter">
 														<tr>
-															<td width="10%">배송상태</td>
-															<td width="15%"><select class="form-control">
-																	<option value="hidden">배송상태</option>
-																	<option value="0">배송중</option>
-																	<option value="10">배송완료</option>
+															<td width="5%">주문상태</td>
+															<td width="5%"><select class="form-control">
+																	<option disabled>주문상태</option>
+																	<option value="0">대여승인</option>
+																	<option value="10">대여대기</option>
+																	<option value="10">대여송장입력</option>
 															</select></td>
-															<td width="10%">상세조건</td>
-															<td width="15%"><select class="form-control">
+															<td width="5%">상세조건</td>
+															<td width="25%"><select class="form-control">
 																	<option>상세조건</option>
 																	<option value="0">대여주문번호</option>
 																	<option value="10">대여자이름</option>
 																	<option value="20">물품명</option>
 																	<option value="30">물품번호</option>
 															</select></td>
-															<td width="15%"><input type="text"
+															<td width="30%"><input type="text"
 																class="form-control" placeholder="상세정보입력"></td>
 
 														</tr>
@@ -134,9 +137,9 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 							</div>
 							<div class="card-body">
 								<div class="row">
-									<div class="col-lg-6 mb-1">
+									<div class="col-lg-12 col-md-6 col-xs-6 col-sm-6">
 										<form class="form-inline">
-											<div class="form-group">
+											<div class="form-group col-md-10">
 												<span>송장 정보 입력 : </span>
 												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 												<select class="form-control" id="dCom">
@@ -145,24 +148,29 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 												</select> 
 												&nbsp;&nbsp;&nbsp;&nbsp; <span> <input type="number"
 													class="form-control" id="invoiceNum" placeholder="송장번호">
-												</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												</span> 
+												&nbsp;&nbsp;&nbsp;
+												<br><br>
 												<button type="button" class="btn btn-success btn-icon-split btn-sm" id="applyBtn">
 													<span class="icon text-white-50"> <i
 														class="fas fas fa-check"></i>
-													</span> <span class="text">적용하기</span>
+													</span> <span class="text">송장적용하기</span>
 												</button>
-												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												
+												&nbsp;&nbsp;&nbsp;
+											
 												<button type="button"
 													class="btn btn-danger btn-icon-split btn-sm" id="applyCancelBtn">
 													<span class="icon text-white-50"> <i
 														class="fas fas fa-trash"></i>
-													</span> <span class="text">적용취소</span>
+													</span> <span class="text">송장적용취소</span>
 												</button>
-												
+												 
 											</div>
 										</form>
 										<br>
 										<form>
+										&nbsp;&nbsp;
 											<button type="button" class="btn btn-secondary btn-icon-split btn-sm" id="forwardingBtn">
 												<span class="icon text-white-50"> <i
 													class="fas fas fa-arrow-right"></i>
@@ -255,31 +263,6 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 												</div>
 											</div>
 										</div>
-										<!-- 페이징 -->
-										<div class="row">
-											<div class="col-sm-12 col-md-7" ailgn="center">
-												<div class="dataTables_paginate paging_simple_numbers"
-													id="dataTable_paginate">
-													<ul class="pagination">
-														<li class="paginate_button page-item previous disabled"
-															id="dataTable_previous"><a tabindex="0"
-															class="page-link" aria-controls="dataTable" href="#"
-															data-dt-idx="0">Previous</a></li>
-														<li class="paginate_button page-item active"><a
-															tabindex="0" class="page-link" aria-controls="dataTable"
-															href="#" data-dt-idx="1">1</a></li>
-														<li class="paginate_button page-item "><a
-															tabindex="0" class="page-link" aria-controls="dataTable"
-															href="#" data-dt-idx="2">2</a></li>
-														<li class="paginate_button page-item next"
-															id="dataTable_next"><a tabindex="0"
-															class="page-link" aria-controls="dataTable" href="#"
-															data-dt-idx="7">Next</a></li>
-													</ul>
-												</div>
-											</div>
-										</div>
-										<!-- 페이징 끝부분 -->
 									</div>
 								</div>
 							</div>

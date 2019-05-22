@@ -1,7 +1,9 @@
 package com.kh.st.rental.model.service;
 
 import static com.kh.st.common.JDBCTemplate.close;
-import static com.kh.st.common.JDBCTemplate.*;
+import static com.kh.st.common.JDBCTemplate.commit;
+import static com.kh.st.common.JDBCTemplate.getConnection;
+import static com.kh.st.common.JDBCTemplate.rollback;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -264,7 +266,19 @@ public class RentalService {
 			}
 			return result;
 		}
-	
+	      
+		//민지
+		   public int insertCart(Cart newCart) {
+		      Connection con = getConnection();
+		      int result = new RentalDao().insertCart(con, newCart);
+		      if(result > 0) {
+		         commit(con);
+		      }else {
+		         rollback(con);
+		      }
+		      return result;
+		   }
+		   
 	
 	
 	

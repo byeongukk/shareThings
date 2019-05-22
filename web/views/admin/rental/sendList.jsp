@@ -147,14 +147,14 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 													<thead>
 														<tr role="row" align="center">
 															<th tabindex="0" class="sorting"
-																aria-controls="dataTable" style="width: 68px;"
+																aria-controls="dataTable" style="width: 40px;"
 																rowspan="1" colspan="1">대여주문번호</th>
 															<th tabindex="0" class="sorting_asc"
-																aria-controls="dataTable" style="width: 50px;"
+																aria-controls="dataTable" style="width: 40px;"
 																aria-sort="ascending" rowspan="1" colspan="1">물품번호</th>
 															<th tabindex="0" class="sorting"
-																aria-controls="dataTable" style="width: 50px;"
-																rowspan="1" colspan="1">택배사</th>
+																aria-controls="dataTable" style="width: 40px;"
+																rowspan="1" colspan="1">택배사코드</th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 67px;"
 																rowspan="1" colspan="1">송장번호</th>
@@ -166,14 +166,14 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 																aria-controls="dataTable" style="width: 67px;"
 																rowspan="1" colspan="1">대여요청일시</th>
 															<th tabindex="0" class="sorting"
-																aria-controls="dataTable" style="width: 45px;"
+																aria-controls="dataTable" style="width: 40px;"
 																rowspan="1" colspan="1">대여자 ID</th>
-															<th tabindex="0" class="sorting"
+															<!-- <th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 45px;"
-																rowspan="1" colspan="1">대여자 이름</th>
-															<th tabindex="0" class="sorting"
+																rowspan="1" colspan="1">대여자 이름</th> -->
+															<!-- <th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 55px;"
-																rowspan="1" colspan="1">대여자 연락처</th>
+																rowspan="1" colspan="1">대여자 연락처</th> -->
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 68px;"
 																rowspan="1" colspan="1">배송지</th>
@@ -200,11 +200,11 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 															<td><%= hmap.get("spDate")%></td>
 															<td><%= hmap.get("reqDate")%></td>
 															<td><%= hmap.get("userId")%></td>
-															<td><%= hmap.get("userName")%></td>
-															<td><%= hmap.get("phone")%></td>
+															<%-- <td><%= hmap.get("userName")%></td> --%>
+															<%-- <td><%= hmap.get("phone")%></td> --%>
 															<td><%= hmap.get("address")%></td>
 															<td><%= hmap.get("inOut")%></td>
-															<td class="tracking">dd</td>
+															<td class="tracking">운송장 번호 오류</td>
 														</tr>
 														<% } %>
 													</tbody>
@@ -279,20 +279,18 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 		           				var t_code = $(this).find("td").eq(2).text();
 					            var t_invoice = $(this).find("td").eq(3).text();
 					            //var t_inovice = 3485402167312;
-					            var $trackingTd = $(this).find("td").eq(11);
+					            var $trackingTd = $(this).find("td").eq(9);
 					            
-		           		
+		           				console.log(t_invoice);
 				            $.ajax({
 				                type:"GET",
 				                dataType : "json",
 				                url:"http://info.sweettracker.co.kr/api/v1/trackingInfo?t_key="+myKey+"&t_code="+t_code+"&t_invoice="+t_invoice,
 				                success:function(data){
 				                    var $dataTable = $(".dataTable");
-				                    
-				                    console.log($trackingTd);
-				                    
-				                    console.log(data.status);
-				                    if(data.status == false){
+				                    console.log(data);
+				                    console.log("data.result : " + data.result);
+				                    if(data.result == "N" || data.result =="" || data.status == false){
 				                        $trackingTd = $trackingTd.text("운송장번호오류");
 				                    }else {
 				                    	switch(data.level){
