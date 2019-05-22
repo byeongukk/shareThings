@@ -8,6 +8,9 @@
 <title>Insert title here</title>
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 <style>
 table {
 	
@@ -216,7 +219,7 @@ table {
 
 <tr>
 <td colspan="1"></td>
-<td class="teduri" colspan="3" id="pic1">* 사진등록</td>
+<td class="teduri" colspan="3" id="pic1">사진등록(*필수)</td>
 <td colspan="7" id="pic2">
 
 <div class="pho0">
@@ -237,6 +240,10 @@ table {
 </div> <!-- pho0 -->
 
 <div class="pho0">
+
+
+
+
 
 <div class="pho2" id="img4Area">
 <img id="img4" style="width:100%; height:220px;">
@@ -270,7 +277,7 @@ table {
 
 <tr>
 <td colspan="1"></td>
-<td colspan="3" id="title1">* 제목</td>
+<td colspan="3" id="title1">제목(*필수)</td>
 <td colspan="7" id="title2">
 
 <input class="tb" type="text" name="title" style="width:700px; 
@@ -283,7 +290,7 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 
 <tr>
 <td colspan="1"></td>
-<td colspan="3" id="category1">* 카테고리</td>
+<td colspan="3" id="category1">카테고리(*필수)</td>
 
 
 <td colspan="7" id="category2">
@@ -315,7 +322,7 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 
 <tr>
 <td colspan="1"></td>
-<td colspan="3" id="lental1">렌탈 가능 기간</td>
+<td colspan="3" id="lental1">렌탈 가능 기간(*필수)</td>
 
 <td colspan="7" id="lental2">
 	<div class="ui left icon fluid input datePicker" style="margin-left:2.5%; width:30%; float:left;">
@@ -333,7 +340,7 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 
 <tr>
 <td colspan="1"></td>
-<td colspan="3" id="info1">내용</td>
+<td colspan="3" id="info1">내용(*필수)</td>
 <td colspan="7" id="info2">
 
 <textarea name="content" class="ta" style="width:90%; height:150px;" id="productdetail" row="15" col="50" placeholder="아이템 정보를 상세히 입력하세요"></textarea>
@@ -349,7 +356,7 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 
 <tr>
 <td colspan="1"></td>
-<td colspan="3" id="phone1">전화번호</td>
+<td colspan="3" id="phone1">전화번호(*필수)</td>
 <td colspan="7" id="phone2">
 <input class="p"type="text" name="hp1" style="width:30%; height:30px; margin-bottom:5px; " placeholder="  hp" value="<%= loginUser.getPhone()%>"><br>
 
@@ -427,7 +434,7 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 
 <tr>
 <td colspan="1"></td>
-<td colspan="3" id="modelName1">모델명</td>
+<td colspan="3" id="modelName1">모델명(*필수)</td>
 <td colspan="7" id="modelName2">
 
 <input class="mta"type="text" name="pmodel" style="width:30%; height:30px; " placeholder="모델명 입력">
@@ -474,7 +481,7 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 
 <tr>
 <td colspan="1"></td>
-<td colspan="3" id="rentPrice1" style="text-align:center">희망 렌탈비(주단위)</td>
+<td colspan="3" id="rentPrice1" style="text-align:center">희망 렌탈비(주단위)(*필수)</td>
 <td colspan="7" id="rentPrice2">
 <input class="rentPrice3" type="text" name="rentPrice" style="width:200px; 
 height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
@@ -489,7 +496,7 @@ height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
 
 <tr>
 <td colspan="1"></td>
-<td colspan="3" id="deposit1" style="text-align:center">보증금</td>
+<td colspan="3" id="deposit1" style="text-align:center">보증금(*필수)</td>
 <td colspan="7" id="deposit2">
 <input class="deposit3" type="text" name="deposit" style="width:200px; 
 height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
