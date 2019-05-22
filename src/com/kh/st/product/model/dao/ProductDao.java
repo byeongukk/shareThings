@@ -79,7 +79,7 @@ public class ProductDao {
 			pstmt.setDate(8, p.getPurchaseDate());
 			pstmt.setInt(9, p.getPurchasePrice());
 			pstmt.setString(10, p.getAsHistory());
-			pstmt.setString(11, "최상");
+			pstmt.setString(11, "하");
 			
 			result = pstmt.executeUpdate();
 			
@@ -123,7 +123,7 @@ public class ProductDao {
 		return pno;
 	}
 
-	public int regreqProduct(Connection con, int pno, String address, String phone, String phone2) {
+	public int regreqProduct(Connection con, int pno) {
 		PreparedStatement pstmt =null;
 		int rqresult = 0;
 		String query = prop.getProperty("reqProduct");
@@ -131,9 +131,7 @@ public class ProductDao {
 		try {
 			pstmt = con.prepareStatement(query);
 			pstmt.setInt(1, pno);
-			pstmt.setString(2, address);
-			pstmt.setString(3, phone);
-			pstmt.setString(4, phone2);
+			pstmt.setInt(2, 1);
 			
 			rqresult = pstmt.executeUpdate();
 			
@@ -181,6 +179,7 @@ public class ProductDao {
 				p.setPurchasePrice(rset.getInt("PURCHASE_PRICE"));
 				p.setAsHistory(rset.getString("ASHISTORY"));
 				p.setCondition(rset.getString("CONDITION"));
+				p.setSid(rset.getString("STATUS"));
 				
 				
 				

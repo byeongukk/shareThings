@@ -34,10 +34,10 @@ public class ProductService {
 		return pno;
 	}
 
-	public int regreqProduct(int pno, String address, String phone, String phone2) {
+	public int regreqProduct(int pno) {
 		
 		Connection con = getConnection();
-		int rqresult = new ProductDao().regreqProduct(con, pno, address, phone, phone2);
+		int rqresult = new ProductDao().regreqProduct(con, pno);
 		
 		if(rqresult > 0) {
 			commit(con);
