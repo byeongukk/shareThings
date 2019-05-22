@@ -126,7 +126,7 @@ width:100%;
  <a href="#" >자주 묻는 질문 FAQ</a>
            <a href="mtmQue.jsp">1 : 1 문의하기</a>
            <a href="../mypage/mypgReport.jsp">나의 문의 관리</a>
-
+<a href="../customerService/guide.jsp">이용안내</a>
 </div>
 
 

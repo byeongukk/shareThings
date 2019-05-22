@@ -8,15 +8,15 @@ public class Cs implements java.io.Serializable{
 	private int pno;
 	private Date cDate;
 	private String cContent;
-	private int cCategory;
+	private String cCategory;
 	private String cReply;
 	private int uno;
-	private int cType;
+	private String cType;
 	private int cCount;
 	
 	public Cs() {}
 
-	public Cs(int cno, int pno, Date cDate, String cContent, int cCategory, String cReply, int uno, int cType,
+	public Cs(int cno, int pno, Date cDate, String cContent, String cCategory, String cReply, int uno, String cType,
 			int cCount) {
 		super();
 		this.cno = cno;
@@ -62,11 +62,11 @@ public class Cs implements java.io.Serializable{
 		this.cContent = cContent;
 	}
 
-	public int getcCategory() {
+	public String getcCategory() {
 		return cCategory;
 	}
 
-	public void setcCategory(int cCategory) {
+	public void setcCategory(String cCategory) {
 		this.cCategory = cCategory;
 	}
 
@@ -86,11 +86,11 @@ public class Cs implements java.io.Serializable{
 		this.uno = uno;
 	}
 
-	public int getcType() {
+	public String getcType() {
 		return cType;
 	}
 
-	public void setcType(int cType) {
+	public void setcType(String cType) {
 		this.cType = cType;
 	}
 
