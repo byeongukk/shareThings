@@ -193,16 +193,21 @@ public class MemberService {
 		Connection con = getConnection();
 		
 		int result = new MemberDao().updatePaybackOk(con,nums);
-		
+		int result2 = 0;
 		if(result > 0) {
-			commit(con);
+			result2 = new MemberDao().updateMemberPofits(con, nums);
+			if(result2 > 0) {
+				commit(con);
+			}else {
+				rollback(con);
+			}
 		}else {
 			rollback(con);
 		}
 		
 		close(con);
 		
-		return result;
+		return result2;
 	}
 	
 	//회원 환불완료 처리용

@@ -319,7 +319,7 @@ public class MemberDao {
 				p.setPbAmount(rset.getInt("PB_AMOUNT"));
 				p.setPbDate(rset.getDate("PB_DATE"));
 
-				if(rset.getString("PB_STATUS") == null) {
+				if(rset.getString("PB_STATUS").equals("N")) {
 					p.setPbStatus("환급대기");
 				}else {
 					p.setPbStatus("환급완료");
@@ -387,7 +387,7 @@ public class MemberDao {
 				Refund r = new Refund();
 				
 				int total = rset.getInt("TOTAL_DATE");
-				int left = rset.getInt("LEFT_DATE");
+				int left = total - rset.getInt("LEFT_DATE");
 				int price = rset.getInt("PRICE") - rset.getInt("DEPOSIT");
 				
 				r.setRfNo(rset.getInt("RF_NO"));
@@ -405,7 +405,7 @@ public class MemberDao {
 				
 				
 				if(rset.getString("RT_SID").equals("RTS12")) {
-					r.setPrice((price/total) * left + rset.getInt("DEPOSIT"));
+					r.setPrice((int)(Math.floor((price/total * left) * 0.1)) * 10 + rset.getInt("DEPOSIT"));
 				}else {
 					if(rset.getString("RT_SID").equals("RTS10")) {
 						r.setPrice(rset.getInt("PRICE"));
@@ -635,6 +635,37 @@ public class MemberDao {
 			for(int i = 0; i < nums.length; i++) {
 				pstmt = con.prepareStatement(query);
 				pstmt.setInt(1, Integer.parseInt(nums[i]));
+
+				result += pstmt.executeUpdate();
+			}
+
+			if(result == nums.length) {
+				result = 1;
+			}else {
+				result = 0;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+
+		return result;
+	}
+	
+	//수익금 환급 후 유저 수익금 수정용
+	public int updateMemberPofits(Connection con, String[] nums) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("updateProfits");
+		
+		try {
+			for(int i = 0; i < nums.length; i++) {
+				pstmt = con.prepareStatement(query);
+				pstmt.setInt(1, Integer.parseInt(nums[i]));
+				pstmt.setInt(2, Integer.parseInt(nums[i]));
+				pstmt.setInt(3, Integer.parseInt(nums[i]));
 
 				result += pstmt.executeUpdate();
 			}
@@ -1435,7 +1466,7 @@ public class MemberDao {
 			
 			if(!(condition.get("type").equals("0"))) {
 				queryArr.add(" RF_TYPE = ? ");
-				bindVal.add(condition.get("status"));
+				bindVal.add(condition.get("type"));
 			}
 			
 			if(!(condition.get("status").equals("0"))) {
@@ -1491,7 +1522,7 @@ public class MemberDao {
 				hmap = new HashMap<String,Object>();
 				
 				int total = rset.getInt("TOTAL_DATE");
-				int left = rset.getInt("LEFT_DATE");
+				int left = total - rset.getInt("LEFT_DATE");
 				int price = rset.getInt("PRICE") - rset.getInt("DEPOSIT");
 				
 				hmap.put("rfNo", rset.getInt("RF_NO"));
@@ -1507,16 +1538,16 @@ public class MemberDao {
 					hmap.put("type", "중간반납");
 				}
 				
-				
 				if(rset.getString("RT_SID").equals("RTS12")) {
-					hmap.put("price", (price/total) * left + rset.getInt("DEPOSIT"));
+					hmap.put("price",(int)(Math.floor((price/total * left) * 0.1)) * 10 + rset.getInt("DEPOSIT"));
 				}else {
 					if(rset.getString("RT_SID").equals("RTS10")) {
-						hmap.put("price", rset.getInt("PRICE"));
+						hmap.put("price",rset.getInt("PRICE"));
 					}else {
-						hmap.put("price", rset.getInt("DEPOSIT"));
+						hmap.put("price",rset.getInt("DEPOSIT"));
 					}
 				}
+				
 				
 				hmap.put("reqDate", rset.getDate("REQ_DATE"));
 				
@@ -1726,6 +1757,8 @@ public class MemberDao {
 		}
 		return result;
 	}
+
+	
 
 	
 

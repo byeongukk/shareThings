@@ -80,6 +80,7 @@
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">조회 필터</div>
 								<div class="card-body">
+									<form>
 									<table class="col-lg-12" id="filterArea">
 										<tr>
 											<td width="5%">회원ID :</td>
@@ -117,6 +118,7 @@
 										&nbsp;&nbsp;&nbsp;
 										<button type="reset">초기화</button>
 									</div>
+									</form>
 								</div>
 							</div>
 							<div class="card shadow mb-4">
