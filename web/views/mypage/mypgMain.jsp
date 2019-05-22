@@ -105,8 +105,8 @@
 			<h1 align="left"><a href="mypgMain.jsp" style="text-decoration: none; background: white; margin:-10px;"><img id="mlogo" src="../../resource/img/mypage/mypage.png"></a></h1>
  			 <a href="mypgUser.jsp" >내 정보 조회</a>
 			  <a href="#" onclick="myUpPd();">내 등록 물품</a>
- 			 <a href="mypgRtPd.jsp">내 대여 현황</a>
-  			<a href="mypgUserPd.jsp">관심물품</a>
+ 			 <a href="#" onclick="myRtPd();">내 대여 현황</a>
+  			<a href="#" onclick="myUserPd();">관심물품</a>
  			 <a href="mypgPoint.jsp">적립금 현황</a>
  			 <a href="mypgUser.jsp">내 문의 내역</a>
  			 
@@ -186,8 +186,8 @@
 			
 			<table align="center" style="height:200px;">
 			<tr>
-				<td colspan=2 width=20%>나의 배송지 정보</td>
-				<td colspan=6 width="70%" align="center">동작구 신대방동 xxxx-x-xx</td>
+				<td colspan=2 width=10%>나의 배송지 정보</td>
+				<td colspan=6 width="70%" align="center"><%= loginUser.getAddress() %></td>
 				<td colspan=1 width="10%"><button>변경하기</button></td>
 			</tr>
 			
@@ -209,6 +209,12 @@
 	<script>
 		function myUpPd(){
 			location.href="/st/selectList.pd";
+		}
+		function myRtPd(){
+			location.href="/st/selectListrental.pd";
+		}
+		function myUserPd(){
+			location.href="/st/zzimList.pd";
 		}
 	</script>
 </body>

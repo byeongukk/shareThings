@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import com.kh.st.product.model.dao.ProductDao;
 import com.kh.st.product.model.vo.Product;
+import com.kh.st.rental.model.vo.Cart;
 
 public class ProductService {
 
@@ -59,6 +60,37 @@ public class ProductService {
 		
 		close(con);
 		
+		return list;
+	}
+
+	/*---------------- 내 대여 내역 조회---------------*/
+	public ArrayList<Product> rtselectList(int uno) {
+		Connection con = getConnection();
+		
+		ArrayList<Product> list = new ProductDao().rtselectList(con, uno);
+		
+		close(con);
+		
+		return list;
+	}
+
+	/*---------------- 내 장바구니 내역 조회---------------*/
+
+	public ArrayList<Product> getCartList(int uno) {
+		Connection con = getConnection();
+		
+		ArrayList<Product> list = new ProductDao().getCartList(con, uno);
+		
+		close(con);
+		return list;
+	}
+
+	public ArrayList<Product> zzimList(int uno) {
+		Connection con = getConnection();
+		
+		ArrayList<Product> list = new ProductDao().zzimList(con, uno);
+		
+		close(con);
 		return list;
 	}
 

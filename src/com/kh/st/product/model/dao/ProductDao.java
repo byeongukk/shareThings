@@ -14,6 +14,7 @@ import java.util.Properties;
 
 import com.kh.st.product.model.vo.PCategory;
 import com.kh.st.product.model.vo.Product;
+import com.kh.st.rental.model.vo.Cart;
 
 public class ProductDao {
 	
@@ -194,6 +195,145 @@ public class ProductDao {
 			close(rset);
 			close(pstmt);
 		}
+		
+		return list;
+	}
+
+	public ArrayList<Product> rtselectList(Connection con, int uno) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<Product> list = null;
+		
+		String query = prop.getProperty("rtselectList");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, uno);
+			
+			rset = pstmt.executeQuery();
+			
+			list = new ArrayList<Product>();
+			
+			while(rset.next()) {
+				Product p = new Product();
+				
+				p.setPno(rset.getInt("PNO"));
+				p.setUno(rset.getInt("UNO"));
+				p.setpStartDate(rset.getDate("PSTART_DATE"));
+				p.setpEndDate(rset.getDate("PEND_DATE"));
+				p.setPrice(rset.getInt("PRICE"));
+				p.setDeposite(rset.getInt("DEPOSIT"));
+				p.setDlFreeAmount(rset.getInt("DL_FREE_AMOUNT"));
+				p.setModel(rset.getString("MODEL"));
+				p.setCtgId(rset.getInt("CTG_ID"));
+				p.setPurchaseDate(rset.getDate("PURCHASE_DATE"));
+				p.setPurchasePrice(rset.getInt("PURCHASE_PRICE"));
+				p.setAsHistory(rset.getString("ASHISTORY"));
+				p.setCondition(rset.getString("CONDITION"));
+				p.setSid(rset.getString("STATUS"));
+				
+				
+				
+				
+				
+				list.add(p);
+			}
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(pstmt);
+		}
+		
+		return list;
+	}
+
+	public ArrayList<Product> getCartList(Connection con, int uno) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<Product> list = null;
+		
+		String query = prop.getProperty("getcartlist");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, uno);
+			rset = pstmt.executeQuery();
+			list = new ArrayList<Product>();
+			while(rset.next()) {
+				Product p = new Product();
+				
+				p.setpStartDate(rset.getDate("PSTART_DATE"));
+				p.setpEndDate(rset.getDate("PEND_DATE"));
+				p.setDeposite(rset.getInt("DEPOSIT"));
+				p.setPrice(rset.getInt("PRICE"));
+				p.setDlFreeAmount(rset.getInt("DL_FREE_AMOUNT"));
+				p.setModel(rset.getString("MODEL"));
+				p.setCtgId(rset.getInt("CTG_ID"));
+				p.setPurchaseDate(rset.getDate("PURCHASE_DATE"));
+				p.setPurchasePrice(rset.getInt("PURCHASE_PRICE"));
+				p.setAsHistory(rset.getString("ASHISTORY"));
+				p.setCondition(rset.getString("CONDITION"));
+				p.setSid(rset.getString("STATUS"));
+				
+				
+				list.add(p);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		
+		
+		
+		return list;
+	}
+
+	public ArrayList<Product> zzimList(Connection con, int uno) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<Product> list = null;
+		
+		String query = prop.getProperty("zzimList2");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, uno);
+			rset = pstmt.executeQuery();
+			list = new ArrayList<Product>();
+			while(rset.next()) {
+				Product p = new Product();
+				
+				p.setpStartDate(rset.getDate("PSTART_DATE"));
+				p.setpEndDate(rset.getDate("PEND_DATE"));
+				p.setDeposite(rset.getInt("DEPOSIT"));
+				p.setPrice(rset.getInt("PRICE"));
+				p.setDlFreeAmount(rset.getInt("DL_FREE_AMOUNT"));
+				p.setModel(rset.getString("MODEL"));
+				p.setCtgId(rset.getInt("CTG_ID"));
+				p.setPurchaseDate(rset.getDate("PURCHASE_DATE"));
+				p.setPurchasePrice(rset.getInt("PURCHASE_PRICE"));
+				p.setAsHistory(rset.getString("CHANGE_NAME"));
+				p.setCondition(rset.getString("CONDITION"));
+				p.setSid(rset.getString("STATUS"));
+				
+				list.add(p);
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		
+		
 		
 		return list;
 	}

@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="com.kh.st.product.model.vo.*, java.util.*"%>
+<%
+	ArrayList<Product> list = (ArrayList<Product>)request.getAttribute("list");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -144,14 +147,16 @@
 					<td>렌탈금액/일</td>
 					
 				</tr>
+				<%for(Product p : list) {%>
 				<tr style="text-align:center; height:100px; border-bottom:1px solid gray;">
 					<td><input type="checkbox" checked></td>
-					<td>19/02/26</td>
-					<td width="20%"><img src="../../resource/img/mypage/naninggu.PNG" width="80%"></td>
-					<td width="30%">아저씨의 난닝구</td>
-					<td>d</td>
-					<td>d</td>
+					<td><%= p.getpStartDate() %> ~ <%= p.getpEndDate() %></td>
+					<td><img alt="" src="/st/attach_upload/<%= p.getAsHistory()%>" height="100px" width="auto"></td>
+					<td><%= p.getModel() %></td>
+					<td><%= p.getSid() %></td>
+					<td><% if(p.getSid().equals("등록 요청")) { %> <button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none;">취소</button><%}else{} %> </td>
 				</tr>
+				<%} %>
 				<tr style="text-align:center; height:100px; border-bottom:1px solid gray;">
 					<td><input type="checkbox" checked></td>
 					<td>19/02/26</td>
