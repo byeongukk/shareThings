@@ -511,7 +511,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 				rtStatus = $(this).find("td").eq(9).text();
 			}
 		});
-		if(rtStatus != RTS5){
+		if(rtStatus != RTS6){
 			alert("송장번호가 입력되지 않은 물품입니다");
 			return false;
 		}

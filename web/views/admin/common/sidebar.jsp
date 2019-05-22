@@ -100,7 +100,7 @@
       <!-- Nav Item - Pages Collapse Menu -->
       <li class="nav-item">
 
-        <a class="nav-link collapsed" href="<%= request.getContextPath() %>/views/admin/notice/noticeList.jsp">
+        <a class="nav-link collapsed" href="<%= request.getContextPath() %>/selectAdminList.no">
 
           <img src="<%=request.getContextPath()%>/resource/img/notice.png">
           <span>공지사항 관리</span>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import= "com.kh.st.notice.model.vo.*"%>
+<% Notice repNotice = (Notice) request.getAttribute("repNotice"); %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -66,17 +67,16 @@
 						<div class="col-lg-10">
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">이달의 업데이트(제목)</h6>
+									<h6 class="m-0 font-weight-bold text-primary"> <%= repNotice.getnTitle() %></h6>
 								</div>
 								<div class="card-body">
-									안녕하세요 쉐어띵스입니다. 이달의 업데이트 내용 입니다<br> 1. <br> 2. <br>
-									3. <br> 4. <br>
+									 <%= repNotice.getnContent() %> 
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="button">
-						<a href="<%= request.getContextPath() %>/views/admin/notice/noticeList.jsp"
+						<a href="<%= request.getContextPath() %>/selectAdminList.no"
 							class="btn btn-success btn-icon-split"><span
 							class="icon text-white-50"> <i class="fas fa-check"></i></span> <span
 							class="text">돌아가기</span> </a>

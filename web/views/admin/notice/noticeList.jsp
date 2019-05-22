@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import="java.util.* , com.kh.st.notice.model.vo.*"%>
+<%
+	ArrayList<Notice> list = 
+		(ArrayList<Notice>) request.getAttribute("list");
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -90,14 +94,24 @@
 												</thead>
 
 												<tbody>
-													<tr role="row" class="even">
-														<td><input type="checkBox" class="check"></td>
-														<td class="sorting_1">01</td>
-														<td>user01</td>
-														<td>이달의 업데이트</td>
-													</tr>
-												</tbody>
+														<% for(Notice reqNotice : list){ %>
+														
+														<tr class="even" role="row" align="center">
+															<td><input type="checkBox"></td>
+															<td><%= reqNotice.getNno() %></td>
+															<td>관리자</td>
+															<td><%= reqNotice.getnTitle()%></td>
+														</tr>
+														<% } %>
+													</tbody>
 											</table>
+											<div id="result-null">
+												<% if(list.size() <= 0){ %>
+													<br><br><br><br><br><br>
+													<h3 align="center"> 조회 결과가 없습니다.</h3>
+													<br><br><br><br><br><br>
+												<% } %>
+												</div>
 										</div>
 									</div>
 									 <a href="<%= request.getContextPath() %>/views/admin/notice/noticeInsert.jsp"
@@ -130,12 +144,22 @@
 	<%@ include file="../common/logoutModal.jsp"%>
 
 	<script>
-		$(function () {
 			$(".even").click(function() {
-				location= "<%= request.getContextPath()%>/views/admin/notice/noticeDetail.jsp";
+				<%-- location= "<%= request.getContextPath()%>/selectAdminOne.no; --%>
 				console.log($(this).children().eq(1).text());
+				var nno = $(this).children().eq(1).text();
+				location= "<%= request.getContextPath()%>/selectAdminOne.no?nno=" + nno ;
 			});
-		});
+			
+			/* $("#dataTable td").click(function(){
+				var num = $(this).parent().children().eq(0).text();
+			
+				console.log(num); */
+				
+				<%-- location.href="<%=request.getContextPath()%>/selectOne.no?num="+ num; --%>
+			/* }); */
+	</script>
+	<script>
 	</script>
 	<script
 		src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>
