@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="com.kh.st.product.model.vo.*, java.util.*"%>
+<%
+	ArrayList<Product> list = (ArrayList<Product>)request.getAttribute("list");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -87,6 +90,14 @@
 		width:1000px;
 	}
 	#mlogo { width:100%;}
+	
+	.pdlist{
+		text-align: center;
+		padding: 5px;
+		color: #9e9e9e;
+		height: 40px;
+		
+	}
 </style>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
@@ -100,19 +111,19 @@
 		</div>
 		<div id="main">
 			<div class="vertical-menu">
-			<h1 align="left"><a href="mypgMain.jsp" style="text-decoration: none; background: white; margin:-10px;"><img id="mlogo" src="../../resource/img/mypage/mypage.png"></a></h1>
- 			  <a href="mypgUser.jsp" >내 정보 조회</a>
-			  <a href="mypgUpPd.jsp" >내 등록 물품</a>
- 			 <a href="mypgRtPd.jsp" class="active">내 대여 현황</a>
-  			<a href="mypgUserPd.jsp">관심물품</a>
- 			 <a href="mypgPoint.jsp">적립금 현황</a>
- 			 <a href="mypgUser.jsp">내 문의 내역</a>
+			<h1 align="left"><a href="/st/views/mypage/mypgMain.jsp" style="text-decoration: none; background: white; margin:-10px;"><img id="mlogo" src="/st/resource/img/mypage/mypage.png"></a></h1>
+ 			 <a href="/st/views/mypage/mypgUser.jsp" >내 정보 조회</a>
+			  <a href="#" onclick="myUpPd();">내 등록 물품</a>
+ 			 <a href="#" onclick="myRtPd();" class="active">내 대여 현황</a>
+  			<a href="/st/views/mypage/mypgUserPd.jsp">관심물품</a>
+ 			 <a href="/st/views/mypage/mypgPoint.jsp">적립금 현황</a>
+ 			 <a href="/st/views/mypage/mypgReport.jsp">내 문의 내역</a>
  			 
 			</div>
 		
 			<div class="detail">
 				
-				<label>나의 대여 내역 </label> <button style="">?</button>
+				<label>나의 대여 내역 </label> 
 			<table align="center" width="100%">
 				<tr class="titletb">
 					<td >날짜</td>
@@ -120,9 +131,17 @@
 					<td >상태</td>
 					<td>등록/대여</td>
 				</tr>
-				<tr>
+				<!-- <tr>
 					<td colspan=12 style="text-align:center; padding:50px; height:500px">대여한 상품이 없습니다.</td>
+				</tr> -->
+				<%for(Product p : list) {%>
+				<tr class="pdlist">
+					<td><%= p.getpStartDate() %> ~ <%= p.getpEndDate() %></td>
+					<td><%= p.getModel() %></td>
+					<td><%= p.getSid() %></td>
+					<td><% if(p.getSid().equals("등록 요청")) { %> <button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none;">취소</button><%}else{} %> </td>
 				</tr>
+				<%} %>
 			<%-- 	<% for(no n : list){ %>
 				<tr>
 					<td><%= n.getNno() %></td>
@@ -144,6 +163,14 @@
 		
 	<div class="col-lg-1 col-md-1">
 	</div>
+	<script>
+		function myUpPd(){
+			location.href="/st/selectList.pd";
+		}
+		function myRtPd(){
+			location.href="/st/selectListrental.pd";
+		}
+	</script>
 </body>
 </html>
 			
