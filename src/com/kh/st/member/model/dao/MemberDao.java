@@ -1571,6 +1571,45 @@ public class MemberDao {
 		return list;
 		
 	}
+	
+	public ArrayList<Payback> getDownloadList(Connection con, String[] nums) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<Payback> list = null;
+		
+		String query = prop.getProperty("downloadList");
+		
+		try {
+			for(int i = 0; i < nums.length; i++) {
+				pstmt = con.prepareStatement(query);
+				pstmt.setInt(1, Integer.parseInt(nums[i]));
+				
+				rset = pstmt.executeQuery();
+				
+				list = new ArrayList<Payback>();
+				
+				while(rset.next()) {
+					Payback p = new Payback();
+					
+					p.setPbNo(rset.getInt("PB_NO"));
+					p.setAccName(rset.getString("ACCNAME"));
+					p.setBank(rset.getString("BANK"));
+					p.setAccount(rset.getString("ACCOUNT"));
+					p.setPbAmount(rset.getInt("PB_AMOUNT"));
+					
+					list.add(p);
+				}
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}finally {
+			close(pstmt);
+			close(rset);
+		}
+	
+		return list;
+	}
 		
 	
 
@@ -1757,6 +1796,8 @@ public class MemberDao {
 		}
 		return result;
 	}
+
+	
 
 	
 
