@@ -115,7 +115,7 @@
 	.productInfo td {
 		padding:5px;
 	}
-	#addCartBtn, #lendBtn {
+	#addCartBtn, #rentBtn {
 		/* height:50px; */
 		font-size:1.3em;
 	}
@@ -162,6 +162,8 @@
 	  	background-image :none !important;
 	   	color: black !important;
 	}
+	
+	
 </style>
 </head>
 <body>
@@ -211,7 +213,6 @@
 				</div> <!-- end of productImg -->
 				<div class="col col-lg-6 col-md-6 col-sm-6 col-xs-12 titleArea">
 					<div class="titleBlock">
-						<form action="" method="post">
 							<table class="productInfo" style="width:100%">
 								<tr>
 									<td colspan="4" align="right">
@@ -220,7 +221,7 @@
 												<i class="heart icon"></i> 찜하기
 											</div>
 											<a class="ui basic red left pointing label" id="zzimCtn"> <%= bmap.get("zzimCount") %> </a>
-											<div class="ui custom popup top left transition hidden">관심물품으로 등록되었습니다.
+											<div class="ui custom popup top left transition hidden zzimPopup">관심물품으로 등록되었습니다.
 												<div class="ui yellow button" id="goToMyZzim">내 관심목록으로 이동</div>
 											</div>
 										</div>
@@ -304,11 +305,10 @@
 										<div class="ui fluid negative button" id="addCartBtn">장바구니 추가</div>
 									</td>
 									<td>
-										<div class="ui fluid primary button" id="lendBtn">바로 대여신청</div>
+										<div class="ui fluid primary button" id="rentBtn">바로 대여신청</div>
 									</td>
 								</tr>
 							</table>
-						</form>
 					</div> <!-- end of TitleBlock -->
 					<br><br>
 					<div class="sellerBlock" style="height:80px">
@@ -322,7 +322,18 @@
 								<td>
 									<div class="ui label">
 										<i class="user outline icon"></i>
-										<label><%= bmap.get("bWriter") %> (등급 : <%= bWritermap.get("mLevelName") %>)</label>
+										<label>
+											<%= bmap.get("bWriter") %> (등급 : <%= bWritermap.get("mLevelName") %>)
+										</label>
+										<input type="hidden" name="pUno" value="<%= bmap.get("uno") %>">
+										<div class="ui basic icon button reportPuBtn" data-tooltip="해당 유저를 신고하시려면 클릭하세요"
+										data-toggle="modal" data-target="#reportModal">
+											<i class="bullhorn icon" style="color:red"></i>
+										</div>
+										<!-- <div class="ui custom popup top left transition hidden reportPopup">신고하시겠습니까?
+											<div class="ui red button" id="reportBtn" data-toggle="modal" data-target="#reportModal">신고</div>
+										</div> -->
+										
 									</div>
 								</td>
 								<td><label>아이템 : <%= bWritermap.get("pCount") %></label></td>
@@ -369,8 +380,8 @@
 							<table class="table table-striped" id="QnAList" style="width:100%">
 								<thead>
 									<tr style="border-top:2px solid #0CB6F4; background:whitesmoke">
-										<th width="75%">내용</th>
-										<th width="10%">작성자</th>
+										<th width="70%">내용</th>
+										<th width="15%">작성자</th>
 										<th width="15%">작성일</th>
 									</tr>
 								</thead>
@@ -381,7 +392,14 @@
 									%>
 									<tr>
 										<td><%= QnAList.get(i).get("qnaTitle") %></td>
-										<td><%= QnAList.get(i).get("qnaWriter") %></td>
+										<td>
+											<%= QnAList.get(i).get("qnaWriter") %>
+											<input type="hidden" name="qnaUno" value="<%= QnAList.get(i).get("qnaUno") %>">
+											<div class="ui mini basic icon button reportPuBtn" data-tooltip="해당 유저를 신고하시려면 클릭하세요"
+										data-toggle="modal" data-target="#reportModal">
+												<i class="bullhorn icon" style="color:red"></i>
+											</div>
+										</td>
 										<td><%= QnAList.get(i).get("qnaDate") %></td>
 									</tr>
 									<tr>
@@ -396,7 +414,14 @@
 										<td style="color:orangered">
 											&nbsp;&nbsp;[답글 :]<%= QnAList.get(i).get("ansTitle") %>
 										</td>
-										<td><%= QnAList.get(i).get("ansWriter") %></td>
+										<td>
+											<%= QnAList.get(i).get("ansWriter") %>
+											<input type="hidden" name="ansUno" value="<%= QnAList.get(i).get("ansUno") %>">
+											<div class="ui mini basic icon button reportPuBtn" data-tooltip="해당 유저를 신고하시려면 클릭하세요"
+										data-toggle="modal" data-target="#reportModal">
+												<i class="bullhorn icon" style="color:red"></i>
+											</div>
+										</td>
 										<td><%= QnAList.get(i).get("ansDate") %></td>
 									</tr>
 									<tr>
@@ -465,8 +490,8 @@
 							<table class="table table-striped" id="reviewList" style="width:100%">
 								<thead>
 									<tr style="border-top:2px solid #0CB6F4; background:whitesmoke">
-										<th width="75%">내용</th>
-										<th width="10%">작성자</th>
+										<th width="70%">내용</th>
+										<th width="15%">작성자</th>
 										<th width="15%">작성일</th>
 									</tr>
 								</thead>
@@ -492,7 +517,14 @@
 									%>		
 											<%= reviewList.get(i).get("rvTitle") %>
 										</td>
-										<td><%= reviewList.get(i).get("rvWriter") %></td>
+										<td>
+											<%= reviewList.get(i).get("rvWriter") %>
+											<input type="hidden" name="rvUno" value="<%= reviewList.get(i).get("rvUno") %>">
+											<div class="ui mini basic icon button reportPuBtn" data-tooltip="해당 유저를 신고하시려면 클릭하세요"
+										data-toggle="modal" data-target="#reportModal">
+												<i class="bullhorn icon" style="color:red"></i>
+											</div>
+										</td>
 										<td><%= reviewList.get(i).get("rvDate") %></td>
 									</tr>
 									<tr>
@@ -516,7 +548,14 @@
 									%>
 									<tr>
 										<td style="color:orangered">&nbsp;&nbsp;[답글 :]<%= reviewList.get(i).get("ansTitle") %></td>
-										<td><%= reviewList.get(i).get("ansWriter") %></td>
+										<td>
+											<%= reviewList.get(i).get("ansWriter") %>
+											<input type="hidden" name="ansUno" value="<%= reviewList.get(i).get("ansUno") %>">
+											<div class="ui mini basic icon button reportPuBtn" data-tooltip="해당 유저를 신고하시려면 클릭하세요"
+										data-toggle="modal" data-target="#reportModal">
+												<i class="bullhorn icon" style="color:red"></i>
+											</div>
+										</td>
 										<td><%= reviewList.get(i).get("ansDate") %></td>
 									</tr>
 									<tr>
@@ -537,8 +576,98 @@
 				</div> <!-- 탭 영역 끝 -->
 			</div> <!-- end of row -->
 			<br><br><br><br>
+			<div class="ui small modal reportModal">
+				<!-- <i class="close icon"></i> -->
+				<div class="header">회원 신고</div>
+				<div class="content">
 
+					<!-- <form id="reportForm" method="post"> -->
+					<table>
+						<tr>
+							<td width="20%">신고대상 회원</td>
+							<td width="80%">
+								<div class="ui input">
+									<input type="hidden" name="targetUno"> <input
+										type="text" name="targetName">
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>신고인</td>
+							<td>
+								<div class="ui input">
+									<input type="hidden" name="rpUno" value="<%=bmap.get("uno")%>">
+									<input type="text" name="rpName"
+										value="<%=bmap.get("bWriter")%>">
+								</div>
+							</td>
+						</tr>
+						<tr>
+							<td>신고사유</td>
+							<td>
+								<div class="ui input">
+									<textarea name="rpContent" rows="2" style="width: 100%"></textarea>
+								</div>
+							</td>
+						</tr>
+					</table>
+					<!-- </form> -->
+				</div>
+				<div class="actions">
+					<div class="ui cancel button rpCancel">취소</div>
+					<div class="ui ok button rpSend">확인</div>
+				</div>
+			</div>
+			
+			<div id="reportModal" class="modal fade" role="dialog">
+				<div class="modal-dialog">
 
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">회원 신고 제출 양식</h4>
+						</div>
+						<div class="modal-body">
+							<table>
+								<tr>
+									<td width="20%">신고대상 회원</td>
+									<td width="80%">
+										<div class="ui input">
+											<input type="hidden" name="targetUno"> <input
+												type="text" name="targetName">
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>신고인</td>
+									<td>
+										<div class="ui input">
+											<input type="hidden" name="rpUno" value="<%=bmap.get("uno")%>">
+											<input type="text" name="rpName"
+												value="<%=bmap.get("bWriter")%>">
+										</div>
+									</td>
+								</tr>
+								<tr>
+									<td>신고사유</td>
+									<td>
+										<div class="ui input">
+											<textarea name="rpContent" rows="2" style="width: 100%"></textarea>
+										</div>
+									</td>
+								</tr>
+							</table>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="ui cancel button"
+								data-dismiss="modal">취소</button>
+							<button class="ui primary button" id="sendReportBtn">제출</button>
+						</div>
+					</div>
+
+				</div>
+			</div>
 		</div> <!-- end of 메인바디 -->
 
 		<!-- 푸터 -->
@@ -562,14 +691,33 @@
 			$(".ratingContent").rating("disable");
 			$("#fileArea").hide();
 			$("#zzimBtn").popup({
-				popup:$(".custom.popup"),
+				popup:$(".zzimPopup"),
 				on:'click'
 			});
+			
+			
+			<%-- $(".reportPuBtn").click(function() {
+				<% if(loginUser == null) {%>
+				alert("로그인먼저 해주세요");
+				location.href = "<%= request.getContextPath() %>/views/member/loginPage.jsp";
+				<% }else { %>
+				var targetUno = $(this).prev().val();
+				$(".ui.small.modal.reportModal").modal({
+			    	onDeny    : function(){
+			      		window.alert('Wait not yet!');
+			      		return false;
+			    	},
+			   		onApprove : function() {
+			      		window.alert('Approved!');
+			    	}
+			  	}).modal("show");
+				
+				location.href = "<%= request.getContextPath() %>/insert.rp?targetUno=" + targetUno;
+				<% } %>
+			}); --%>
+			
 			setDatePicker();
-			
-			
 	 	});
-	 	
 	 	
 	 	
 	 	
@@ -1010,25 +1158,49 @@
 			var st = $("#startPick").val();
 			var end = $("#endPick").val();
 			var pno = <%= bmap.get("pno") %>;
-			$.ajax({
-				url:"<%= request.getContextPath() %>/insert.crt",
-				type:"post",
-				data:{st:st, end:end, pno:pno},
-				success:function(data) {
-					if(data == "success") {
-						var answer = confirm("장바구니에 담겼습니다. 이동하시겠습니까?");
-						if(answer) {
-							location.href="<%= request.getContextPath() %>/views/product/cart.jsp";	
+			if(st == "" || end == "") {
+				alert("대여 날짜를 선택해주세요");
+			}else {
+				$.ajax({
+					url:"<%= request.getContextPath() %>/insert.crt",
+					type:"post",
+					data:{st:st, end:end, pno:pno},
+					success:function(data) {
+						if(data == "success") {
+							var answer = confirm("장바구니에 담겼습니다. 이동하시겠습니까?");
+							if(answer) {
+								location.href="<%= request.getContextPath() %>/views/product/cart.jsp";	
+							}
+						}else {
+							alert("장바구니 담기 실패");
 						}
-					}else {
-						alert("장바구니 담기 실패");
+					}, error:function() {
+						alert("서버 전송 실패");
 					}
-				}, error:function() {
-					alert("서버 전송 실패");
-				}
-			});
+				});
+			}
 			
 			<% } %>		
+		});
+		
+		$("#rentBtn").click(function() {
+			<% if(loginUser == null) { %>
+			alert("로그인을 해주세요");
+			location.href="<%= request.getContextPath() %>/views/member/loginPage.jsp";
+			<% }else { %>
+			var st = $("#startPick").val();
+			var end = $("#endPick").val();
+			var pno = <%= bmap.get("pno") %>;
+			if(st == "" || end == "") {
+				alert("대여 날짜를 선택해주세요");
+			}else {
+				location.href="<%= request.getContextPath() %>/gopay.rt?st=" + st + "&end=" + end + "&pno=" + pno;
+			}
+			<% } %>
+		});
+		
+		$("#reportBtn").click(function() {
+			
 		});
 		
 	</script>

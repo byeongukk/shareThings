@@ -101,7 +101,7 @@ public class MemberJoinServlet extends HttpServlet {
 		String page = "";
 		if(result > 0) {
 			
-			String host = "http://localhost:8888/st";
+			String host = "http://127.0.0.1:8888/st";
 			String from = "sharethings1224@gmail.com";
 			String to = newMember.getEmail();
 			String subject = "쉐어띵스 인증 메일입니다.";

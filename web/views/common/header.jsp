@@ -365,8 +365,8 @@
 		});
 		//서브메뉴 css 설정
 		$("#submenu li").mouseover(function() {
-			$(this).css("background", "orange");
-			$(this).children("a").css("color", "black");
+			$(this).css("background", "white");
+			$(this).children("a").css({"color":"#F44A0C", "font-style":"bold"});
 		}).mouseout(function() {
 			$(this).css("background", "#F44A0C");
 			$(this).children("a").css("color", "white");

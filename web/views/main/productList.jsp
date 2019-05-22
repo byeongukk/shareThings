@@ -372,6 +372,13 @@
 					ctgLv3Arr.push(ctgName);
 				}
 			});
+			console.log(ctgLv3Arr);
+			if(ctgLv3Arr.length == 0) {
+				$(".ctgLv3Btn").each(function() {
+					var ctgName = $(this).find("label").text();
+					ctgLv3Arr.push(ctgName);
+				});
+			}
 			var ctgLv3Str = ctgLv3Arr.toString();
 			//encodeURIComponent
 			var ctgLv2 = '<%= ctgLv2 %>';
