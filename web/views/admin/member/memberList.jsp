@@ -80,12 +80,12 @@
 					<img src="<%=request.getContextPath()%>/resource/img/adminHr.png"
 						width="100%">
 					<div class="row" id="filter" align="center">
-						<div class="col-lg-12">
+						<div class="col-lg-12 col-sm-12">
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">조회 필터</div>
 								<div class="card-body">
 									
-										<table class="col-lg-12" id="filter">
+										<table class="col-lg-12 col-sm-12" id="filter">
 											<tr style="height: 20px">
 												<td style="width: 70px">회원ID :</td>
 												<td><input type="text" id="userIdF" style="width: 80%"></td>

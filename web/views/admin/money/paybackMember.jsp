@@ -128,7 +128,7 @@
 													<div align="left">
 														<a href="#" class="btn btn-success btn-circle btn-sm" onclick="ok()">
 										                    <i class="fas fa-check"></i></a>&nbsp;
-										                <a href="#" class="btn btn-info btn-circle btn-sm">
+										                <a href="#" class="btn btn-info btn-circle btn-sm" onclick="download();">
 										                    <i class="fas fa-flag"></i></a>
 													</div>
 													<br>
@@ -475,6 +475,24 @@
 		            location = location;
 		         }
 		      };
+		      
+		      function download() {
+			         var result = confirm("다운로드 하시겠습니까?");
+			         if(result) {
+			            var no = new Array();
+			            $(".even").each(function() {
+			               if($(this).find(".check").is(":checked")) {   
+			                  console.log($(this).find("td").eq(1).text());
+			                  no.push($(this).find("td").eq(1).text());
+			               }
+			                  
+			            });
+			            console.log(no);
+			            location = "<%= request.getContextPath() %>/paybackDownload.me?no=" + no;
+			         } else {
+			            location = location;
+			         }
+			      };
 		      
 			</script>
 			<script
