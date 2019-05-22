@@ -65,9 +65,10 @@ textarea {
 .confirmImg {
 	display:inline-block;
 	margin:30px;
-	width:30%;
-	height:30%;
+	width:150px;
+	height:150px;
 }
+
 </style>
 </head>
 
@@ -89,16 +90,16 @@ textarea {
 				<div class="container-fluid">
 					<div
 						class="d-sm-flex align-items-center justify-content-between mb-4">
-						<h1 class="h3 mb-0 text-gray-800">등록 요청 관리</h1>
+						<h1 class="h3 mb-0 text-gray-800">등록 물품 관리</h1>
 					</div>
 					<br> <br>
 					<div class="row">
+					<h3>물품상태 : <%= req.get("status") %></h3>
 						<div class="col-lg-10">
 							<div class="card shadow mb-4">
 							<input type="hidden" name="nums" id="nums" value="<%= reqProduct.getPno() %>">
 								<div class="card-header py-3">
 									<h6 class="m-0 font-weight-bold text-primary">
-										상태 : 창고적재
 										요청날짜 : <%= req.get("reqpDate") %><br>
 										등록자 : <%= m.getUserName() %><br>
 										물품 : <%= req.get("pName") %><br>
@@ -154,12 +155,13 @@ textarea {
 								<h6 class="m-0 font-weight-bold text-primary">검수 사진</h6>
 							</div>
 							<div class="card-body">
-								<div id="fileConfirmArea" class="col-md-12 col-lg-12">
+								<!-- <div id="fileConfirmArea" class="col-md-12 col-lg-12"> -->
 								<% if(confirmList.size() >= 1)  { 
 								 		for(int i = 0; i < confirmList.size(); i ++)  { %>
 											<div class="confirmImg" id="confirm<%= i + 1 %>">
 												<img id="confirmImg<%= i + 1 %>" 
-													 src="<%= request.getContextPath()%>/attach_upload/<%= confirmList.get(i).getChangeName() %>">
+													 src="<%= request.getContextPath()%>/attach_upload/<%= confirmList.get(i).getChangeName() %>"
+													 style="width: 150px; height: 150px;">
 											</div>
 									<% } %>
 								<% } else { %>
@@ -176,7 +178,7 @@ textarea {
 										<img id="confirmImg4" width="150" height="150">
 									</div>
 								<% } %>
-								</div>
+								<!-- </div> -->
 								<div id="fileArea">
 									<input type="file" id="img1" name="img1" onchange="loadImg(this, 1);">
 									<input type="file" id="img2" name="img2" onchange="loadImg(this, 2);">

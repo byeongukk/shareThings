@@ -81,7 +81,7 @@
           <div class="bg-white py-2 collapse-inner rounded">
 
             <a class="collapse-item" href="<%= request.getContextPath() %>/adProductList.bo">물품조회</a>
-            <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/request/returnProduct.jsp">배송현황</a>
+            <a class="collapse-item" href="<%= request.getContextPath() %>/adProductShip.bo">배송현황</a>
             <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/product/checkStandard.jsp">검수기준</a>
             <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/product/check.jsp">검수관리</a>
 

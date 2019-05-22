@@ -7,10 +7,12 @@ import static com.kh.st.common.JDBCTemplate.rollback;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.kh.st.adProduct.model.dao.AdProductDao;
 import com.kh.st.adProduct.model.vo.AdProduct;
 import com.kh.st.common.PageInfo;
+import com.kh.st.request.model.dao.ReqDao;
 
 public class AdProductService {
 
@@ -49,6 +51,23 @@ public class AdProductService {
 		return list;
 	}
 
-	
+	//최종 등록물품 상세 보기
+	public HashMap<String, Object> adProductDetail(int num) {
+		Connection con = getConnection();
+		
+		HashMap<String, Object> hmap =
+				new AdProductDao().adProductDetail(con, num);
+		
+		close(con);
+		return hmap;
+	}
 
+	//물품 배송 상태
+	public ArrayList<HashMap<String, Object>> shipList() {
+		Connection con = getConnection();
+		ArrayList<HashMap<String, Object>> list = new AdProductDao().shipList(con);
+		
+		close(con);
+		return list;
+	}
 }
