@@ -96,13 +96,13 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 												<form id="filterArea">
 													<table class="col-lg-12" id="filter">
 														<tr>
-															<td width="10%">수거상태</td>
+															<td width="5%">수거상태</td>
 															<td width="15%"><select class="form-control">
 																	<option value="hidden">수거상태</option>
 																	<option value="0">수거완료</option>
 																	<option value="10">수거미완료</option>
 															</select></td>
-															<td width="10%">상세조건</td>
+															<td width="5%">상세조건</td>
 															<td width="15%"><select class="form-control">
 																	<option>상세조건</option>
 																	<option value="0">대여주문번호</option>
@@ -110,20 +110,10 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 																	<option value="20">물품명</option>
 																	<option value="30">물품번호</option>
 															</select></td>
-															<td width="15%"><input type="text"
+															<td width="20%"><input type="text"
 																class="form-control" placeholder="상세정보입력"></td>
 
 														</tr>
-														<tr>
-															<td width="10%">주문상태</td>
-															<td width="15%"><select class="form-control">
-																	<option value="hidden">주문상태</option>
-																	<option value="0">배송중</option>
-																	<option value="10">배송완료</option>
-															</select></td>
-															<td></td>
-														</tr>
-														
 													</table>
 													<br>
 													<div align="center">
@@ -145,10 +135,9 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 							</div>
 							<div class="card-body">
 								<div class="row">
-									<div class="col-lg-6 mb-4">
+									<div class="col-lg-12 col-md-6 col-xs-6 col-sm-6">
 										<form class="form-inline">
-											
-											<div class="form-group">
+											<div class="form-group col-md-10">
 												<span>송장 정보 입력 : </span>
 												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 												<select class="form-control" id="dCom">
@@ -157,24 +146,29 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 												</select> 
 												&nbsp;&nbsp;&nbsp;&nbsp; <span> <input type="number"
 													class="form-control" id="invoiceNum" placeholder="송장번호">
-												</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												</span> 
+												&nbsp;
+												<br><br>
 												<button type="button" class="btn btn-success btn-icon-split btn-sm" id="applyBtn">
 													<span class="icon text-white-50"> <i
 														class="fas fas fa-check"></i>
-													</span> <span class="text">적용하기</span>
+													</span> <span class="text">송장적용하기</span>
 												</button>
-												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												
+												&nbsp;&nbsp;&nbsp;
+											
 												<button type="button"
 													class="btn btn-danger btn-icon-split btn-sm" id="applyCancelBtn">
 													<span class="icon text-white-50"> <i
 														class="fas fas fa-trash"></i>
-													</span> <span class="text">적용취소</span>
+													</span> <span class="text">송장적용취소</span>
 												</button>
-												
+												 
 											</div>
 										</form>
 										<br>
 										<form>
+											&nbsp;&nbsp;
 											<button type="button" class="btn btn-secondary btn-icon-split btn-sm" id="returnPdBtn">
 												<span class="icon text-white-50"> <i
 													class="fas fas fa-arrow-right"></i>
@@ -191,6 +185,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 										</form>
 									</div>
 								</div>
+								<br>
 								<div class="table-responsive">
 									<div class="dataTables_wrapper dt-bootstrap4"
 										id="dataTable_wrapper">
@@ -384,16 +379,16 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 		                 <hr>
 		                 <h5>*검수사진</h5>   
 		                    <div id="fileExamineArea" class="col-md-12 col-lg-12">
-		                       <div class="examineImg" id="examineImg1">
+		                       <div class="examineImg" id="examine1">
 		                          <img id="examineImg1" width="150" height="150">
 		                       </div>
-		                       <div class="examineImg" id="examineImg2">
+		                       <div class="examineImg" id="examine2">
 		                          <img id="examineImg2" width="150" height="150">
 		                       </div>
-		                       <div class="examineImg" id="examineImg3">
+		                       <div class="examineImg" id="examine3">
 		                          <img id="examineImg3" width="150" height="150">
 		                       </div>
-		                       <div class="examineImg" id="examineImg4">
+		                       <div class="examineImg" id="examine4">
 		                          <img id="examineImg4" width="150" height="150">
 		                       </div>
 		                    </div>
@@ -406,7 +401,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 		                 <hr>
 		                 <h5>*검수내용</h5>
 		                	 <input type="hidden" name="checker" value="<%= loginUser.getUno() %>">
-		                    <textarea id="textResult" name="textResult" class="col-lg-12" placeholder="EX)이상없음"></textarea>
+		                    <textarea id="textResult" required name="textResult" class="col-lg-12" placeholder="EX)이상없음"></textarea>
 		              </div>
 		              <div class="modal-footer">
 		                 <button type="submit" class="btn btn-default"
@@ -573,27 +568,32 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 	/****************************************************************************/
 		//검수사진
         $("#fileArea").hide();
-        $("#examineImg1").click(function() {
+        $("#examine1").click(function() {
            $("#img1").click();
         });
-        $("#examineImg2").click(function() {
+        $("#examine2").click(function() {
            $("#img2").click();
         });
-        $("#examineImg3").click(function() {
+        $("#examine3").click(function() {
            $("#img3").click();
         });
-        $("#examineImg4").click(function() {
+        $("#examine4").click(function() {
            $("#img4").click();
         });
 	
 		//사진, 검수내용 등록
       function loadImg(value, num) {
+			console.log("onload");
+			console.log(value);
+			console.log(num);
          if(value.files && value.files[0]) {
+        	 console.log("if");
             var reader = new FileReader();
             reader.onload = function(e) {
                switch(num) {
                case 1 :
                   $("#examineImg1").attr("src", e.target.result);
+                  console.log( e.target.result);
                   break;
                case 2 :
                   $("#examineImg2").attr("src", e.target.result);
@@ -609,7 +609,6 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
             reader.readAsDataURL(value.files[0]);
          }
       }
-	
 	//수거처리 버튼
 	$("#returnBtn").click(function() {
 		var status = new Array();

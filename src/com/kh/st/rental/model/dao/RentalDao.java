@@ -60,7 +60,7 @@ public class RentalDao {
 				
 				hmap.put("rno", rset.getInt("RT_NO"));
 				hmap.put("pno", rset.getInt("PNO"));
-				hmap.put("model", rset.getString("MODEL"));
+				hmap.put("model", rset.getString("CTG_NAME"));
 				hmap.put("userName", rset.getString("USER_NAME"));
 				hmap.put("rtReqDate", rset.getDate("RT_REQ_DATE"));
 				hmap.put("rtStatus", rset.getString("STATUS"));
@@ -122,7 +122,7 @@ public class RentalDao {
 					} else if(detailsContent.get("details").equals("rtUserName")) {
 						queryArr.add(" M.USER_NAME " + " = ? ");
 					} else if(detailsContent.get("details").equals("model")) {
-						queryArr.add(" P.MODEL "+" = ? ");
+						queryArr.add(" PC.CTG_NAME "+" = ? ");
 					} else if(detailsContent.get("details").equals("pno")) {
 						queryArr.add(" P.PNO "+ " = ? ");
 					}
@@ -172,7 +172,7 @@ public class RentalDao {
 					
 					hmap.put("rno", rset.getInt("RT_NO"));
 					hmap.put("pno", rset.getInt("PNO"));
-					hmap.put("model", rset.getString("MODEL"));
+					hmap.put("model", rset.getString("CTG_NAME"));
 					hmap.put("userName", rset.getString("USER_NAME"));
 					hmap.put("rtReqDate", rset.getDate("RT_REQ_DATE"));
 					hmap.put("rtStatus", rset.getString("STATUS"));
@@ -262,7 +262,7 @@ public class RentalDao {
 					
 					hmap.put("rno", rset.getInt("RT_NO"));
 					hmap.put("pno", rset.getInt("PNO"));
-					hmap.put("model", rset.getString("MODEL"));
+					hmap.put("model", rset.getString("CTG_NAME"));
 					hmap.put("userId", rset.getString("USER_ID"));
 					hmap.put("userName", rset.getString("USER_NAME"));
 					hmap.put("rtStatus", rset.getString("STATUS"));
@@ -626,7 +626,28 @@ public class RentalDao {
 		return result;
 	}
 
-	
+	   
+	//민지
+	   public int insertCart(Connection con, Cart newCart) {
+	      PreparedStatement pstmt = null;
+	      int result = 0;
+	      String query = prop.getProperty("insertCart");
+	      try {
+	         pstmt = con.prepareStatement(query);
+	         pstmt.setInt(1, newCart.getPno());
+	         pstmt.setDate(2, newCart.getRtStartDate());
+	         pstmt.setDate(3, newCart.getRtEndDate());
+	         pstmt.setInt(4, newCart.getUno());
+	         
+	         result = pstmt.executeUpdate();
+	      
+	      } catch (SQLException e) {
+	         e.printStackTrace();
+	      }finally {
+	         close(pstmt);
+	      }
+	      return result;
+	   }
 	
 	
 	

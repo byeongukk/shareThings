@@ -1,5 +1,10 @@
 package com.kh.st.checkHistory.modal.service;
 
+import static com.kh.st.common.JDBCTemplate.close;
+import static com.kh.st.common.JDBCTemplate.commit;
+import static com.kh.st.common.JDBCTemplate.getConnection;
+import static com.kh.st.common.JDBCTemplate.rollback;
+
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,8 +13,7 @@ import com.kh.st.attachment.model.vo.Attachment;
 import com.kh.st.checkHistory.modal.dao.CheckHistoryDao;
 import com.kh.st.checkHistory.modal.vo.CheckHistory;
 import com.kh.st.common.PageInfo;
-
-import static com.kh.st.common.JDBCTemplate.*;
+import com.kh.st.rental.model.dao.RentalDao;
 
 public class CheckHistoryService {
 
@@ -122,5 +126,59 @@ public class CheckHistoryService {
 		
 		close(con);
 		return list;
+	}
+
+	public int insertExamineImg(CheckHistory ch, ArrayList<Attachment> fileList, HashMap<String, Object> hmap) {
+		Connection con = getConnection();
+		int result = 0;
+		
+		//검수 내용,검수자 인서트
+		int ccResult = new CheckHistoryDao().insertCheckContent(con, ch, fileList);
+		if(ccResult > 0) {
+			System.out.println("검수내용, 검수자 성공");
+			//물품 상태 업데이트(검수 통과)
+			int udResult = new RentalDao().updatePdStatus(con, hmap);
+			
+			if(udResult > 0) {
+				System.out.println("물품 상태 업데이틍 ㅘㄴ료");
+				//
+				int rtResult = new RentalDao().updateRentalStatus(con, hmap);
+				if(rtResult > 0) {
+					System.out.println("대여상태 업데이트 성공");
+					int chkNo = new CheckHistoryDao().selectCurrval(con);
+					
+					for(int i = 0; i <fileList.size(); i++) {
+						fileList.get(i).setChkNo(chkNo);
+						System.out.println(fileList.get(i).getChkNo());
+					}
+					int result3 = new CheckHistoryDao().insertChkImg(con, fileList);
+					if(result3 == fileList.size()) {
+						System.out.println("사진 성공");
+						result = 1;
+					} else {
+						System.out.println("사진 실패");
+						result = 0;
+					}
+				}else {
+					System.out.println("대여상태 업데이트 실패");
+				}
+				
+			}else {
+				System.out.println("물품 상태 업데이트 실패");
+			}
+			
+		} else {
+			System.out.println("검수 내용, 검수자 인서트 실패");
+			
+		}
+		
+		if(result > 0) {
+			commit(con);
+			
+		}else {
+			rollback(con);
+		}
+		close(con);
+		return result;
 	}
 }
