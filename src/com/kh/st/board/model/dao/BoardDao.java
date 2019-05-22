@@ -277,7 +277,6 @@ public class BoardDao {
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, "후기");
 			pstmt.setInt(2, uno);
-			pstmt.setInt(3, uno);
 			rset = pstmt.executeQuery();
 			if(rset.next()) {
 				bWritermap = new HashMap<String, Object>();

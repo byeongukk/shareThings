@@ -1,6 +1,6 @@
 package com.kh.st.board.model.vo;
 
-public class Zzim {
+public class Zzim implements java.io.Serializable {
 
 	private int zno;
 	private int pno;

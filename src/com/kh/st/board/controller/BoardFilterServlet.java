@@ -41,18 +41,22 @@ public class BoardFilterServlet extends HttpServlet {
 		String ctgLv2 = request.getParameter("ctgLv2");
 		String ctgLv3Str = request.getParameter("ctgLv3Arr");
 		String start = request.getParameter("startFilter");
+		System.out.println(start);
 		Date startDate = null;
+		//Date startDate = Date.valueOf("start");
 		if(!start.equals("")) {
-			String[] startArr = start.split("/");
-			startDate = new Date(new GregorianCalendar(Integer.parseInt(startArr[2]), 
-					Integer.parseInt(startArr[0]) - 1, Integer.parseInt(startArr[1])).getTimeInMillis());
+			String[] startArr = start.split("-");
+			startDate = new Date(new GregorianCalendar(Integer.parseInt(startArr[0]), 
+					Integer.parseInt(startArr[1]) - 1, Integer.parseInt(startArr[2])).getTimeInMillis());
 		}
 		String end = request.getParameter("endFilter");
+		System.out.println(end);
 		Date endDate = null;
+		//Date endDate = Date.valueOf("end");
 		if(!end.equals("")) {
-			String[] endArr = end.split("/");
-			endDate = new Date(new GregorianCalendar(Integer.parseInt(endArr[2]), 
-					Integer.parseInt(endArr[0]) - 1, Integer.parseInt(endArr[1])).getTimeInMillis());
+			String[] endArr = end.split("-");
+			endDate = new Date(new GregorianCalendar(Integer.parseInt(endArr[0]), 
+					Integer.parseInt(endArr[1]) - 1, Integer.parseInt(endArr[2])).getTimeInMillis());
 		}
 		String priceRange = request.getParameter("priceFilter");
 		int minPrice = Integer.parseInt(priceRange.substring(0, priceRange.indexOf("원")));
