@@ -5,7 +5,7 @@
 */
 package com.kh.st.notice.model.service;
 
-import static com.kh.st.common.JDBCTemplate.getConnection;
+import static com.kh.st.common.JDBCTemplate.*;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -22,10 +22,36 @@ public class NoticeService {
 	
 	public ArrayList<Notice> selectAdminNoticeList() {
 		Connection con = getConnection();
-		ArrayList<Notice> list = new NoticeDao().selectAdminNoticeList();
+		ArrayList<Notice> list = new NoticeDao().selectAdminNoticeList(con);
 		
-		
+		close(con);
 		return list;
+	}
+	
+	public int insertNotice(Notice reqNotice) {
+		Connection con = getConnection();
+		
+		int result = new NoticeDao().insertNotice(con,reqNotice);
+		
+		if(result > 0) {
+			commit(con);
+		} else {
+			rollback(con);
+		}
+		
+		close(con);
+		
+		return result;
+	}
+
+	public Notice selectAdminOne(int num) {
+		Connection con = getConnection();
+		
+		Notice reqNotice = new NoticeDao().selectAdminOne(con, num);
+		
+		close(con);
+		
+		return reqNotice;
 	}
 
 }

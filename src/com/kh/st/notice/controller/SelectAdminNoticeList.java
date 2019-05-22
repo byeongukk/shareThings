@@ -17,10 +17,10 @@ import com.kh.st.notice.model.vo.Notice;
  * Servlet implementation class SelectNoticeList
  */
 @WebServlet("/selectAdminList.no")
-public class SelectNoticeList extends HttpServlet {
+public class SelectAdminNoticeList extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
-    public SelectNoticeList() {
+    public SelectAdminNoticeList() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -33,14 +33,9 @@ public class SelectNoticeList extends HttpServlet {
 		String page = "";
 		
 		if(list != null) {
-			page = "views/notice/noticeList.jsp";
+			page = "views/admin/notice/noticeList.jsp";
 			request.setAttribute("list", list);
-		}else {
-			page = "views/common/errorPage.jsp";
-			request.setAttribute("msg", "공지사항 조회 실패!");
-			
 		}
-		
 		RequestDispatcher view = request.getRequestDispatcher(page);
 		view.forward(request, response);
 		

@@ -53,12 +53,14 @@ textarea {
 		<!-- End of Sidebar -->
 
 		<!--콘텐츠 영역 시작-->
+		
 		<div id="content-wrapper" class="d-flex flex-column">
 			<!-- 메인 콘텐츠 영역 시작 -->
 			<div id="content">
 				<!-- 헤더 인클루드 -->
 				<%@ include file="../common/header.jsp"%>
 				<!-- 컨텐츠바디 영역 실제 작성 영역 -->
+				<form action="<%= request.getContextPath() %>/insert.no">
 				<div class="container-fluid">
 					<div
 						class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -66,32 +68,37 @@ textarea {
 					</div>
 					<br>
 					<br>
+					
 					<div class="row">
 						<div class="col-lg-10">
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary"><textarea class="col-lg-12" cols="2">등록제목</textarea></h6>
+									<h6 class="m-0 font-weight-bold text-primary"><textarea class="col-lg-12" cols="2" name="title" placeholder="공지사항 제목"></textarea></h6>
 								</div>
 								<div class="card-body">
-									<textarea class="col-lg-12" rows="20">안녕하세요 쉐어띵스입니다. 이달의 업데이트 내용 입니다 
-									</textarea>
+									<textarea class="col-lg-12" rows="20" name="content" placeholder="공지사항 내용"></textarea>
 								</div>
+								<input type="hidden" name="uno" value= "<%= loginUser.getUno() %>">
 							</div>
 						</div>
 					</div>
+					
 					<div class="button">
-						<a href="<%= request.getContextPath() %>/views/admin/notice/noticeList.jsp"
-							class="btn btn-success btn-icon-split"><span
+					<button type="submit" class="btn btn-secondary btn-icon-split btn-sm" id="insertBtn">
+						<span class="icon text-white-50"> <i
+							class="fas fas fa-arrow-right"></i>
+						</span> <span class="text">등록하기</span>
+					</button>
+						<a href="<%= request.getContextPath() %>/selectAdminList.no"
+							class="btn btn-success btn-icon-split btn-sm"><span
 							class="icon text-white-50"> <i class="fas fa-check"></i></span> <span
 							class="text">돌아가기</span> </a>
-						<%-- <% if(loginUser != null && 
-							loginUser.getUserId().equals("admin"))  { %> --%>
-						<a href="<%= request.getContextPath() %>/views/admin/notice/noticeList.jsp" class="btn btn-info btn-icon-split"> <span
-								class="icon text-white-50"> <i class="fas fa-info-circle"></i>
-							</span> <span class="text">등록하기</span></a>
-						<%-- <% } %> --%>
+							
 					</div>
+					
+					
 				</div>
+				</form>
 				<!-- 메인 콘텐트 영역 끝 -->
 				<!-- Footer 인클루드 -->
 			</div>
@@ -106,6 +113,7 @@ textarea {
 
 	<!-- 로그아웃 모달-->
 	<%@ include file="../common/logoutModal.jsp"%>
+
 
 
 	<script
