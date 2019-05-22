@@ -123,6 +123,7 @@ width:100%;
 <div id="info" style="margin-top:50px;">
 
 <div class="cus">
+
 <table>
 <tr>
 <td></td>
@@ -167,13 +168,15 @@ width:100%;
  <a href="cs.jsp" >자주 묻는 질문 FAQ</a>
            <a href="mtmQue.jsp">1 : 1 문의하기</a>
            <a href="../mypage/mypgReport.jsp">나의 문의 관리</a>
-
+			<a href="../customerService/guide.jsp">이용안내</a>
+	
 </div> <!-- 옆에 메뉴 -->
 
     <!-- 여기부터 하면 됨! -->
     
     <div class="detail">
-    <form action="<%= request.getContextPath() %>/csInsert.cs">
+    <form action="<%= request.getContextPath() %>/csInsert.cs" method="post">
+  
     <div class="form-group" style="width:40%" >
       <label for="csName">이름</label>
       <input type="text" class="form-control" id="csName" placeholder="내용을 입력하세요" name="csName">

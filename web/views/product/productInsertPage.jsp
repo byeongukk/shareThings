@@ -520,7 +520,8 @@ height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
 		
 		<ul class="pager">
     <li><a href="" style="color:#F44A0C">이전</a></li>
-    <li><button onclick="pdInsert()" style="color:#0CB6F4">다음</button></li>
+    <li><button onclick="pdInsert()" style="color:#0CB6F4">다음</button>
+   
   </ul>
 </div> <!-- 이전, 다음 버튼 -->
 	<div  id="fileArea" style="display: none;">
