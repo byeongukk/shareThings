@@ -11,6 +11,7 @@ public class Rental implements java.io.Serializable {
 	private int rtno;
 	private int pno;
 	private int uno;
+	private int dlId;
 	private Date rtStartDate;
 	private Date rtEndDate;
 	private Date rtReqDate;
@@ -20,12 +21,13 @@ public class Rental implements java.io.Serializable {
 	
 	public Rental() {}
 
-	public Rental(int rtno, int pno, int uno, Date rtStartDate, Date rtEndDate, Date rtReqDate, Date rtAccDate,
-			String rtSid, String rtReason) {
+	public Rental(int rtno, int pno, int uno, int dlId, Date rtStartDate, Date rtEndDate, Date rtReqDate,
+			Date rtAccDate, String rtSid, String rtReason) {
 		super();
 		this.rtno = rtno;
 		this.pno = pno;
 		this.uno = uno;
+		this.dlId = dlId;
 		this.rtStartDate = rtStartDate;
 		this.rtEndDate = rtEndDate;
 		this.rtReqDate = rtReqDate;
@@ -53,6 +55,13 @@ public class Rental implements java.io.Serializable {
 	 */
 	public int getUno() {
 		return uno;
+	}
+
+	/**
+	 * @return the dlId
+	 */
+	public int getDlId() {
+		return dlId;
 	}
 
 	/**
@@ -119,6 +128,13 @@ public class Rental implements java.io.Serializable {
 	}
 
 	/**
+	 * @param dlId the dlId to set
+	 */
+	public void setDlId(int dlId) {
+		this.dlId = dlId;
+	}
+
+	/**
 	 * @param rtStartDate the rtStartDate to set
 	 */
 	public void setRtStartDate(Date rtStartDate) {
@@ -165,9 +181,9 @@ public class Rental implements java.io.Serializable {
 	 */
 	@Override
 	public String toString() {
-		return "Rental [rtno=" + rtno + ", pno=" + pno + ", uno=" + uno + ", rtStartDate=" + rtStartDate
-				+ ", rtEndDate=" + rtEndDate + ", rtReqDate=" + rtReqDate + ", rtAccDate=" + rtAccDate + ", rtSid="
-				+ rtSid + ", rtReason=" + rtReason + "]";
+		return "Rental [rtno=" + rtno + ", pno=" + pno + ", uno=" + uno + ", dlId=" + dlId + ", rtStartDate="
+				+ rtStartDate + ", rtEndDate=" + rtEndDate + ", rtReqDate=" + rtReqDate + ", rtAccDate=" + rtAccDate
+				+ ", rtSid=" + rtSid + ", rtReason=" + rtReason + "]";
 	}
 
 	

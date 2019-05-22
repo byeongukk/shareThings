@@ -219,6 +219,7 @@
 			var endDay;
 			var today = new Date();
 			start = $("#startFilter").datepicker({
+				dateFormat:"yy-mm-dd",
 				defaultDate:"+1w",
 				changeMonth:true,
 				minDate:today,
@@ -242,6 +243,7 @@
 				}
 			});
 		    end = $("#endFilter").datepicker({
+		    	dateFormat:"yy-mm-dd",
 		    	defaultDate:"+1w",
 		    	changeMonth:true,
 		    	onSelect:function(selectedDate) {

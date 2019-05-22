@@ -9,8 +9,6 @@
 	ArrayList<HashMap<String, Object>> reviewList = (ArrayList<HashMap<String, Object>>)pDetailMap.get("reviewList");
 	HashMap<String, Object> rvAttmap = (HashMap<String, Object>)pDetailMap.get("rvAttmap");
 	ArrayList<Rental> rentList = (ArrayList<Rental>)pDetailMap.get("rentList");
-	
-
 %>
 <!DOCTYPE html>
 <html>
@@ -257,15 +255,21 @@
 								</tr>
 								<tr>
 									<td width="50%">
-										<div class="ui left icon fluid input datePicker" style="margin:0; width:100%">
+										<div class="ui left icon right labeled fluid input datePicker" style="margin:0; width:100%">
 											<input type="text" name="endPick" id="startPick" placeholder="대여 시작일">
 											<i class="calendar alternate outline icon"></i>
+											<div class="ui basic label clearDate">
+												<i class="icon x" style="margin:0; color:gray;"></i>
+											</div>
 										</div>
 									</td>
 									<td width="50%">
-										<div class="ui left icon fluid input datePicker" style="margin:0; width:100%">
+										<div class="ui left icon right labeled fluid input datePicker" style="margin:0; width:100%">
 											<input type="text" name="endPick" id="endPick" placeholder="대여 종료일">
 											<i class="calendar alternate outline icon"></i>
+											<div class="ui basic label clearDate">
+												<i class="icon x" style="margin:0; color:gray;"></i>
+											</div>
 										</div>
 									</td>
 								</tr>
@@ -275,16 +279,24 @@
 									</td>
 								</tr>
 								<tr>
-									<td>대여가격 : <label id="priceCalc" style="color:#0CB6F4;"></label>원</td>
-									<td><label>(+ 배송비 : 3000원)</label></td>
+									<td colspan="2">
+										선택하신<label id="periodCalc" style="color:#F44A0C">--</label>주
+										 대여가격 : <label id="priceCalc" style="color:#0CB6F4;">--</label>원
+									</td>
+									<td><label></label></td>
 								</tr>
 								<tr>
-									<td></td>
-									<td><label>(+ 보증금 : <%= bmap.get("deposit") %>원)</label></td>
+									<td>(+ 보증금 : <label><%= bmap.get("deposit") %></label>원)</td>
+									<td>
+										<span id="dlResult" style="display:none" 
+										data-tooltip="대여 가격 <%= bmap.get("dlFreeAmount")%>원 이상 배송비 무료 물품입니다.">
+											(+ 왕복배송비 : 5000원)<i class="ui question circle icon dlInfo"></i>
+										</span>
+									</td>
 								</tr>
 								<tr>
-									<td colspan="2" align="right">
-										<label style="color:#F44A0C; font-wieght:bold; font-size:2em">총 -- 원</label>
+									<td colspan="2" align="right" style="color:#F44A0C; font-wieght:bold; font-size:2em">
+										총<label id="rentPrice">--</label>원
 									</td>
 								</tr>
 								<tr>
@@ -553,16 +565,42 @@
 				popup:$(".custom.popup"),
 				on:'click'
 			});
+			setDatePicker();
 			
 			
-			//대여 시작일, 종료일 지정
-			var startDate;
-			var endDate;
-			var startDay;
-			var endDay;
+	 	});
+	 	
+	 	
+	 	
+	 	
+	 	$(".rvImageArea1").click(function() {
+	 		$("#img1").click();
+	 	});
+	 	$(".rvImageArea2").click(function() {
+	 		$("#img2").click();
+	 	});
+	 	$(".rvImageArea3").click(function() {
+	 		$("#img3").click();
+	 	});
+	 	$(".rvImageArea4").click(function() {
+	 		$("#img4").click();
+	 	});
+	 	$(".rvImageArea5").click(function() {
+	 		$("#img5").click();
+	 	});
+	 	
+	 	
+	 	
+	 	function setDatePicker() {
+	 		
+	 		//대여 시작일, 종료일 지정
+			var startDate = null;
+			var endDate = null;
+			var startDay = null;
+			var endDay = null;
 			var today = new Date();
-			var end;
-			var st;
+			var end = null;
+			var st = null;
 			function checkStDate(date) {
 				<% 
 				for(int i = 0; i < rentList.size(); i++) {
@@ -580,6 +618,7 @@
 				
 			}
 			$("#startPick").datepicker({
+				dateFormat:"yy-mm-dd",
 				defaultDate:"+1w",
 				changeMonth:true,
 				minDate:today,
@@ -597,7 +636,6 @@
 					}
 				}, 
 				beforeShowDay:function(date) {
-					/* return [true, "enable", "대여가능"]; */
 					<% 
 						for(int i = 0; i < rentList.size(); i++) {
 							Rental rt = rentList.get(i);
@@ -623,6 +661,7 @@
 				}
 			});
 		    $("#endPick").datepicker({
+		    	dateFormat:"yy-mm-dd",
 		    	defaultDate:"+1w",
 		    	changeMonth:true,
 		    	onSelect:function(selectedDate) {
@@ -637,7 +676,17 @@
 			 			var rtEnd = $(this).datepicker("getDate");
 			 			if(rtStart != null && rtEnd != null) {
 				 			var period = Math.ceil((rtEnd.getTime() - rtStart.getTime() + 1) / (1000 * 60 * 60 * 24));
-		    				$("#priceCalc").text((period/7) * <%= bmap.get("price") %>);
+		    				var totalprice = (period / 7) * <%= bmap.get("price") %>;
+		    				$("#priceCalc").text(totalprice);
+		    				$("#periodCalc").text(period / 7);
+		    				var rentprice = totalprice + <%= bmap.get("deposit") %>;
+		    				if(totalprice >= <%= bmap.get("dlFreeAmount") %>) {
+		    					$("#dlResult").hide();
+		    				}else {
+		    					$("#dlResult").show();
+		    					rentprice += 5000;
+		    				}
+		    				$("#rentPrice").text(rentprice);
 			 			}
 		    		}
 		    	},
@@ -666,40 +715,25 @@
 		    		}
 		    	}
 		    });
-	 	});
-	 	
-	 	$("#endPick").on("change", function() {
-	 		if($(this).val() != null && $("#startPick").val() != null) {
-	 			var rtStart = $("#startPick").datepicker("getDate");
-	 			var rtEnd = $(this).datepicker("getDate");
-	 			console.log(rtStart);
-	 			console.log(rtEnd);
-	 			if(rtStart != null && rtEnd != null) {
-		 			var period = rtStart.getTime() - rtEnd.getTime();
-		 			console.log(period);
-		 			console.log(period / (1000 * 60 * 60 * 24));
-	 			}
-	 		}
-	 	});
-	 	
-	 	
-	 	$(".rvImageArea1").click(function() {
-	 		$("#img1").click();
-	 	});
-	 	$(".rvImageArea2").click(function() {
-	 		$("#img2").click();
-	 	});
-	 	$(".rvImageArea3").click(function() {
-	 		$("#img3").click();
-	 	});
-	 	$(".rvImageArea4").click(function() {
-	 		$("#img4").click();
-	 	});
-	 	$(".rvImageArea5").click(function() {
-	 		$("#img5").click();
-	 	});
-	 	
-	 	
+		 	$(".clearDate").mouseenter(function() {
+		 		$(this).css("cursor", "pointer");
+		 	}).click(function() {
+		 		$("#startPick").datepicker("setDate", null);
+		 		$("#endPick").datepicker("setDate", null);
+		 		startDate = null;
+				endDate = null;
+				startDay = null;
+				endDay = null;
+				today = new Date();
+				end = null;
+				st = null;
+				$("#priceCalc").text("--");
+				$("#periodCalc").text("--");
+				$("#dlResult").hide();
+				$("#rentPrice").text("--");
+		 	});
+		 	
+	 	}
 	 	
 	 	function hideContent() {
 		    $("#QnAList").find("tbody>tr:odd").hide();
@@ -966,6 +1000,35 @@
 		
 		$("#goToMyZzim").click(function() {
 			location.href="/st/views/mypage/mypgUserPd.jsp";
+		});
+		
+		$("#addCartBtn").click(function() {
+			<% if(loginUser == null) { %>
+			alert("로그인을 해주세요");
+			location.href="<%= request.getContextPath() %>/views/member/loginPage.jsp";
+			<% }else {%>
+			var st = $("#startPick").val();
+			var end = $("#endPick").val();
+			var pno = <%= bmap.get("pno") %>;
+			$.ajax({
+				url:"<%= request.getContextPath() %>/insert.crt",
+				type:"post",
+				data:{st:st, end:end, pno:pno},
+				success:function(data) {
+					if(data == "success") {
+						var answer = confirm("장바구니에 담겼습니다. 이동하시겠습니까?");
+						if(answer) {
+							location.href="<%= request.getContextPath() %>/views/product/cart.jsp";	
+						}
+					}else {
+						alert("장바구니 담기 실패");
+					}
+				}, error:function() {
+					alert("서버 전송 실패");
+				}
+			});
+			
+			<% } %>		
 		});
 		
 	</script>
