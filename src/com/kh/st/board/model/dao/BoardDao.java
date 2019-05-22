@@ -311,6 +311,7 @@ public class BoardDao {
 				hmap.put("qnaNo", rset.getInt("BNO"));
 				hmap.put("qnaTitle", rset.getString("BTITLE"));
 				hmap.put("qnaContent", rset.getString("BCONTENT"));
+				hmap.put("qnaUno", rset.getInt("BWRITER"));
 				hmap.put("qnaWriter", rset.getString("USER_NAME"));
 				hmap.put("qnaDate", rset.getDate("BDATE"));
 				hmap.put("qnaModifyDate", rset.getDate("MODIFY_DATE"));
@@ -318,6 +319,7 @@ public class BoardDao {
 				hmap.put("ansNo", rset.getInt("ANSNO"));
 				hmap.put("ansTitle", rset.getString("ANSTITLE"));
 				hmap.put("ansContent", rset.getString("ANSCONTENT"));
+				hmap.put("ansUno", rset.getInt("ANSUNO"));
 				hmap.put("ansWriter", rset.getString("ANSWRITER"));
 				hmap.put("ansDate", rset.getDate("ANSDATE"));
 				hmap.put("ansModifyDate", rset.getDate("ANSMODIFY_DATE"));
@@ -353,6 +355,7 @@ public class BoardDao {
 				hmap.put("rvNo", rset.getInt("BNO"));
 				hmap.put("rvTitle", rset.getString("BTITLE"));
 				hmap.put("rvContent", rset.getString("BCONTENT"));
+				hmap.put("rvUno", rset.getInt("BWRITER"));
 				hmap.put("rvWriter", rset.getString("USER_NAME"));
 				hmap.put("rvDate", rset.getDate("BDATE"));
 				hmap.put("rvModifyDate", rset.getDate("MODIFY_DATE"));
@@ -361,6 +364,7 @@ public class BoardDao {
 				hmap.put("ansNo", rset.getInt("ANSNO"));
 				hmap.put("ansTitle", rset.getString("ANSTITLE"));
 				hmap.put("ansContent", rset.getString("ANSCONTENT"));
+				hmap.put("ansUno", rset.getInt("ANSUNO"));
 				hmap.put("ansWriter", rset.getString("ANSWRITER"));
 				hmap.put("ansDate", rset.getDate("ANSDATE"));
 				hmap.put("ansModifyDate", rset.getDate("ANSMODIFY_DATE"));

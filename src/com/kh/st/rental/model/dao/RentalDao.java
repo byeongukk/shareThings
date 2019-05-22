@@ -18,6 +18,8 @@ import java.util.Properties;
 
 import org.apache.tomcat.dbcp.dbcp2.datasources.InstanceKeyDataSource;
 
+import com.kh.st.rental.model.vo.Cart;
+
 /**
  * @author uukk
  *
