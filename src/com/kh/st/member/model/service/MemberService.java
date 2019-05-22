@@ -308,6 +308,16 @@ public class MemberService {
 		return list;
 	}
 	
+	public ArrayList<Payback> getDownloadList(String[] nums) {
+		Connection con = getConnection();
+		
+		ArrayList<Payback> list = new MemberDao().getDownloadList(con, nums);
+		
+		close(con);
+		
+		return list;
+	}
+	
 	
 	//---------------------------------------------- 민지 ----------------------------------------------
 	public Member login(String userId, String userPwd) {
@@ -382,6 +392,8 @@ public class MemberService {
 	      
 	      return result;
 	   }
+
+	
 
 	
 
