@@ -65,8 +65,8 @@ textarea {
 .confirmImg {
 	display:inline-block;
 	margin:30px;
-	width:30%;
-	height:30%;
+	width:150px;
+	height:150px;
 }
 </style>
 </head>
@@ -158,7 +158,8 @@ textarea {
 								 		for(int i = 0; i < confirmList.size(); i ++)  { %>
 											<div class="confirmImg" id="confirm<%= i + 1 %>">
 												<img id="confirmImg<%= i + 1 %>" 
-													 src="<%= request.getContextPath()%>/attach_upload/<%= confirmList.get(i).getChangeName() %>">
+													 src="<%= request.getContextPath()%>/attach_upload/<%= confirmList.get(i).getChangeName() %>"
+													 style="width:150px; height:150px;">
 											</div>
 									<% } %>
 								<% } else { %>

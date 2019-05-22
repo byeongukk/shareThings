@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import="java.util.*"%>
+<%
+	ArrayList<HashMap<String, Object>> list = 
+		(ArrayList<HashMap<String, Object>>) request.getAttribute("list");
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -102,7 +106,7 @@
 							</div>
 							<div class="card shadow mb-4">
                   <div class="card-header py-3">
-                     <h6 class="m-0 font-weight-bold text-primary">00건</h6>
+                     <h6 class="m-0 font-weight-bold text-primary"><%= list.size() %>건</h6>
                   </div>
                   <div class="card-body">
                      <div class="table-responsive">
@@ -137,13 +141,7 @@
 																rowspan="1" colspan="1">등록요청 일시</th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 45px;"
-																rowspan="1" colspan="1">등록자 ID</th>
-															<th tabindex="0" class="sorting"
-																aria-controls="dataTable" style="width: 45px;"
 																rowspan="1" colspan="1">등록자 이름</th>
-															<th tabindex="0" class="sorting"
-																aria-controls="dataTable" style="width: 55px;"
-																rowspan="1" colspan="1">등록자 연락처</th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 68px;"
 																rowspan="1" colspan="1">배송지</th>
@@ -157,20 +155,32 @@
                                     </thead>
 
                                     <tbody>
-                                       <tr role="row" class="even">
-                                          <!-- <td class="sorting_1"><input type="checkbox"></td>
-                                          <td>01</td>
-                                          <td>user01</td>
-                                          <td>노트북</td>
-                                          <td>2019/05/05</td>
-                                          <td>CJ대한통운</td>
-                                          <td>123456789</td>
-                                          <td>발송완료</td>
-                                          <td>배송중</td>
-                                          <td>처리완료</td> -->
+                                    	<% for(int i = 0; i<list.size(); i++){
+															HashMap<String, Object> hmap = list.get(i);	
+														
+										%> 
+                                       <tr role="row" class="even" align="center">
+                                          <td><%= hmap.get("apNo") %></td>
+                                          <td><%= hmap.get("pno") %></td>
+                                          <td id="dCom"><%= hmap.get("deliveryCompany") %></td>
+                                          <td><%= hmap.get("invoice") %></td>
+                                          <td><%= hmap.get("shippingD") %></td>
+                                          <td><%= hmap.get("reqD") %></td>
+                                          <td><%= hmap.get("userName") %></td>
+                                          <td><%= hmap.get("dAddress") %></td>
+                                          <td><%= hmap.get("dType") %></td>
+                                          <td class="tracking">운송장 번호 오류</td>
                                        </tr>
+                                       <% } %>
                                     </tbody>
                                  </table>
+                                 <div id="result-null">
+												<% if(list.size() <= 0){ %>
+													<br><br><br><br><br><br>
+													<h3 align="center"> 조회 결과가 없습니다.</h3>
+													<br><br><br><br><br><br>
+												<% } %>
+								</div>
                               </div>
                            </div>
                           <%--  <%@ include file="../common/paging.jsp"%> --%>
@@ -194,7 +204,140 @@
 		<!-- 로그아웃 모달-->
 		<%@ include file="../common/logoutModal.jsp"%>
 
-
+	<script>
+		$(function() {
+			var myKey = "paDJdMz9NHdA8oZ69C2sgg"; // sweet tracker에서 발급받은 자신의 키 넣는다.
+	        // 택배사 목록 조회 company-api
+	        $.ajax({
+	            type:"GET",
+	            dataType : "json",
+	            url:"http://info.sweettracker.co.kr/api/v1/companylist?t_key="+myKey,
+	            success:function(data){
+	                    
+	                    // 방법 1. JSON.parse 이용하기
+	                    var parseData = JSON.parse(JSON.stringify(data));
+	                     console.log(parseData.Company); // 그중 Json Array에 접근하기 위해 Array명 Company 입력
+	                    
+	                    // 방법 2. Json으로 가져온 데이터에 Array로 바로 접근하기
+	                    var CompanyArray = data.Company; // Json Array에 접근하기 위해 Array명 Company 입력
+	                    console.log(CompanyArray); 
+	                     
+	                    var myData="";
+	                    $.each(CompanyArray,function(key,value) {
+	                            myData += ('<option value='+value.Code+'>' +'key:'+key+', Code:'+value.Code+',Name:'+value.Name + '</option>');                        
+	                    });
+	                    $("#tekbeCompnayList").html(myData);
+	                    
+	                    var t_code = new Array();
+			            var t_invoice = new Array();
+	                    
+	                    //택배 / 운송장 번호 
+	                    /* $(".even").each(function(){
+	                    	console.log("dd");
+	                    	t_code.push($(this).find("td").eq(2).text());
+				            t_invoice.push($(this).find("td").eq(3).text());
+	                    }); */
+	                    
+						//var t_invoice =  348540216731;
+	           			 $(".even").each(function(){
+	           				var t_code = /* $(this).find("td").eq(2).text(); */ 04;
+				            //var t_invoice = /* $(this).find("td").eq(3).text(); */ 348540216731;
+				            var t_inovice = 3485402167312;
+				            var $trackingTd = $(this).find("td").eq(9);
+				            
+	           				console.log(t_invoice);
+			            $.ajax({
+			                type:"GET",
+			                dataType : "json",
+			                url:"http://info.sweettracker.co.kr/api/v1/trackingInfo?t_key="+myKey+"&t_code="+04+"&t_invoice="+3485402167312,
+			                success:function(data){
+			                    var $dataTable = $(".dataTable");
+			                    console.log(data);
+			                    console.log("data.result : " + data.result);
+			                    if(data.result == "N" || data.result =="" || data.status == false){
+			                        $trackingTd = $trackingTd.text("운송장번호오류");
+			                    }else {
+			                    	switch(data.level){
+			                    	case 1 : $trackingTd = $trackingTd.text("배송준비중"); break;
+			                    	case 2 : $trackingTd = $trackingTd.text("집화완료"); break;
+			                    	case 3 : $trackingTd = $trackingTd.text("배송중"); break;
+			                    	case 4 : $trackingTd = $trackingTd.text("지점 도착"); break;
+			                    	case 5 : $trackingTd = $trackingTd.text("배송출발"); break;
+			                    	case 6 : $trackingTd = $trackingTd.text("배송 완료"); break;
+			                    	}
+			                    }
+			                    //$tr.append($trackingTd);
+		                    	//$dataTable.append($tr);
+			                }
+			            	});
+	           			});
+	           			
+	            }
+	        });
+	        // 배송정보와 배송추적 tracking-api
+	        $("#trackingNumBtn").click(function() {
+	            var t_code = $(".even").find("td").eq(2).text();
+	            var t_invoice = $(".even").find("td").eq(3).text();
+				
+	            $.ajax({
+	                type:"GET",
+	                dataType : "json",
+	                url:"http://info.sweettracker.co.kr/api/v1/trackingInfo?t_key="+myKey+"&t_code="+t_code+"&t_invoice="+t_invoice,
+	                success:function(data){
+	                    console.log(data);
+	                    var myInvoiceData = "";
+	                    if(data.status == false){
+	                        myInvoiceData += ('<p>'+data.msg+'<p>');
+	                    }else{
+	                        myInvoiceData += ('<tr>');                
+	                        myInvoiceData += ('<th>'+"보내는사람"+'</td>');                     
+	                        myInvoiceData += ('<th>'+data.senderName+'</td>');                     
+	                        myInvoiceData += ('</tr>');     
+	                        myInvoiceData += ('<tr>');                
+	                        myInvoiceData += ('<th>'+"제품정보"+'</td>');                     
+	                        myInvoiceData += ('<th>'+data.itemName+'</td>');                     
+	                        myInvoiceData += ('</tr>');     
+	                        myInvoiceData += ('<tr>');                
+	                        myInvoiceData += ('<th>'+"송장번호"+'</td>');                     
+	                        myInvoiceData += ('<th>'+data.invoiceNo+'</td>');                     
+	                        myInvoiceData += ('</tr>');     
+	                        myInvoiceData += ('<tr>');                
+	                        myInvoiceData += ('<th>'+"송장번호"+'</td>');                     
+	                        myInvoiceData += ('<th>'+data.receiverAddr+'</td>');                     
+	                        myInvoiceData += ('</tr>');                                       
+	                    }
+	                    
+	                    
+	                    $("#myPtag").html(myInvoiceData)
+	                    
+	                    var trackingDetails = data.trackingDetails;
+	                    
+	                    
+	                    var myTracking="";
+	                    var header ="";
+	                    header += ('<tr>');                
+	                    header += ('<th>'+"시간"+'</th>');
+	                    header += ('<th>'+"장소"+'</th>');
+	                    header += ('<th>'+"유형"+'</th>');
+	                    header += ('<th>'+"전화번호"+'</th>');                     
+	                    header += ('</tr>');     
+	                    
+	                    $.each(trackingDetails,function(key,value) {
+	                        myTracking += ('<tr>');                
+	                        myTracking += ('<td>'+value.timeString+'</td>');
+	                        myTracking += ('<td>'+value.where+'</td>');
+	                        myTracking += ('<td>'+value.kind+'</td>');
+	                        myTracking += ('<td>'+value.telno+'</td>');                     
+	                        myTracking += ('</tr>');                                    
+	                    });
+	                    
+	                    $("#myPtag2").html(header+myTracking);
+	                    
+	                }
+	            });
+	        });
+		});
+	</script>
 	<script
 		src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>
 	<script
