@@ -94,6 +94,9 @@
 	.pdlist{
 		text-align: center;
 		padding: 5px;
+		color: #9e9e9e;
+		height: 40px;
+		
 	}
 	
 </style>
@@ -109,36 +112,35 @@
 		</div>
 		<div id="main">
 			<div class="vertical-menu">
-			<h1 align="left"><a href="mypgMain.jsp" style="text-decoration: none; background: white; margin:-10px;"><img id="mlogo" src="../../resource/img/mypage/mypage.png"></a></h1>
- 			  <a href="mypgUser.jsp" >내 정보 조회</a>
-			  <a href="mypgUpPd.jsp" class="active">내 등록 물품</a>
- 			 <a href="mypgRtPd.jsp">내 대여 현황</a>
-  			<a href="mypgUserPd.jsp">관심물품</a>
- 			 <a href="mypgPoint.jsp">적립금 현황</a>
- 			 <a href="mypgUser.jsp">내 문의 내역</a>
+			<h1 align="left"><a href="/st/views/mypage/mypgMain.jsp" style="text-decoration: none; background: white; margin:-10px;"><img id="mlogo" src="/st/resource/img/mypage/mypage.png"></a></h1>
+ 			  <a href="/st/views/mypage/mypgUser.jsp" >내 정보 조회</a>
+			  <a href="#" onclick="myUpPd();" class="active">내 등록 물품</a>
+ 			 <a href="/st/views/mypage/mypgRtPd.jsp">내 대여 현황</a>
+  			<a href="/st/views/mypage/mypgUserPd.jsp">관심물품</a>
+ 			 <a href="/st/views/mypage/mypgPoint.jsp">적립금 현황</a>
+ 			 <a href="/st/views/mypage/mypgReport.jsp">내 문의 내역</a>
  			 
 			</div>
 		
 			<div class="detail">
 				
-				<label>나의 등록 내역 </label> <button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none;">?</button>
+				<label>나의 등록 내역 </label> 
 			<table align="center" width="100%">
 				<tr class="titletb">
-					<td >순번</td>
-					<td >날짜</td>
-					<td  width="60%">상품정보</td>
-					<td >상태</td>
-					<td>등록/대여</td>
+					<td>날짜</td>
+					<td width="60%">상품정보</td>
+					<td>상태</td>
+					<td></td>
 				</tr>
 				<!-- <tr>
 					<td colspan=12 style="text-align:center; padding:50px; height:500px">등록한 상품이 없습니다.</td>
 				</tr> -->
 				<%for(Product p : list) {%>
 				<tr class="pdlist">
-					<td><%= p.getPno() %></td>
 					<td><%= p.getpStartDate() %> ~ <%= p.getpEndDate() %></td>
 					<td><%= p.getModel() %></td>
 					<td><%= p.getSid() %></td>
+					<td><% if(p.getSid().equals("등록 요청")) { %> <button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none;">취소</button><%}else{} %> </td>
 				</tr>
 				<%} %>
 			<%-- 	<% for(no n : list){ %>
@@ -162,6 +164,11 @@
 		</div>
 	<div class="col-lg-1 col-md-1">
 	</div>
+	<script>
+		function myUpPd(){
+			location.href="/st/selectList.pd";
+		}
+	</script>
 </body>
 </html>
 			

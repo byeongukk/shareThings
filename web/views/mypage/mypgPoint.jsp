@@ -124,21 +124,21 @@
 				
 				<table align="center" style="text-align:center">
 				<tr>
-					<td><img src="../../resource/img/mypage/level-1.png" alt="" style="width:150px; height:150px;"/></td>
+					<td><img src="../../resource/img/mypage/<%= loginUser.getmLevel() %>.png" alt="" style="width:150px; height:150px;"/></td>
 				</tr>
 				<tr>
-				<%
-				/* int level = loginUser.getLevel();
+				<%-- <%
+				String level = loginUser.getmLevel();
 				
-				switch(loginUser.getLevel()){
-				case 1 : loginUser.setRank("바보"); break;
-				case 2 : loginUser.setRank("공"); break;
-				case 3 : loginUser.setRank("멍게"); break;
-				case 4 : loginUser.setRank("렌탈킹"); break;
-				} */
+				switch(loginUser.getmLevel()){
+				case "MLV1" : String levelname="바보"; break;
+				case "MLV2" : String levelname="바보"; break;
+				case "MLV3" : loginUser.setRank("멍게"); break;
+				case "MLV4" : loginUser.setRank("렌탈킹"); break;
+				} 
 				
-				%>
-					<td style="padding:10px"><h5>현재 고객님의 회원 등급은  "임시" 입니다.</h5></td>
+				%> --%>
+					<td style="padding:10px"><h5>현재 고객님의 회원 등급은  "<%= loginUser.getmLevel() %>" 입니다.</h5></td>
 				</tr>
 			
 				<tr>
@@ -149,7 +149,7 @@
 			</table>
 			<hr />
 			
-			<h3 style="float:right;">나의 적립금 | <label style="color:#F44A0C">5,000,000 point</label></h3> <label></label>
+			<h3 style="float:right;">나의 적립금 | <label style="color:#F44A0C"><%= loginUser.getTotalPoint() %> Point</label></h3> <label></label>
 			<br>	
 			
 			<label>적립금 적립 내역</label> <button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none; font-size:10px;">지난 날짜 검색</button>

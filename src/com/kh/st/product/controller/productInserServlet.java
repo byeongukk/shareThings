@@ -202,7 +202,7 @@ public class productInserServlet extends HttpServlet {
 	            	
 	            }
 	         }
-	         int rqresult = new ProductService().regreqProduct(pno, address, phone, phone2);
+	         int rqresult = new ProductService().regreqProduct(pno);
 	         if(rqresult > 0) {
 		         }else {
 		            request.setAttribute("msg", "물품등록게시판 등록 실패!");
