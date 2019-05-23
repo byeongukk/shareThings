@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="com.kh.st.customerService.model.vo.*"%> <!--  -->
+    <%
+    Cs c = (Cs) request.getAttribute("c");
+    %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -135,9 +138,10 @@ width:100%;
 </div> <!-- 자주 묻는 질문 -->
 
 <div class="vertical-menu" style=" align:center; ">
- <a href="cs.jsp" >자주 묻는 질문 FAQ</a>
-           <a href="mtmQue.jsp">1 : 1 문의하기</a>
-           <a href="myCs.jsp">나의 문의 관리</a>
+ <a href="/st/views/customerService/cs.jsp"  >자주 묻는 질문 FAQ</a>
+           <a href="/st/views/customerService/mtmQue.jsp">1 : 1 문의하기</a>
+           <a onclick="myQue();">나의 문의 관리</a>
+ <a href="/st/views/customerService/guide.jsp">이용안내 / 약관</a>
 
 
 </div> <!-- 옆에 메뉴 -->
@@ -155,22 +159,22 @@ width:100%;
    <table>
    
    <tr style="height:30px">
-   <td style="width:200px; font-weight:bold;">작성자</td>
-   <td style="width:200px;">차소희</td>
+   <td style="width:200px; font-weight:bold;"><label>작성자</label></td>
+   <td style="width:200px;"><%= loginUser.getUserName()%></td>
    <td style="width:200px; font-weight:bold;">작성일자</td>
-   <td style="width:200px;">2019 . 05 . 11</td>
+   <td style="width:200px;"><%= c.getcDate() %></td>
    </tr>
 
    <tr  style="height:30px">
    <td style="width:200px; font-weight:bold;">연락처</td>
-   <td style="width:200px;">010 - 2830 - 1660</td>
+   <td style="width:200px;"><%=loginUser.getPhone() %></td>
    <td style="width:200px; font-weight:bold;">이메일</td>
-   <td style="width:200px;">aliciakimwa@gmail.com</td>
+   <td style="width:200px;"><%= loginUser.getEmail() %></td>
    </tr>
  
    <tr  style="height:30px">
    <td style="width:100px; font-weight:bold;">카테고리</td>
-   <td style="width:100px;">배송 문의 > 배송</td>
+   <td style="width:100px;"><%= c.getcCategory() %></td>
    <td></td>
    <td></td>
    </tr>
@@ -182,14 +186,14 @@ width:100%;
    
    <h5  style="font-weight:bold;">문의 내용</h5>
    
-   <div id="queContent">  삼천리 킥보드 대여했는데 금요일 까지 온다더니 
-     오늘 일요일인데 왜 전 킥보드의 ㅋ도 볼 수 없는건가요????
+   <div id="queContent"><%=c.getcContent() %>
    
    </div> <!-- 문의 내용 -->
    
    <hr id="h2">
    
    <h5 style="font-weight:bold;">문의 답변</h5>
+   <!-- dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd -->
    <div id="queContent" style="margin-bottom:10%;">  답변 대기중
    
    </div> <!-- 문의 답변 -->
@@ -209,38 +213,6 @@ width:100%;
     
    
 </div> <!-- detail -->
-    
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!-- footer -->
 <div id="footer" >
@@ -249,6 +221,10 @@ width:100%;
 	
 	<div class="col-lg-1 col-md-1">
 	</div>
-
+<script>
+function myQue(){
+	location.href="/st/cslist.cs";
+}
+</script>
 </body>
 </html>

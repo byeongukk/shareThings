@@ -123,8 +123,8 @@ width:100%;
 </div>
 
 <div class="vertical-menu" style=" align:center; ">
- <a href="#" >자주 묻는 질문 FAQ</a>
-           <a href="mtmQue.jsp">1 : 1 문의하기</a>
+ <a href="/st/views/customerService/cs.jsp" >자주 묻는 질문 FAQ</a>
+           <a href="/st/views/customerService/mtmQue.jsp">1 : 1 문의하기</a>
            <a onclick="myQue();">나의 문의 관리</a>
 <a href="../customerService/guide.jsp">이용안내</a>
 </div>
@@ -221,30 +221,6 @@ width:100%;
 
 </div>
   
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 <!-- footer -->
 <div id="footer">

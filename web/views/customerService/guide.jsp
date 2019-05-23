@@ -144,9 +144,9 @@ width:100%;
 </div> <!-- 자주 묻는 질문 -->
 
 <div class="vertical-menu" style=" align:center; ">
- <a href="cs.jsp" >자주 묻는 질문 FAQ</a>
-           <a href="mtmQue.jsp">1 : 1 문의하기</a>
-           <a href="myCs.jsp">나의 문의 관리</a>
+ <a href="/st/views/customerService/cs.jsp">자주 묻는 질문 FAQ</a>
+           <a href="/st/views/customerService/mtmQue.jsp">1 : 1 문의하기</a>
+           <a onclick="myQue();">나의 문의 관리</a>
             <a href="guide.jsp">이용안내 / 약관</a>
 
 </div> <!-- 옆에 메뉴 -->
@@ -269,39 +269,7 @@ width:100%;
     
    
 </div> <!-- detail -->
-    
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   
 <!-- footer -->
 <div id="footer" >
 			<%@ include file="../common/footer.jsp" %>
@@ -309,6 +277,10 @@ width:100%;
 	
 	<div class="col-lg-1 col-md-1">
 	</div>
-
+	<script>
+function myQue(){
+	location.href="/st/cslist.cs";
+}
+</script>
 </body>
 </html>

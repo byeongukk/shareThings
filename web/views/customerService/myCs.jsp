@@ -131,9 +131,11 @@ width:100%;
 </div> <!-- 자주 묻는 질문 -->
 
 <div class="vertical-menu" style=" align:center; ">
- <a href="cs.jsp" >자주 묻는 질문 FAQ</a>
-           <a href="mtmQue.jsp">1 : 1 문의하기</a>
-           <a href="myCs.jsp">나의 문의 관리</a>
+ <a href="/st/views/customerService/cs.jsp" >자주 묻는 질문 FAQ</a>
+           <a href="/st/views/customerService/mtmQue.jsp">1 : 1 문의하기</a>
+           <a onclick="myQue();">나의 문의 관리</a>
+ <a href="/st/views/customerService/guide.jsp">이용안내 / 약관</a>
+
 
 </div> <!-- 옆에 메뉴 -->
 
@@ -141,14 +143,15 @@ width:100%;
     
     <div class="detail" style="margin-top:18px; margin-bottom:18px;">
    <div>
-   <table style="text-align:center;">
+   <table style="text-align:center;" id="listArea">
    <tr style="font-weight:bold;">
-   <td style="width:200px; height:50px; border:1px solid black;">날짜</td>
-   <td style="width:600px; height:50px; border:1px solid black;">문의 내용</td>
-   <td style="width:200px; height:50px; border:1px solid black;">상태</td>
+   <th style="width:200px; height:50px; border:1px solid black; text-align:center;">글번호</th>
+   <th style="width:200px; height:50px; border:1px solid black; text-align:center;">날짜</th>
+   <th style="width:600px; height:50px; border:1px solid black; text-align:center;">문의 내용</th>
+   <th style="width:200px; height:50px; border:1px solid black; text-align:center;">상태</th>
    
    </tr>
-   <tr>
+  <!--  <tr>
    <td style="width:200px; height:50px; border:1px solid black;">2019.05.11</td>
    <td style="width:600px; height:50px; border:1px solid black;">아니 시발 킥보드 금요일까지 보내준다면서 왜 안와요????</td>
    <td style="width:200px; height:50px; border:1px solid black;">미확인</td>
@@ -166,9 +169,10 @@ width:100%;
    <td style="width:600px; height:50px; border:1px solid black;">보증금 왜 다 안보내줘요?</td>
    <td style="width:200px; height:50px; border:1px solid black;">미확인</td>
    
-   </tr>
+   </tr> -->
    	<%for(Cs p : list) {%>
 				<tr class="pdlist">
+					<td style="width:200px; height:50px; border:1px solid black;"><%= p.getCno() %></td>
 					<td style="width:200px; height:50px; border:1px solid black;"><%= p.getcDate() %></td>
 					<td style="width:200px; height:50px; border:1px solid black;"><%= p.getcContent() %></td>
 					<td style="width:200px; height:50px; border:1px solid black;"><%= p.getcCategory() %></td>
@@ -188,37 +192,6 @@ width:100%;
 </div> <!-- detail -->
     
   
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!-- footer -->
 <div id="footer" >
 			<%@ include file="../common/footer.jsp" %>
@@ -226,6 +199,25 @@ width:100%;
 	
 	<div class="col-lg-1 col-md-1">
 	</div>
-
+<script>
+		$(function(){
+			$("#listArea td").mouseenter(function(){
+				$(this).parent().css({"background":"#ececec", "cursor":"pointer"});
+			}).mouseout(function(){
+				$(this).parent().css({"background":"white"});
+			}).click(function(){
+				var num = $(this).parent().children().eq(0).text();
+				
+				console.log(num);
+				
+				location.href = "<%=request.getContextPath()%>/selectOne.cs?num=" + num;
+			});
+		});
+	</script>
+	<script>
+function myQue(){
+	location.href="/st/cslist.cs";
+}
+</script>
 </body>
 </html>
