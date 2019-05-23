@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="java.util.ArrayList, java.util.HashMap, com.kh.st.notice.model.vo.Notice"%>
+<%
+	ArrayList<HashMap<String, Object>> top5List = (ArrayList<HashMap<String, Object>>)request.getAttribute("top5List");
+	ArrayList<Notice> notice5List = (ArrayList<Notice>)request.getAttribute("notice5List");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -59,6 +63,9 @@
     	border: 2px solid #0CB6F4 !important;
     	border-bottom-color: transparent;
 	}
+	#notice5Table tr:hover {
+		cursor:pointer;
+	}
 </style>
 </head>
 <body>
@@ -91,51 +98,49 @@
 
 					<!-- Wrapper for slides -->
 					<div class="carousel-inner" style="height: 100%">
-
+						<% 
+							for(int i = 0; i < top5List.size(); i++) { 
+								if(i == 0) {
+						%>
 						<div class="item active" style="height: 100%" align="center">
-							<img src="/st/images/airfrier.jpg" alt=""
+							<img src="/st/attach_upload/<%= top5List.get(i).get("changeName") %>" alt=""
 								style="height: 100%; width: auto">
 							<div class="carousel-caption">
-								<h3>에어프라이어</h3>
-								<p>LA is always so much fun!</p>
+								<h3><%= top5List.get(i).get("bTitle") %></h3>
+								<div>
+									<label style="color:#0CB6F4; font-size:1.2em; "><%= top5List.get(i).get("price") %></label>원/주
+									(보증금 :<label><%= top5List.get(i).get("deposit") %></label>원)
+								</div>
+								<div>
+									총 대여횟수 : <label><%= top5List.get(i).get("rtCount") %></label>
+									/ 후기 :<div class="ui star large rating ratingContent" data-rating="<%= top5List.get(i).get("rvStar") %>" data-max-rating="5"></div>
+									(<label><%= top5List.get(i).get("rvCount") %></label>)
+								</div>
 							</div>
 						</div>
-
+						<% 
+								}else {
+						%>
 						<div class="item" style="height: 100%" align="center">
-							<img src="/st/images/laptop.jpg" alt=""
-								style="height: 100%; width: auto;">
+							<img src="/st/attach_upload/<%= top5List.get(i).get("changeName") %>" alt=""
+								style="height: 100%; width: auto">
 							<div class="carousel-caption">
-								<h3>노트북</h3>
-								<p>Thank you, Chicago!</p>
+								<h3><%= top5List.get(i).get("bTitle") %></h3>
+								<div>
+									<label style="color:#0CB6F4; font-size:1.2em"><%= top5List.get(i).get("price") %></label>원/주
+									(보증금 :<label><%= top5List.get(i).get("deposit") %></label>원)
+								</div>
+								<div>
+									총 대여횟수 : <label><%= top5List.get(i).get("rtCount") %></label>
+									/ 후기 :<div class="ui star large rating ratingContent" data-rating="<%= top5List.get(i).get("rvStar") %>" data-max-rating="5"></div>
+									(<label><%= top5List.get(i).get("rvCount") %></label>)
+								</div>
 							</div>
 						</div>
-
-						<div class="item" style="height: 100%" align="center">
-							<img src="/st/images/camping.jpg" alt=""
-								style="height: 100%; width: auto;">
-							<div class="carousel-caption">
-								<h3>캠핑용품</h3>
-								<p>We love the Big Apple!</p>
-							</div>
-						</div>
-						<div class="item" style="height: 100%" align="center">
-							<img src="/st/images/laptop.jpg" alt=""
-								style="width: auto; height: 300px;">
-							<div class="carousel-caption">
-								<h3>노트북</h3>
-								<p>Thank you, Chicago!</p>
-							</div>
-						</div>
-
-						<div class="item" style="height: 100%" align="center">
-							<img src="/st/images/camping.jpg" alt=""
-								style="width: auto; height: 300px;">
-							<div class="carousel-caption">
-								<h3>캠핑용품</h3>
-								<p>We love the Big Apple!</p>
-							</div>
-						</div>
-
+						<% 
+									}
+								} 
+						%>
 					</div>
 
 					<!-- Left and right controls -->
@@ -152,42 +157,28 @@
 
 				<!-- 공지사항 -->
 				<div class="col col-lg-6 col-md-6 col-sm-6 col-xs-12" id="notice5">
-					<table class="table table-hover"
+					<table class="table table-hover" id="notice5Table"
 						style="width: 100%;">
 						<caption style="font-size:1.5em">공지사항
 							<button class="ui button" onclick="goToNotice();"
 							style="float:right">전체보기</button>
 						</caption>
-						<tr>
-							<th width="10%">No.</th>
-							<th width="70%">Title</th>
-							<th width="20%">Date</th>
-						</tr>
-						<tr>
-							<td>1.</td>
-							<td>공지사항 1</td>
-							<td>2019-04-29</td>
-						</tr>
-						<tr>
-							<td>2.</td>
-							<td>공지사항 2</td>
-							<td>2019-04-29</td>
-						</tr>
-						<tr>
-							<td>3.</td>
-							<td>공지사항 3</td>
-							<td>2019-04-29</td>
-						</tr>
-						<tr>
-							<td>4.</td>
-							<td>공지사항 4</td>
-							<td>2019-04-29</td>
-						</tr>
-						<tr>
-							<td>5.</td>
-							<td>공지사항 5</td>
-							<td>2019-04-29</td>
-						</tr>
+						<thead>
+							<tr>
+								<th width="10%">No.</th>
+								<th width="70%">Title</th>
+								<th width="20%">Date</th>
+							</tr>
+						</thead>
+						<tbody>
+							<% for(int i = 0; i < notice5List.size(); i++) { %>
+							<tr>
+								<td><%= notice5List.get(i).getNno() %></td>
+								<td><%= notice5List.get(i).getnTitle() %></td>
+								<td><%= notice5List.get(i).getnDate() %></td>
+							</tr>
+							<% } %>
+						</tbody>
 					</table>
 				</div><!-- end of 공지사항 -->
 
@@ -263,17 +254,18 @@
 	
 	
 	<script>
-		/* $(document).ready(function(){
-	   		$('.menu .item').tab();
-	   		$('.ui .item').on('click', function() {
-	   		   $('.ui .item').removeClass('active');
-	   		   $(this).addClass('active');
-
-	   		});
-		}); */
+		$(function() {
+			$(".ratingContent").rating("disable");
+		});
+		
 		function goToNotice() {
-			location.href="/st/views/main/noticeList.jsp";
+			location.href="/st/selectList.no";
 		}
+		$("#notice5Table>tbody tr").click(function() {
+			var nno = $(this).children("td").eq(0).text();
+			console.log(nno);
+			location.href="/st/selectOne.no?nno=" + nno;
+		});
 	</script>
 </body>
 </html>

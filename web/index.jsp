@@ -9,6 +9,6 @@
 <body>
 	<!-- <li><a href="views/admin/adminMain.jsp">관리자 페이지</a></li> -->
 	
-	<h1><a href="views/main/main.jsp">사용자 메인페이지</a></h1>
+	<h1><a href="mainLoad.bo">사용자 메인페이지</a></h1>
 </body>
 </html>

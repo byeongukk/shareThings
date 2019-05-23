@@ -16,8 +16,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 
+import com.kh.st.attachment.model.vo.Attachment;
+import com.kh.st.common.PageInfo;
 import com.kh.st.notice.model.vo.Notice;
 import com.kh.st.rental.model.dao.RentalDao;
 
@@ -211,15 +214,28 @@ public class NoticeDao {
 		
 		return result;
 	}
+	
+	
+	
+	
+	
+	
+	
 	//민지
-	   public ArrayList<Notice> selectNoticeList(Connection con) {
-	      Statement stmt = null;
+	   public ArrayList<Notice> selectNoticeList(Connection con, PageInfo pi) {
+	      PreparedStatement pstmt = null;
 	      ResultSet rset = null;
 	      ArrayList<Notice> nList = null;
 	      String query = prop.getProperty("selectNoticeList");
+	      
+	      int startRow = (pi.getCurrentPage() - 1) * pi.getLimit() + 1;
+	      int endRow = startRow + pi.getLimit() - 1;
+	      
 	      try {
-	         stmt = con.createStatement();
-	         rset = stmt.executeQuery(query);
+	         pstmt = con.prepareStatement(query);
+	         pstmt.setInt(1, startRow);
+	         pstmt.setInt(2, endRow);
+	         rset = pstmt.executeQuery();
 	         nList = new ArrayList<Notice>();
 	         while(rset.next()) {
 	            Notice n = new Notice();
@@ -230,16 +246,226 @@ public class NoticeDao {
 	            n.setnDate(rset.getDate("NDATE"));
 	            n.setModify_Date(rset.getDate("MODIFY_DATE"));
 	            n.setStatus(rset.getString("STATUS"));
-	            n.setnWriter(rset.getString("NWRITER"));
+	            n.setnWriter(rset.getString("USER_NAME"));
 	            nList.add(n);
 	         }
 	      } catch (SQLException e) {
 	         e.printStackTrace();
 	      } finally {
-	         close(stmt);
+	         close(pstmt);
 	         close(rset);
 	      }
 	      return nList;
 	   }
 
+
+	public int getnListCount(Connection con) {
+		Statement stmt = null;
+		ResultSet rset = null;
+		int nlistCnt = 0;
+		String query = prop.getProperty("selectnListCount");
+		try {
+			stmt = con.createStatement();
+			rset = stmt.executeQuery(query);
+			if(rset.next()) {
+				nlistCnt = rset.getInt(1);
+			}
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(stmt);
+			close(rset);
+		}
+		return nlistCnt;
+	}
+
+	
+	public int updatenCount(Connection con, int nno) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = prop.getProperty("updatenCount");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, nno);
+			pstmt.setInt(2, nno);
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	public Notice selectOneNotice(Connection con, int nno) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		Notice n = null;
+		String query = prop.getProperty("selectOneNotice");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, nno);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				n = new Notice();
+				n.setNno(rset.getInt("NNO"));
+				n.setnTitle(rset.getString("NTITLE"));
+				n.setnContent(rset.getString("NCONTENT"));
+				n.setnCount(rset.getInt("NCOUNT"));
+				n.setnDate(rset.getDate("NDATE"));
+				n.setModify_Date(rset.getDate("MODIFY_DATE"));
+				n.setStatus(rset.getString("STATUS"));
+				n.setnWriter(rset.getString("USER_NAME"));
+			}
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return n;
+	}
+
+
+	public ArrayList<Attachment> selectnAttList(Connection con, int nno) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<Attachment> nAttList = null;
+		String query = prop.getProperty("selectnAttList");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, nno);
+			
+			rset = pstmt.executeQuery();
+			nAttList = new ArrayList<Attachment>();
+			while(rset.next()) {
+				Attachment at = new Attachment();
+				at.setAno(rset.getInt("ANO"));
+				at.setOriginName(rset.getString("ORIGIN_NAME"));
+				at.setChangeName(rset.getString("CHANGE_NAME"));
+				at.setFilePath(rset.getString("FILE_PATH"));
+				at.setFileLevel(rset.getInt("FILE_LEVEL"));
+				at.setNno(rset.getInt("NNO"));
+				nAttList.add(at);
+			}
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		
+		return nAttList;
+	}
+
+
+	public Attachment selectOneAttachment(Connection con, int ano) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		Attachment at = null;
+		String query = prop.getProperty("selectOneAttachment");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, ano);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				at = new Attachment();
+				at.setAno(rset.getInt("ANO"));
+				at.setOriginName(rset.getString("ORIGIN_NAME"));
+				at.setChangeName(rset.getString("CHANGE_NAME"));
+				at.setFilePath(rset.getString("FILE_PATH"));
+				at.setFileLevel(rset.getInt("FILE_LEVEL"));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return at;
+	}
+
+
+	public ArrayList<Notice> searchNotice(Connection con, String input) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<Notice> nList = null;
+		String query = prop.getProperty("searchNotice");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, "%" + input + "%");
+			pstmt.setString(2, "%" + input + "%");
+			rset = pstmt.executeQuery();
+			nList = new ArrayList<Notice>();
+			while(rset.next()) {
+				Notice n = new Notice();
+				n.setNno(rset.getInt("NNO"));
+				n.setnTitle(rset.getString("NTITLE"));
+				n.setnContent(rset.getString("NCONTENT"));
+				n.setnCount(rset.getInt("NCOUNT"));
+				n.setnDate(rset.getDate("NDATE"));
+				n.setModify_Date(rset.getDate("MODIFY_DATE"));
+				n.setStatus(rset.getString("STATUS"));
+				n.setnWriter(rset.getString("USER_NAME"));
+				nList.add(n);
+			}
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return nList;
+	}
+
+
+	public ArrayList<Notice> getNotice5List(Connection con ) {
+		Statement stmt = null;
+		ResultSet rset = null;
+		ArrayList<Notice> notice5List = null;
+		String query = prop.getProperty("getNotice5List");
+		try {
+			stmt = con.createStatement();
+			rset = stmt.executeQuery(query);
+			notice5List = new ArrayList<Notice>();
+			while(rset.next()) {
+				Notice n = new Notice();
+				n.setNno(rset.getInt("NNO"));
+				n.setnTitle(rset.getString("NTITLE"));
+				n.setnContent(rset.getString("NCONTENT"));
+				n.setnCount(rset.getInt("NCOUNT"));
+				n.setnDate(rset.getDate("NDATE"));
+				n.setModify_Date(rset.getDate("MODIFY_DATE"));
+				n.setStatus(rset.getString("STATUS"));
+				n.setnWriter(rset.getString("USER_NAME"));
+				notice5List.add(n);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(stmt);
+			close(rset);
+		}
+		return notice5List;
+	}
+
+
+	
+
 }
+
+
+
+
+
+
+
+
+
+
