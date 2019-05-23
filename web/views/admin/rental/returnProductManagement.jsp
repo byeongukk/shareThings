@@ -27,7 +27,6 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 #filter {
 	margin-top: 30px;
 }
-
 #filterArea td {
 	padding: 20px;
 }
@@ -93,41 +92,52 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 										<div class="card shadow mb-4">
 											<div class="card-header py-3">조회 필터</div>
 											<div class="card-body">
+												<div>
+													<span>대여 남은 일 수 : </span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+													<button type="button" class="btn btn-success btn-icon-split" class="dayBtn" onclick="dayFilter(1)">
+													<span class="text">1일</span>
+													</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+													<button type="button" class="btn btn-success btn-icon-split" class="dayBtn" onclick="dayFilter(3)">
+													<span class="text">3일</span>
+													</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+													<button type="button" class="btn btn-success btn-icon-split" class="dayBtn" onclick="dayFilter(7)">
+													<span class="text">7일</span>
+													</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+													<button type="button" class="btn btn-success btn-icon-split"  class="dayBtn" onclick="dayFilter(30)">
+													<span class="text">30일</span>
+													</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+													<button type="button" class="btn btn-success btn-icon-split"  class="dayBtn" onclick="dayFilter(99999)">
+													<span class="text">전체</span>
+													</button>
+												</div>
 												<form id="filterArea">
 													<table class="col-lg-12" id="filter">
 														<tr>
-															<td width="10%">수거상태</td>
-															<td width="15%"><select class="form-control">
-																	<option value="hidden">수거상태</option>
-																	<option value="0">수거완료</option>
-																	<option value="10">수거미완료</option>
+
+															<td width="5%">상태</td>
+															<td width="15%"><select class="form-control" id="rentalStatus" name="rentalStatus">
+																	<option disabled>상태</option>
+																	<option value="0">전체</option>
+																	<option value="RTS5">대여중</option>
+																	<option value="RTS6">수거송장입력</option>
+																	<option value="RTS7">수거중</option>
 															</select></td>
-															<td width="10%">상세조건</td>
-															<td width="15%"><select class="form-control">
-																	<option>상세조건</option>
-																	<option value="0">대여주문번호</option>
-																	<option value="10">대여자이름</option>
-																	<option value="20">물품명</option>
-																	<option value="30">물품번호</option>
+															<td width="5%">상세조건</td>
+															<td width="15%"><select class="form-control" id="details" name="details" onchange = detailsChg();>
+																	<option disabled >상세조건</option>
+																	<option value="0">전체</option>
+																	<option value="rtNo">대여주문번호</option>
+																	<option value="rtUserName">대여자이름</option>
+																	<option value="pno">물품번호</option>
 															</select></td>
-															<td width="15%"><input type="text"
-																class="form-control" placeholder="상세정보입력"></td>
+															<td width="20%"><input type="text"
+																class="form-control" placeholder="상세정보입력" disabled id="filterContent" name="filterContent"></td>
 
 														</tr>
-														<tr>
-															<td width="10%">주문상태</td>
-															<td width="15%"><select class="form-control">
-																	<option value="hidden">주문상태</option>
-																	<option value="0">배송중</option>
-																	<option value="10">배송완료</option>
-															</select></td>
-															<td></td>
-														</tr>
-														
 													</table>
 													<br>
 													<div align="center">
-														<button type="submit">조회하기</button>
+														<button type="button" id="inquiry">조회하기</button>
 														&nbsp;&nbsp;
 														<button type="reset">초기화</button>
 													</div>
@@ -141,14 +151,13 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 						<!-- 리스트 테이블  -->
 						<div class="card shadow mb-4">
 							<div class="card-header py-3">
-								<h6 class="m-0 font-weight-bold text-primary"><%= list.size() %>건</h6>
+								<h6 class="m-0 font-weight-bold text-primary" id="listSize"><%= list.size() %>건</h6>
 							</div>
 							<div class="card-body">
 								<div class="row">
-									<div class="col-lg-6 mb-4">
+									<div class="col-lg-12 col-md-6 col-xs-6 col-sm-6">
 										<form class="form-inline">
-											
-											<div class="form-group">
+											<div class="form-group col-md-10">
 												<span>송장 정보 입력 : </span>
 												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 												<select class="form-control" id="dCom">
@@ -157,24 +166,29 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 												</select> 
 												&nbsp;&nbsp;&nbsp;&nbsp; <span> <input type="number"
 													class="form-control" id="invoiceNum" placeholder="송장번호">
-												</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												</span> 
+												&nbsp;
+												<br><br>
 												<button type="button" class="btn btn-success btn-icon-split btn-sm" id="applyBtn">
 													<span class="icon text-white-50"> <i
 														class="fas fas fa-check"></i>
-													</span> <span class="text">적용하기</span>
+													</span> <span class="text">송장적용하기</span>
 												</button>
-												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+												
+												&nbsp;&nbsp;&nbsp;
+											
 												<button type="button"
 													class="btn btn-danger btn-icon-split btn-sm" id="applyCancelBtn">
 													<span class="icon text-white-50"> <i
 														class="fas fas fa-trash"></i>
-													</span> <span class="text">적용취소</span>
+													</span> <span class="text">송장적용취소</span>
 												</button>
-												
+												 
 											</div>
 										</form>
 										<br>
 										<form>
+											&nbsp;&nbsp;
 											<button type="button" class="btn btn-secondary btn-icon-split btn-sm" id="returnPdBtn">
 												<span class="icon text-white-50"> <i
 													class="fas fas fa-arrow-right"></i>
@@ -191,6 +205,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 										</form>
 									</div>
 								</div>
+								<br>
 								<div class="table-responsive">
 									<div class="dataTables_wrapper dt-bootstrap4"
 										id="dataTable_wrapper">
@@ -289,66 +304,6 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 	<!-- 로그아웃 모달-->
 	<%@ include file="../common/logoutModal.jsp"%>
 
-	<!-- 검수  Modal -->
-	<!-- <div class="modal fade" id="returnModal" role="dialog">
-		<div class="modal-dialog">
-
-			Modal content
-			<div class="modal-content">
-				<div class="modal-header">
-					<h4 class="modal-title">검수완료 처리</h4>
-					<button type="button" class="close" data-dismiss="modal">&times;</button>
-				</div>
-				<div class="row">
-					<div class="col-md-12 col-lg-12">
-						<div class="modal-body">
-							<p>물품명을 확인하고 처리하세요</p>
-							<div class="panel-body">
-								<table width="100%"
-									class="table table-striped table-bordered table-hover"
-									id="dataTables-example">
-									<thead>
-										<tr>
-											<th style="text-align: center;" class="text-black-50 small">대여주문번호</th>
-											<th style="text-align: center;" class="text-black-50 small">물품번호</th>
-											<th style="text-align: center;" class="text-black-50 small">물품명</th>
-											<th style="text-align: center;" class="text-black-50 small">대여자이름</th>
-											<th style="text-align: center;" class="text-black-50 small">대여자ID</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr class="odd gradeX">
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-											<td></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-							<hr>
-							<h5>*검수사진</h5>	
-							<div id="fileArea">
-								<input type="file" id="thumbnailImg1" name="thumbnailImg1" onchange=loadImg(this,1);>
-								<input type="file" id="thumbnailImg2" name="thumbnailImg2" onchange=loadImg(this,2);>
-								<input type="file" id="thumbnailImg3" name="thumbnailImg3" onchange=loadImg(this,3);> 
-								<input type="file" id="thumbnailImg4" name="thumbnailImg4" onchange=loadImg(this,4);>
-							</div>
-							<hr>
-							<h5>*검수내용</h5>	
-								<textarea class="col-lg-12" placeholder="검수내용"></textarea>
-						</div>
-						<div class="modal-footer">
-							<button type="submit" class="btn btn-default" data-dismiss="modal">검수처리</button>
-							<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
-						</div>
-					</div>
-				</div>
-			</div>
-
-		</div>
-	</div> -->
 	
 	<form action="<%= request.getContextPath() %>/returnPdexamine.rt" method="post"
 	     encType="multipart/form-data">
@@ -384,16 +339,16 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 		                 <hr>
 		                 <h5>*검수사진</h5>   
 		                    <div id="fileExamineArea" class="col-md-12 col-lg-12">
-		                       <div class="examineImg" id="examineImg1">
+		                       <div class="examineImg" id="examine1">
 		                          <img id="examineImg1" width="150" height="150">
 		                       </div>
-		                       <div class="examineImg" id="examineImg2">
+		                       <div class="examineImg" id="examine2">
 		                          <img id="examineImg2" width="150" height="150">
 		                       </div>
-		                       <div class="examineImg" id="examineImg3">
+		                       <div class="examineImg" id="examine3">
 		                          <img id="examineImg3" width="150" height="150">
 		                       </div>
-		                       <div class="examineImg" id="examineImg4">
+		                       <div class="examineImg" id="examine4">
 		                          <img id="examineImg4" width="150" height="150">
 		                       </div>
 		                    </div>
@@ -406,7 +361,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 		                 <hr>
 		                 <h5>*검수내용</h5>
 		                	 <input type="hidden" name="checker" value="<%= loginUser.getUno() %>">
-		                    <textarea id="textResult" name="textResult" class="col-lg-12" placeholder="EX)이상없음"></textarea>
+		                    <textarea id="textResult" required name="textResult" class="col-lg-12" placeholder="EX)이상없음"></textarea>
 		              </div>
 		              <div class="modal-footer">
 		                 <button type="submit" class="btn btn-default"
@@ -480,6 +435,10 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 				alert("이미 입력된 물품입니다");
 				return false;
 			}
+			if(rtStatus == RTS7){
+				alert("수거중인 물품입니다");
+				return false;
+			}
 			if(invoiceNum == ""){
 				alert("송장번호를 입력하세요");
 				return false;
@@ -499,35 +458,35 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 	});
 	//택배송장 취소
 	$("#applyCancelBtn").click(function(){
-	if(confirm("송장번호 입력 취소하시겠습니까?")){
-		
-		var status = new Array();
-		var dCom =  $("#dCom").val();
-		var rtNos = new Array();
-		var pnos = new Array();
-		var invoiceNum = $("#invoiceNum").val();
-		var rtStatus = "";
-		$(".even").each(function() {
-			if($(this).find(".check").is(":checked")) {
-				status.push($(this).find("td").eq(1).text());
-				
-				rtNos.push($(this).find("td").eq(1).text());
-				pnos.push($(this).find("td").eq(2).text());
-				rtStatus = $(this).find("td").eq(9).text();
+		if(confirm("송장번호 입력 취소하시겠습니까?")){
+			
+			var status = new Array();
+			var dCom =  $("#dCom").val();
+			var rtNos = new Array();
+			var pnos = new Array();
+			var invoiceNum = $("#invoiceNum").val();
+			var rtStatus = "";
+			$(".even").each(function() {
+				if($(this).find(".check").is(":checked")) {
+					status.push($(this).find("td").eq(1).text());
+					
+					rtNos.push($(this).find("td").eq(1).text());
+					pnos.push($(this).find("td").eq(2).text());
+					rtStatus = $(this).find("td").eq(9).text();
+				}
+			});
+			if(rtStatus != RTS6){
+				alert("송장번호가 입력되지 않은 물품입니다");
+				return false;
 			}
-		});
-		if(rtStatus != RTS5){
-			alert("송장번호가 입력되지 않은 물품입니다");
-			return false;
+			if(status.length == 0) {
+				alert("적용하실 물품을 한개이상 선택하세요");
+				return false;
+			}
+			
+			location = "<%= request.getContextPath() %>/deleteReturnInvcNum.rt?rtNos=" + rtNos + 
+														"&pnos=" + pnos;
 		}
-		if(status.length == 0) {
-			alert("적용하실 물품을 한개이상 선택하세요");
-			return false;
-		}
-		
-		location = "<%= request.getContextPath() %>/deleteReturnInvcNum.rt?rtNos=" + rtNos + 
-													"&pnos=" + pnos;
-	}
 	
 	});
 	
@@ -573,27 +532,32 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 	/****************************************************************************/
 		//검수사진
         $("#fileArea").hide();
-        $("#examineImg1").click(function() {
+        $("#examine1").click(function() {
            $("#img1").click();
         });
-        $("#examineImg2").click(function() {
+        $("#examine2").click(function() {
            $("#img2").click();
         });
-        $("#examineImg3").click(function() {
+        $("#examine3").click(function() {
            $("#img3").click();
         });
-        $("#examineImg4").click(function() {
+        $("#examine4").click(function() {
            $("#img4").click();
         });
 	
 		//사진, 검수내용 등록
       function loadImg(value, num) {
+			console.log("onload");
+			console.log(value);
+			console.log(num);
          if(value.files && value.files[0]) {
+        	 console.log("if");
             var reader = new FileReader();
             reader.onload = function(e) {
                switch(num) {
                case 1 :
                   $("#examineImg1").attr("src", e.target.result);
+                  console.log( e.target.result);
                   break;
                case 2 :
                   $("#examineImg2").attr("src", e.target.result);
@@ -609,7 +573,6 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
             reader.readAsDataURL(value.files[0]);
          }
       }
-	
 	//수거처리 버튼
 	$("#returnBtn").click(function() {
 		var status = new Array();
@@ -640,6 +603,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 		$.ajax({
 			url:"selectShpNum.rt?status=" + status,
 			type:"get",
+			async:false,
 			success:function(data) {
 				var $dataTables = $("#dataTables-example tbody");
 				var $textarea = $("<textarea id='textResult' name='textResult' class='col-lg-12' placeholder='EX)거짓 정보 등록'></textarea>");
@@ -680,6 +644,183 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 	
 	
 	</script>
+	<script>
+
+		/* 상세조건이 전체일때 상세정보입력 비활성화 */
+		function detailsChg(){
+			if($("#details").val()=="0"){
+				$("#filterContent").attr("disabled",true);
+				$("#filterContent").val("");
+			}else {
+				$("#filterContent").attr("disabled",false);
+				$("#filterContent").val("");
+			}
+		}
+		
+		
+	
+	</script>
+	<script>
+		<!-- 조회필터 ajax -->
+		$(function(){
+			$("#inquiry").click(function(){
+				var rentalStatus = $("#rentalStatus").val();
+				var details = $("#details").val();
+				var filterContent = $("#filterContent").val();
+				console.log(rentalStatus);
+				console.log(details);
+
+				/*상세정보가 전체가 아닌경우 alert 창 띄운후 리턴*/
+				if(details != "0"){
+					if(filterContent == ""){
+						alert("상세정보를 입력하세요");
+						return;
+					}
+				}
+				$.ajax({
+					url:"<%=request.getContextPath()%>/selectRtPdFilter.rt",
+					data:{rentalStatus:rentalStatus,
+						details:details,
+						filterContent:filterContent
+					},
+					type:"get",
+					success:function(data){
+						 /* 기존 테이블 행 제거 */
+						$("#dataTable > tbody > tr").remove();
+						var $dataTable = $("#dataTable");
+						/* 조회된 값이 없을때 출력할 공간 */
+						var $resultNull = $("#result-null");
+						/* 조회된 건수 출력할 공간 */
+						var $listSize = $("#listSize");
+						
+						
+						/* 값넣을 공간 비우기 */
+						$resultNull.html('');
+						$listSize.prop("innerHTML",'');
+						if(data.length>0){
+							
+							for(var key in data){
+								
+								/* 가져온 값 td에 입력 */
+								var $tr = $("<tr class='even' role='row' align='center'>");
+								
+								var $chkTd = $("<td><input type='checkBox' class='check'>");
+								var $rtNoTd =  $("<td>").text(data[key].rtNo);
+								var $pNoTd =  $("<td>").text(data[key].pno);
+								var $rtStDateTd =  $("<td>").text(data[key].rtStDate);
+								var $rtEndDateTd =  $("<td>").text(data[key].rtEndDate);
+								var $endDayTd =  $("<td id='endDay'>").text(data[key].endDay);
+								var $userIdTd = $("<td>").text(data[key].userId);
+								var $userNameTd = $("<td>").text(data[key].userName);
+								var $phoneTd = $("<td>").text(data[key].phone);
+								
+								var $rtStatusTd = $("<td>").text(data[key].rtStatus);
+								
+								/* tr에 td추가 */
+								$tr.append($chkTd);
+								$tr.append($rtNoTd);
+								$tr.append($pNoTd);
+								$tr.append($rtStDateTd);
+								$tr.append($rtEndDateTd);
+								$tr.append($endDayTd);
+								$tr.append($userIdTd);
+								$tr.append($userNameTd);
+								$tr.append($phoneTd);
+								$tr.append($rtStatusTd);
+								
+								/* table에 tr추가 */
+								$dataTable.append($tr);  
+							}
+						}else {
+							/* 조회된 값이 없을때 출력 */
+							$resultNull.append("<br><br><br><br><br><br>");
+							$resultNull.append("<h3 align='center'> 조회 결과가 없습니다.</h3>");
+							$resultNull.append("<br><br><br><br><br><br>");
+						}
+						$listSize.prop("innerHTML",data.length+"건");
+					},
+					error:function(){
+						console.log("error");
+					}
+					
+				});
+			});
+			
+			
+		});	
+		
+		function dayFilter(selectDay){
+			$.ajax({
+				url:"<%=request.getContextPath()%>/selectRtPdDayFilter.rt",
+				data:{selectDay:selectDay
+				},
+				type:"get",
+				success:function(data){
+					 /* 기존 테이블 행 제거 */
+					$("#dataTable > tbody > tr").remove();
+					var $dataTable = $("#dataTable");
+					/* 조회된 값이 없을때 출력할 공간 */
+					var $resultNull = $("#result-null");
+					/* 조회된 건수 출력할 공간 */
+					var $listSize = $("#listSize");
+					
+					
+					/* 값넣을 공간 비우기 */
+					$resultNull.html('');
+					$listSize.prop("innerHTML",'');
+					if(data.length>0){
+						
+						for(var key in data){
+							
+							/* 가져온 값 td에 입력 */
+							var $tr = $("<tr class='even' role='row' align='center'>");
+							
+							var $chkTd = $("<td><input type='checkBox' class='check'>");
+							var $rtNoTd =  $("<td>").text(data[key].rtNo);
+							var $pNoTd =  $("<td>").text(data[key].pno);
+							var $rtStDateTd =  $("<td>").text(data[key].rtStDate);
+							var $rtEndDateTd =  $("<td>").text(data[key].rtEndDate);
+							var $endDayTd =  $("<td id='endDay'>").text(data[key].endDay);
+							var $userIdTd = $("<td>").text(data[key].userId);
+							var $userNameTd = $("<td>").text(data[key].userName);
+							var $phoneTd = $("<td>").text(data[key].phone);
+							
+							var $rtStatusTd = $("<td>").text(data[key].rtStatus);
+							
+							/* tr에 td추가 */
+							$tr.append($chkTd);
+							$tr.append($rtNoTd);
+							$tr.append($pNoTd);
+							$tr.append($rtStDateTd);
+							$tr.append($rtEndDateTd);
+							$tr.append($endDayTd);
+							$tr.append($userIdTd);
+							$tr.append($userNameTd);
+							$tr.append($phoneTd);
+							$tr.append($rtStatusTd);
+							
+							/* table에 tr추가 */
+							$dataTable.append($tr);  
+						}
+					}else {
+						/* 조회된 값이 없을때 출력 */
+						$resultNull.append("<br><br><br><br><br><br>");
+						$resultNull.append("<h3 align='center'> 조회 결과가 없습니다.</h3>");
+						$resultNull.append("<br><br><br><br><br><br>");
+					}
+					$listSize.prop("innerHTML",data.length+"건");
+				},
+				error:function(){
+					console.log("error");
+				}
+				
+			});
+			
+		}
+		
+
+	</script>
+	
 	<script
 		src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>
 	<script
@@ -706,4 +847,3 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 </body>
 
 </html>
-

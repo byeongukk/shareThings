@@ -319,7 +319,7 @@
 				$("#filterContent").attr("disabled",false);
 				$("#filterContent").val("");
 			}
-		}
+		};
 	
 	</script>
 	<script

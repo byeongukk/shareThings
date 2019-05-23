@@ -267,6 +267,23 @@ public class RentalService {
 			}
 			return result;
 		}
+		
+		// 수거물품 조회 필터
+		public ArrayList<HashMap<String, Object>> selectRtPdFilter(HashMap<String, Object> condition) {
+			Connection con = getConnection();
+			ArrayList<HashMap<String, Object>> list = new RentalDao().selectRtPdFilter(con,condition);
+			
+			close(con);
+			return list;
+		}
+		//날짜로 조회
+		public ArrayList<HashMap<String, Object>> selectRtPdDayFilter(int selectDay) {
+			Connection con = getConnection();
+			ArrayList<HashMap<String, Object>> list = new RentalDao().selectRtPdDayFilter(con,selectDay);
+			
+			close(con);
+			return list;
+		}
 	      
 		//민지
 		   public int insertCart(Cart newCart) {
@@ -279,6 +296,9 @@ public class RentalService {
 		      }
 		      return result;
 		   }
+		
+
+		
 		   
 	
 	

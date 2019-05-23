@@ -73,10 +73,10 @@ public class InsertPdexamineServlet extends HttpServlet {
 				String name = files.nextElement();
 				
 				System.out.println("name : " + name);
-				
-				saveFiles.add(multiRequest.getFilesystemName(name));
-				originFiles.add(multiRequest.getOriginalFileName(name));
-				
+				if(multiRequest.getFilesystemName(name) != null) {
+					saveFiles.add(multiRequest.getFilesystemName(name));
+					originFiles.add(multiRequest.getOriginalFileName(name));
+				}
 				System.out.println("fileSystem name : " 
 									+ multiRequest.getFilesystemName(name));
 				System.out.println("originFile : " 

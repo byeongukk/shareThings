@@ -131,7 +131,6 @@
 										class="btn btn-success btn-icon-split"><span
 										class="icon text-white-50"> <i class="fas fa-check"></i></span> <span
 										class="text">작성하기</span> </a>
-									<%@ include file="../common/paging.jsp"%>
 								</div>
 							</div>
 						</div>

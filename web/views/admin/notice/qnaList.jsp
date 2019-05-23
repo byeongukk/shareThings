@@ -119,7 +119,6 @@
 											</table>
 										</div>
 									</div>
-									<%@ include file="../common/paging.jsp"%>
 								</div>
 							</div>
 						</div>
