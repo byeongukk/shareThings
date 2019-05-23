@@ -83,9 +83,9 @@ textarea {
 						<h1 class="h3 mb-0 text-gray-800">등록 요청 관리</h1>
 					</div>
 					<br> <br>
+					<form action="<%= request.getContextPath()%>/reqNo.bo" method="post" id="go">
 					<div class="row">
 						<div class="col-lg-10">
-							<form action="<%= request.getContextPath()%>/reqNo.bo" method="post" id="go">
 							<div class="card shadow mb-4">
 							<input type="hidden" name="nums" id="nums" value="<%= reqProduct.getPno() %>">
 								<div class="card-header py-3">
@@ -250,6 +250,7 @@ textarea {
 		
 		$("#ok").click(function() {
 			var status = $("#nums").val();
+			console.log(status);
 			$.ajax({
 				url:"reqOkSelect.bo?status=" + status,
 				type:"get",

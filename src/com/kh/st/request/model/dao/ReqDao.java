@@ -305,7 +305,7 @@ public class ReqDao {
 				reqProduct.setPurchasePrice(rset.getInt("PURCHASE_PRICE"));	//구입가
 				reqProduct.setPrice(rset.getInt("PRICE"));	//대여비
 				reqProduct.setDeposite(rset.getInt("DEPOSIT"));	//보증금
-				reqProduct.setPno(rset.getInt("PNO"));
+				reqProduct.setPno(reqNum);	//물품번호
 				
 				at = new Attachment();
 				at.setAno(rset.getInt("ANO"));	//파일번호

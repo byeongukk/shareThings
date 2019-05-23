@@ -94,7 +94,13 @@ public class CheckHistoryService {
 					rollback(con);
 					result = 0;
 				}
+			} else {
+				rollback(con);
+				System.out.println("상태 업데이트 실패");
 			}
+		} else {
+			rollback(con);
+			System.out.println("검수내용, 검수자 실패");
 		}
 		close(con);
 		return result;
