@@ -180,33 +180,11 @@
         <div id="collapseSTM" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
 
-            <a class="collapse-item" href="<%=request.getContextPath()%>/views/admin/money/salesST.jsp">매출현황</a>
+            <a class="collapse-item" href="<%=request.getContextPath()%>/selectStatList.st">매출현황</a>
           </div>
         </div>
       </li>
       
-      <!-- 구분선 -->
-      <hr class="sidebar-divider">
-
-      <!-- Heading -->
-      <div class="sidebar-heading">
-		통계
-      </div>
-      
-      <li class="nav-item">
-        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsestat" aria-expanded="true" aria-controls="collapsestat">
-          <img src="<%=request.getContextPath()%>/resource/img/stat.png">
-          <span>통계</span>
-        </a>
-        <div id="collapsestat" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
-          <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="<%=request.getContextPath()%>/views/admin/stat/statMember.jsp">회원통계</a>
-            <a class="collapse-item" href="<%=request.getContextPath()%>/views/admin/stat/statST.jsp">매출통계</a>
-
-          </div>
-        </div>
-      </li>
-
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
 

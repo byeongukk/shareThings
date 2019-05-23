@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import="java.util.*"%>
+<%
+	ArrayList<HashMap<String,Object>> list = (ArrayList<HashMap<String,Object>>) request.getAttribute("list");
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -11,7 +14,10 @@
 <meta name="author" content="">
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script>
 
+
+</script>
 <!-- Bootstrap core JavaScript-->
 <title>Share Things</title>
 
@@ -28,17 +34,23 @@
 	href="<%=request.getContextPath()%>/resource/css/sb-admin-2.min.css"
 	rel="stylesheet">
 <style>
-.even:hover {
-	cursor: pointer;
-}
-
-#filter {
-	margin-top: 50px;
-}
-
-#filterArea td {
+#filter td {
 	padding: 5px;
 }
+
+.paging {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#dataTables-detail td {
+	padding: 8px;
+}
+
+.MTR {
+	color: black;
+}
+
 </style>
 </head>
 
@@ -66,33 +78,14 @@
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">조회 필터</div>
 								<div class="card-body">
-									<table class="col-lg-12" id="filterArea">
+									<table class="col-lg-12" id="filter">
 										<tr>
 											<td width="5%">기간 :</td>
-											<td>&nbsp;<a href="#" class="btnDate" period="0"><span>오늘</span></a>
-												<a href="#" class="btnDate" period="7"><span>7일</span></a> <a
-												href="#" class="btnDate" period="30"><span>1개월</span></a> <a
-												href="#" class="btnDate" period="90"><span>3개월</span></a> <a
-												href="#" class="btnDate" period="365"><span>1년</span></a> <a
-												href="#" class="btnDate" period="-1"><span>전체</span></a>
-												&nbsp;&nbsp; <input type="date" name="startDate"
+											<td><input type="date" name="startDate"
 												style="width: 20%"> &nbsp;&nbsp;&nbsp; ~
 												&nbsp;&nbsp;&nbsp; <input type="date" name="endDate"
 												style="width: 20%">
 											</td>
-											<td width="8%">카테고리 :</td>
-											<td><select style="width: 25%">
-													<option>대분류</option>
-													<option>유아동</option>
-													<option>전자기기</option>
-													<option>취미/레저</option>
-													<option>리빙</option>
-													<option>반려동물</option>
-											</select> &nbsp;&nbsp;&nbsp; <select style="width: 25%">
-													<option>중분류</option>
-											</select> &nbsp;&nbsp;&nbsp; <select style="width: 25%">
-													<option>소분류</option>
-											</select></td>
 										</tr>
 										<tr>
 
@@ -105,6 +98,34 @@
 									</div>
 								</div>
 							</div>
+							<div class="row">
+					            <div class="col-xl-12 col-lg-12">
+					
+					              <!-- Area Chart -->
+					              <div class="card shadow mb-4 col-lg-9" style="width:70%; height:430; display:inline-block; float:left">
+						                <div class="card-header py-3">
+						                  <h6 class="m-0 font-weight-bold text-primary">카테고리별 매출</h6>
+						                </div>
+						                <div class="card-body">
+						                  <div class="chart-bar">
+						                    <canvas id="myBarChart"></canvas>
+						                  </div>
+						                </div>
+						              </div>
+					              <div class="card shadow mb-4 col-lg-3" style="width:70%; height:430; display:inline-block; float:right">
+					                <!-- Card Header - Dropdown -->
+					                <div class="card-header py-3">
+					                  <h6 class="m-0 font-weight-bold text-primary">카테고리별 건수</h6>
+					                </div>
+					                <!-- Card Body -->
+					                <div class="card-body">
+					                  <div class="chart-pie pt-4">
+					                    <canvas id="myPieChart"></canvas>
+					                  </div>
+					                </div>
+					              </div>
+					           </div>
+					        </div>
 							<div class="card shadow mb-4">
 								<div class="card-body">
 									<div class="table-responsive">
@@ -117,7 +138,7 @@
 														aria-describedby="dataTable_info" style="width: 100%;"
 														style="height:100px;">
 														<thead>
-															<tr role="row">
+															<tr align="center" class="even">
 																<th class="sorting_asc" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-sort="ascending"
@@ -130,15 +151,23 @@
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Age: activate to sort column ascending"
-																	style="width: 32%;">카테고리</th>
+																	style="width: 32%;">대여매출</th>
 																<th class="sorting" tabindex="0"
 																	aria-controls="dataTable" rowspan="1" colspan="1"
 																	aria-label="Salary: activate to sort column ascending"
-																	style="width: 10%;">금액</th>
+																	style="width: 10%;">순이익</th>
 															</tr>
 														</thead>
 														<tbody>
-
+															<% for(int i = 0; i < list.size(); i++){ 
+																	HashMap<String,Object> hmap = list.get(i);%>
+																<tr align="center" class="even">
+																	<td><%= hmap.get("type") %></td>
+																	<td><%= hmap.get("count") %></td>
+																	<td><%= hmap.get("price") %></td>
+																	<td><%= hmap.get("netProfit") %></td>
+																</tr>	
+															<% } %>
 														</tbody>
 													</table>
 												</div>
@@ -165,12 +194,6 @@
 			<%@ include file="../common/logoutModal.jsp"%>
 
 			<script>
-		$(function() {
-			$(".even").click(function() {
-				location = "<%=request.getContextPath()%>
-				/views/admin/reqProductDetail.jsp";
-									});
-				});
 			</script>
 			<script
 				src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>
@@ -190,8 +213,113 @@
 				src="<%=request.getContextPath()%>/resource/vendor/chart.js/Chart.min.js"></script>
 
 			<!-- Page level custom scripts -->
-			<script
-				src="<%=request.getContextPath()%>/resource/js/demo/chart-area-demo.js"></script>
+			<script>
+			Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+			Chart.defaults.global.defaultFontColor = '#858796';
+			
+			function number_format(number, decimals, dec_point, thousands_sep) {
+			  number = (number + '').replace(',', '').replace(' ', '');
+			  var n = !isFinite(+number) ? 0 : +number,
+			    prec = !isFinite(+decimals) ? 0 : Math.abs(decimals),
+			    sep = (typeof thousands_sep === 'undefined') ? ',' : thousands_sep,
+			    dec = (typeof dec_point === 'undefined') ? '.' : dec_point,
+			    s = '',
+			    toFixedFix = function(n, prec) {
+			      var k = Math.pow(10, prec);
+			      return '' + Math.round(n * k) / k;
+			    };
+			  s = (prec ? toFixedFix(n, prec) : '' + Math.round(n)).split('.');
+			  if (s[0].length > 3) {
+			    s[0] = s[0].replace(/\B(?=(?:\d{3})+(?!\d))/g, sep);
+			  }
+			  if ((s[1] || '').length < prec) {
+			    s[1] = s[1] || '';
+			    s[1] += new Array(prec - s[1].length + 1).join('0');
+			  }
+			  return s.join(dec);
+			}
+
+			var ctx = document.getElementById("myBarChart");
+			var myBarChart = new Chart(ctx, {
+			  type: 'bar',
+			  data: {
+			    labels: ["전자기기", "취미/레저", "패션뷰티", "유아동", "반려동물"],
+			    datasets: [{
+			      label: "매출",
+			      backgroundColor: "#4e73df",
+			      hoverBackgroundColor: "#2e59d9",
+			      borderColor: "#4e73df",
+			      data: [<%=list.get(0).get("price")%>,<%=list.get(1).get("price")%>],
+			    }],
+			  },
+			  options: {
+			    maintainAspectRatio: false,
+			    layout: {
+			      padding: {
+			        left: 10,
+			        right: 25,
+			        top: 25,
+			        bottom: 0
+			      }
+			    },
+			    scales: {
+			      xAxes: [{
+			        time: {
+			          unit: 'month'
+			        },
+			        gridLines: {
+			          display: false,
+			          drawBorder: false
+			        },
+			        ticks: {
+			          maxTicksLimit: 6
+			        },
+			        maxBarThickness: 25,
+			      }],
+			      yAxes: [{
+			        ticks: {
+			          min: 0,
+			          max: <%=list.get(1).get("price")%> + 50000,
+			          maxTicksLimit: 5,
+			          padding: 10,
+			          callback: function(value, index, values) {
+			            return "￦" + number_format(value);
+			          }
+			        },
+			        gridLines: {
+			          color: "rgb(234, 236, 244)",
+			          zeroLineColor: "rgb(234, 236, 244)",
+			          drawBorder: false,
+			          borderDash: [2],
+			          zeroLineBorderDash: [2]
+			        }
+			      }],
+			    },
+			    legend: {
+			      display: false
+			    },
+			    tooltips: {
+			      titleMarginBottom: 10,
+			      titleFontColor: '#6e707e',
+			      titleFontSize: 14,
+			      backgroundColor: "rgb(255,255,255)",
+			      bodyFontColor: "#858796",
+			      borderColor: '#dddfeb',
+			      borderWidth: 1,
+			      xPadding: 15,
+			      yPadding: 15,
+			      displayColors: false,
+			      caretPadding: 10,
+			      callbacks: {
+			        label: function(tooltipItem, chart) {
+			          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+			          return datasetLabel + ': ￦' + number_format(tooltipItem.yLabel);
+			        }
+			      }
+			    },
+			  }
+			});
+			</script>
 			<script
 				src="<%=request.getContextPath()%>/resource/js/demo/chart-pie-demo.js"></script>
 </body>
