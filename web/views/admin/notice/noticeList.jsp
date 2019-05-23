@@ -60,7 +60,7 @@
 					<h1 class="h3 mb-2 text-gray-800">공지사항</h1>
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
-							<h6 class="m-0 font-weight-bold text-primary">00건</h6>
+							<h6 class="m-0 font-weight-bold text-primary"><%= list.size() %>건</h6>
 						</div>
 						<div class="card-body">
 							<div class="table-responsive">
@@ -73,7 +73,7 @@
 												aria-describedby="dataTable_info" style="width: 100%;"
 												>
 												<thead>
-													<tr role="row">
+													<tr role="row" align="center">
 														<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 3px;"
 																aria-label="Name: activate to sort column ascending"
@@ -95,11 +95,10 @@
 
 												<tbody>
 														<% for(Notice reqNotice : list){ %>
-														
 														<tr class="even" role="row" align="center">
-															<td><input type="checkBox"></td>
+															<td class="checkBox"><input type="checkBox" class="check"></td>
 															<td><%= reqNotice.getNno() %></td>
-															<td>관리자</td>
+															<td><%= reqNotice.getnWriter()%></td>
 															<td><%= reqNotice.getnTitle()%></td>
 														</tr>
 														<% } %>
@@ -118,11 +117,11 @@
 										class="btn btn-success btn-icon-split"><span
 										class="icon text-white-50"> <i class="fas fa-check"></i></span> <span
 										class="text">공지 등록</span> </a>
-									<a href="<%= request.getContextPath() %>/views/admin/notice/noticeInsert.jsp"
-										class="btn btn-success btn-icon-split"><span
-										class="icon text-white-50"> <i class="fas fa-check"></i></span> <span
-										class="text">공지 삭제</span> </a>
-									<%-- <%@ include file="../common/paging.jsp"%> --%>
+
+									<button onclick= "deleteNotice()" class="btn btn-danger btn-icon-split" id="deleteBtn">
+										<span class="icon text-white-50"> <i class="fas fas fa-trash"></i>
+										</span> <span class="text">공지삭제</span>
+									</button>
 								</div>
 							</div>
 						</div>
@@ -144,20 +143,64 @@
 	<%@ include file="../common/logoutModal.jsp"%>
 
 	<script>
-			$(".even").click(function() {
-				<%-- location= "<%= request.getContextPath()%>/selectAdminOne.no; --%>
-				console.log($(this).children().eq(1).text());
+		
+		//전체 선택, 해제
+		$("#checkAll").click(function() {
+			var check = $(this).is(":checked");
+			var result = $(".even").find("td").eq(6).text();
+			if(check) {
+				$(".check").prop("checked", true);
+			} else {
+				$(".check").prop("checked", false);
+			}
+		});
+		
+		//td클릭해도 체크되게
+		$(".checkBox").click(function() {
+			$(this).parent().each(function() {
+				var check = $(this).find(".check").is(":checked");
+				if(!check) {
+					$(this).find(".check").prop("checked", true);
+				} else {
+					$(this).find(".check").prop("checked", false);
+				}
+			});
+		});
+		//체크박스 클릭해도 동작 X(해당 번호 가져옴)
+		$(".checkBox").siblings().click(function() {
+			$(this).parent().each(function() {
 				var nno = $(this).children().eq(1).text();
 				location= "<%= request.getContextPath()%>/selectAdminOne.no?nno=" + nno ;
 			});
+		});
+		
+		//공지사항 삭제
+		$("#deleteBtn").click(function(){
 			
-			/* $("#dataTable td").click(function(){
-				var num = $(this).parent().children().eq(0).text();
-			
-				console.log(num); */
+			var status = new Array();
+			var nnos = new Array();
+			$(".even").each(function() {
+				if($(this).find(".check").is(":checked")) {	
+					status.push($(this).find("td").eq(1).text());
+					
+					nnos = $(this).find("td").eq(1).text();
+				}
 				
-				<%-- location.href="<%=request.getContextPath()%>/selectOne.no?num="+ num; --%>
-			/* }); */
+				
+			});
+			if(status.length == 0 ){
+				alert("삭제하실 공지사항을 선택해주세요");
+				return false;
+			}
+			if(confirm(status.length + "건을 삭제 하시겠습니까?")){
+			}else {
+				return false;
+			}
+			
+			location = "<%= request.getContextPath() %>/delete.no?nnos=" + nnos;
+
+			
+		});
 	</script>
 	<script>
 	</script>

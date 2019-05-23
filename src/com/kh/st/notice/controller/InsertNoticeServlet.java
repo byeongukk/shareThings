@@ -12,36 +12,48 @@ import com.kh.st.notice.model.service.NoticeService;
 import com.kh.st.notice.model.vo.Notice;
 
 /**
- * Servlet implementation class SelectAdminNoticeOne
+ * Servlet implementation class InsertNotice
  */
-@WebServlet("/selectAdminOne.no")
-public class SelectAdminNoticeOne extends HttpServlet {
+@WebServlet("/insert.no")
+public class InsertNoticeServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public SelectAdminNoticeOne() {
+    public InsertNoticeServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
+
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		int nno = Integer.parseInt(request.getParameter("nno"));
-		Notice repNotice = new NoticeService().selectAdminOne(nno);
+		String title = request.getParameter("title");
+		String uno = request.getParameter("uno");
+		String content = request.getParameter("content");
+		
+		Notice reqNotice = new Notice();
+		
+		System.out.println(title);
+		System.out.println(uno);
+		System.out.println(content);
+		
+		reqNotice.setnTitle(title);
+		reqNotice.setnWriter(uno);
+		reqNotice.setnContent(content);
+		
+		int result = new NoticeService().insertNotice(reqNotice);
 		
 		String page = "";
-		if(repNotice != null) {
-			page = "views/admin/notice/noticeDetail.jsp";
-			request.setAttribute("repNotice", repNotice);
-		}else {
-			page = "views/common/erroePage.jsp";
-			request.setAttribute("msg", "공지사항 상세보기 실패!");
-		}
+		  if(result > 0) {
+			  response.sendRedirect("/st/selectAdminList.no");
+		  }else {
+			  page = "views/common/errorPage.jsp";
+			  request.setAttribute("msg", "공지사항 등록 실패!");
+			  request.getRequestDispatcher(page).forward(request, response);
+			  
+		  }
 		
-		request.getRequestDispatcher(page).forward(request, response);
-	
 	}
-	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		doGet(request, response);
