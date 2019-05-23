@@ -11,6 +11,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import com.kh.st.attachment.model.vo.Attachment;
 import com.kh.st.customerService.model.vo.Cs;
 import com.kh.st.notice.model.vo.Notice;
 import static com.kh.st.common.JDBCTemplate.*;
@@ -191,6 +192,88 @@ public class CsDao {
 		
 		return result;
 	}
+
+	public int insertThumnailContent(Connection con, Cs c) {
+		
+		 PreparedStatement pstmt = null;
+	      int result = 0;
+	      
+	      String query = prop.getProperty("insertCs");
+	      
+	      try {
+	         pstmt = con.prepareStatement(query);
+	         pstmt.setString(1, c.getcContent());
+	         pstmt.setString(2, c.getcCategory());
+	         pstmt.setInt(3, c.getUno());
+	         pstmt.setString(4, "문의");
+	         
+	         
+	         
+	         result = pstmt.executeUpdate();
+	         
+	      } catch (SQLException e1) {
+	         // TODO Auto-generated catch block
+	         e1.printStackTrace();
+	      } finally {
+	         close(pstmt);
+	      }
+	      
+	      
+	      return result;
+	   }
+
+	public int selectCurrval(Connection con) {
+
+		Statement stmt = null;
+		ResultSet rset = null;
+		int cno = 0;
+		String query = prop.getProperty("selectCnoCurrval");
+		try {
+			stmt = con.createStatement();
+			rset = stmt.executeQuery(query);
+			if(rset.next()) {
+				cno = rset.getInt("NEXTVAL");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(stmt);
+			close(rset);
+		}
+		
+		return cno;
+	}
+
+	public int insertAttachment(Connection con, ArrayList<Attachment> fileList) {
+		PreparedStatement pstmt = null;
+	      int result = 0;
+	      
+	      String query = prop.getProperty("insertAttachment");
+	      
+	         try {
+	            
+	            for(int i = 0; i < fileList.size(); i++) {
+	            pstmt = con.prepareStatement(query);
+	            pstmt.setString(1, fileList.get(i).getOriginName());
+	            pstmt.setString(2, fileList.get(i).getChangeName());
+	            pstmt.setString(3, fileList.get(i).getFilePath());
+	            pstmt.setInt(4, fileList.get(i).getCsNo());
+	            System.out.println(fileList.get(i).getCsNo());
+	            result += pstmt.executeUpdate();
+	            }
+	            
+	         } catch (SQLException e) {
+	            // TODO Auto-generated catch block
+	            e.printStackTrace();
+	         } finally {
+	            close(pstmt);
+	         }
+	         
+	      
+	      
+	      
+	      return result;
+	   }
 
 }
 

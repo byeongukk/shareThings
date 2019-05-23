@@ -3,6 +3,8 @@ package com.kh.st.customerService.model.service;
 import java.sql.Connection;
 import java.util.ArrayList;
 
+import com.kh.st.attachment.model.vo.Attachment;
+import com.kh.st.board.model.dao.BoardDao;
 import com.kh.st.customerService.model.dao.CsDao;
 import com.kh.st.customerService.model.vo.Cs;
 
@@ -87,6 +89,35 @@ public class CsService {
 		close(con);
 		
 		return result;
+	}
+
+	public int insertCsBoard(Cs c, ArrayList<Attachment> fileList) {
+		 Connection con = getConnection();
+	      int result = 0;
+	      
+	      int result1 = new CsDao().insertThumnailContent(con, c);
+	      
+	      if(result1 > 0) {
+	         int cno = new CsDao().selectCurrval(con);
+	         for(int i = 0; i < fileList.size(); i++) {
+	            fileList.get(i).setCsNo(cno - 1);
+	         }
+	         
+	      }
+	      
+	      int result2 = new CsDao().insertAttachment(con, fileList);
+	      
+	      if(result1 > 0 && result2 == fileList.size()) {
+	         commit(con);
+	         result = 1;
+	      }else {
+	         rollback(con);
+	         result = 0;
+	      }
+	      
+	      close(con);
+	      
+	      return result;
 	}
 
 }

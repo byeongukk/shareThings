@@ -169,13 +169,14 @@ width:100%;
            <a href="mtmQue.jsp">1 : 1 문의하기</a>
            <a href="../mypage/mypgReport.jsp">나의 문의 관리</a>
 			<a href="../customerService/guide.jsp">이용안내</a>
-	
+			 
+			
 </div> <!-- 옆에 메뉴 -->
 
     <!-- 여기부터 하면 됨! -->
     
     <div class="detail">
-    <form action="<%= request.getContextPath() %>/csInsert.cs" method="post">
+    <form action="<%= request.getContextPath() %>/csInsert.cs" method="post" name="csinsert" encType="multipart/form-data">
   
     <div class="form-group" style="width:40%" >
       <label for="csName">이름</label>
@@ -220,65 +221,42 @@ width:100%;
     
     <div class="rvAttachArea">
 									<label>사진 첨부</label><br>
-									<div class="rvImageArea rvImageArea1">
+									<div class="rvImageArea rvImageArea1" id="rvImg1">
 										<i class="camera icon" style="position:absolute; top:30%;left:35%;"></i>
 										<img id="rvImg1"width="100%" height="100%">
 									</div>
-									<div class="rvImageArea rvImageArea2" >
+									<div class="rvImageArea rvImageArea2" id="rvImg2" >
 										<i class="camera icon" style="position:absolute; top:30%;left:35%;"></i>
 										<img id="rvImg2"width="100%" height="100%">
 									</div>
-									<div class="rvImageArea rvImageArea3">
+									<div class="rvImageArea rvImageArea3" id="rvImg3">
 										<i class="camera icon" style="position:absolute; top:30%;left:35%;"></i>
 										<img id="rvImg3"width="100%" height="100%">
 									</div>
-									<div class="rvImageArea rvImageArea4">
+									<div class="rvImageArea rvImageArea4" id="rvImg4">
 										<i class="camera icon" style="position:absolute; top:30%;left:35%;"></i>
 										<img id="rvImg4"width="100%" height="100%">
 									</div>
-									<div class="rvImageArea rvImageArea5">
+									<div class="rvImageArea rvImageArea5" id="rvImg5">
 										<i class="camera icon" style="position:absolute; top:30%;left:35%;"></i>
 										<img id="rvImg5"width="100%" height="100%">
 									</div>
 									<div id="fileArea">
-										<input type="file" id="img1" name="img1" onchange="loadImg(this, 1);">
-										<input type="file" id="img2" name="img2" onchange="loadImg(this, 2);">
-										<input type="file" id="img3" name="img3" onchange="loadImg(this, 3);">
-										<input type="file" id="img4" name="img4" onchange="loadImg(this, 4);">
-										<input type="file" id="img5" name="img5" onchange="loadImg(this, 5);">
+										<input type="file" id="img1" name="img1" onchange="loadImg(this,1);">
+										<input type="file" id="img2" name="img2" onchange="loadImg(this,2);">
+										<input type="file" id="img3" name="img3" onchange="loadImg(this,3);">
+										<input type="file" id="img4" name="img4" onchange="loadImg(this,4);">
+										<input type="file" id="img5" name="img5" onchange="loadImg(this,5);">
 										
 									</div>
 								</div>
-								<div class="ui large blue button" id="insertQue">등록하기</div>
+								<div class="ui large blue button" id="insertQue" onclick="mtminsert()">등록하기</div>
 								
     <!-- <button type="submit" class="btn btn-default">Submit</button> -->
   </form>
   
     
-   <!--   <div style="margin-top:5%;">
-  <div class="pho2" id="img1Area">
-<img id="img1" style="width:100%; height:100%%; ">
-</div>
-
-<div class="pho1" id="img2Area">
-<img id="img2" style="width:100%; height:100%;">
-</div>
-
-
-<div class="pho1" id="img3Area">
-<img id="img3" style="width:100%; height:100%;">
-</div>
-
-<div class="pho2" id="img4Area">
-<img id="img4" style="width:100%; height:100%;">
-</div>
-<div class="pho1" id="img5Area">
-<img id="img5" style="width:100%; height:100%;">
-</div>
-    
-    
-    
-    </div> --> <!-- 사진첨부 -->
+ 
     
     </div> <!-- detail -->
     
@@ -296,33 +274,25 @@ width:100%;
 	<div class="col-lg-1 col-md-1">
 	</div>
 	
-	<!-- <div  id="fileArea" style="display: none;">
-		<input type="file" id="fileimg1" name="fileimg1" onchange="loadImg(this,1)">
-		<input type="file" id="fileimg2" name="fileimg2" onchange="loadImg(this,2)">
-		<input type="file" id="fileimg3" name="fileimg3" onchange="loadImg(this,3)">
-		<input type="file" id="fileimg4" name="fileimg4" onchange="loadImg(this,4)">
-		<input type="file" id="fileimg5" name="fileimg5" onchange="loadImg(this,5)">
-		<input type="file" id="fileimg6" name="fileimg6" onchange="loadImg(this,6)">
-	
-		</div>  -->
+
 <script>
 		$(function(){
 			
 			$("#fileArea").hide();
-			 $("#img1Area").click(function(){
-				 $("#fileimg1").click();
+			 $("#rvImg1").click(function(){
+				 $("#img1").click();
 			 })
-			  $("#img2Area").click(function(){
-				 $("#fileimg2").click();
+			  $("#rvImg2").click(function(){
+				 $("#img2").click();
 			 })
-			  $("#img3Area").click(function(){
-				 $("#fileimg3").click();
+			  $("#rvImg3").click(function(){
+				 $("#img3").click();
 			 })
-			  $("#img4Area").click(function(){
-				 $("#fileimg4").click();
+			  $("#rvImg4").click(function(){
+				 $("#img4").click();
 			 })
-			  $("#img5Area").click(function(){
-				 $("#fileimg5").click();
+			  $("#rvImg5").click(function(){
+				 $("#img5").click();
 			 })
 			
 			
@@ -334,46 +304,33 @@ width:100%;
 				reader.onload = function(e){
 					switch(num){
 					case 1 : 
-						$("#img1").attr("src",e.target.result);
+						$("#rvImg1").attr("src",e.target.result);
 						break;
 					case 2 : 
-						$("#img2").attr("src",e.target.result);
+						$("#rvImg2").attr("src",e.target.result);
 						break;
 					case 3 : 
-						$("#img3").attr("src",e.target.result);
+						$("#rvImg3").attr("src",e.target.result);
 						break;
 					case 4 : 
-						$("#img4").attr("src",e.target.result);
+						$("#rvImg4").attr("src",e.target.result);
 						break;
 					case 5 : 
-						$("#img5").attr("src",e.target.result);
+						$("#rvImg5").attr("src",e.target.result);
 						break;
 				
 					}
 				}
-				reader.readAsDataURL(value.files[0]);
-			}
+				reader.readAsDataURL(value.files[0]);			}
 		}
 		
 		</script>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		<script>
+			function mtminsert(){
+		   	 	document.csinsert.submit(); 
+		    }
+		</script>
 
 </body>
 </html>
