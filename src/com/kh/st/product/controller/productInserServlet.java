@@ -84,44 +84,23 @@ public class productInserServlet extends HttpServlet {
 		
 		*/
 		if(ServletFileUpload.isMultipartContent(request)) {
-	         //System.out.println("multipart로 request 요청");
-	         //전송 파일 용량 제한 : 10Mbyte로 제한
 	         int maxSize = 1024 * 1024 * 10;
 	         
-	         //웹 서버 컨테이너 경로 추출
 	         String root = request
 	                     .getSession()
 	                     .getServletContext()
 	                     .getRealPath("/");
 	         
 	         System.out.println("root : " + root);
-	         
+	          
 	         //파일 저장 경로 설정
 	         String filePath = root + "attach_upload/";
-	         
-	        
-	         //객체를 생성할 때 부터 파일을 저장하고 그에 대한 정보를 가져오는 형태이다.
-	         //즉 파일의 정보를 검사하여 저장하는 형태가 아닌,
-	         //저장한 다음 검사 후 삭제를 해야 한다.
-	         
-	         //사용자가 올린 파일명을 그대로 저장하지 않는 것이 일반적이다.
-	         //1. 같은 파일명이 있는 경우 이전 파일을 덮어 쓸 수 있다.
-	         //2. 한글로된 파일명, 특수기호, 띄어쓰기 등은 서버에 따라 문제가 생길 수 도 있다.
-	         //DefaultFileRenamePolicy는 cos.jar 안에 존재하는 클래스로
-	         //같은 파일명이 존재하는지를 검사하고 있을 경우에는 파일명 뒤에 숫자를 붙여준다.
-	         //ex : aaa.zip, aaa1.zip, aaa2.zip, ....
-	         /*MultipartRequest multiRequest =
-	               new MultipartRequest(request, filePath, maxSize, 
-	                     "UTF-8", new DefaultFileRenamePolicy());
-	         */
 	         
 	         MultipartRequest multiRequest 
 	            = new MultipartRequest(request, filePath, maxSize,
 	                     "UTF-8", new MyFileRenamePolicy());
 	         
-	         //저정한 파일(변경된)의 이름을 저장할 arrayList 생성
 	         ArrayList<String> saveFiles = new ArrayList<String>();
-	         //원본 파일 이름을 저장할 arrayList 생성
 	         ArrayList<String> originFiles = new ArrayList<String>();
 	         
 	         Enumeration<String> files = multiRequest.getFileNames();

@@ -112,11 +112,11 @@
 		</div>
 		<div id="main">
 			<div class="vertical-menu">
-			<h1 align="left"><a href="mypgMain.jsp" style="text-decoration: none; background: white; margin:-10px;"><img id="mlogo" src="../../resource/img/mypage/mypage.png"></a></h1>
+			<h1 align="left"><a href="/st/views/mypage/mypgMain.jsp" style="text-decoration: none; background: white; margin:-10px;"><img id="mlogo" src="/st/resource/img/mypage/mypage.png"></a></h1>
  			  <a href="mypgUser.jsp" >내 정보 조회</a>
-			  <a href="mypgUpPd.jsp" >내 등록 물품</a>
- 			 <a href="mypgRtPd.jsp">내 대여 현황</a>
-  			<a href="mypgUserPd.jsp" class="active">관심물품</a>
+			 <a href="#" onclick="myUpPd();">내 등록 물품</a>
+ 			 <a href="#" onclick="myRtPd();">내 대여 현황</a>
+  			<a href="#" onclick="myUserPd();" class="active">관심물품</a>
  			 <a href="mypgPoint.jsp">적립금 현황</a>
  			 <a href="mypgUser.jsp">내 문의 내역</a>
  			 
@@ -126,8 +126,8 @@
 				<div id="iconspace">
 				<table align="center" width="100%">
 					<tr>
-						<td colspan=6 style="width:50%; text-align:center"><img src="../../resource/img/mypage/userPd.png" class="icon1"></td>
-						<td colspan=6 style="width:50%; text-align:center"><img src="../../resource/img/mypage/userPd.png" class="icon1"></td>
+						<td colspan=6 style="width:50%; text-align:center"><img src="/st/resource/img/mypage/userPd.png" class="icon1"></td>
+						<td colspan=6 style="width:50%; text-align:center"><img src="/st/resource/img/mypage/userPd.png" class="icon1"></td>
 					</tr>
 					<tr>
 						<td colspan=6 style="width:50%; text-align:center"><button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none;">관심상품</button></td>
@@ -144,7 +144,7 @@
 					<td width="10%;">날짜</td>
 					<td colspan=2 width="65%;">상품정보</td>
 					<td>상태</td>
-					<td>렌탈금액/일</td>
+					<td>렌탈금액/주</td>
 					
 				</tr>
 				<%for(Product p : list) {%>
@@ -154,17 +154,17 @@
 					<td><img alt="" src="/st/attach_upload/<%= p.getAsHistory()%>" height="100px" width="auto"></td>
 					<td><%= p.getModel() %></td>
 					<td><%= p.getSid() %></td>
+					<td><%= (p.getPrice())%> 원</td>
 					<td><% if(p.getSid().equals("등록 요청")) { %> <button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none;">취소</button><%}else{} %> </td>
 				</tr>
 				<%} %>
-				<tr style="text-align:center; height:100px; border-bottom:1px solid gray;">
-					<td><input type="checkbox" checked></td>
-					<td>19/02/26</td>
-					<td width="20%"><img src="../../resource/img/mypage/naninggu.PNG" width="80%"></td>
-					<td width="30%">아저씨의 난닝구</td>
-					<td>d</td>
-					<td>d</td>
+				
+				<%if(list == null) {%>
+				<tr>
+					<td colspan=12 style="text-align:center; padding:50px">최근 대여한 상품이 없습니다.</td>
 				</tr>
+				<%} %>
+				
 				
 			</table>
 			<hr>
@@ -177,6 +177,17 @@
 		</div>
 	<div class="col-lg-1 col-md-1">
 	</div>
+	<script>
+		function myUpPd(){
+			location.href="/st/selectList.pd";
+		}
+		function myRtPd(){
+			location.href="/st/selectListrental.pd";
+		}
+		function myUserPd(){
+			location.href="/st/zzimList.pd";
+		}
+	</script>
 </body>
 </html>
 			

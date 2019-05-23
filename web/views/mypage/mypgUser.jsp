@@ -127,7 +127,7 @@
     				<a href="#" class="btn btn-primary" style="background:#0CB6F4;">배송지 설정</a>
   				</div>
   				<hr>
-  				<div >
+  				<div style="height:420px;">
   					<form action="<%=request.getContextPath() %>/updateUser.me">
     					<!-- <div class="form-group">
       						<label for="userId">아이디:</label>
@@ -146,7 +146,7 @@
       						<input type="text" class="form-control" id="usr" >
     					</div> -->
 
-						<form class="form-horizontal" action="/action_page.php">
+							
 						  <div class="form-group">
 						    <label class="control-label col-sm-2" for="userId">아이디:</label>
 						    <div class="col-sm-10">
@@ -247,8 +247,105 @@
 						</form>
 
 
-  					</form>
   				</div>
+			
+			<hr>
+			<div >
+				<form>
+					 <div class="form-group">
+						    <label class="control-label col-sm-2" for="phone">배송지 :</label>
+						    <div class="col-sm-10">
+						    	<select>
+						    		<option>기본 배송지</option>
+						    		<option>두번째 배송지</option>
+						    		<option>세번째 배송지</option>
+						    	</select>
+						    </div>
+						  </div>
+						  <div class="form-group"> 
+						    <div class="col-sm-offset-2 col-sm-10">
+						     	<div>
+						     		&nbsp;
+						     	</div>
+						    </div>
+						  </div>
+						   <div class="form-group">
+						    <div class="col-sm-10" style="width:20%;">
+						    <%
+					String add[] = loginUser.getAddress().split("[|]");
+					String zipCode =  add[0];
+					String address1 = add[1];
+					String address2 = add[2];%>
+						    </div>
+						  </div>
+						  <div class="form-group"> 
+						    <div class="col-sm-offset-2 col-sm-10">
+						     	<div>
+						     		&nbsp;
+						     	</div>
+						    </div>
+						    
+						    <div class="form-group">
+						    <label class="control-label col-sm-2" for="phone">배송지 :</label>
+						    <div class="col-sm-10">
+						    <table style="width:50%;">
+											<tr>
+												<td>
+												<input type="text" placeholder="우편번호" name="zipCode" id="zipCode"
+										class="mandatory" value="<%= zipCode%>">
+										</td>
+												<td>
+												<div class="ui orange button" id="addressSearch" style="height:35px">주소검색</div>
+												</td>
+											</tr>
+										</table>
+						    	
+						    </div>
+						  </div>
+						  <div class="form-group"> 
+						    <div class="col-sm-offset-2 col-sm-10">
+						     	<div>
+						     		&nbsp;
+						     	</div>
+						    </div>
+						   <div class="form-group"> 
+						    <div class="col-sm-offset-2 col-sm-10">
+						     	<div>
+						     		<table style="width:100%;">
+						     			<tr style="width:100%;">
+						     				<td>
+						     		<input type="text" placeholder="기본주소" name="address1" id="address1" class="mandatory" value="<%= address1%>">
+						     		</td>
+						     		<td style="width:40%;">
+						     		<input type="text" placeholder="상세주소" name="address2" id="address2" class="mandatory" value="<%= address2%>">
+						     		</td>
+						     		</tr>
+						     		</table>
+						     	</div>
+						    </div>
+						  </div>
+						 
+						  <div class="form-group"> 
+						    <div class="col-sm-offset-2 col-sm-10">
+						     	<div>
+						     		&nbsp;
+						     	</div>
+						    </div>
+						 
+						  </div>
+						  <div class="form-group"> 
+						    <div class="col-sm-offset-2 col-sm-10">
+						      <button type="submit" class="btn btn-default center-block">배송지 정보 수정</button>
+						    </div>
+						  </div>
+						  <div class="form-group"> 
+						    <div class="col-sm-offset-2 col-sm-10">
+						     	<div>
+						     		&nbsp;
+						     	</div>
+						    </div>
+				</form>
+			</div>
 			
 			
 			</div>
