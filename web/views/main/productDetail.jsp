@@ -1199,7 +1199,7 @@
 		});
 		
 		$("#goToMyZzim").click(function() {
-			location.href="/st/views/mypage/mypgUserPd.jsp";
+			location.href="/st/zzimList.pd";
 		});
 		
 		$("#addCartBtn").click(function() {
@@ -1221,7 +1221,7 @@
 						if(data == "success") {
 							var answer = confirm("장바구니에 담겼습니다. 이동하시겠습니까?");
 							if(answer) {
-								location.href="<%= request.getContextPath() %>/views/product/cart.jsp";	
+								location.href="<%= request.getContextPath() %>/cartlist.rt";	
 							}
 						}else {
 							alert("장바구니 담기 실패");

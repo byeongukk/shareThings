@@ -548,6 +548,166 @@ public class BoardDao {
 	}
 	
 	
+	public ArrayList<Rental> selectRentList(Connection con, int pno) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<Rental> rentList = null;
+		String query = prop.getProperty("selectRentList");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, pno);
+			rset = pstmt.executeQuery();
+
+			rentList = new ArrayList<Rental>();
+			while(rset.next()) {
+				Rental rt = new Rental();
+				rt.setRtno(rset.getInt("RT_NO"));
+				rt.setPno(rset.getInt("PNO"));
+				rt.setUno(rset.getInt("UNO"));
+				rt.setRtStartDate(rset.getDate("RT_ST_DATE"));
+				rt.setRtEndDate(rset.getDate("RT_END_DATE"));
+				rt.setRtReqDate(rset.getDate("RT_REQ_DATE"));
+				rt.setRtAccDate(rset.getDate("RT_ACC_DATE"));
+				rt.setRtSid(rset.getString("RT_SID"));
+				rentList.add(rt);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		
+		return rentList;
+	}
+
+	public ArrayList<Rreason> selectRreasonList(Connection con) {
+		Statement stmt = null;
+		ArrayList<Rreason> rReasonList = null;
+		ResultSet rset = null;
+		String query = prop.getProperty("selectRreasonList");
+		try {
+			stmt = con.createStatement();
+			rset = stmt.executeQuery(query);
+			rReasonList = new ArrayList<Rreason>();
+			while(rset.next()) {
+				Rreason rr = new Rreason();
+				rr.setReportCode(rset.getString("REPORT_CODE"));
+				rr.setReportName(rset.getString("REPORT_NAME"));
+				rr.setPenalty(rset.getInt("PENALTY"));
+				rReasonList.add(rr);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(stmt);
+			close(rset);
+		}
+		return rReasonList;
+	}
+
+	public ArrayList<HashMap<String, Object>> searchBoard(Connection con, String input) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<HashMap<String, Object>> bList = null;
+		HashMap<String, Object> hmap = null;
+		String query = prop.getProperty("searchBoard");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, "등록");
+			pstmt.setString(2, "%" + input + "%");
+			pstmt.setString(3, "%" + input + "%");
+			pstmt.setString(4, "%" + input + "%");
+			pstmt.setString(5, "후기");
+			rset = pstmt.executeQuery();
+			
+			bList = new ArrayList<HashMap<String, Object>>();
+			while(rset.next()) {
+				hmap = new HashMap<String, Object>();
+				hmap.put("bno", rset.getInt("BNO"));
+				hmap.put("pno", rset.getInt("PNO"));
+				hmap.put("bTitle", rset.getString("BTITLE"));
+				hmap.put("bWriter", rset.getString("USER_NAME"));
+				hmap.put("bCount", rset.getInt("BCOUNT"));
+				hmap.put("bDate", rset.getDate("BDATE"));
+				hmap.put("ano", rset.getInt("ANO"));
+				hmap.put("changeName", rset.getString("CHANGE_NAME"));
+				hmap.put("filePath", rset.getString("FILE_PATH"));
+				hmap.put("price", rset.getInt("PRICE"));
+				hmap.put("deposit", rset.getInt("DEPOSIT"));
+				hmap.put("rtCount", rset.getInt("RTCOUNT"));
+				hmap.put("rvCount", rset.getInt("RVCOUNT"));
+				hmap.put("rvStar", rset.getInt("RVSTAR"));
+				bList.add(hmap);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return bList;
+	}
+
+	
+	public ArrayList<HashMap<String, Object>> getTop5List(Connection con) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		ArrayList<HashMap<String, Object>> top5List = null;
+		HashMap<String, Object> hmap = null;
+		String query = prop.getProperty("getTop5List");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, "등록");
+			pstmt.setString(2, "후기");
+			rset = pstmt.executeQuery();
+			top5List = new ArrayList<HashMap<String, Object>>();
+			while(rset.next()) {
+				hmap = new HashMap<String, Object>();
+				hmap.put("bno", rset.getInt("BNO"));
+				hmap.put("pno", rset.getInt("PNO"));
+				hmap.put("bTitle", rset.getString("BTITLE"));
+				hmap.put("bWriter", rset.getString("USER_NAME"));
+				hmap.put("bCount", rset.getInt("BCOUNT"));
+				hmap.put("bDate", rset.getDate("BDATE"));
+				hmap.put("ano", rset.getInt("ANO"));
+				hmap.put("changeName", rset.getString("CHANGE_NAME"));
+				hmap.put("filePath", rset.getString("FILE_PATH"));
+				hmap.put("price", rset.getInt("PRICE"));
+				hmap.put("deposit", rset.getInt("DEPOSIT"));
+				hmap.put("rtCount", rset.getInt("RTCOUNT"));
+				hmap.put("rvCount", rset.getInt("RVCOUNT"));
+				hmap.put("rvStar", rset.getInt("RVSTAR"));
+				top5List.add(hmap);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return top5List;
+	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -639,68 +799,8 @@ public class BoardDao {
 	      return result;
 	   }
 
-	public ArrayList<Rental> selectRentList(Connection con, int pno) {
-		PreparedStatement pstmt = null;
-		ResultSet rset = null;
-		ArrayList<Rental> rentList = null;
-		String query = prop.getProperty("selectRentList");
-		try {
-			pstmt = con.prepareStatement(query);
-			pstmt.setInt(1, pno);
-			rset = pstmt.executeQuery();
 
-			rentList = new ArrayList<Rental>();
-			while(rset.next()) {
-				Rental rt = new Rental();
-				rt.setRtno(rset.getInt("RT_NO"));
-				rt.setPno(rset.getInt("PNO"));
-				rt.setUno(rset.getInt("UNO"));
-				rt.setRtStartDate(rset.getDate("RT_ST_DATE"));
-				rt.setRtEndDate(rset.getDate("RT_END_DATE"));
-				rt.setRtReqDate(rset.getDate("RT_REQ_DATE"));
-				rt.setRtAccDate(rset.getDate("RT_ACC_DATE"));
-				rt.setRtSid(rset.getString("RT_SID"));
-				rentList.add(rt);
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close(pstmt);
-			close(rset);
-		}
-		
-		return rentList;
-	}
 
-	public ArrayList<Rreason> selectRreasonList(Connection con) {
-		Statement stmt = null;
-		ArrayList<Rreason> rReasonList = null;
-		ResultSet rset = null;
-		String query = prop.getProperty("selectRreasonList");
-		try {
-			stmt = con.createStatement();
-			rset = stmt.executeQuery(query);
-			rReasonList = new ArrayList<Rreason>();
-			while(rset.next()) {
-				Rreason rr = new Rreason();
-				rr.setReportCode(rset.getString("REPORT_CODE"));
-				rr.setReportName(rset.getString("REPORT_NAME"));
-				rr.setPenalty(rset.getInt("PENALTY"));
-				rReasonList.add(rr);
-			}
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
-		} finally {
-			close(stmt);
-			close(rset);
-		}
-		return rReasonList;
-	}
-
-	
-	
 
 	
 	

@@ -138,7 +138,7 @@
 		<label>l</label> 
 		<a href="/st/selectList.no">공지사항</a>
 		<label>l</label> 
-		<a href="#">이용안내</a>
+		<a href="/st/views/customerService.guide.jsp">이용안내</a>
 	</div>
 	<% }else { %>
 	<div class="row top" align="right" id="afterLogin">
@@ -328,8 +328,8 @@
 			
 			//이메일인증 여부를 확인해서 마이페이지와 장바구니 연결 제한
 			<% if(!emailVerif.equals("Y")) {%>
-			$("#linkToMyPage").attr("href", "/st/views/member/beforeEmailVerifPage.jsp");
-			$("#linkToCart").attr("href", "/st/views/member/beforeEmailVerifPage.jsp")
+			$("#linkToMyPage").attr("href", "/st/zzimList.pd");
+			$("#linkToCart").attr("href", "/st/cartlist.rt")
 			<% } else {%>
 			$("#linkToMyPage").attr("href", "/st/views/mypage/mypgMain.jsp");
 			$("#linkToCart").attr("href", "/st/views/product/cart.jsp");
@@ -340,7 +340,7 @@
 			$("#submenuArea").slideToggle();
 		});
 		$(".logoArea").click(function() {
-			location.href="/st/views/main/main.jsp";
+			location.href="/st/mainLoad.bo";
 		});
 		$("#registerProductBtn").click(function() {
 			location.href="/st/views/product/productInsertPage.jsp"
@@ -407,7 +407,7 @@
 			<% }else if(!emailVerif.equals("Y")) {%>
 			location.href="<%= request.getContextPath() %>/views/member/beforeEmailVerifPage.jsp";
 			<% }else {%>
-			location.href="/st/views/product/cart.jsp";
+			location.href="/st/cartlist.rt";
 			<% } %>
 		});
 		
@@ -431,6 +431,13 @@
 			var ctgLv2 = $(this).children("a").text();
 			location.href="<%= request.getContextPath()%>/selectList.bo?ctgLv2=" + ctgLv2;
 		});
+		
+		
+		$("#searchInput").change(function() {
+			var input = $(this).val();
+			location.href="/st/search.bo?input=" + input;
+		});
+		
 	</script>
 </body>
 </html>

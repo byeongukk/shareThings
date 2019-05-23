@@ -29,6 +29,17 @@ public class BoardService {
 		return listMap;
 	}
 
+
+	public ArrayList<HashMap<String, Object>> searchBoard(String input) {
+		Connection con = getConnection();
+		ArrayList<HashMap<String, Object>> bList = new BoardDao().searchBoard(con, input);
+		close(con);
+		return bList;
+	}
+	
+	
+	
+	
 	//상품 게시판에서 필터 적용시
 	public HashMap<String, Object> selectFilterList(HashMap<String, Object> filterMap) {
 		Connection con = getConnection();
@@ -164,6 +175,31 @@ public class BoardService {
 		close(con);
 		return zzimCnt;
 	}
+
+
+	public ArrayList<HashMap<String, Object>> getTop5List() {
+		Connection con = getConnection();
+		ArrayList<HashMap<String, Object>> top5List = new BoardDao().getTop5List(con);
+		close(con);
+		
+		return top5List;
+	}
+
+	
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -198,7 +234,6 @@ public class BoardService {
 	      return result;
 	   }
 
-	
 
 	
 
