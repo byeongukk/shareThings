@@ -191,6 +191,44 @@ public class AdProductDao {
 		return hmap;
 	}
 	
+	//최종 등록 물품 초기 검수사진, 내용
+	public HashMap<String, Object> adProductDetailImg(Connection con, int num) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		HashMap<String, Object> hmap = null;
+		Attachment at = null;
+		ArrayList<Attachment> list = null;
+		
+		String query = prop.getProperty("adProductImg");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, num);
+			
+			rset = pstmt.executeQuery();
+			
+			list = new ArrayList<Attachment>();
+			hmap = new HashMap<String, Object>();
+			
+			while(rset.next()) {
+				at = new Attachment();
+				at.setChangeName(rset.getString("CHANGE_NAME"));
+				
+				hmap.put("condition", rset.getString("CONDITION"));
+				hmap.put("chkContent", rset.getString("CHK_CONTENT"));
+				
+				list.add(at);
+			}
+			hmap.put("confirmList", list);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return hmap;
+	}
+	
 	//배송 조회
 	public ArrayList<HashMap<String, Object>> shipList(Connection con) {
 		Statement stmt = null;
@@ -230,6 +268,4 @@ public class AdProductDao {
 		System.out.println(list);
 		return list;
 	}
-
-
 }

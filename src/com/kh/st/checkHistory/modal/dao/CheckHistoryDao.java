@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,9 +15,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
+import com.kh.st.adProduct.model.vo.AdProduct;
 import com.kh.st.attachment.model.vo.Attachment;
 import com.kh.st.checkHistory.modal.vo.CheckHistory;
 import com.kh.st.common.PageInfo;
+import com.kh.st.member.model.vo.Member;
+import com.kh.st.product.model.vo.Product;
 
 public class CheckHistoryDao {
 	private Properties prop = new Properties();
@@ -425,5 +429,175 @@ public class CheckHistoryDao {
 			close(rset);
 		}
 		return list;
+	}
+
+	//검수이력 갯수
+	public int getListCount(Connection con) {
+		Statement stmt = null;
+		ResultSet rset = null;
+		int listCount = 0;
+		
+		String query = prop.getProperty("listCount");
+		
+		try {
+			stmt = con.createStatement();
+			rset = stmt.executeQuery(query);
+			
+			if(rset.next()) {
+				listCount = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(stmt);
+			close(rset);
+		}
+		return listCount;
+	}
+	
+	//검수이력 전체 갯수
+	public ArrayList<CheckHistory> checkHistoryList(Connection con, PageInfo pi) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		CheckHistory ch = null;
+		ArrayList<CheckHistory> list = null;
+		
+		String query = prop.getProperty("checkHistoryList");
+		int startRow = (pi.getCurrentPage() - 1) * pi.getLimit() + 1;
+		int endRow = startRow + pi.getLimit() - 1;
+		
+		System.out.println(query);
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+			
+			rset = pstmt.executeQuery();
+			
+			list = new ArrayList<CheckHistory>();
+			
+			while(rset.next()) {
+				//검수번호, 물품 번호, 등록자, 검수 일자, 검수자, 물품 상태
+				ch = new CheckHistory();
+				
+				ch.setChkNo(rset.getInt("CHK_NO"));
+				ch.setPno(rset.getInt("PNO"));
+				ch.setUserName(rset.getString("USER_NAME"));
+				ch.setChkDate(rset.getDate("CHK_DATE"));
+				ch.setChecker(rset.getString("CHECKER"));
+				ch.setStatus(rset.getString("STATUS"));
+				
+				list.add(ch);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		System.out.println(list);
+		return list;
+	}
+
+	//검수된 물품 상세보기
+	public HashMap<String, Object> checkHistoryDetail(Connection con, int chkNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		HashMap<String, Object> hmap = null;
+		Member m = null;
+		Product reqProduct = null;
+		Attachment at = null;
+		ArrayList<Attachment> list = null;
+		
+		String query = prop.getProperty("checkHistoryProduct");
+		System.out.println(query);
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, chkNo);
+			
+rset = pstmt.executeQuery();
+			
+			list = new ArrayList<Attachment>();
+			hmap = new HashMap<String, Object>();
+			while(rset.next()) {
+				reqProduct = new Product();		
+				reqProduct.setPurchaseDate(rset.getDate("PURCHASE_DATE"));	//구입시기
+				reqProduct.setModel(rset.getString("MODEL")); //모델명
+				reqProduct.setPurchasePrice(rset.getInt("PURCHASE_PRICE"));	//구입가
+				reqProduct.setPrice(rset.getInt("PRICE"));	//대여비
+				reqProduct.setDeposite(rset.getInt("DEPOSIT"));	//보증금
+				reqProduct.setPno(rset.getInt("PNO"));
+				
+				at = new Attachment();
+				at.setAno(rset.getInt("ANO"));	//파일번호
+				at.setOriginName(rset.getString("ORIGIN_NAME"));	//원본
+				at.setChangeName(rset.getString("CHANGe_NAME"));	//사본
+				at.setFilePath(rset.getString("FILE_PATH"));	//경로
+					
+				m = new Member();
+				m.setPhone(rset.getString("PHONE"));	//전화번호
+				m.setAddress(rset.getString("ADDRESS"));	//주소
+				m.setUserName(rset.getString("USER_NAME")); //이름
+				
+				list.add(at);
+				
+				hmap.put("pStart", rset.getDate("PSTART_DATE"));	//등록시작일
+				hmap.put("pEnd", rset.getDate("PEND_DATE"));	//등록종료일
+				hmap.put("pName", rset.getString("CTG_NAME"));	//물품명
+				hmap.put("reqpDate", rset.getDate("REQP_DATE"));	//요청날짜
+				hmap.put("bContent", rset.getString("BCONTENT"));	//글 내용
+				hmap.put("rejectReason", rset.getString("REJECT_REASON"));	//거절 이유
+				hmap.put("status", rset.getString("STATUS"));
+			}
+			hmap.put("reqProduct", reqProduct);
+			hmap.put("attachment", list);
+			hmap.put("member", m);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return hmap;
+	}
+
+	//해당 물품 검수 사진 보기
+	public HashMap<String, Object> checkDetailImg(Connection con, int chkNo) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		HashMap<String, Object> hmap = null;
+		Attachment at = null;
+		ArrayList<Attachment> list = null;
+		
+		String query = prop.getProperty("checkDetailImg");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setInt(1, chkNo);
+			
+			rset = pstmt.executeQuery();
+			
+			list = new ArrayList<Attachment>();
+			hmap = new HashMap<String, Object>();
+			
+			while(rset.next()) {
+				at = new Attachment();
+				at.setChangeName(rset.getString("CHANGE_NAME"));
+				
+				hmap.put("condition", rset.getString("CONDITION"));
+				hmap.put("chkContent", rset.getString("CHK_CONTENT"));
+				
+				list.add(at);
+			}
+			hmap.put("confirmList", list);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return hmap;
 	}
 }

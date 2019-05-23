@@ -148,7 +148,7 @@
                                           <th class="sorting" tabindex="0"
                                              aria-controls="dataTable" rowspan="1" colspan="1"
                                              aria-label="Name: activate to sort column descending"
-                                             aria-sort="ascending" style="width: 30px;">등록번호</th>
+                                             aria-sort="ascending" style="width: 30px;">물품번호</th>
                                           <th class="sorting" tabindex="0" aria-controls="dataTable"
                                              rowspan="1" colspan="1"
                                              aria-label="Position: activate to sort column ascending"
