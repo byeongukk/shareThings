@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="com.kh.st.customerService.model.vo.*, java.util.*"%>
+<%
+	ArrayList<Cs> list = (ArrayList<Cs>)request.getAttribute("list");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -164,6 +167,14 @@ width:100%;
    <td style="width:200px; height:50px; border:1px solid black;">미확인</td>
    
    </tr>
+   	<%for(Cs p : list) {%>
+				<tr class="pdlist">
+					<td style="width:200px; height:50px; border:1px solid black;"><%= p.getcDate() %></td>
+					<td style="width:200px; height:50px; border:1px solid black;"><%= p.getcContent() %></td>
+					<td style="width:200px; height:50px; border:1px solid black;"><%= p.getcCategory() %></td>
+					
+				</tr>
+				<%} %>
    
    </table>
    

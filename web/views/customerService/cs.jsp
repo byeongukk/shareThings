@@ -125,7 +125,7 @@ width:100%;
 <div class="vertical-menu" style=" align:center; ">
  <a href="#" >자주 묻는 질문 FAQ</a>
            <a href="mtmQue.jsp">1 : 1 문의하기</a>
-           <a href="../mypage/mypgReport.jsp">나의 문의 관리</a>
+           <a onclick="myQue();">나의 문의 관리</a>
 <a href="../customerService/guide.jsp">이용안내</a>
 </div>
 
@@ -254,6 +254,11 @@ width:100%;
 	</div>
 	<div class="col-lg-1 col-md-1">
 	</div>
+<script>
+function myQue(){
+	location.href="/st/cslist.cs";
+}
 
+</script>
 </body>
 </html>

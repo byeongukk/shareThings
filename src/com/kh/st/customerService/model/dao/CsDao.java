@@ -3,6 +3,7 @@ package com.kh.st.customerService.model.dao;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,6 +13,7 @@ import java.util.Properties;
 
 import com.kh.st.customerService.model.vo.Cs;
 import com.kh.st.notice.model.vo.Notice;
+import static com.kh.st.common.JDBCTemplate.*;
 
 public class CsDao {
 	private Properties prop = new Properties();
@@ -26,17 +28,18 @@ public class CsDao {
 		}
 	}
 
-	public ArrayList<Cs> selectList(Connection con) {
+	public ArrayList<Cs> selectList(Connection con, int uno) {
 		ArrayList<Cs> list = null;
-		Statement stmt = null;
+		PreparedStatement stmt = null;
 		ResultSet rset = null;
 		
-		String query = prop.getProperty("selectNotice");
+		String query = prop.getProperty("selectCs");
 		
 		try {
-			stmt = con.createStatement();
+			stmt = con.prepareStatement(query);
+			stmt.setInt(1, uno);
 			
-			rset = stmt.executeQuery(query);
+			rset = stmt.executeQuery();
 			
 			list = new ArrayList<Cs>();
 			
@@ -80,10 +83,16 @@ public class CsDao {
 		
 		try {
 			pstmt = con.prepareStatement(query);
-			pstmt.setString(1, n.getnTitle());
-			pstmt.setString(2, n.getnContent());
-			pstmt.setInt(3, Integer.parseInt(n.getnWriter()));
-			pstmt.setDate(4, n.getnDate());
+			pstmt.setInt(1, c.getCno());
+			pstmt.setInt(2, c.getPno());
+			pstmt.setDate(3, (Date) c.getcDate());
+			pstmt.setString(4, c.getcContent());
+			pstmt.setString(5, c.getcCategory());
+			pstmt.setString(6, c.getcReply());
+			pstmt.setInt(7, c.getUno());
+			pstmt.setString(8, c.getcType());
+			pstmt.setInt(9, c.getcCount());
+			
 			
 			result = pstmt.executeUpdate();
 			
@@ -112,13 +121,16 @@ public class CsDao {
 			rset = pstmt.executeQuery();
 			
 			if(rset.next()) {
-				n = new Notice();
-				n.setNno(rset.getInt("NNO"));
-				n.setnTitle(rset.getString("NTITLE"));
-				n.setnContent(rset.getString("NCONTENT"));
-				n.setnWriter(rset.getString("NICK_NAME"));
-				n.setnCount(rset.getInt("NCOUNT"));
-				n.setnDate(rset.getDate("NDATE"));
+				c = new Cs();
+				c.setCno(rset.getInt("CS_NO"));
+				c.setPno(rset.getInt("PARENT_NO"));
+				c.setcDate(rset.getDate("CS_DATE"));
+				c.setcContent(rset.getString("CS_CONTENT"));
+				c.setcCategory(rset.getString("CS_CATEGORY"));
+				c.setcReply(rset.getString("CS_REPLY"));
+				c.setUno(rset.getInt("UNO"));
+				c.setcType(rset.getString("CS_TYPE"));
+				c.setcCount(rset.getInt("CS_COUNT"));
 			}
 			
 		} catch (SQLException e) {

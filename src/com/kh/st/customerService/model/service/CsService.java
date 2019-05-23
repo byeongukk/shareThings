@@ -7,14 +7,14 @@ import com.kh.st.customerService.model.dao.CsDao;
 import com.kh.st.customerService.model.vo.Cs;
 
 import static com.kh.st.common.JDBCTemplate.*;
-
+import static com.kh.st.common.JDBCTemplate.*;
 
 public class CsService {
 
-	public ArrayList<Cs> selectList() {
+	public ArrayList<Cs> selectList(int uno) {
 		Connection con = getConnection();
 		
-		ArrayList<Cs> list = new CsDao().selectList(con);
+		ArrayList<Cs> list = new CsDao().selectList(con, uno);
 		
 		close(con);
 
@@ -43,7 +43,7 @@ public class CsService {
 		Cs c = new CsDao().selectOne(con, num);
 		
 		if(c != null) {
-			int result = new CsDao().updateCount(con, c.getCno());
+			int result = new CsDao().updateCs(con, c.getCno());
 			
 			if(result > 0) {
 				commit(con);
@@ -57,10 +57,10 @@ public class CsService {
 		return c;
 	}
 
-	public int updateCs(Cs c) {
+	public int updateCs(int c) {
 		Connection con = getConnection();
 		
-		int result = new CsDao().updateCount(con, c);
+		int result = new CsDao().updateCs(con, c);
 		
 		if(result > 0) {
 			commit(con);
