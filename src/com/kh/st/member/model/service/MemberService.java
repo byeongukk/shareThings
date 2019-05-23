@@ -375,6 +375,26 @@ public class MemberService {
 		close(con);
 		return updateUser;
 	}
+	
+	
+	public int insertReport(Report newReport) {
+		Connection con = getConnection();
+		int result = new MemberDao().insertReport(con, newReport);
+		if(result > 0) {
+			commit(con);
+		}else {
+			rollback(con);
+		}
+		close(con);
+		return result;
+	}
+
+	
+	
+	
+	
+	
+	
 
 	/*-----------------------------------------준혁--------------------------------------------------------*/
 
@@ -393,7 +413,7 @@ public class MemberService {
 	      return result;
 	   }
 
-	
+
 
 	
 

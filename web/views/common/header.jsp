@@ -136,7 +136,7 @@
 		<label>l</label>
 		<a href="/st/views/customerService/cs.jsp">고객센터</a> 
 		<label>l</label> 
-		<a href="/st/views/main/noticeList.jsp">공지사항</a>
+		<a href="/st/selectList.no">공지사항</a>
 		<label>l</label> 
 		<a href="#">이용안내</a>
 	</div>
@@ -150,7 +150,7 @@
 		<label>l</label>
 		<a href="/st/views/customerService/cs.jsp">고객센터</a>
 		<label>l</label> 
-		<a href="/st/views/main/noticeList.jsp">공지사항</a> 
+		<a href="/st/selectList.no">공지사항</a> 
 		<label>l</label> 
 		<button class="ui basic button" onclick="location.href='<%= request.getContextPath() %>/logout.me'">로그아웃</button>
 	</div>

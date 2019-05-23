@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8" import="java.util.HashMap, java.util.ArrayList, java.sql.*, com.kh.st.attachment.model.vo.Attachment, com.kh.st.rental.model.vo.Rental"%>
+    pageEncoding="UTF-8" import="java.util.HashMap, java.util.ArrayList, 
+    java.sql.*, com.kh.st.attachment.model.vo.Attachment, com.kh.st.rental.model.vo.Rental,
+    com.kh.st.member.model.vo.Rreason"%>
 <%
 	HashMap<String, Object> pDetailMap = (HashMap<String, Object>)request.getAttribute("bDetailMap");
 	HashMap<String, Object> bmap = (HashMap<String, Object>)pDetailMap.get("bmap");
@@ -9,6 +11,7 @@
 	ArrayList<HashMap<String, Object>> reviewList = (ArrayList<HashMap<String, Object>>)pDetailMap.get("reviewList");
 	HashMap<String, Object> rvAttmap = (HashMap<String, Object>)pDetailMap.get("rvAttmap");
 	ArrayList<Rental> rentList = (ArrayList<Rental>)pDetailMap.get("rentList");
+	ArrayList<Rreason> rReasonList = (ArrayList<Rreason>)pDetailMap.get("rReasonList");
 %>
 <!DOCTYPE html>
 <html>
@@ -162,7 +165,9 @@
 	  	background-image :none !important;
 	   	color: black !important;
 	}
-	
+	.modal-body>table td {
+		padding:5px;
+	}
 	
 </style>
 </head>
@@ -325,19 +330,22 @@
 										<label>
 											<%= bmap.get("bWriter") %> (등급 : <%= bWritermap.get("mLevelName") %>)
 										</label>
-										<input type="hidden" name="pUno" value="<%= bmap.get("uno") %>">
+										<input type="hidden" value="<%= bmap.get("uno") %>">
+										<input type="hidden" value="<%= bmap.get("bWriter") %>">
+										<% if(loginUser != null && loginUser.getUno() != (int)bmap.get("uno")) { %>
 										<div class="ui basic icon button reportPuBtn" data-tooltip="해당 유저를 신고하시려면 클릭하세요"
 										data-toggle="modal" data-target="#reportModal">
 											<i class="bullhorn icon" style="color:red"></i>
 										</div>
+										<% } %>
 										<!-- <div class="ui custom popup top left transition hidden reportPopup">신고하시겠습니까?
 											<div class="ui red button" id="reportBtn" data-toggle="modal" data-target="#reportModal">신고</div>
 										</div> -->
 										
 									</div>
 								</td>
-								<td><label>아이템 : <%= bWritermap.get("pCount") %></label></td>
-								<td><label>후기 : <%= bWritermap.get("rvCount") %></label></td>
+								<td>아이템 : <label><%= bWritermap.get("pCount") %></label></td>
+								<td>후기 : <label id="userReviewCnt"><%= bWritermap.get("rvCount") %></label></td>
 							</tr>
 						</table>
 						<br><br>
@@ -392,13 +400,16 @@
 									%>
 									<tr>
 										<td><%= QnAList.get(i).get("qnaTitle") %></td>
-										<td>
-											<%= QnAList.get(i).get("qnaWriter") %>
+										<td><%= QnAList.get(i).get("qnaWriter") %>
 											<input type="hidden" name="qnaUno" value="<%= QnAList.get(i).get("qnaUno") %>">
-											<div class="ui mini basic icon button reportPuBtn" data-tooltip="해당 유저를 신고하시려면 클릭하세요"
-										data-toggle="modal" data-target="#reportModal">
+											<input type="hidden" value="<%= QnAList.get(i).get("qnaWriter") %>">
+											<% if(loginUser != null && loginUser.getUno() != (int)QnAList.get(i).get("qnaUno")) { %>
+											<div class="ui mini basic icon button reportPuBtn" 
+											data-tooltip="해당 유저를 신고하시려면 클릭하세요" data-toggle="modal" 
+											data-target="#reportModal">
 												<i class="bullhorn icon" style="color:red"></i>
 											</div>
+											<% } %>
 										</td>
 										<td><%= QnAList.get(i).get("qnaDate") %></td>
 									</tr>
@@ -414,13 +425,16 @@
 										<td style="color:orangered">
 											&nbsp;&nbsp;[답글 :]<%= QnAList.get(i).get("ansTitle") %>
 										</td>
-										<td>
-											<%= QnAList.get(i).get("ansWriter") %>
+										<td><%= QnAList.get(i).get("ansWriter") %>
 											<input type="hidden" name="ansUno" value="<%= QnAList.get(i).get("ansUno") %>">
-											<div class="ui mini basic icon button reportPuBtn" data-tooltip="해당 유저를 신고하시려면 클릭하세요"
-										data-toggle="modal" data-target="#reportModal">
+											<input type="hidden" value="<%= QnAList.get(i).get("ansWriter") %>">
+											<% if(loginUser != null && loginUser.getUno() != (int)QnAList.get(i).get("ansUno")) { %>
+											<div class="ui mini basic icon button reportPuBtn" 
+											data-tooltip="해당 유저를 신고하시려면 클릭하세요" data-toggle="modal" 
+											data-target="#reportModal">
 												<i class="bullhorn icon" style="color:red"></i>
 											</div>
+											<% } %>
 										</td>
 										<td><%= QnAList.get(i).get("ansDate") %></td>
 									</tr>
@@ -517,13 +531,16 @@
 									%>		
 											<%= reviewList.get(i).get("rvTitle") %>
 										</td>
-										<td>
-											<%= reviewList.get(i).get("rvWriter") %>
+										<td><%= reviewList.get(i).get("rvWriter") %>
 											<input type="hidden" name="rvUno" value="<%= reviewList.get(i).get("rvUno") %>">
-											<div class="ui mini basic icon button reportPuBtn" data-tooltip="해당 유저를 신고하시려면 클릭하세요"
-										data-toggle="modal" data-target="#reportModal">
+											<input type="hidden" value="<%= reviewList.get(i).get("rvWriter") %>">
+											<% if(loginUser != null && loginUser.getUno() != (int)reviewList.get(i).get("rvUno")) { %>
+											<div class="ui mini basic icon button reportPuBtn" 
+											data-tooltip="해당 유저를 신고하시려면 클릭하세요" data-toggle="modal" 
+											data-target="#reportModal">
 												<i class="bullhorn icon" style="color:red"></i>
 											</div>
+											<% } %>
 										</td>
 										<td><%= reviewList.get(i).get("rvDate") %></td>
 									</tr>
@@ -548,13 +565,15 @@
 									%>
 									<tr>
 										<td style="color:orangered">&nbsp;&nbsp;[답글 :]<%= reviewList.get(i).get("ansTitle") %></td>
-										<td>
-											<%= reviewList.get(i).get("ansWriter") %>
+										<td><%= reviewList.get(i).get("ansWriter") %>
 											<input type="hidden" name="ansUno" value="<%= reviewList.get(i).get("ansUno") %>">
-											<div class="ui mini basic icon button reportPuBtn" data-tooltip="해당 유저를 신고하시려면 클릭하세요"
-										data-toggle="modal" data-target="#reportModal">
+											<input type="hidden" value="<%= reviewList.get(i).get("ansWriter") %>">
+											<% if(loginUser != null && loginUser.getUno() != (int)reviewList.get(i).get("rvUno")) { %>
+											<div class="ui mini basic icon button reportPuBtn" data-tooltip="해당 유저를 신고하시려면 클릭하세요" 
+											data-toggle="modal" data-target="#reportModal">
 												<i class="bullhorn icon" style="color:red"></i>
 											</div>
+											<% } %>
 										</td>
 										<td><%= reviewList.get(i).get("ansDate") %></td>
 									</tr>
@@ -576,51 +595,9 @@
 				</div> <!-- 탭 영역 끝 -->
 			</div> <!-- end of row -->
 			<br><br><br><br>
-			<div class="ui small modal reportModal">
-				<!-- <i class="close icon"></i> -->
-				<div class="header">회원 신고</div>
-				<div class="content">
-
-					<!-- <form id="reportForm" method="post"> -->
-					<table>
-						<tr>
-							<td width="20%">신고대상 회원</td>
-							<td width="80%">
-								<div class="ui input">
-									<input type="hidden" name="targetUno"> <input
-										type="text" name="targetName">
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>신고인</td>
-							<td>
-								<div class="ui input">
-									<input type="hidden" name="rpUno" value="<%=bmap.get("uno")%>">
-									<input type="text" name="rpName"
-										value="<%=bmap.get("bWriter")%>">
-								</div>
-							</td>
-						</tr>
-						<tr>
-							<td>신고사유</td>
-							<td>
-								<div class="ui input">
-									<textarea name="rpContent" rows="2" style="width: 100%"></textarea>
-								</div>
-							</td>
-						</tr>
-					</table>
-					<!-- </form> -->
-				</div>
-				<div class="actions">
-					<div class="ui cancel button rpCancel">취소</div>
-					<div class="ui ok button rpSend">확인</div>
-				</div>
-			</div>
-			
+			<!-- 신고 modal -->
 			<div id="reportModal" class="modal fade" role="dialog">
-				<div class="modal-dialog">
+				<div class="modal-dialog modal-md">
 
 					<!-- Modal content-->
 					<div class="modal-content">
@@ -628,46 +605,62 @@
 							<button type="button" class="close" data-dismiss="modal">&times;</button>
 							<h4 class="modal-title">회원 신고 제출 양식</h4>
 						</div>
-						<div class="modal-body">
-							<table>
+						<div class="modal-body" align="center">
+						<form method="post" id="reportForm">
+							<table style="width:100%">
 								<tr>
 									<td width="20%">신고대상 회원</td>
-									<td width="80%">
+									<td width="30%">
 										<div class="ui input">
-											<input type="hidden" name="targetUno"> <input
-												type="text" name="targetName">
+											<input type="hidden" name="targetUno" id="targetUno"> 
+											<input type="text" name="targetName" id="targetName" size="10">
 										</div>
+									</td>
+									<td width="20%">신고유형</td>
+									<td width="30%">
+										<select name="reportCode" id="reportCode">
+											<% for(int i = 0; i < rReasonList.size(); i++) { %>
+											<option value="<%= rReasonList.get(i).getReportCode() %>">
+												<%= rReasonList.get(i).getReportName() %>
+											</option>
+											<% } %>
+										</select>
 									</td>
 								</tr>
 								<tr>
-									<td>신고인</td>
+									<td>신고인(본인)</td>
 									<td>
 										<div class="ui input">
-											<input type="hidden" name="rpUno" value="<%=bmap.get("uno")%>">
-											<input type="text" name="rpName"
-												value="<%=bmap.get("bWriter")%>">
+											<% if(loginUser != null) { %>
+											<input type="hidden" name="rpUno" id="rpUno" value="<%= loginUser.getUno() %>">
+											<input type="text" name="rpName" size="10"
+												value="<%= loginUser.getUserName() %>">
+											<% }else { %>
+											<input type="hidden" name="rpUno" value="">
+											<input type="text" name="rpName" size="10"
+												value="">
+											<% } %>
 										</div>
 									</td>
 								</tr>
 								<tr>
 									<td>신고사유</td>
-									<td>
+									<td colspan="3">
 										<div class="ui input">
-											<textarea name="rpContent" rows="2" style="width: 100%"></textarea>
+											<textarea name="rpContent" id="rpContent" rows="3" cols="50" style="width:100%"></textarea>
 										</div>
 									</td>
 								</tr>
 							</table>
+						</form>
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="ui cancel button"
-								data-dismiss="modal">취소</button>
+							<button type="button" class="ui orange button" data-dismiss="modal">취소</button>
 							<button class="ui primary button" id="sendReportBtn">제출</button>
 						</div>
 					</div>
-
 				</div>
-			</div>
+			</div> <!-- 신고 modal 끝 -->
 		</div> <!-- end of 메인바디 -->
 
 		<!-- 푸터 -->
@@ -694,31 +687,22 @@
 				popup:$(".zzimPopup"),
 				on:'click'
 			});
-			
-			
-			<%-- $(".reportPuBtn").click(function() {
-				<% if(loginUser == null) {%>
-				alert("로그인먼저 해주세요");
-				location.href = "<%= request.getContextPath() %>/views/member/loginPage.jsp";
-				<% }else { %>
-				var targetUno = $(this).prev().val();
-				$(".ui.small.modal.reportModal").modal({
-			    	onDeny    : function(){
-			      		window.alert('Wait not yet!');
-			      		return false;
-			    	},
-			   		onApprove : function() {
-			      		window.alert('Approved!');
-			    	}
-			  	}).modal("show");
-				
-				location.href = "<%= request.getContextPath() %>/insert.rp?targetUno=" + targetUno;
-				<% } %>
-			}); --%>
-			
 			setDatePicker();
+			
 	 	});
 	 	
+
+	 	$(".reportPuBtn").click(function() {
+			<% if(loginUser == null) { %>
+			alert("로그인을 해주세요.");
+			location.href="/st/views/member/loginPage.jsp";
+	 		<% }else { %>
+	 		var targetUno = $(this).prev().prev().val();
+	 		var targetName = $(this).prev().val();
+	 		$("input[name=targetUno]").val(targetUno);
+	 		$("input[name=targetName]").val(targetName);
+	 		<% } %>
+	 	});
 	 	
 	 	
 	 	$(".rvImageArea1").click(function() {
@@ -767,7 +751,7 @@
 			}
 			$("#startPick").datepicker({
 				dateFormat:"yy-mm-dd",
-				defaultDate:"+1w",
+				/* defaultDate:"+1w", */
 				changeMonth:true,
 				minDate:today,
 				onSelect:function(selectedDate) {
@@ -969,6 +953,19 @@
 						var $tr = $("<tr>");
 						var $titleTd = $("<td>").text(data[key].qnaTitle);
 						var $writerTd = $("<td>").text(data[key].qnaWriter);
+						
+						var $qnaUnoHidden = $("<input type='hidden' name='qnaUno' value='" + data[key].qnaUno + "'>");
+						var $qnaWriterHidden = $("<input type='hidden' value='" + data[key].qnaWriter + "'>");
+						$rpPuBtnDiv = $("<div class='ui mini basic icon button reportPuBtn' data-tooltip='해당 유저를 신고하시려면 클릭하세요' data-toggle='modal' data-target='#reportModal'>")
+						$icon = $("<i class='bullhorn icon' style='color:red'>");
+						$rpPuBtnDiv.append($icon);
+						$writerTd.append($qnaUnoHidden);
+						$writerTd.append($qnaWriterHidden);
+						if(data[key].qnaUno != <%= loginUser.getUno() %>) {
+							$writerTd.append($rpPuBtnDiv);
+						}
+						
+						
 						var $dateTd = $("<td>").text(data[key].qnaDate);
 						$tr.append($titleTd);
 						$tr.append($writerTd);
@@ -986,6 +983,19 @@
 							var $ansTr = $("<tr>");
 							var $ansTitleTd = $("<td style='color:orangered'>").text("  [답변 :]" + data[key].ansTitle);
 							var $ansWriterTd = $("<td>").text(data[key].ansWriter);
+							
+							var $ansUnoHidden = $("<input type='hidden' name='ansUno' value='" + data[key].ansUno + "'>");
+							var $ansWriterHidden = $("<input type='hidden' value='" + data[key].ansWriter + "'>");
+							var $rpPuBtnDiv = $("<div class='ui mini basic icon button reportPuBtn' data-tooltip='해당 유저를 신고하시려면 클릭하세요' data-toggle='modal' data-target='#reportModal'>")
+							var $icon = $("<i class='bullhorn icon' style='color:red'>");
+							$rpPuBtnDiv.append($icon);
+							$ansWriterTd.append($ansUnoHidden);
+							$ansWriterTd.append($ansWriterHidden);
+							if(data[key].ansUno != <%= loginUser.getUno() %>) {
+								$ansWriterTd.append($rpPuBtnDiv);
+							}
+							
+							
 							var $ansDateTd = $("<td>").text(data[key].ansDate);
 							$ansTr.append($ansTitleTd);
 							$ansTr.append($ansWriterTd);
@@ -1016,9 +1026,26 @@
 		
 		//review 등록
 		$("#insertProductReview").click(function() {
-			<% if(loginUser == null) {%>
+			<% 
+				if(loginUser == null) {
+			%>
 			location.href="<%= request.getContextPath() %>/views/member/loginPage.jsp";
-			<% }else {%>
+			<% 
+				}else {
+					int ctn = 0;
+					for(int i = 0; i < rentList.size(); i++) {
+						int uno = rentList.get(i).getUno();
+						if(loginUser.getUno() == uno) {
+							ctn++;break;
+						}
+					}
+					if(ctn == 0) {
+			%>
+			alert("해당 물품을 대여한 기록이 없습니다..! \n대여 후기는 대여한 상품에 한해서만 작성 가능합니다.")			
+			<% 
+					}else {
+			%>
+			
 			var reviewStar = $("#ratingInput").rating("get rating");
 			$("input[name=reviewStar]").val(reviewStar);
 			var form = $("#reviewForm")[0];
@@ -1048,6 +1075,17 @@
 							}
 						}
 						var $writerTd = $("<td>").text(data[key].rvWriter);
+						var $rvUnoHidden = $("<input type='hidden' name='rvUno' value='" + data[key].rvUno + "'>");
+						var $rvWriterHidden = $("<input type='hidden' value='" + data[key].rvWriter + "'>");
+						var $rpPuBtnDiv = $("<div class='ui mini basic icon button reportPuBtn' data-tooltip='해당 유저를 신고하시려면 클릭하세요' data-toggle='modal' data-target='#reportModal'>")
+						var $icon = $("<i class='bullhorn icon' style='color:red'>");
+						$rpPuBtnDiv.append($icon);
+						$writerTd.append($rvUnoHidden);
+						$writerTd.append($rvWriterHidden);
+						if(data[key].rvUno != <%= loginUser.getUno() %>) {
+							$writerTd.append($rpPuBtnDiv);
+						}	
+							
 						var $dateTd = $("<td>").text(data[key].rvDate);
 						$tr.append($titleTd);
 						$tr.append($writerTd);
@@ -1074,6 +1112,16 @@
 							var $ansTr = $("<tr>");
 							var $ansTitleTd = $("<td style='color:orangered'>").text("  [답변 :]" + data[key].ansTitle);
 							var $ansWriterTd = $("<td>").text(data[key].ansWriter);
+							var $ansUnoHidden = $("<input type='hidden' name='ansUno' value='" + data[key].ansUno + "'>");
+							var $ansWriterHidden = $("<input type='hidden' value='" + data[key].ansWriter + "'>");
+							var $rpPuBtnDiv = $("<div class='ui mini basic icon button reportPuBtn' data-tooltip='해당 유저를 신고하시려면 클릭하세요' data-toggle='modal' data-target='#reportModal'>")
+							var $icon = $("<i class='bullhorn icon' style='color:red'>");
+							$rpPuBtnDiv.append($icon);
+							$ansWriterTd.append($ansUnoHidden);
+							$ansWriterTd.append($ansWriterHidden);
+							if(data[key].ansUno != <%= loginUser.getUno() %>) {
+								$ansWriterTd.append($rpPuBtnDiv);
+							}
 							var $ansDateTd = $("<td>").text(data[key].ansDate);
 							$ansTr.append($ansTitleTd);
 							$ansTr.append($ansWriterTd);
@@ -1092,6 +1140,7 @@
 					$(".reviewInput").val("");
 					hideContent();
 					$("#reviewHead").text("대여 후기 (" + ctn + ")");
+					$("#userReviewCnt").text(ctn);
 					$("#rvImg1").remove();
 					var img1 = $("<img id='rvImg1' width='100%' height='100%'>");
 					$(".rvImageArea1").append(img1);
@@ -1119,7 +1168,10 @@
 				}
 				
 			})
-			<% } %>
+			<% 
+					}
+				} 
+			%>
 		});
 		
 		$("#zzimBtn").click(function() {
@@ -1199,7 +1251,28 @@
 			<% } %>
 		});
 		
-		$("#reportBtn").click(function() {
+		$("#sendReportBtn").click(function() {
+			/* var form = $("#reportForm")[0];
+			var formData = new FormData(form); */
+			var targetUno = $("#targetUno").val();
+			var reportUno = $("#rpUno").val();
+			var reportCode = $("#reportCode").val();
+			var reportContent = $("#rpContent").val();
+			$.ajax({
+				url:"<%= request.getContextPath() %>/insert.rp",
+				data:{targetUno:targetUno, reportUno:reportUno, reportCode:reportCode, reportContent:reportContent},
+				type:"post",
+				success:function(data) {
+					if(data == "success") {
+						alert("신고가 정상적으로 제출되었습니다. \n자세한 사항은 마이페이지에서 확인하세요.");
+						$("#reportModal").modal("hide");
+					}else {
+						alert("신고 제출 실패");
+					}
+				}, error:function() {
+					alert("서버 전송 실패");
+				}
+			});
 			
 		});
 		

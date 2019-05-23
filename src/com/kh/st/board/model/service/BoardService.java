@@ -9,6 +9,7 @@ import java.util.HashMap;
 import com.kh.st.attachment.model.vo.Attachment;
 import com.kh.st.board.model.dao.BoardDao;
 import com.kh.st.board.model.vo.Board;
+import com.kh.st.member.model.vo.Rreason;
 import com.kh.st.product.model.dao.ProductDao;
 import com.kh.st.product.model.vo.PCategory;
 import com.kh.st.rental.model.vo.Rental;
@@ -63,7 +64,7 @@ public class BoardService {
 				}
 				int pno = (int)bmap.get("pno");
 				ArrayList<Rental> rentList = new BoardDao().selectRentList(con, pno);
-				
+				ArrayList<Rreason> rReasonList = new BoardDao().selectRreasonList(con);
 				bDetailMap.put("bmap", bmap);
 				bDetailMap.put("attList", attList);
 				bDetailMap.put("bWritermap", bWritermap);
@@ -71,6 +72,7 @@ public class BoardService {
 				bDetailMap.put("reviewList", reviewList);
 				bDetailMap.put("rvAttmap", rvAttmap);
 				bDetailMap.put("rentList", rentList);
+				bDetailMap.put("rReasonList", rReasonList);
 			}
 		}else {
 			rollback(con);

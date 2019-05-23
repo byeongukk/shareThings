@@ -17,6 +17,7 @@ import java.util.Properties;
 
 import com.kh.st.attachment.model.vo.Attachment;
 import com.kh.st.board.model.vo.Board;
+import com.kh.st.member.model.vo.Rreason;
 import com.kh.st.rental.model.vo.Rental;
 
 public class BoardDao {
@@ -670,6 +671,32 @@ public class BoardDao {
 		}
 		
 		return rentList;
+	}
+
+	public ArrayList<Rreason> selectRreasonList(Connection con) {
+		Statement stmt = null;
+		ArrayList<Rreason> rReasonList = null;
+		ResultSet rset = null;
+		String query = prop.getProperty("selectRreasonList");
+		try {
+			stmt = con.createStatement();
+			rset = stmt.executeQuery(query);
+			rReasonList = new ArrayList<Rreason>();
+			while(rset.next()) {
+				Rreason rr = new Rreason();
+				rr.setReportCode(rset.getString("REPORT_CODE"));
+				rr.setReportName(rset.getString("REPORT_NAME"));
+				rr.setPenalty(rset.getInt("PENALTY"));
+				rReasonList.add(rr);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(stmt);
+			close(rset);
+		}
+		return rReasonList;
 	}
 
 	
