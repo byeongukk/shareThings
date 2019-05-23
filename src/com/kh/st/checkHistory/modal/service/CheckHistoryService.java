@@ -187,4 +187,46 @@ public class CheckHistoryService {
 		close(con);
 		return result;
 	}
+	
+	//검수이력 전체 숫자
+	public int getListCount() {
+		Connection con = getConnection();
+		
+		int listCount = new CheckHistoryDao().getListCount(con);
+		
+		close(con);
+		return listCount;
+	}
+	
+	//검수이력 전체조회
+	public ArrayList<CheckHistory> checkHistoryList(PageInfo pi) {
+		Connection con = getConnection();
+		
+		ArrayList<CheckHistory> list = new CheckHistoryDao().checkHistoryList(con, pi);
+		
+		close(con);
+		return list;
+	}
+
+	//검수처리된 물품 상세 보기
+	public HashMap<String, Object> checkHistoryDetail(int chkNo) {
+		Connection con = getConnection();
+		
+		HashMap<String, Object> hmap =
+				new CheckHistoryDao().checkHistoryDetail(con, chkNo);
+		
+		close(con);
+		return hmap;
+	}
+
+	//해당 물품 검수 사진 보기
+	public HashMap<String, Object> checkDetailImg(int chkNo) {
+		Connection con = getConnection();
+		
+		HashMap<String, Object> hmap =
+				new CheckHistoryDao().checkDetailImg(con, chkNo);
+		close(con);
+		return hmap;
+	}
+
 }

@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import com.kh.st.adProduct.model.dao.AdProductDao;
 import com.kh.st.adProduct.model.vo.AdProduct;
+import com.kh.st.checkHistory.modal.dao.CheckHistoryDao;
 import com.kh.st.common.PageInfo;
 import com.kh.st.request.model.dao.ReqDao;
 
@@ -58,6 +59,16 @@ public class AdProductService {
 		HashMap<String, Object> hmap =
 				new AdProductDao().adProductDetail(con, num);
 		
+		close(con);
+		return hmap;
+	}
+	
+	//최종 등록물품 초기 검수사진, 내용
+	public HashMap<String, Object> adProductDetailImg(int num) {
+		Connection con = getConnection();
+		
+		HashMap<String, Object> hmap =
+				new AdProductDao().adProductDetailImg(con, num);
 		close(con);
 		return hmap;
 	}

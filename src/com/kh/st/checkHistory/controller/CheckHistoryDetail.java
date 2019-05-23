@@ -1,4 +1,4 @@
-package com.kh.st.adProduct.controller;
+package com.kh.st.checkHistory.controller;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,23 +10,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.kh.st.adProduct.model.service.AdProductService;
 import com.kh.st.attachment.model.vo.Attachment;
 import com.kh.st.checkHistory.modal.service.CheckHistoryService;
 import com.kh.st.member.model.vo.Member;
 import com.kh.st.product.model.vo.Product;
 
 /**
- * Servlet implementation class AdProductDetail
+ * Servlet implementation class CheckHistoryDetail
  */
-@WebServlet("/adProductDetail.bo")
-public class AdProductDetail extends HttpServlet {
+@WebServlet("/checkHistoryDetail.bo")
+public class CheckHistoryDetail extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AdProductDetail() {
+    public CheckHistoryDetail() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -37,10 +36,10 @@ public class AdProductDetail extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
 		
-		int num = Integer.parseInt(request.getParameter("num"));
-		System.out.println("등록 물품 번호  : " + num);
+		int chkNo = Integer.parseInt(request.getParameter("chkNo"));
+		System.out.println("검수번호 : " + chkNo);
 		
-		HashMap<String, Object> hmap = new AdProductService().adProductDetail(num);
+		HashMap<String, Object> hmap = new CheckHistoryService().checkHistoryDetail(chkNo);
 		
 		Product reqProduct = (Product) hmap.get("reqProduct");
 		ArrayList<Attachment> fileList =
@@ -61,11 +60,12 @@ public class AdProductDetail extends HttpServlet {
 		
 		String page = "";
 		if(hmap != null) {
-			HashMap<String, Object> hmap1 = new AdProductService().adProductDetailImg(num);
+			HashMap<String, Object> hmap1 = 
+					new CheckHistoryService().checkDetailImg(chkNo);
 			if(hmap1 != null) {
 				ArrayList<Attachment> confirmList =
 						(ArrayList<Attachment>) hmap1.get("confirmList");
-				page = "views/admin/product/productDetail.jsp";
+				page = "views/admin/product/checkHistoryDetail.jsp";
 				req.put("condition", hmap1.get("condition"));
 				req.put("chkContent", hmap1.get("chkContent"));
 				request.setAttribute("reqProduct", reqProduct);

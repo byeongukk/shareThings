@@ -1,5 +1,18 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import="java.util.*,
+	com.kh.st.checkHistory.modal.vo.CheckHistory, 
+	com.kh.st.common.*"%>
+<%
+	ArrayList<CheckHistory> list =
+		(ArrayList<CheckHistory>) request.getAttribute("list");
+	PageInfo pi = (PageInfo) request.getAttribute("pi");
+	int listCount = (int) request.getAttribute("listCount");
+	
+	int currentPage = pi.getCurrentPage();
+	int maxPage = pi.getMaxPage();
+	int startPage = pi.getStartPage();
+	int endPage = pi.getEndPage();
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -35,6 +48,10 @@
 #dataTable_wrapper {
 	overflow: hidden;
 }
+.paging {
+	margin-left: auto;
+	margin-right: auto;
+}
 </style>
 </head>
 
@@ -54,7 +71,7 @@
 				<%@ include file="../common/header.jsp"%>
 				<!-- 컨텐츠바디 영역 실제 작성 영역 -->
 				<div class="container-fluid">
-					<h1 class="h3 mb-2 text-gray-800">검수관리</h1>
+					<h1 class="h3 mb-2 text-gray-800">검수 관리</h1>
 					<img src="<%=request.getContextPath()%>/resource/img/adminHr.png"
 						width="100%">
 					<div class="row" class="col-lg-12">
@@ -114,7 +131,10 @@
 									</div>
 								</div>
 							</div>
-							<div class="card shadow mb-4">
+				<div class="card shadow mb-4">
+					<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary" id="listSize"><%= listCount %>건</h6>
+					</div>
                   <div class="card-body">
                      <div class="table-responsive">
                         <div id="dataTable_wrapper"
@@ -125,119 +145,128 @@
                                     width="100%" cellspacing="0" role="grid"
                                     aria-describedby="dataTable_info" style="width: 100%;">
                                     <thead>
-                                       <tr role="row">
-
-                                          <th class="sorting_asc" tabindex="0"
+                                    <!-- 검수번호 물품 번호 등록자 검수 일자 검수자 물품 상태 -->
+                                       <tr role="row" align="center">
+                                          <th class="sorting" tabindex="0"
                                              aria-controls="dataTable" rowspan="1" colspan="1"
                                              aria-label="Name: activate to sort column descending"
-                                             aria-sort="ascending" style="width: 30px;">등록번호</th>
+                                             aria-sort="ascending" style="width: 30px;">검수번호</th>
                                           <th class="sorting" tabindex="0" aria-controls="dataTable"
                                              rowspan="1" colspan="1"
                                              aria-label="Position: activate to sort column ascending"
+                                             style="width: 30px;">물품번호</th>
+                                          <th class="sorting" tabindex="0" aria-controls="dataTable"
+                                             rowspan="1" colspan="1"
+                                             aria-label="Office: activate to sort column ascending"
                                              style="width: 30px;">등록자</th>
                                           <th class="sorting" tabindex="0" aria-controls="dataTable"
                                              rowspan="1" colspan="1"
                                              aria-label="Office: activate to sort column ascending"
-                                             style="width: 30px;">물품명</th>
+                                             style="width: 30px;">검수일자</th>
                                           <th class="sorting" tabindex="0" aria-controls="dataTable"
                                              rowspan="1" colspan="1"
                                              aria-label="Age: activate to sort column ascending"
-                                             style="width: 30px;">등록기간</th>
+                                             style="width: 30px;">검수자</th>
                                           <th class="sorting" tabindex="0" aria-controls="dataTable"
                                              rowspan="1" colspan="1"
                                              aria-label="Start date: activate to sort column ascending"
-                                             style="width: 30px;">상태</th>
+                                             style="width: 30px;">물품상태</th>
                                        </tr>
                                     </thead>
 
                                     <tbody>
-                                       <tr role="row" class="even">
-                                          <td class="sorting_1">20190508</td>
-                                          <td>user01</td>
-                                          <td>노트북</td>
-                                          <td>2019/05/10 ~ 2019/07/10</td>
-                                          <td>렌탈중</td>
+                                    <% for(CheckHistory ch : list) { %>
+                                       <tr role="row" class="even" align="center">
+                                          <td class="sorting_1"><%= ch.getChkNo() %></td>
+                                          <td><%= ch.getPno() %></td>
+                                          <td><%= ch.getUserName() %></td>
+                                          <td><%= ch.getChkDate() %></td>
+                                          <td><%= ch.getChecker() %></td>
+                                          <td><%= ch.getStatus() %></td>
                                        </tr>
-                                       <tr role="row" class="even">
-                                          <td class="sorting_1">20190508</td>
-                                          <td>user01</td>
-                                          <td>노트북</td>
-                                          <td>2019/05/10 ~ 2019/07/10</td>
-                                          <td>렌탈중</td>
-                                       </tr>
-                                       <tr role="row" class="even">
-                                          <td class="sorting_1">20190508</td>
-                                          <td>user01</td>
-                                          <td>노트북</td>
-                                          <td>2019/05/10 ~ 2019/07/10</td>
-                                          <td>렌탈중</td>
-                                       </tr>
+                                   <% } %>
                                     </tbody>
                                  </table>
                               </div>
                            </div>
-                           <%@ include file="../common/paging.jsp"%>
+      <div class="row">
+		<div class="paging">
+			<div class="col-sm-12 col-md-3">
+				<div class="dataTables_paginate paging_simple_numbers"
+					id="dataTable_paginate">
+					<ul class="pagination" id="pagingUl">
+						<li class="paginate_button page-item"
+							id="dataTable_first"><a
+							href="<%=request.getContextPath()%>/adProductList.bo?currentPage=1"
+							aria-controls="dataTable" data-dt-idx="0" tabindex="0"
+							class="page-link">First</a></li>
+
+						<%
+								if (currentPage <= 1) {
+						%>
+						<li class="paginate_button page-item disabled"
+							id="dataTable_previous"><a
+							href="<%=request.getContextPath()%>/adProductList.bo?currentPage=<%=currentPage - 1%>"
+							aria-controls="dataTable" data-dt-idx="0" tabindex="0"
+							class="page-link">Previous</a></li>
+						<%
+								} else {
+						%>
+						<li class="paginate_button page-item"
+							id="dataTable_previous"><a
+							href="<%=request.getContextPath()%>/adProductList.bo?currentPage=<%=currentPage - 1%>"
+							aria-controls="dataTable" data-dt-idx="0" tabindex="0"
+							class="page-link">Previous</a></li>
+						<%
+								}
+						%>
+						<%
+								for (int p = startPage; p <= endPage; p++) {
+								    if (p == currentPage) {
+						%>
+						<li class="paginate_button page-item disabled"><a href="<%=request.getContextPath()%>/adProductList.bo?currentPage=<%=p%>"
+							aria-controls="dataTable" data-dt-idx="1" tabindex="0"
+							class="page-link"><%=p%></a></li>
+						<%
+								} else {
+						%>
+						<li class="paginate_button page-item active"><a href="<%=request.getContextPath()%>/adProductList.bo?currentPage=<%=p%>"
+							aria-controls="dataTable" data-dt-idx="1" tabindex="0"
+							class="page-link"><%=p%></a></li>
+						<%
+								}
+						%>
+
+
+						<%
+								}
+						%>
+						
+						<%
+								if (currentPage >= maxPage) {
+						%>
+						<li class="paginate_button page-item disabled" id="dataTable_next"><a
+							href="<%=request.getContextPath()%>/adProductList.bo?currentPage=<%=currentPage + 1%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+							class="page-link">Next</a></li>
+						<%
+								} else {
+						%>
+						<li class="paginate_button page-item next" id="dataTable_next"><a
+							href="<%=request.getContextPath()%>/adProductList.bo?currentPage=<%=currentPage + 1%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+							class="page-link">Next</a></li>
+						<%      }     %>
+						<li class="paginate_button page-item next" id="dataTable_end"><a
+							href="<%=request.getContextPath()%>/adProductList.bo?currentPage=<%=maxPage%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+							class="page-link">End</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
                         </div>
                      </div>
                   </div>
                </div>
-			</div>
-						<div class="modal fade" id="cancelModal" role="dialog">
-							<div class="modal-dialog">
-
-								<!-- Modal content-->
-								<div class="modal-content">
-									<div class="modal-header">
-										<h4 class="modal-title">요청 거절 처리</h4>
-										<button type="button" class="close" data-dismiss="modal">&times;</button>
-									</div>
-									<div class="row">
-										<div class="col-md-12 col-lg-12">
-											<div class="modal-body">
-												<p>물품명과 승인상태를 확인하고 처리하세요</p>
-												<div class="panel-body">
-													<table width="100%"
-														class="table table-striped table-bordered table-hover"
-														id="dataTables-example">
-														<thead>
-															<tr>
-																<th style="width: 40px; text-align: center;"><input
-																	type="checkBox"></th>
-																<th style="text-align: center;"
-																	class="text-black-50 small">등록요청번호</th>
-																<th style="text-align: center;"
-																	class="text-black-50 small">물품명</th>
-																<th style="text-align: center;"
-																	class="text-black-50 small">등록자</th>
-																<th style="text-align: center; width: 130px"
-																	class="text-black-50 small">거절사유</th>
-															</tr>
-														</thead>
-														<tbody>
-															<tr class="odd gradeX">
-																<td><input type="checkBox">
-																<td></td>
-																<td></td>
-																<td></td>
-																<td></td>
-															</tr>
-														</tbody>
-													</table>
-												</div>
-												<h5>*거절상세사유</h5>
-												<textarea rows="10" cols="55" placeholder="EX)거짓 정보 등록"></textarea>
-											</div>
-											<div class="modal-footer">
-												<button type="submit" class="btn btn-default"
-													data-dismiss="modal">거절처리</button>
-												<button type="button" class="btn btn-default"
-													data-dismiss="modal">닫기</button>
-											</div>
-										</div>
-									</div>
-								</div>
-
-							</div>
 						</div>
 						<!-- 메인 콘텐트 영역 끝 -->
 						<!-- Footer 인클루드 -->
@@ -247,6 +276,8 @@
 				</div>
 				<!-- 콘텐츠 영역 끝 -->
 			</div>
+		</div>
+	</div>
 
 			<!-- 맨위로-->
 			<%@ include file="../common/toTop.jsp"%>
@@ -257,36 +288,34 @@
 			<script>
 		$(function() {
 			$(".even").click(function() {
-				location = "<%=request.getContextPath()%>/views/admin/request/reqProductDetail.jsp";
-				});
-			});
-
-			function ok() {
-				alert("정말 승인하시겠습니까?");
-			}
+				var chkNo = $(this).find("td").eq(0).text();
+				location = "<%= request.getContextPath()%>/checkHistoryDetail.bo?chkNo=" + chkNo;
+				console.log(chkNo);
+			});	
+		});
 			</script>
 			<script
-				src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>
+				src="<%=request.getContextPath() %>/resource/vendor/jquery/jquery.min.js"></script>
 			<script
-				src="<%=request.getContextPath()%>/resource/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+				src="<%=request.getContextPath() %>/resource/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
 			<!-- Core plugin JavaScript-->
 			<script
-				src="<%=request.getContextPath()%>/resource/vendor/jquery-easing/jquery.easing.min.js"></script>
+				src="<%=request.getContextPath() %>/resource/vendor/jquery-easing/jquery.easing.min.js"></script>
 
 			<!-- Custom scripts for all pages-->
 			<script
-				src="<%=request.getContextPath()%>/resource/js/sb-admin-2.min.js"></script>
+				src="<%=request.getContextPath() %>/resource/js/sb-admin-2.min.js"></script>
 
 			<!-- Page level plugins -->
 			<script
-				src="<%=request.getContextPath()%>/resource/vendor/chart.js/Chart.min.js"></script>
+				src="<%=request.getContextPath() %>/resource/vendor/chart.js/Chart.min.js"></script>
 
 			<!-- Page level custom scripts -->
 			<script
-				src="<%=request.getContextPath()%>/resource/js/demo/chart-area-demo.js"></script>
+				src="<%=request.getContextPath() %>/resource/js/demo/chart-area-demo.js"></script>
 			<script
-				src="<%=request.getContextPath()%>/resource/js/demo/chart-pie-demo.js"></script>
+				src="<%=request.getContextPath() %>/resource/js/demo/chart-pie-demo.js"></script>
 </body>
 
 </html>

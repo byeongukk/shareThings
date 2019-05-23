@@ -10,13 +10,14 @@ public class CheckHistory implements Serializable{
 	private String chkContent;	//검수내용
 	private String chkAttach;	//검수 이미지 경로
 	private String checker;	//검수자
+	private String userName;	//등록자
 	private int checkCode;	//검수 코드
 	private String Status;	//물품 상태
 	
 	public CheckHistory() {}
 
 	public CheckHistory(int chkNo, int pno, Date chkDate, String chkContent, String chkAttach, String checker,
-			int checkCode, String status) {
+			String userName, int checkCode, String status) {
 		super();
 		this.chkNo = chkNo;
 		this.pno = pno;
@@ -24,6 +25,7 @@ public class CheckHistory implements Serializable{
 		this.chkContent = chkContent;
 		this.chkAttach = chkAttach;
 		this.checker = checker;
+		this.userName = userName;
 		this.checkCode = checkCode;
 		Status = status;
 	}
@@ -76,6 +78,14 @@ public class CheckHistory implements Serializable{
 		this.checker = checker;
 	}
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
 	public int getCheckCode() {
 		return checkCode;
 	}
@@ -95,7 +105,7 @@ public class CheckHistory implements Serializable{
 	@Override
 	public String toString() {
 		return "CheckHistory [chkNo=" + chkNo + ", pno=" + pno + ", chkDate=" + chkDate + ", chkContent=" + chkContent
-				+ ", chkAttach=" + chkAttach + ", checker=" + checker + ", checkCode=" + checkCode + ", Status="
-				+ Status + "]";
+				+ ", chkAttach=" + chkAttach + ", checker=" + checker + ", userName=" + userName + ", checkCode="
+				+ checkCode + ", Status=" + Status + "]";
 	}
 }
