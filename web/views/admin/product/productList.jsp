@@ -343,6 +343,7 @@
 			$(".even").click(function() {
 				var num = $(this).find("td").eq(0).text();
 				location = "<%= request.getContextPath()%>/adProductDetail.bo?num=" + num;
+				console.log(num);
 			});	
 		});
 

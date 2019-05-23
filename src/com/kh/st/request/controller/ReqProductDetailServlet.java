@@ -45,6 +45,7 @@ public class ReqProductDetailServlet extends HttpServlet {
 		Product reqProduct = (Product) hmap.get("reqProduct");
 		ArrayList<Attachment> fileList =
 				(ArrayList<Attachment>) hmap.get("attachment");
+		System.out.println(fileList.size());
 		Member m = (Member) hmap.get("member");
 		
 		HashMap<String,Object> req = new HashMap<String,Object>();
