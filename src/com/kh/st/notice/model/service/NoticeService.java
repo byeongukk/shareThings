@@ -54,4 +54,43 @@ public class NoticeService {
 		return reqNotice;
 	}
 
+	public int updateNotice(Notice reqNotice) {
+		Connection con = getConnection();
+		
+		int result = new NoticeDao().updateNotice(con,reqNotice);
+		
+		if(result > 0) {
+			commit(con);
+		} else {
+			rollback(con);
+		}
+		
+		close(con);
+		
+		return result;
+	}
+
+	public int deleteNotice(String[] nno) {
+		Connection con = getConnection();
+		
+		int result = new NoticeDao().deleteNotice(con,nno);
+		
+		if(result > 0) {
+			commit(con);
+		} else {
+			rollback(con);
+		}
+		
+		close(con);
+		
+		return result;
+	}
+	//민지
+	   public ArrayList<Notice> selectNoticeList() {
+	      Connection con = getConnection();
+	      ArrayList<Notice> nList = new NoticeDao().selectNoticeList(con);
+	      close(con);
+	      return nList;
+	   }
+
 }

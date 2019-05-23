@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import= "com.kh.st.notice.model.vo.*"%>
+<% Notice reqNotice = (Notice) request.getAttribute("reqNotice"); 
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -59,6 +61,7 @@ textarea {
 				<!-- 헤더 인클루드 -->
 				<%@ include file="../common/header.jsp"%>
 				<!-- 컨텐츠바디 영역 실제 작성 영역 -->
+				<form id="updateBtn" method="post">
 				<div class="container-fluid">
 					<div
 						class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -70,28 +73,27 @@ textarea {
 						<div class="col-lg-10">
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary"><textarea class="col-lg-12" cols="2">수정제목</textarea></h6>
+									<h6 class="m-0 font-weight-bold text-primary"><textarea class="col-lg-12" cols="2" name="title"><%= reqNotice.getnTitle() %></textarea></h6>
 								</div>
 								<div class="card-body">
-									<textarea class="col-lg-12" rows="20">안녕하세요 쉐어띵스입니다. 이달의 업데이트 내용 입니다 
-									</textarea>
+									<textarea class="col-lg-12" rows="20" name="content"> <%= reqNotice.getnContent() %></textarea>
+									<input type="hidden" name = "nno" value= <%= reqNotice.getNno() %>>
 								</div>
 							</div>
 						</div>
 					</div>
 					<div class="button">
-						<a href="<%= request.getContextPath() %>/views/admin/notice/noticeList.jsp"
+					<button onclick= "complet()" class="btn btn-info btn-icon-split" id="updateBtn">
+						<span class="icon text-white-50"> <i class="fas fa-info-circle"></i>
+						</span> <span class="text">작성완료</span>
+					</button>
+						<a href="<%= request.getContextPath() %>/selectAdminList.no" 
 							class="btn btn-success btn-icon-split"><span
 							class="icon text-white-50"> <i class="fas fa-check"></i></span> <span
 							class="text">돌아가기</span> </a>
-						<%-- <% if(loginUser != null && 
-							loginUser.getUserId().equals("admin"))  { %> --%>
-						<a href="<%= request.getContextPath() %>/views/admin/notice/noticeList.jsp" class="btn btn-info btn-icon-split"> <span
-								class="icon text-white-50"> <i class="fas fa-info-circle"></i>
-							</span> <span class="text">수정하기</span></a>
-						<%-- <% } %> --%>
 					</div>
 				</div>
+				</form>
 				<!-- 메인 콘텐트 영역 끝 -->
 				<!-- Footer 인클루드 -->
 			</div>
@@ -106,7 +108,11 @@ textarea {
 
 	<!-- 로그아웃 모달-->
 	<%@ include file="../common/logoutModal.jsp"%>
-
+	<script>
+		function complet(){
+    		$("#updateBtn").attr("action", "<%=request.getContextPath()%>/update.no");
+    	}
+	</script>
 
 	<script
 		src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>

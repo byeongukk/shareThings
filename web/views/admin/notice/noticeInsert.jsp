@@ -73,7 +73,9 @@ textarea {
 						<div class="col-lg-10">
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary"><textarea class="col-lg-12" cols="2" name="title" placeholder="공지사항 제목"></textarea></h6>
+									<h6 class="m-0 font-weight-bold text-primary">
+									<textarea class="col-lg-12" cols="2" name="title" placeholder="공지사항 제목"></textarea>
+									</h6>
 								</div>
 								<div class="card-body">
 									<textarea class="col-lg-12" rows="20" name="content" placeholder="공지사항 내용"></textarea>

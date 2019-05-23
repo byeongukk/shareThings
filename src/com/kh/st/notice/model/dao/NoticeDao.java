@@ -64,7 +64,7 @@ public class NoticeDao {
 				System.out.println(rset.getInt("NCOUNT"));
 				System.out.println(rset.getDate("NDATE"));
 				System.out.println(rset.getDate("MODIFY_DATE"));
-				System.out.println(rset.getNString("NWRITER"));
+				System.out.println(rset.getNString("USER_ID"));
 				
 				
 				
@@ -74,7 +74,7 @@ public class NoticeDao {
 				reqNotice.setnCount(rset.getInt("NCOUNT"));
 				reqNotice.setnDate(rset.getDate("NDATE"));
 				reqNotice.setModify_Date(rset.getDate("MODIFY_DATE"));
-				reqNotice.setnWriter(rset.getNString("NWRITER"));
+				reqNotice.setnWriter(rset.getNString("USER_ID"));
 				
 				list.add(reqNotice);
 			}
@@ -138,6 +138,7 @@ public class NoticeDao {
 				repNotice.setnTitle(rset.getString("NTITLE"));
 				repNotice.setnContent(rset.getString("NCONTENT"));
 				repNotice.setnDate(rset.getDate("NDATE"));
+				repNotice.setnWriter(rset.getString("USER_ID"));
 			}
 			
 		} catch (SQLException e) {
@@ -152,5 +153,93 @@ public class NoticeDao {
 		
 		return repNotice;
 	}
+
+
+	public int updateNotice(Connection con, Notice reqNotice) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("updateNotice");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, reqNotice.getnTitle());
+			pstmt.setString(2, reqNotice.getnContent());
+			pstmt.setInt(3, reqNotice.getNno());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		
+		
+		
+		return result;
+	}
+	
+	public int deleteNotice(Connection con,String[] nno) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("deleteNotice");
+		try {
+			for(int i=0; i < nno.length; i++) {
+				
+				pstmt = con.prepareStatement(query);
+				pstmt.setObject(1, nno[i]);
+				
+				
+				result += pstmt.executeUpdate();
+			}
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		
+		// 결과값과 맞지 않을때 0을 리턴
+		if(nno.length != result) {
+			result = 0;
+		}
+		
+		return result;
+	}
+	//민지
+	   public ArrayList<Notice> selectNoticeList(Connection con) {
+	      Statement stmt = null;
+	      ResultSet rset = null;
+	      ArrayList<Notice> nList = null;
+	      String query = prop.getProperty("selectNoticeList");
+	      try {
+	         stmt = con.createStatement();
+	         rset = stmt.executeQuery(query);
+	         nList = new ArrayList<Notice>();
+	         while(rset.next()) {
+	            Notice n = new Notice();
+	            n.setNno(rset.getInt("NNO"));
+	            n.setnTitle(rset.getString("NTITLE"));
+	            n.setnContent(rset.getString("NCONTENT"));
+	            n.setnCount(rset.getInt("NCOUNT"));
+	            n.setnDate(rset.getDate("NDATE"));
+	            n.setModify_Date(rset.getDate("MODIFY_DATE"));
+	            n.setStatus(rset.getString("STATUS"));
+	            n.setnWriter(rset.getString("NWRITER"));
+	            nList.add(n);
+	         }
+	      } catch (SQLException e) {
+	         e.printStackTrace();
+	      } finally {
+	         close(stmt);
+	         close(rset);
+	      }
+	      return nList;
+	   }
 
 }
