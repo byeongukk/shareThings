@@ -115,7 +115,7 @@
  			 <a href="/st/views/mypage/mypgUser.jsp" >내 정보 조회</a>
 			  <a href="#" onclick="myUpPd();">내 등록 물품</a>
  			 <a href="#" onclick="myRtPd();" class="active">내 대여 현황</a>
-  			<a href="/st/views/mypage/mypgUserPd.jsp">관심물품</a>
+  			<a href="#" onclick="myUserPd();">관심물품</a>
  			 <a href="/st/views/mypage/mypgPoint.jsp">적립금 현황</a>
  			 <a href="/st/views/mypage/mypgReport.jsp">내 문의 내역</a>
  			 
@@ -169,6 +169,9 @@
 		}
 		function myRtPd(){
 			location.href="/st/selectListrental.pd";
+		}
+		function myUserPd(){
+			location.href="/st/zzimList.pd";
 		}
 	</script>
 </body>
