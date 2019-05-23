@@ -243,13 +243,16 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 	<script>
 		$(document).ready(function(){
 		    var myKey = "paDJdMz9NHdA8oZ69C2sgg"; // sweet tracker에서 발급받은 자신의 키 넣는다.
+		    
 		        // 택배사 목록 조회 company-api
 		        $.ajax({
+		        	
 		            type:"GET",
 		            dataType : "json",
 		            url:"http://info.sweettracker.co.kr/api/v1/companylist?t_key="+myKey,
 		            success:function(data){
-		                    
+		            		console.log("첫번째 ajax");
+		                    console.log("data : " + data);
 		                    // 방법 1. JSON.parse 이용하기
 		                    var parseData = JSON.parse(JSON.stringify(data));
 		                     console.log(parseData.Company); // 그중 Json Array에 접근하기 위해 Array명 Company 입력
@@ -267,21 +270,14 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 		                    var t_code = new Array();
 				            var t_invoice = new Array();
 		                    
-		                    //택배 / 운송장 번호 
-		                    /* $(".even").each(function(){
-		                    	console.log("dd");
-		                    	t_code.push($(this).find("td").eq(2).text());
-					            t_invoice.push($(this).find("td").eq(3).text());
-		                    }); */
-		                    
-							//var t_invoice =  348540216731;
 		           			 $(".even").each(function(){
 		           				var t_code = $(this).find("td").eq(2).text();
 					            var t_invoice = $(this).find("td").eq(3).text();
-					            //var t_inovice = 3485402167312;
+					            //var t_inovice = 348540216731;
 					            var $trackingTd = $(this).find("td").eq(9);
 					            
 		           				console.log(t_invoice);
+		           				console.log(t_code);
 				            $.ajax({
 				                type:"GET",
 				                dataType : "json",
@@ -309,6 +305,15 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 		           			});
 		           			
 		            }
+		        });
+		        $.ajax({
+		        	type:"GET",
+		            dataType : "json",
+		            url:"http://info.sweettracker.co.kr/api/v1/companylist?t_key="+myKey,
+		            success:function(data){
+						console.log("두번째 ajax");
+		            }
+		        	
 		        });
 		        // 배송정보와 배송추적 tracking-api
 		        $("#trackingNumBtn").click(function() {

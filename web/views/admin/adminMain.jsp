@@ -83,7 +83,7 @@ html {
 								<div class="card-body">
 									<b>대여관리</b>
 									<hr color="white">
-									<div class="text-white-50 small">대여요청 00건</div>
+									<div class="text-white-50">대여승인 00건</div>
 									<div class="text-white-50 small">대여 취소 요청 00건</div>
 									<div class="text-white-50 small">반품 요청 00건</div>
 								</div>
@@ -150,6 +150,25 @@ html {
 		src="<%=request.getContextPath()%>/resource/js/demo/chart-area-demo.js"></script>
 	<script
 		src="<%=request.getContextPath()%>/resource/js/demo/chart-pie-demo.js"></script> --%>
+		
+		<%-- <script>
+		$(function(){
+			var rentalStatus = "RTS2";
+			$.ajax({
+				url:"<%=request.getContextPath()%>/selectFilter.rt",
+				data:{rentalStatus:rentalStatus
+				},
+				type:"get",
+				success:function(data){
+					console.log(data.length);						
+				},
+				error:function(){
+					console.log("error");
+				}
+				
+			});
+		});
+		</script> --%>
 </body>
 
 </html>

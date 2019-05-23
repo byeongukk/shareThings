@@ -85,112 +85,112 @@ public class RentalDao {
 		
 	}
 	
-		// 상세조건들로 대여목록조회 해쉬맵
-		public ArrayList<HashMap<String, Object>> selectRentalFilter(Connection con, HashMap<String, Object> condition) {
-			ArrayList<HashMap<String,Object>> list = null;
-			HashMap<String,Object> hmap = null;
-			PreparedStatement pstmt = null;
-			ResultSet rset = null;
+	// 상세조건들로 대여목록조회 해쉬맵
+	public ArrayList<HashMap<String, Object>> selectRentalFilter(Connection con, HashMap<String, Object> condition) {
+		ArrayList<HashMap<String,Object>> list = null;
+		HashMap<String,Object> hmap = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		
+		ArrayList<String> queryArr = new ArrayList<String>();
+		ArrayList<Object> bindVal = new ArrayList<Object>();
+		String query = null;
+		boolean allViewsChk = false;
+		
+		//상세조건에 따라 query문 가져오기
+		HashMap<String,Object> detailsContent = (HashMap<String, Object>) condition.get("detailsContent");
+		
+		//전체조회
+		if(condition.get("rentalStatus").equals("0") && detailsContent.get("details").equals("0") && condition.get("sDate").equals("")) {
+			//조건없이 전체 조회
+			allViewsChk = true;
+			queryArr.add(" 1 = ? ");
+			bindVal.add("1");
+		}else {
+			//상태조건이 전체가 아닐때
 			
-			
-			ArrayList<String> queryArr = new ArrayList<String>();
-			ArrayList<Object> bindVal = new ArrayList<Object>();
-			String query = null;
-			boolean allViewsChk = false;
-			
-			//상세조건에 따라 query문 가져오기
-			HashMap<String,Object> detailsContent = (HashMap<String, Object>) condition.get("detailsContent");
-			
-			//전체조회
-			if(condition.get("rentalStatus").equals("0") && detailsContent.get("details").equals("0") && condition.get("sDate").equals("")) {
-				//조건없이 전체 조회
-				allViewsChk = true;
-				queryArr.add(" 1 = ? ");
-				bindVal.add("1");
-			}else {
-				//상태조건이 전체가 아닐때
-				
-				if(!(condition.get("rentalStatus").equals("0"))) {
-					//STATUS 컬럼을 조회하게 문자열 합치기
-					queryArr.add(" R.RT_SID = ? ");
-					bindVal.add(condition.get("rentalStatus"));
-					System.out.println(condition.get("rentalStatus"));
-				}
-				//상세조건이 전체가 아닐때
-				if(!(detailsContent.get("details").equals("0"))) {
-					//상세조건 선택하여 컬럼명 입력
-					if(detailsContent.get("details").equals("rtNo")) {
-						queryArr.add(" R.RT_NO "+ " = ? ");
-					} else if(detailsContent.get("details").equals("rtUserName")) {
-						queryArr.add(" M.USER_NAME " + " = ? ");
-					} else if(detailsContent.get("details").equals("model")) {
-						queryArr.add(" PC.CTG_NAME "+" = ? ");
-					} else if(detailsContent.get("details").equals("pno")) {
-						queryArr.add(" P.PNO "+ " = ? ");
-					}
-					bindVal.add(detailsContent.get("filterContent"));
-				}
-				//날짜값이 있는경우
-				if(!(condition.get("sDate").equals(""))) {
-					//날짜 2개를 비교하기위한  인덱스 맞추기
-					queryArr.add(" R.RT_REQ_DATE BETWEEN ? ");
-					queryArr.add(" ? ");
-					bindVal.add(condition.get("sDate"));
-					bindVal.add(condition.get("eDate"));
-				}
+			if(!(condition.get("rentalStatus").equals("0"))) {
+				//STATUS 컬럼을 조회하게 문자열 합치기
+				queryArr.add(" R.RT_SID = ? ");
+				bindVal.add(condition.get("rentalStatus"));
+				System.out.println(condition.get("rentalStatus"));
 			}
-			query = prop.getProperty("selectRentalStd");
-			
-			if(allViewsChk == false) {
-				//추가된 쿼리만큼 더해주기
-				for(int i=0; i<queryArr.size(); i++) {
-					if(i==queryArr.size()-1) {
-						query += queryArr.get(i) ;
-					} else {
-						query += queryArr.get(i) + " AND ";
-					}
+			//상세조건이 전체가 아닐때
+			if(!(detailsContent.get("details").equals("0"))) {
+				//상세조건 선택하여 컬럼명 입력
+				if(detailsContent.get("details").equals("rtNo")) {
+					queryArr.add(" R.RT_NO "+ " = ? ");
+				} else if(detailsContent.get("details").equals("rtUserName")) {
+					queryArr.add(" M.USER_NAME " + " = ? ");
+				} else if(detailsContent.get("details").equals("model")) {
+					queryArr.add(" PC.CTG_NAME "+" = ? ");
+				} else if(detailsContent.get("details").equals("pno")) {
+					queryArr.add(" P.PNO "+ " = ? ");
 				}
-			}else {
-				//전체조회를 위한 쿼리 더해주기
-				query += queryArr.get(0);
+				bindVal.add(detailsContent.get("filterContent"));
 			}
-			//대여주문번호 내림차순
-			query += "ORDER BY R.RT_NO DESC";
-			System.out.println(query);
-			try {
-				pstmt = con.prepareStatement(query);
-				
-				//받아온 값으로 바인드값 보냄
-				for(int i=0; i<bindVal.size(); i++) {
-					pstmt.setObject(i+1, bindVal.get(i));
-				}
-				
-				
-				rset = pstmt.executeQuery();
-				list = new ArrayList<HashMap<String,Object>>();
-				
-				while(rset.next()) {
-					hmap = new HashMap<String,Object>();
-					
-					hmap.put("rno", rset.getInt("RT_NO"));
-					hmap.put("pno", rset.getInt("PNO"));
-					hmap.put("model", rset.getString("CTG_NAME"));
-					hmap.put("userName", rset.getString("USER_NAME"));
-					hmap.put("rtReqDate", rset.getDate("RT_REQ_DATE"));
-					hmap.put("rtStatus", rset.getString("STATUS"));
-					
-					list.add(hmap);
-				}
-				
-			} catch (SQLException e) {
-				e.printStackTrace();
-			} finally {
-				close(pstmt);
-				close(rset);	
+			//날짜값이 있는경우
+			if(!(condition.get("sDate").equals(""))) {
+				//날짜 2개를 비교하기위한  인덱스 맞추기
+				queryArr.add(" R.RT_REQ_DATE BETWEEN ? ");
+				queryArr.add(" ? ");
+				bindVal.add(condition.get("sDate"));
+				bindVal.add(condition.get("eDate"));
 			}
-			System.out.println(list);
-			return list;
 		}
+		query = prop.getProperty("selectRentalStd");
+		
+		if(allViewsChk == false) {
+			//추가된 쿼리만큼 더해주기
+			for(int i=0; i<queryArr.size(); i++) {
+				if(i==queryArr.size()-1) {
+					query += queryArr.get(i) ;
+				} else {
+					query += queryArr.get(i) + " AND ";
+				}
+			}
+		}else {
+			//전체조회를 위한 쿼리 더해주기
+			query += queryArr.get(0);
+		}
+		//대여주문번호 내림차순
+		query += "ORDER BY R.RT_NO DESC";
+		System.out.println(query);
+		try {
+			pstmt = con.prepareStatement(query);
+			
+			//받아온 값으로 바인드값 보냄
+			for(int i=0; i<bindVal.size(); i++) {
+				pstmt.setObject(i+1, bindVal.get(i));
+			}
+			
+			
+			rset = pstmt.executeQuery();
+			list = new ArrayList<HashMap<String,Object>>();
+			
+			while(rset.next()) {
+				hmap = new HashMap<String,Object>();
+				
+				hmap.put("rno", rset.getInt("RT_NO"));
+				hmap.put("pno", rset.getInt("PNO"));
+				hmap.put("model", rset.getString("CTG_NAME"));
+				hmap.put("userName", rset.getString("USER_NAME"));
+				hmap.put("rtReqDate", rset.getDate("RT_REQ_DATE"));
+				hmap.put("rtStatus", rset.getString("STATUS"));
+				
+				list.add(hmap);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);	
+		}
+		System.out.println(list);
+		return list;
+	}
 	
 
 
@@ -222,7 +222,7 @@ public class RentalDao {
 				hmap.put("userId", rset.getString("USER_ID"));
 				hmap.put("userName", rset.getString("USER_NAME"));
 				hmap.put("phone", rset.getString("PHONE"));
-				hmap.put("address", rset.getString("ADDRESS"));
+				hmap.put("address", rset.getString("DL_ADDRESS"));
 				hmap.put("rtStatus", rset.getString("STATUS"));
 				
 				
@@ -500,7 +500,7 @@ public class RentalDao {
 				hmap.put("userId", rset.getString("USER_ID"));
 				hmap.put("userName", rset.getString("USER_NAME"));
 				hmap.put("phone", rset.getString("PHONE"));
-				hmap.put("address", rset.getString("ADDRESS"));
+				hmap.put("address", rset.getString("DL_ADDRESS"));
 				hmap.put("inOut", rset.getString("INOUT"));
 				
 				list.add(hmap);
@@ -627,7 +627,167 @@ public class RentalDao {
 		
 		return result;
 	}
-
+	//수거관리페이지 조회 필터
+	public ArrayList<HashMap<String, Object>> selectRtPdFilter(Connection con, HashMap<String, Object> condition) {
+		ArrayList<HashMap<String,Object>> list = null;
+		HashMap<String,Object> hmap = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		
+		ArrayList<String> queryArr = new ArrayList<String>();
+		ArrayList<Object> bindVal = new ArrayList<Object>();
+		String query = null;
+		boolean allViewsChk = false;
+		
+		//상세조건에 따라 query문 가져오기
+		HashMap<String,Object> detailsContent = (HashMap<String, Object>) condition.get("detailsContent");
+		
+		//전체조회
+		if(condition.get("rentalStatus").equals("0") && detailsContent.get("details").equals("0")) {
+			//조건없이 전체 조회
+			allViewsChk = true;
+			queryArr.add(" 1 = ? ");
+			bindVal.add("1");
+		}else {
+			//상태조건이 전체가 아닐때
+			
+			if(!(condition.get("rentalStatus").equals("0"))) {
+				//STATUS 컬럼을 조회하게 문자열 합치기
+				queryArr.add(" R.RT_SID = ? ");
+				bindVal.add(condition.get("rentalStatus"));
+				System.out.println(condition.get("rentalStatus"));
+			}
+			//상세조건이 전체가 아닐때
+			if(!(detailsContent.get("details").equals("0"))) {
+				//상세조건 선택하여 컬럼명 입력
+				if(detailsContent.get("details").equals("rtNo")) {
+					queryArr.add(" R.RT_NO "+ " = ? ");
+				} else if(detailsContent.get("details").equals("rtUserName")) {
+					queryArr.add(" M.USER_NAME " + " = ? ");
+				} else if(detailsContent.get("details").equals("pno")) {
+					queryArr.add(" P.PNO "+ " = ? ");
+				}
+				bindVal.add(detailsContent.get("filterContent"));
+			}
+		}
+		query = prop.getProperty("selectRtPdFilterStd");
+		
+		if(allViewsChk == false) {
+			//추가된 쿼리만큼 더해주기
+			for(int i=0; i<queryArr.size(); i++) {
+				if(i==queryArr.size()-1) {
+					query += queryArr.get(i) ;
+				} else {
+					query += queryArr.get(i) + " AND ";
+				}
+			}
+		}else {
+			//전체조회를 위한 쿼리 더해주기
+			query += queryArr.get(0);
+		}
+		//대여주문번호 내림차순 + 조건
+		query += "AND RS.RT_SID IN ('RTS5','RTS6','RTS7') ORDER BY R.RT_NO DESC";
+		System.out.println(query);
+		try {
+			pstmt = con.prepareStatement(query);
+			
+			//받아온 값으로 바인드값 보냄
+			for(int i=0; i<bindVal.size(); i++) {
+				pstmt.setObject(i+1, bindVal.get(i));
+			}
+			
+			
+			rset = pstmt.executeQuery();
+			list = new ArrayList<HashMap<String,Object>>();
+			
+			while(rset.next()) {
+				hmap = new HashMap<String,Object>();
+		        Date stDate = rset.getDate("RT_ST_DATE");
+		        Date endDate = rset.getDate("RT_END_DATE");
+		         
+		        // 시간차이를 시간,분,초를 곱한 값으로 나누면 하루 단위가 나옴
+		        long diff = endDate.getTime() - stDate.getTime();
+		        long diffDays = diff / (24 * 60 * 60 * 1000);
+		        
+		        System.out.println(diffDays);
+				
+				hmap.put("rtNo", rset.getInt("RT_NO"));
+				hmap.put("pno", rset.getInt("PNO"));
+				hmap.put("rtStDate", rset.getDate("RT_ST_DATE"));
+				hmap.put("rtEndDate", rset.getDate("RT_END_DATE"));
+				hmap.put("endDay", diffDays);
+				hmap.put("userId", rset.getString("USER_ID"));
+				hmap.put("userName", rset.getString("USER_NAME"));
+				hmap.put("phone", rset.getString("PHONE"));
+				hmap.put("rtStatus", rset.getString("STATUS"));
+				
+				list.add(hmap);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);	
+		}
+		System.out.println(list);
+		return list;
+	}
+	
+	public ArrayList<HashMap<String, Object>> selectRtPdDayFilter(Connection con, int selectDay) {
+		ArrayList<HashMap<String,Object>> list = null;
+		HashMap<String,Object> hmap = null;
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		
+		String query = null;
+		
+		query = prop.getProperty("selectRtPdDayFilter");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			
+			//받아온 값으로 바인드값 보냄
+			pstmt.setInt(1, selectDay);
+			
+			rset = pstmt.executeQuery();
+			list = new ArrayList<HashMap<String,Object>>();
+			
+			while(rset.next()) {
+				hmap = new HashMap<String,Object>();
+		        Date stDate = rset.getDate("RT_ST_DATE");
+		        Date endDate = rset.getDate("RT_END_DATE");
+		         
+		        // 시간차이를 시간,분,초를 곱한 값으로 나누면 하루 단위가 나옴
+		        long diff = endDate.getTime() - stDate.getTime();
+		        long diffDays = diff / (24 * 60 * 60 * 1000);
+		        
+		        System.out.println(diffDays);
+				
+				hmap.put("rtNo", rset.getInt("RT_NO"));
+				hmap.put("pno", rset.getInt("PNO"));
+				hmap.put("rtStDate", rset.getDate("RT_ST_DATE"));
+				hmap.put("rtEndDate", rset.getDate("RT_END_DATE"));
+				hmap.put("endDay", diffDays);
+				hmap.put("userId", rset.getString("USER_ID"));
+				hmap.put("userName", rset.getString("USER_NAME"));
+				hmap.put("phone", rset.getString("PHONE"));
+				hmap.put("rtStatus", rset.getString("STATUS"));
+				
+				list.add(hmap);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);	
+		}
+		System.out.println(list);
+		return list;
+	}
 	   
 	//민지
 	   public int insertCart(Connection con, Cart newCart) {
@@ -650,6 +810,8 @@ public class RentalDao {
 	      }
 	      return result;
 	   }
+
+	
 	
 	
 	
