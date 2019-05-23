@@ -1768,6 +1768,31 @@ public class MemberDao {
 		}
 		return result;
 	}
+	
+	
+	public int insertReport(Connection con, Report newReport) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = prop.getProperty("insertReport");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, newReport.getReportUno());
+			pstmt.setInt(2, newReport.getTargetUno());
+			pstmt.setString(3, newReport.getReportCode());
+			pstmt.setString(4, newReport.getReportContent());
+			
+			result = pstmt.executeUpdate();
+		
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+	
+	
 
 
 
@@ -1797,6 +1822,7 @@ public class MemberDao {
 		return result;
 	}
 
+	
 	
 
 	

@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="java.util.ArrayList, java.sql.Date, com.kh.st.notice.model.vo.Notice"%>
+<%
+	ArrayList<Notice> nList = (ArrayList<Notice>)request.getAttribute("nList");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,57 +45,51 @@
 		<div class="main">
 
 			
-			<div class="row noticeArea">
+			<div class="noticeArea">
+				<div class="row noticeHead">
+					<br><br>
+					<h1 class="ui center aligned icon header">
+						<i class="clipboard list icon"></i>
+						공지사항
+					</h1>
+				</div>
 				<br><br>
-				<h1 class="ui center aligned icon header">
-					<i class="clipboard list icon"></i>
-					공지사항
-				</h1>
-				<br><br>
-				<div class="col col-lg-1 col-md-1"></div>
-				<div class="col col-lg-10 col-md-10 col-sm-12 col-xs-12">
-					<table class="table table-hover noticeTable">
-						<thead>
-							<tr style="border-top:2px solid red; background:whitesmoke">
-								<th width="15%">번호</th>
-								<th width="45%">제목</th>
-								<th width="20%">작성자</th>
-								<th width="20%">작성일</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>1</td>
-								<td>(필독)이용약관</td>
-								<td>관리자</td>
-								<td>2019-05-11</td>
-							</tr>
-							<tr>
-								<td>2</td>
-								<td>(필독)이용약관</td>
-								<td>관리자</td>
-								<td>2019-05-11</td>
-							</tr>
-							<tr>
-								<td>3</td>
-								<td>(필독)이용약관</td>
-								<td>관리자</td>
-								<td>2019-05-11</td>
-							</tr>
-							<tr>
-								<td>4</td>
-								<td>(필독)이용약관</td>
-								<td>관리자</td>
-								<td>2019-05-11</td>
-							</tr>
-							<tr>
-								<td>5</td>
-								<td>(필독)이용약관</td>
-								<td>관리자</td>
-								<td>2019-05-11</td>
-							</tr>
-						</tbody>
-					</table>
+				<div class="row searchArea" align="right" style="margin:10px 5px">
+					<div class="col col-lg-1 col-md-1"></div>
+					<div class="col col-lg-10 col-md-10 col-sm-12 col-xs-12 ui search">
+						<div class="ui icon input">
+							<input class="prompt" type="text" placeholder="공지사항 검색"> 
+							<i class="search icon"></i>
+						</div>
+						<!-- <div class="results"></div> -->
+					</div>
+					
+				</div>
+				<div class="row noticeTableArea" align="center">
+					<div class="col col-lg-1 col-md-1"></div>
+					<div class="col col-lg-10 col-md-10 col-sm-12 col-xs-12">
+						<table class="table table-hover noticeTable">
+							<thead>
+								<tr style="border-top:2px solid red; background:whitesmoke">
+									<th width="15%">번호</th>
+									<th width="45%">제목</th>
+									<th width="20%">작성자</th>
+									<th width="20%">작성일</th>
+								</tr>
+							</thead>
+							<tbody>
+								<% for(int i = 0; i < nList.size(); i++) { %>
+								<tr>
+									<td><%= nList.get(i).getNno() %></td>
+									<td><%= nList.get(i).getnTitle() %></td>
+									<td><%= nList.get(i).getnWriter() %></td>
+									<td><%= nList.get(i).getnDate() %></td>
+								</tr>
+								<% } %>
+								
+							</tbody>
+						</table>
+					</div>
 				</div>
 			</div> <!-- end of noticeArea -->
 			<br><br><br><br>
@@ -114,7 +111,8 @@
 	
 	<script>
 		$(".noticeTable").children("tbody").children("tr").click(function() {
-			location.href="<%= request.getContextPath() %>/views/main/noticeDetail.jsp";
+			var nno = $(this).children("td").eq(0).text();
+			location.href="<%= request.getContextPath() %>/selectOne.no?nno=" + nno;
 		});
 		
 	</script>
