@@ -1,5 +1,7 @@
 package com.kh.st.customerService.model.dao;
 
+import static com.kh.st.common.JDBCTemplate.close;
+
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -9,12 +11,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Properties;
 
 import com.kh.st.attachment.model.vo.Attachment;
 import com.kh.st.customerService.model.vo.Cs;
-import com.kh.st.notice.model.vo.Notice;
-import static com.kh.st.common.JDBCTemplate.*;
 
 public class CsDao {
 	private Properties prop = new Properties();
@@ -274,6 +275,55 @@ public class CsDao {
 	      
 	      return result;
 	   }
+
+	//병욱
+	public HashMap<String,Object> selectAdminList(Connection con) {
+		ArrayList<Cs> list = null;
+		HashMap<String,Object> hmap = new HashMap<>();
+		Statement stmt = null;
+		ResultSet rset = null;
+		
+		String query = prop.getProperty("selectAdminCs");
+		
+		try {
+			stmt = con.createStatement();
+			
+			rset = stmt.executeQuery(query);
+			
+			list = new ArrayList<Cs>();
+			
+			
+			while(rset.next()) {
+				Cs c = new Cs();
+				String userId = "";
+				c.setCno(rset.getInt("CS_NO"));
+				c.setPno(rset.getInt("PARENT_NO"));
+				c.setcDate(rset.getDate("CS_DATE"));
+				c.setcContent(rset.getString("CS_CONTENT"));
+				c.setcCategory(rset.getString("CS_CATEGORY"));
+				c.setcReply(rset.getString("CS_REPLY"));
+				userId = rset.getString("USER_ID");
+				c.setcType(rset.getString("CS_TYPE"));
+				c.setcCount(rset.getInt("CS_COUNT"));
+				
+				list.add(c);
+				hmap.put("list", list);
+				hmap.put("userId", userId);
+				
+				
+			}
+			System.out.println(list);
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(rset);
+			close(stmt);
+		}
+		
+		return hmap;
+	}
 
 }
 
