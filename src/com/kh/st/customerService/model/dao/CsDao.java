@@ -148,7 +148,7 @@ public class CsDao {
 		return c;
 	}
 
-	public int updateCs(Connection con, int i) {
+	/*public int updateCs(Connection con, int i) {
 		int result = 0;
 		PreparedStatement pstmt = null;
 		
@@ -169,7 +169,7 @@ public class CsDao {
 		}
 		
 		return result;
-	}
+	}*/
 
 	
 	public int deleteCs(Connection con, int nno) {
