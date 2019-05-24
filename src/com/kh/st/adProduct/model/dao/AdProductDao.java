@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,6 +16,7 @@ import java.util.HashMap;
 import java.util.Properties;
 
 import com.kh.st.adProduct.model.vo.AdProduct;
+import com.kh.st.adProduct.model.vo.EndProduct;
 import com.kh.st.attachment.model.vo.Attachment;
 import com.kh.st.common.PageInfo;
 import com.kh.st.member.model.vo.Member;
@@ -267,5 +269,99 @@ public class AdProductDao {
 		}
 		System.out.println(list);
 		return list;
+	}
+	
+	//만료 물품 조회
+	public ArrayList<EndProduct> endProductList(Connection con, PageInfo pi) {
+		//물품번호, 모델명, 물품명, 등록자, 만료일, 물품 상태
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		EndProduct ep = null;
+		ArrayList<EndProduct> list = null;
+		
+		String query = prop.getProperty("endProductList");
+		
+		int startRow = (pi.getCurrentPage() - 1) * pi.getLimit() + 1;
+		int endRow = startRow + pi.getLimit() - 1;
+		
+		System.out.println(query);
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			
+			pstmt.setInt(1, startRow);
+			pstmt.setInt(2, endRow);
+			
+			rset = pstmt.executeQuery();
+			
+			list = new ArrayList<EndProduct>();
+			
+			while(rset.next()) {
+				//물품번호, 모델명, 물품명, 등록자, 만료일, 물품 상태
+				ep = new EndProduct();
+				Date sDate = rset.getDate("PEND_DATE");
+				Date sysDate = rset.getDate("SYSDATE");
+				
+				//시간차이를 하루단위로
+				long diff = sDate.getTime() - sysDate.getTime();
+				long dDay = diff/ (24 * 60 * 60 * 1000);
+				
+				ep.setPno(rset.getInt("PNO"));	//물풀번호
+				ep.setModel(rset.getString("MODEL"));	//모델명
+				ep.setpName(rset.getString("CTG_NAME"));	//물풀명
+				ep.setUserName(rset.getString("USER_NAME"));	//유저명
+				ep.setdDay(dDay);	//만료일 
+				ep.setStatus(rset.getString("STATUS"));	//물품상태
+			
+				list.add(ep);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return list;
+	}
+	
+	//선택한 반환 물품 조회
+	public EndProduct endProductSelect(Connection con, int num) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		EndProduct ep = null;
+		
+		String query = prop.getProperty("endProductSelect");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, num);
+			
+			rset = pstmt.executeQuery();
+			
+			
+			if(rset.next()) {
+				ep = new EndProduct();
+				
+				ep = new EndProduct();
+				Date sDate = rset.getDate("PEND_DATE");
+				Date sysDate = rset.getDate("SYSDATE");
+				
+				//시간차이를 하루단위로
+				long diff = sDate.getTime() - sysDate.getTime();
+				long dDay = diff/ (24 * 60 * 60 * 1000);
+				
+				ep.setPno(rset.getInt("PNO"));	//물풀번호
+				ep.setdDay(dDay);	//만료일 
+				ep.setUserName(rset.getString("USER_NAME"));	//유저명
+				ep.setdLocation(rset.getString("DL_ADDRESS"));	//배송지
+				
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return ep;
 	}
 }

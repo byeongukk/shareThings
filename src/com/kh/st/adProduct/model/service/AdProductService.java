@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 import com.kh.st.adProduct.model.dao.AdProductDao;
 import com.kh.st.adProduct.model.vo.AdProduct;
+import com.kh.st.adProduct.model.vo.EndProduct;
 import com.kh.st.checkHistory.modal.dao.CheckHistoryDao;
 import com.kh.st.common.PageInfo;
 import com.kh.st.request.model.dao.ReqDao;
@@ -80,5 +81,23 @@ public class AdProductService {
 		
 		close(con);
 		return list;
+	}
+
+	//등록 만료 조회
+	public ArrayList<EndProduct> endProductList(PageInfo pi) {
+		Connection con = getConnection();
+		ArrayList<EndProduct> list = new AdProductDao().endProductList(con, pi);
+		
+		close(con);
+		return list;
+	}
+
+	//선택한 반환 물품 조회
+	public EndProduct endProductSelect(int num) {
+		Connection con = getConnection();
+		EndProduct ep = new AdProductDao().endProductSelect(con, num);
+		
+		close(con);
+		return ep;
 	}
 }
