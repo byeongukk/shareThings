@@ -12,6 +12,7 @@ import java.util.HashMap;
 import com.kh.st.attachment.model.vo.Attachment;
 import com.kh.st.checkHistory.modal.dao.CheckHistoryDao;
 import com.kh.st.checkHistory.modal.vo.CheckHistory;
+import com.kh.st.checkHistory.modal.vo.CheckStandard;
 import com.kh.st.common.PageInfo;
 import com.kh.st.rental.model.dao.RentalDao;
 
@@ -227,6 +228,16 @@ public class CheckHistoryService {
 				new CheckHistoryDao().checkDetailImg(con, chkNo);
 		close(con);
 		return hmap;
+	}
+
+	//검수 기준 조회
+	public ArrayList<CheckStandard> checkStandard(String result) {
+		Connection con = getConnection();
+		
+		ArrayList<CheckStandard> list = new CheckHistoryDao().checkStandard(con, result);
+		
+		close(con);
+		return list;
 	}
 
 }

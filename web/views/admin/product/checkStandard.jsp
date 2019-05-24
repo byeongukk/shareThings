@@ -64,30 +64,32 @@
 								<div class="card-body">
 									<table class="col-lg-12" id="filterArea">
 										<tr style="height: 20px">
-											<td style="width: 90px">대분류 :</td>
-											<td><select style="heigth: 30px; width: 40%;">
+											<td style="width: 80px">대분류 :</td>
+											<td style="width:25%;">
+												<select id="big" class="cc" style="heigth: 30px; width: 60%;">
+													<option>대분류</option>
 													<option>전자기기</option>
+													<option>취미/레저</option>
 													<option>유아동</option>
-													<option>취미레져</option>
-											</select> &nbsp;&nbsp;&nbsp; <input type="text" name="userId"
-												style="width: 40%"></td>
-											<td style="width: 90px">중분류 :</td>
-											<td><select style="heigth: 30px; width: 40%;">
-													<option>디지털</option>
-													<option>가전</option>
-													<option>컴퓨터</option>
-											</select> &nbsp;&nbsp;&nbsp; <input type="text" name="userId"
-												style="width: 40%"></td>
-											<td style="width: 90px">세분류 :</td>
-											<td><select style="heigth: 30px; width: 40%;">
-													<option>노트북</option>
-													<option>데스크탑</option>
-											</select> &nbsp;&nbsp;&nbsp; <input type="text" name="userId"
-												style="width: 40%"></td>
+													<option>반려동물</option>
+												</select>
+											</td>
+											<td style="width: 80px">중분류 :</td>
+											<td>
+												<select id="mid"class="cc" style="heigth: 30px; width: 40%;">
+													<option>중분류</option>
+												</select>
+											</td>
+											<td style="width: 80px">소분류 :</td>
+											<td>
+												<select id="small"class="cc" style="heigth: 30px; width: 50%;">
+													<option>소분류</option>
+												</select>
+											</td>
 										</tr>
 									</table>
 									<div>
-										<button>조회하기</button>
+										<button id="result">조회하기</button>
 										&nbsp;&nbsp;&nbsp;
 										<button>초기화</button>
 									</div>
@@ -95,7 +97,7 @@
 							</div>
 							<div class="card shadow mb-4 col-lg-8" style="margin-left:auto; margin-right:auto;">
 								<div class="card-header py-3">
-									<h6 class="m-0 font-weight-bold text-primary">노트북 검수 기준</h6>
+									<h6 class="m-0 font-weight-bold text-primary" id="product">검수 기준</h6>
 								</div>
 								<div class="card-body">
 									<div class="table-responsive">
@@ -119,18 +121,7 @@
 															</tr>
 														</thead>
 														<tbody>
-															<tr role="row" class="even">
-																<td class="sorting_1">01</td>
-																<td>전원이 켜지는가</td>
-															</tr>
-															<tr role="row" class="even">
-																<td class="sorting_1">02</td>
-																<td>어떤가</td>
-															</tr>
-															<tr role="row" class="even">
-																<td class="sorting_1">03</td>
-																<td>좋은가</td>
-															</tr>
+															
 														</tbody>
 													</table>
 												</div>
@@ -138,63 +129,6 @@
 										</div>
 									</div>
 								</div>
-							</div>
-						</div>
-						<div class="modal fade" id="cancelModal" role="dialog">
-							<div class="modal-dialog">
-
-								<!-- Modal content-->
-								<div class="modal-content">
-									<div class="modal-header">
-										<h4 class="modal-title">요청 거절 처리</h4>
-										<button type="button" class="close" data-dismiss="modal">&times;</button>
-									</div>
-									<div class="row">
-										<div class="col-md-12 col-lg-12">
-											<div class="modal-body">
-												<p>물품명과 승인상태를 확인하고 처리하세요</p>
-												<div class="panel-body">
-													<table width="100%"
-														class="table table-striped table-bordered table-hover"
-														id="dataTables-example">
-														<thead>
-															<tr>
-																<th style="width: 40px; text-align: center;"><input
-																	type="checkBox"></th>
-																<th style="text-align: center;"
-																	class="text-black-50 small">등록요청번호</th>
-																<th style="text-align: center;"
-																	class="text-black-50 small">물품명</th>
-																<th style="text-align: center;"
-																	class="text-black-50 small">등록자</th>
-																<th style="text-align: center; width: 130px"
-																	class="text-black-50 small">거절사유</th>
-															</tr>
-														</thead>
-														<tbody>
-															<tr class="odd gradeX">
-																<td><input type="checkBox">
-																<td></td>
-																<td></td>
-																<td></td>
-																<td></td>
-															</tr>
-														</tbody>
-													</table>
-												</div>
-												<h5>*거절상세사유</h5>
-												<textarea rows="10" cols="55" placeholder="EX)거짓 정보 등록"></textarea>
-											</div>
-											<div class="modal-footer">
-												<button type="submit" class="btn btn-default"
-													data-dismiss="modal">거절처리</button>
-												<button type="button" class="btn btn-default"
-													data-dismiss="modal">닫기</button>
-											</div>
-										</div>
-									</div>
-								</div>
-
 							</div>
 						</div>
 						<!-- 메인 콘텐트 영역 끝 -->
@@ -213,15 +147,110 @@
 			<%@ include file="../common/logoutModal.jsp"%>
 
 			<script>
-		$(function() {
-			$(".even").click(function() {
-				location = "<%=request.getContextPath()%>/views/admin/request/reqProductDetail.jsp";
+				//카테고리 분류
+				$("#big").change(function() {
+					//대분류
+					var big = $(this).children("option:selected").val().replace("/", "");
+					console.log(big);
+					//중분류
+					var $mid = $("#mid");
+					$.ajax({
+						url:"<%= request.getContextPath() %>/categoryList.do",
+						data:{big:big},
+						type:"get",
+						success:function(data) {
+							console.log(data);
+							var options = "<option selected> 중분류</option>";
+							for(var i = 0; i < data.length; i++){
+				                 if(i == 0){
+				                    options += "<option value=\"" + data[i] + "\">" + data[i] + "</option>";
+				                 } else{
+				                    options += "<option value=\"" + data[i] + "\">" + data[i] + "</option>";
+				                 }
+				            }
+							$mid.html(options); 
+						},
+						error:function(data){
+				              console.log("서버 전송 실패!");
+				        }
+					});
 				});
-			});
+				
+				$("#mid").change(function(){
+			        var mid = $(this).children("option:selected").val(); // 중분류
+			        var $small = $("#small");  // 소분류
+			        $.ajax({
+			           url:"<%= request.getContextPath() %>/categoryList2.do",
+			           data:{mid:mid},
+			           type:"get",
+			           success:function(data){
+			              console.log(data);
+			               var options = "<option selected>소분류</option>"; 
+			               for(var i = 0; i < data.length; i++){
+			                 	if(i == 0){
+			                    	options += "<option value=\"" + data[i] + "\">" + data[i] + "</option>";
+			                 	} else{
+			                 	   options += "<option value=\"" + data[i] + "\">" + data[i] + "</option>";
+			                 	}
+			             	 }    
+			              	 $small.html(options);     
+			           },
+			           error:function(data){
+			              console.log("서버 전송 실패!");
+			           }
+			        });
+			     });
+				
+				 $("#small").change(function(){
+				       var small = $(this).children("option:selected").val(); // 소분류
+				       var $ctgId = $("#ctgId");  // 소분류번호
+				       $.ajax({
+				          url:"<%= request.getContextPath() %>/getCategoryId.do",
+				          data:{small:small},
+				          type:"get",
+				          success:function(data){
+				             console.log(data);   
+				             $ctgId.attr("value", data); 
+				             
+				             console.log(data);
+				          },
+				          error:function(data){
+				             console.log("서버 전송 실패!");
+				          }
+				       });
+				    });
+				 
+				 $("#result").click(function() {
+					var result = $("#small").val();
+					$.ajax({
+						url:"<%= request.getContextPath() %>/checkStandard.bo",
+						data:{result:result},
+						type:"get",
+						success:function(data) {
+							console.log(data);
+							var $dataTable = $("#dataTable");
+							var $product = $("#product");
 
-			function ok() {
-				alert("정말 승인하시겠습니까?");
-			}
+							$("#dataTable > tbody > tr").remove();
+							
+							for(var key in data) {
+								$tr = $("<tr>");
+								$numTd = $("<td>").text(data[key].num);
+								$standardTd = $("<td>").text(data[key].standard);
+								
+								$tr.append($numTd);
+								$tr.append($standardTd);
+								
+								$dataTable.append($tr);
+							}
+							$product.text(result + " 검수 기준");
+							
+						},
+						error:function(data) {
+							console.log("실패");
+						}
+					});
+				 });
 			</script>
 			<script
 				src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>
