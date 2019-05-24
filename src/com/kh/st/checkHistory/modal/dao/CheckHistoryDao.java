@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -15,9 +14,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Properties;
 
-import com.kh.st.adProduct.model.vo.AdProduct;
 import com.kh.st.attachment.model.vo.Attachment;
 import com.kh.st.checkHistory.modal.vo.CheckHistory;
+import com.kh.st.checkHistory.modal.vo.CheckStandard;
 import com.kh.st.common.PageInfo;
 import com.kh.st.member.model.vo.Member;
 import com.kh.st.product.model.vo.Product;
@@ -599,5 +598,40 @@ rset = pstmt.executeQuery();
 			close(rset);
 		}
 		return hmap;
+	}
+
+	//검수 기준 조회
+	public ArrayList<CheckStandard> checkStandard(Connection con, String result) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		CheckStandard cs = null;
+		ArrayList<CheckStandard> list = null;
+		
+		String query = prop.getProperty("checkStandard");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, result);
+			
+			rset = pstmt.executeQuery();
+			
+			list = new ArrayList<CheckStandard>();
+			
+			while(rset.next()) {
+				cs = new CheckStandard();
+				
+				cs.setNum(rset.getInt("RNUM"));
+				cs.setStandard(rset.getString("CHECK_STD"));
+				
+				list.add(cs);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		System.out.println(list);
+		return list;
 	}
 }
