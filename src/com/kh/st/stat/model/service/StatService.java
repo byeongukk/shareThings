@@ -21,4 +21,14 @@ public class StatService {
 		return list;
 	}
 
+	public ArrayList<HashMap<String, Object>> selectFilter(String startD, String endD) {
+		Connection con = getConnection();
+		
+		ArrayList<HashMap<String,Object>> list = new StatDao().selectFilter(con, startD, endD);
+		
+		close(con);
+		
+		return list;
+	}
+
 }
