@@ -80,12 +80,10 @@ html {
 						</div>
 						<div class="col-lg-6 mb-4">
 							<div class="card bg-success text-white shadow">
-								<div class="card-body">
+								<div class="card-body" id="rental">
 									<b>대여관리</b>
 									<hr color="white">
-									<div class="text-white-50">대여승인 00건</div>
-									<div class="text-white-50 small">대여 취소 요청 00건</div>
-									<div class="text-white-50 small">반품 요청 00건</div>
+									
 								</div>
 							</div>
 						</div>
@@ -151,24 +149,37 @@ html {
 	<script
 		src="<%=request.getContextPath()%>/resource/js/demo/chart-pie-demo.js"></script> --%>
 		
-		<%-- <script>
+		<script>
 		$(function(){
-			var rentalStatus = "RTS2";
 			$.ajax({
-				url:"<%=request.getContextPath()%>/selectFilter.rt",
-				data:{rentalStatus:rentalStatus
-				},
+				url:"<%=request.getContextPath()%>/selectReqSize.rt",
 				type:"get",
 				success:function(data){
-					console.log(data.length);						
+					var $approval_div = $("<h4><div").text("대여승인 " +data.approvalSize + " 건");
+					var $cancel_div = $("<h4><div").text("대여반품요청 " +data.returnSize + " 건");
+					var $return_div = $("<h4><div>").text("대여취소요청 " +data.cancelSize + " 건");
+					
+					
+					
+					$("#rental").append($approval_div);
+					$("#rental").append($cancel_div);
+					$("#rental").append($return_div);
 				},
 				error:function(){
 					console.log("error");
 				}
 				
 			});
+			$("#rental").click(function(){
+				location.href="<%=request.getContextPath()%>/selectRantalList.pd";
+			}).mouseenter(function(){
+				$(this).parent().css({"cursor":"pointer"});
+			});
+			
+			
+			
 		});
-		</script> --%>
+		</script>
 </body>
 
 </html>

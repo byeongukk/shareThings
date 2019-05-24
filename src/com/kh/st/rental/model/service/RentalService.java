@@ -284,7 +284,29 @@ public class RentalService {
 			close(con);
 			return list;
 		}
+		//대여 승인 사이즈
+		public HashMap<String,Object> selectListSize(ArrayList<String> rentalStatus) {
+			Connection con = getConnection();
+			HashMap<String,Object> hmap = new HashMap<>(); 
+			int approvalSize = new RentalDao().selectApprovalSize(con,rentalStatus,0);
+			int cancelSize = new RentalDao().selectApprovalSize(con,rentalStatus,1);
+			int returnSize = new RentalDao().selectApprovalSize(con,rentalStatus,2);
+			
+			System.out.println("approvalSize :" + approvalSize);
+			System.out.println("cancelSize :" +cancelSize);
+			System.out.println("returnSize :" +returnSize);
+			
+			hmap.put("approvalSize", approvalSize);
+			hmap.put("cancelSize", cancelSize);
+			hmap.put("returnSize", returnSize);
+			
+			
+			close(con);
+			return hmap;
+		}
 	      
+		
+		
 		//민지
 		   public int insertCart(Cart newCart) {
 		      Connection con = getConnection();
@@ -296,6 +318,7 @@ public class RentalService {
 		      }
 		      return result;
 		   }
+		
 		
 
 		

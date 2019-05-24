@@ -2,6 +2,7 @@ package com.kh.st.customerService.model.service;
 
 import java.sql.Connection;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import com.kh.st.attachment.model.vo.Attachment;
 import com.kh.st.board.model.dao.BoardDao;
@@ -118,6 +119,15 @@ public class CsService {
 	      close(con);
 	      
 	      return result;
+	}
+
+	//병욱
+	public HashMap<String,Object> selectAdminList() {
+		Connection con = getConnection();
+		HashMap<String,Object> hmap = new CsDao().selectAdminList(con);
+		
+		close(con);
+		return hmap;
 	}
 
 }

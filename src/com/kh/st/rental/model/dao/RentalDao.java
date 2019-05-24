@@ -788,7 +788,37 @@ public class RentalDao {
 		System.out.println(list);
 		return list;
 	}
-	   
+	public int selectApprovalSize(Connection con, ArrayList<String> rentalStatus , int index) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int approvalSize = 0;
+		
+		String query = null;
+		
+		query = prop.getProperty("selectApprovalSize");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			
+			//받아온 값으로 바인드값 보냄
+			pstmt.setString(1, rentalStatus.get(index));
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				approvalSize = rset.getInt("COUNT(*)");
+			}
+			
+				
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);	
+		}
+		System.out.println(approvalSize);
+		return approvalSize;
+	}
+ 
 	//민지
 	   public int insertCart(Connection con, Cart newCart) {
 	      PreparedStatement pstmt = null;
@@ -810,7 +840,8 @@ public class RentalDao {
 	      }
 	      return result;
 	   }
-
+	   
+	
 	
 	
 	

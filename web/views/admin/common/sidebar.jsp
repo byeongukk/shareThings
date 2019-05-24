@@ -110,7 +110,7 @@
       <!-- Nav Item - Charts -->
       <li class="nav-item">
 
-        <a class="nav-link" href="<%=request.getContextPath()%>/views/admin/notice/qnaList.jsp">
+        <a class="nav-link" href="<%=request.getContextPath()%>/selectAdminList.cs">
           <img src="<%=request.getContextPath()%>/resource/img/qna.png">
 
           <span>1:1문의 관리</span></a>

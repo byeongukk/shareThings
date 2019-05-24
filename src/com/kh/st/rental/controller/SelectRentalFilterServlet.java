@@ -31,7 +31,6 @@ public class SelectRentalFilterServlet extends HttpServlet {
 		String eDate = request.getParameter("endDate");
 		java.sql.Date startDate = null;
 		java.sql.Date endDate = null;
-		
 		//날짜 처리
 		if(sDate != "" && eDate != "") {
 			startDate = Date.valueOf(sDate);
