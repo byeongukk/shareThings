@@ -45,7 +45,7 @@ public class CsService {
 		
 		Cs c = new CsDao().selectOne(con, num);
 		
-		if(c != null) {
+		/*if(c != null) {
 			int result = new CsDao().updateCs(con, c.getCno());
 			
 			if(result > 0) {
@@ -53,14 +53,14 @@ public class CsService {
 			}else {
 				rollback(con);
 			}
-		}
+		}*/
 		
 		close(con);
 		
 		return c;
 	}
 
-	public int updateCs(int c) {
+	/*public int updateCs(int c) {
 		Connection con = getConnection();
 		
 		int result = new CsDao().updateCs(con, c);
@@ -74,7 +74,7 @@ public class CsService {
 		close(con);
 		
 		return result;
-	}
+	}*/
 
 	public int deleteCs(int cno) {
 		Connection con = getConnection();
