@@ -140,21 +140,29 @@
 		<label>l</label> 
 		<a href="/st/views/customerService.guide.jsp">이용안내</a>
 	</div>
-	<% }else { %>
-	<div class="row top" align="right" id="afterLogin">
+	<% }else if(!(loginUser.getUserId().equals("admin"))){ %>
+   	<div class="row top" align="right" id="afterLogin">
+      	<label style="color:gray; font-size:0.8em;"><%= loginUser.getUserName() %>님, 환영합니다!</label>
+     	<i class="user outline icon"></i>
+      	<a href="" id="linkToMyPage">마이페이지</a> 
+      	<label>l</label> 
+      	<a href="" id="linkToCart">장바구니</a> 
+      	<label>l</label>
+      	<a href="/st/views/customerService/cs.jsp">고객센터</a>
+      	<label>l</label> 
+      	<a href="/st/selectList.no">공지사항</a> 
+      	<label>l</label> 
+      	<button class="ui basic button" onclick="location.href='<%= request.getContextPath() %>/logout.me'">로그아웃</button>
+   	</div>
+	<% }else{ %>
+	<div class="row top" align="right">
 		<label style="color:gray; font-size:0.8em;"><%= loginUser.getUserName() %>님, 환영합니다!</label>
-		<i class="user outline icon"></i>
-		<a href="" id="linkToMyPage">마이페이지</a> 
-		<label>l</label> 
-		<a href="" id="linkToCart">장바구니</a> 
-		<label>l</label>
-		<a href="/st/views/customerService/cs.jsp">고객센터</a>
-		<label>l</label> 
-		<a href="/st/selectList.no">공지사항</a> 
-		<label>l</label> 
-		<button class="ui basic button" onclick="location.href='<%= request.getContextPath() %>/logout.me'">로그아웃</button>
+	    <i class="user outline icon"></i>
+	    <a href="/st/views/admin/adminMain.jsp" id="linkToAdmin">관리자페이지</a>
+	    <label>l</label> 
+	    <button class="ui basic button" onclick="location.href='<%= request.getContextPath() %>/logout.me'">로그아웃</button>
 	</div>
-	<% } %>
+   	<% } %>
 	<div class="row middle" align="center">
 		<div class="col col-lg-3 col-md-3 col-sm-3 col-xs-4 logoArea">
 			<img src="/st/images/newLogo.PNG" id="logo" style="width:100%">
@@ -328,11 +336,11 @@
 			
 			//이메일인증 여부를 확인해서 마이페이지와 장바구니 연결 제한
 			<% if(!emailVerif.equals("Y")) {%>
-			$("#linkToMyPage").attr("href", "/st/zzimList.pd");
-			$("#linkToCart").attr("href", "/st/cartlist.rt")
+			$("#linkToMyPage").attr("href", "/st/views/member.beforeEmailVerifPage.jsp");
+			$("#linkToCart").attr("href", "/st/views/member.beforeEmailVerifPage.jsp")
 			<% } else {%>
 			$("#linkToMyPage").attr("href", "/st/views/mypage/mypgMain.jsp");
-			$("#linkToCart").attr("href", "/st/views/product/cart.jsp");
+			$("#linkToCart").attr("href", "/st/cartlist.rt");
 			<% } %>
 		});
 		

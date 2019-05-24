@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import com.google.gson.Gson;
 import com.kh.st.board.model.service.BoardService;
 import com.kh.st.board.model.vo.Board;
+import com.kh.st.common.SendSMS;
+import com.kh.st.member.model.service.MemberService;
 
 /**
  * Servlet implementation class InsertBoardQnAServlet
@@ -36,6 +38,7 @@ public class InsertBoardQnAServlet extends HttpServlet {
 		String qnaContent = request.getParameter("qnaInput");
 		String qnaWriter = request.getParameter("qnaWriter");
 		int parentBno = Integer.parseInt(request.getParameter("parentBno"));
+		String parentBtitle = request.getParameter("parentBtitle");
 		int pno = Integer.parseInt(request.getParameter("pno"));
 		
 		Board newQnA = new Board();
@@ -50,6 +53,8 @@ public class InsertBoardQnAServlet extends HttpServlet {
 		if(result > 0) {
 			ArrayList<HashMap<String, Object>> qnaList = new BoardService().selectQnAList(parentBno);
 			if(!qnaList.isEmpty()) {
+				String phone = new MemberService().getBwriterPhone(parentBno);
+				new SendSMS().send(phone, parentBtitle, "Q&A");
 				new Gson().toJson(qnaList, response.getWriter());
 			}else {
 				response.getWriter().append("List not found");

@@ -461,6 +461,7 @@
 							<form id="reviewForm" method="POST" enctype="multipart/form-data">
 								<div class="ui star huge rating" id="ratingInput" data-rating="3" data-max-rating="5"></div>
 								<input type="hidden" name="bno" value="<%= (int)bmap.get("bno") %>">
+								<input type="hidden" name="bTitle" value="<%= bmap.get("bTitle") %>">
 								<input type="hidden" name="pno" value="<%= (int)bmap.get("pno") %>">
 								<input type="hidden" name="reviewStar">
 								<textarea class="reviewInput" rows="5" style="width:100%" 
@@ -943,7 +944,7 @@
 			$.ajax({
 				url:"<%= request.getContextPath() %>/insertQnA.bo",
 				type:"post",
-				data:{qnaInput:qnaInput, qnaWriter:<%= loginUser.getUno() %>, parentBno:<%= bmap.get("bno") %>, pno:<%= bmap.get("pno") %>},
+				data:{qnaInput:qnaInput, qnaWriter:<%= loginUser.getUno() %>, parentBno:<%= bmap.get("bno") %>, pno:<%= bmap.get("pno") %>, parentBtitle:'<%= bmap.get("bTitle")%>'},
 				success:function(data) {
 					var $tbody = $("#QnAList>tbody");
 					$tbody.html("");

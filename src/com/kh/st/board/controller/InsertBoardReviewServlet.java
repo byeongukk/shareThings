@@ -18,6 +18,8 @@ import com.kh.st.attachment.model.vo.Attachment;
 import com.kh.st.board.model.service.BoardService;
 import com.kh.st.board.model.vo.Board;
 import com.kh.st.common.MyFileRenamePolicy;
+import com.kh.st.common.SendSMS;
+import com.kh.st.member.model.service.MemberService;
 import com.kh.st.member.model.vo.Member;
 import com.oreilly.servlet.MultipartRequest;
 
@@ -73,6 +75,7 @@ public class InsertBoardReviewServlet extends HttpServlet {
 			System.out.println("rvWriter : " + rvWriter);
 			String parentBno = multiRequest.getParameter("bno");
 			System.out.println("parentBno : " + parentBno);
+			String parentBtitle = multiRequest.getParameter("bTitle");
 			String pno = multiRequest.getParameter("pno");
 			System.out.println("pno : " + pno);
 			String reviewStar = multiRequest.getParameter("reviewStar");
@@ -101,6 +104,8 @@ public class InsertBoardReviewServlet extends HttpServlet {
 			if(result > 0) {
 				ArrayList<HashMap<String, Object>> reviewList = new BoardService().selectReviewList(Integer.parseInt(parentBno));
 				if(!reviewList.isEmpty()) {
+					String phone = new MemberService().getBwriterPhone(Integer.parseInt(parentBno));
+					new SendSMS().send(phone, parentBtitle, "대여 후기");
 					new Gson().toJson(reviewList, response.getWriter());
 				}else {
 					response.getWriter().append("List not found");
