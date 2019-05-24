@@ -121,14 +121,22 @@ public class CsService {
 	      return result;
 	}
 
-	//병욱
-	public HashMap<String,Object> selectAdminList() {
-		Connection con = getConnection();
-		HashMap<String,Object> hmap = new CsDao().selectAdminList(con);
-		
-		close(con);
-		return hmap;
-	}
+	  //병욱
+	   public ArrayList<HashMap<String,Object>> selectAdminList() {
+	      Connection con = getConnection();
+	      ArrayList<HashMap<String,Object>> list = new CsDao().selectAdminList(con);
+	      
+	      close(con);
+	      return list;
+	   }
+
+	   public int selectListSize() {
+	      Connection con = getConnection();
+	      int listSize = new CsDao().selectListSize(con);
+	      
+	      close(con);
+	      return listSize;
+	   }
 
 }
 

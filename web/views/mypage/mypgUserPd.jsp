@@ -159,9 +159,9 @@
 				</tr>
 				<%} %>
 				
-				<%if(list == null) {%>
+				<%if(list.size() == 0) {%>
 				<tr>
-					<td colspan=12 style="text-align:center; padding:50px">최근 대여한 상품이 없습니다.</td>
+					<td colspan=12 style="text-align:center; padding:50px">관심물품에 추가한 상품이 없습니다.</td>
 				</tr>
 				<%} %>
 				

@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="com.kh.st.product.model.vo.*, java.util.*"%>
+<%
+	ArrayList<Product> list = (ArrayList<Product>)request.getAttribute("list");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -168,20 +171,19 @@
 					<td>배송비</td>
 					<td>선택</td>
 				</tr>
-				<tr >
-					<td>
-						<input type="checkbox">
-					</td>
-					<td><img src="../../resource/img/mypage/naninggu.PNG" class="listimg"></td>
-					<td>아저씨의 난닝구</td>
-					<td>94/02/26</td>
-					<td>2,600,000</td>
-					<td>3,500</td>
-					<td>
-					<input type="button" value="dd">
-					<input type="button" value="dd">
-					</td>
+				
+				<%for(Product p : list) {%>
+				<tr style="text-align:center; height:100px; border-bottom:1px solid gray;">
+					<td><input type="checkbox" checked></td>
+					<td><img alt="" src="/st/attach_upload/<%= p.getAsHistory()%>" height="100px" width="auto"></td>
+					<td><%= p.getModel() %></td>
+					<td><%= p.getpStartDate() %> ~ <%= p.getpEndDate() %></td>
+					<td><%= (p.getPrice())%> 원</td>
+					<td>2,500</td>
+					<td><%= p.getSid() %></td>
+					<td><% if(p.getSid().equals("등록 요청")) { %> <button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none;">취소</button><%}else{} %> </td>
 				</tr>
+				<%} %>
 				
 				
 				

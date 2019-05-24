@@ -269,11 +269,11 @@ public class ProductDao {
 				p.setDeposite(rset.getInt("DEPOSIT"));
 				p.setPrice(rset.getInt("PRICE"));
 				p.setDlFreeAmount(rset.getInt("DL_FREE_AMOUNT"));
-				p.setModel(rset.getString("MODEL"));
+				p.setModel(rset.getString("BCONTENT"));
 				p.setCtgId(rset.getInt("CTG_ID"));
 				p.setPurchaseDate(rset.getDate("PURCHASE_DATE"));
 				p.setPurchasePrice(rset.getInt("PURCHASE_PRICE"));
-				p.setAsHistory(rset.getString("ASHISTORY"));
+				p.setAsHistory(rset.getString("CHANGE_NAME"));
 				p.setCondition(rset.getString("CONDITION"));
 				p.setSid(rset.getString("STATUS"));
 				
@@ -314,7 +314,7 @@ public class ProductDao {
 				p.setDeposite(rset.getInt("DEPOSIT"));
 				p.setPrice(rset.getInt("PRICE"));
 				p.setDlFreeAmount(rset.getInt("DL_FREE_AMOUNT"));
-				p.setModel(rset.getString("MODEL"));
+				p.setModel(rset.getString("BCONTENT"));
 				p.setCtgId(rset.getInt("CTG_ID"));
 				p.setPurchaseDate(rset.getDate("PURCHASE_DATE"));
 				p.setPurchasePrice(rset.getInt("PURCHASE_PRICE"));
