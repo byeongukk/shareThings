@@ -167,7 +167,7 @@
 						location.href="<%= request.getContextPath() %>/views/member/beforeEmailVerifPage.jsp";
 					}else {
 						$("#loginFail").hide();
-						location.href="<%= request.getContextPath() %>/views/main/main.jsp";
+						location.href="<%= request.getContextPath() %>/mainLoad.bo";
 					}
 				}, error:function(data) {
 					alert("서버전송 실패!");

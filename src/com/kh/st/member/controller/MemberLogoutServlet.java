@@ -28,7 +28,7 @@ public class MemberLogoutServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		request.getSession().invalidate();
-		response.sendRedirect(request.getContextPath() + "/views/main/main.jsp");
+		response.sendRedirect(request.getContextPath() + "/mainLoad.bo");
 		
 	}
 

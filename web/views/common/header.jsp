@@ -320,7 +320,7 @@
 		$(function() {
 			//$(".sideBtns").hide();
 			<% 
-				String verifResult = request.getParameter("verif");
+				String verifResult = (String)request.getAttribute("verif");
 				if(verifResult != null && verifResult.equals("success")) {
 			%>
 			alert("감사합니다! 웰컴 적립금 3000원이 적립되었습니다!\n 마이페이지에서 확인 가능합니다.");

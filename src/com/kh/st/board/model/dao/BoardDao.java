@@ -694,7 +694,45 @@ public class BoardDao {
 	}
 
 	
-	
+
+	public HashMap<String, Object> getCtgTop5List(Connection con) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		HashMap<String, Object> ctgTop5map = new HashMap<String, Object>();
+		ArrayList<HashMap<String, Object>> ctgTop5List = null;
+		HashMap<String, Object> hmap = null;
+		String query = prop.getProperty("getCtgTop5List");
+		try {
+			
+			for(int i = 1; i <= 5; i++) {
+				pstmt = con.prepareStatement(query);
+				pstmt.setString(1, "등록");
+				pstmt.setInt(2, i);
+				rset = pstmt.executeQuery();
+				ctgTop5List = new ArrayList<HashMap<String, Object>>();
+				while(rset.next()) {
+					hmap = new HashMap<String, Object>();
+					hmap.put("bno", rset.getInt("BNO"));
+					hmap.put("ano", rset.getInt("ANO"));
+					hmap.put("changeName", rset.getString("CHANGE_NAME"));
+					hmap.put("price", rset.getInt("PRICE"));
+					hmap.put("deposit", rset.getInt("DEPOSIT"));
+					ctgTop5List.add(hmap);
+				}
+				String key = "ctg" + i;
+				ctgTop5map.put(key, ctgTop5List);
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return ctgTop5map;
+	}
+
+
 	
 	
 	
@@ -798,7 +836,6 @@ public class BoardDao {
 	      
 	      return result;
 	   }
-
 
 
 
