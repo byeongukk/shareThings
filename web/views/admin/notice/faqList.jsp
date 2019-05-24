@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import="java.util.* , com.kh.st.customerService.model.vo.*"%>
+<%
+	ArrayList<HashMap<String,Object>> list  = (ArrayList<HashMap<String,Object>>)request.getAttribute("list");
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -87,43 +90,7 @@
 													</tr>
 												</thead>
 
-												<tbody>
-													<tr role="row" class="even">
-														<td class="sorting_1">01</td>
-														<td>admin</td>
-														<td>자주 묻는 질문1</td>
-													</tr>
-													<tr role="row" class="even">
-														<td class="sorting_1">02</td>
-														<td>admin</td>
-														<td>자주 묻는 질문1</td>
-													</tr>
-													<tr role="row" class="even">
-														<td class="sorting_1">03</td>
-														<td>admin</td>
-														<td>자주 묻는 질문1</td>
-													</tr>
-													<tr role="row" class="even">
-														<td class="sorting_1">01</td>
-														<td>admin</td>
-														<td>자주 묻는 질문1</td>
-													</tr>
-													<tr role="row" class="even">
-														<td class="sorting_1">01</td>
-														<td>admin</td>
-														<td>자주 묻는 질문1</td>
-													</tr>
-													<tr role="row" class="even">
-														<td class="sorting_1">01</td>
-														<td>admin</td>
-														<td>자주 묻는 질문1</td>
-													</tr>
-													<tr role="row" class="even">
-														<td class="sorting_1">01</td>
-														<td>admin</td>
-														<td>자주 묻는 질문1</td>
-													</tr>
-												</tbody>
+												
 											</table>
 										</div>
 									</div>

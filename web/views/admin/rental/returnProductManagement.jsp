@@ -162,7 +162,11 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 												&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 												<select class="form-control" id="dCom">
 													<option disabled>택배사</option>
-													<option value="04">대한통운</option>
+													<option value="대한통운">대한통운</option>
+													<option value="로젠택배">로젠택배</option>
+													<option value="우체국택배">우체국택배</option>
+													<option value="CVSnet">CVSnet 편의점택배</option>
+													<option value="한진택배">한진택배</option>
 												</select> 
 												&nbsp;&nbsp;&nbsp;&nbsp; <span> <input type="number"
 													class="form-control" id="invoiceNum" placeholder="송장번호">
