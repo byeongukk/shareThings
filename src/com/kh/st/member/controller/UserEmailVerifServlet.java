@@ -37,7 +37,7 @@ public class UserEmailVerifServlet extends HttpServlet {
 		if(updateUser != null) {
 			HttpSession session = request.getSession();
 			session.setAttribute("loginUser", updateUser);
-			response.sendRedirect("views/main/main.jsp?verif=success");
+			response.sendRedirect("mainLoad.bo?verif=success");
 		}else {
 			page = "views/common/errorPage.jsp";
 			request.setAttribute("msg", "인증결과 전송에 실패했습니다..!");

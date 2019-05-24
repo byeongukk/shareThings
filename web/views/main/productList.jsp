@@ -47,7 +47,8 @@
 		width:100% !important;
 		height:60% !important;
 		border:1px solid lightgray;
-		background-size:cover; 
+		background-size:contain; 
+		background-repeat:no-repeat;
 		background-position:center; 
 	}
 	.filter {
@@ -186,8 +187,11 @@
 							</p>
 							<p align="right" style="font-size:0.8em; color:gray;">
 							총 대여횟수:<%= hmap.get("rtCount") %>회</p>
-							<p align="right" style="font-size:0.8em; color:gray;">
-							대여후기 : <%= hmap.get("rvStar") %>점(<%= hmap.get("rvCount") %>개)</p>
+							
+							<div align="right" style="font-size:0.8em; color:gray;">대여후기 
+								<div class="ui star large rating ratingContent" data-rating="<%= hmap.get("rvStar") %>" data-max-rating="5"></div>
+								(<%= hmap.get("rvCount") %>개)
+							</div>
 						</div>
 					</div>
 				</div>
@@ -211,7 +215,7 @@
 	<script>
 		
 		$(function() {
-			
+			$(".ratingContent").rating("disable");
 			//대여 시작일, 종료일 지정
 			var startDate;
 			var endDate;

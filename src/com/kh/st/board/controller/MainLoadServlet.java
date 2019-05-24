@@ -33,14 +33,18 @@ public class MainLoadServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		ArrayList<HashMap<String, Object>> top5List = new BoardService().getTop5List(); 
+		
+		String verif = request.getParameter("verif");
+		HashMap<String, Object> ctgTop5map = new BoardService().getTop5List(); 
 		ArrayList<Notice> notice5List = new NoticeService().getNotice5List();
 		String page = "";
-		if(!top5List.isEmpty() && !notice5List.isEmpty()) {
+		if(!ctgTop5map.isEmpty() && !notice5List.isEmpty()) {
 			page = "views/main/main.jsp";
-			request.setAttribute("top5List", top5List);
+			request.setAttribute("ctgTop5map", ctgTop5map);
 			request.setAttribute("notice5List", notice5List);
+			if(verif != null) {
+				request.setAttribute("verif", "success");
+			}
 		}else {
 			page = "views/common/errorPage.jsp";
 			request.setAttribute("msg", "메인페이지 로드 실패..!");

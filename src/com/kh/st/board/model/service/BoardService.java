@@ -177,12 +177,13 @@ public class BoardService {
 	}
 
 
-	public ArrayList<HashMap<String, Object>> getTop5List() {
+	public HashMap<String, Object> getTop5List() {
 		Connection con = getConnection();
 		ArrayList<HashMap<String, Object>> top5List = new BoardDao().getTop5List(con);
+		HashMap<String, Object> ctgTop5map= new BoardDao().getCtgTop5List(con);
+		ctgTop5map.put("ctg0", top5List);
 		close(con);
-		
-		return top5List;
+		return ctgTop5map;
 	}
 
 	
