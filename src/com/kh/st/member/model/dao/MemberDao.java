@@ -696,7 +696,7 @@ public class MemberDao {
 				pstmt = con.prepareStatement(query);
 				pstmt.setInt(1, Integer.parseInt(nums[i]));
 
-				result = pstmt.executeUpdate();
+				result += pstmt.executeUpdate();
 			}
 
 			if(result == nums.length) {
@@ -714,6 +714,7 @@ public class MemberDao {
 		return result;
 	}
 	
+	//회원 필터링 카운트
 	public int getMemberFilterCount(Connection con, HashMap<String, Object> condition) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
@@ -1610,6 +1611,85 @@ public class MemberDao {
 	
 		return list;
 	}
+	
+	public int updateMemberPenalty(Connection con, String[] reportsNo) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("updateMemberPenalty");
+		
+		try {
+			for(int i = 0; i < reportsNo.length; i++) {
+				pstmt = con.prepareStatement(query);
+				pstmt.setInt(1, Integer.parseInt(reportsNo[i]));
+				pstmt.setInt(2, Integer.parseInt(reportsNo[i]));
+				pstmt.setInt(3, Integer.parseInt(reportsNo[i]));
+				
+				result += pstmt.executeUpdate();
+			}
+			
+			if(result == reportsNo.length) {
+				result = 1;
+			}else {
+				result = 0;
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+				
+		return result;
+	}
+	
+	public int selectPaybackSize(Connection con) {
+		Statement stmt = null;
+		ResultSet rset = null;
+		int pb = 0;
+		
+		String query = prop.getProperty("selectPaybackSize");
+		
+		try {
+			stmt = con.createStatement();
+			rset = stmt.executeQuery(query);
+			
+			while(rset.next()) {
+				pb = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(stmt);
+			close(rset);
+		}
+		
+		return pb;
+	}
+	
+	public int selectRefundSize(Connection con) {
+		Statement stmt = null;
+		ResultSet rset = null;
+		int rf = 0;
+		
+		String query = prop.getProperty("selectRefundSize");
+		
+		try {
+			stmt = con.createStatement();
+			rset = stmt.executeQuery(query);
+			
+			while(rset.next()) {
+				rf = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(stmt);
+			close(rset);
+		}
+		
+		return rf;
+	}
 		
 	
 
@@ -1792,7 +1872,28 @@ public class MemberDao {
 	}
 
 	
-	
+	public String getBwriterPhone(Connection con, int parentBno) {
+	      PreparedStatement pstmt = null;
+	      ResultSet rset = null;
+	      String phone = "";
+	      String query = prop.getProperty("getBwriterPhone");
+	      try {
+	         pstmt = con.prepareStatement(query);
+	         pstmt.setInt(1, parentBno);
+	         
+	         rset = pstmt.executeQuery();
+	         if(rset.next()) {
+	            phone = rset.getString(1);
+	         }
+	         
+	      } catch (SQLException e) {
+	         e.printStackTrace();
+	      } finally {
+	         close(pstmt);
+	         close(rset);
+	      }
+	      return phone;
+	   }
 
 
 
@@ -1821,6 +1922,12 @@ public class MemberDao {
 		}
 		return result;
 	}
+
+	
+
+	
+
+	
 
 	
 	
