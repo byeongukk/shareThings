@@ -2,6 +2,11 @@
 	pageEncoding="UTF-8" import="java.util.*"%>
 <%
 	ArrayList<HashMap<String,Object>> list = (ArrayList<HashMap<String,Object>>) request.getAttribute("list");
+	int totalProfit = 0;
+	String[] type = null;
+	for(int i = 0; i < list.size(); i++){
+		totalProfit += (int)list.get(i).get("netProfit");
+	}
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -50,7 +55,9 @@
 .MTR {
 	color: black;
 }
-
+#dataTable_wrapper {
+   overflow: hidden;
+}
 </style>
 </head>
 
@@ -78,24 +85,23 @@
 							<div class="card shadow mb-4">
 								<div class="card-header py-3">조회 필터</div>
 								<div class="card-body">
+								<form>
 									<table class="col-lg-12" id="filter">
 										<tr>
 											<td width="5%">기간 :</td>
-											<td><input type="date" name="startDate"
+											<td><input type="date" id="startDate"
 												style="width: 20%"> &nbsp;&nbsp;&nbsp; ~
-												&nbsp;&nbsp;&nbsp; <input type="date" name="endDate"
+												&nbsp;&nbsp;&nbsp; <input type="date" id="endDate"
 												style="width: 20%">
 											</td>
 										</tr>
-										<tr>
-
-										</tr>
 									</table>
 									<div>
-										<button>조회하기</button>
+										<button type="button" onclick="filtering()">조회하기</button>
 										&nbsp;&nbsp;&nbsp;
-										<button>초기화</button>
+										<button type="reset">초기화</button>
 									</div>
+									</form>
 								</div>
 							</div>
 							<div class="row">
@@ -107,7 +113,7 @@
 						                  <h6 class="m-0 font-weight-bold text-primary">카테고리별 매출</h6>
 						                </div>
 						                <div class="card-body">
-						                  <div class="chart-bar">
+						                  <div class="chart-bar" id="chart-bar">
 						                    <canvas id="myBarChart"></canvas>
 						                  </div>
 						                </div>
@@ -119,7 +125,7 @@
 					                </div>
 					                <!-- Card Body -->
 					                <div class="card-body">
-					                  <div class="chart-pie pt-4">
+					                  <div class="chart-pie pt-4" id="chart-circle">
 					                    <canvas id="myPieChart"></canvas>
 					                  </div>
 					                </div>
@@ -133,6 +139,10 @@
 											class="dataTables_wrapper dt-bootstrap4">
 											<div class="row">
 												<div class="col-sm-12">
+												<div>
+													<p id="totalProfit" style="float:left">총 순이익 : <%= totalProfit %>원</p>
+												</div>
+												<br>
 													<table class="table table-bordered dataTable"
 														id="dataTable" width="100%" cellspacing="0" role="grid"
 														aria-describedby="dataTable_info" style="width: 100%;"
@@ -163,9 +173,9 @@
 																	HashMap<String,Object> hmap = list.get(i);%>
 																<tr align="center" class="even">
 																	<td><%= hmap.get("type") %></td>
-																	<td><%= hmap.get("count") %></td>
-																	<td><%= hmap.get("price") %></td>
-																	<td><%= hmap.get("netProfit") %></td>
+																	<td><%= hmap.get("count") %>건</td>
+																	<td><%= hmap.get("price") %>원</td>
+																	<td><%= hmap.get("netProfit") %>원</td>
 																</tr>	
 															<% } %>
 														</tbody>
@@ -194,6 +204,187 @@
 			<%@ include file="../common/logoutModal.jsp"%>
 
 			<script>
+				function filtering(){
+					var startDate = $("#startDate").val();
+					var endDate = $("#endDate").val();
+					
+					if(startDate > endDate || (endDate != "" && startDate == "")){
+						alert("기간 설정이 잘못되었습니다.");
+						return;
+					}
+					
+					$.ajax({
+						url:"<%=request.getContextPath()%>/selectStatFilter.st",
+						data:{
+							startDate:startDate,
+							endDate:endDate
+						},
+						type:"get",
+						success:function(data){
+							$("#myBarChart").remove();
+							$cd = $("<canvas id='myBarChart' style='display: block; height: 320px; width: 924px;' width='1039' height='360' class='chartjs-render-monitor'>");
+							$("#chart-bar").append($cd);
+							
+							$("#myPieChart").remove();
+							$pd = $("<canvas id='myPieChart' width='324' height='283' class='chartjs-render-monitor' style='display: block; height: 360px; width: 288px;'>");
+							$("#chart-circle").append($pd);
+							
+							$("#dataTable > tbody > tr").remove();
+							var $dataTable = $("#dataTable");
+							
+							var typeArr = new Array();
+							var priceArr = new Array();
+							var countArr = new Array();
+							var max = 0;
+							var total = 0;
+							for(var key in data){
+								typeArr.push(data[key].type);
+								priceArr.push(data[key].price);
+								countArr.push(data[key].count);
+								total += data[key].netProfit;
+								if(data[key].price > max){
+									max = data[key].price;
+								}
+							}
+							
+							$("#totalProfit").text("총 순이익 : " + total + "원");
+							
+							console.log(typeArr);
+							console.log(priceArr);
+							var ctx = document.getElementById("myBarChart");
+							var myBarChart = new Chart(ctx, {
+							  type: 'bar',
+							  data: {
+							    labels: typeArr,
+							    datasets: [{
+							      label: "매출",
+							      backgroundColor: "#4e73df",
+							      hoverBackgroundColor: "#2e59d9",
+							      borderColor: "#4e73df",
+							      data: priceArr,
+							    }],
+							  },
+							  options: {
+							    maintainAspectRatio: false,
+							    layout: {
+							      padding: {
+							        left: 10,
+							        right: 25,
+							        top: 25,
+							        bottom: 0
+							      }
+							    },
+							    scales: {
+							      xAxes: [{
+							        time: {
+							          unit: 'month'
+							        },
+							        gridLines: {
+							          display: false,
+							          drawBorder: false
+							        },
+							        ticks: {
+							          maxTicksLimit: 6
+							        },
+							        maxBarThickness: 25,
+							      }],
+							      yAxes: [{
+							        ticks: {
+							          min: 0,
+							          max: max + 20000,
+							          maxTicksLimit: 5,
+							          padding: 10,
+							          callback: function(value, index, values) {
+							            return "￦" + number_format(value);
+							          }
+							        },
+							        gridLines: {
+							          color: "rgb(234, 236, 244)",
+							          zeroLineColor: "rgb(234, 236, 244)",
+							          drawBorder: false,
+							          borderDash: [2],
+							          zeroLineBorderDash: [2]
+							        }
+							      }],
+							    },
+							    legend: {
+							      display: false
+							    },
+							    tooltips: {
+							      titleMarginBottom: 10,
+							      titleFontColor: '#6e707e',
+							      titleFontSize: 14,
+							      backgroundColor: "rgb(255,255,255)",
+							      bodyFontColor: "#858796",
+							      borderColor: '#dddfeb',
+							      borderWidth: 1,
+							      xPadding: 15,
+							      yPadding: 15,
+							      displayColors: false,
+							      caretPadding: 10,
+							      callbacks: {
+							        label: function(tooltipItem, chart) {
+							          var datasetLabel = chart.datasets[tooltipItem.datasetIndex].label || '';
+							          return datasetLabel + ': ￦' + number_format(tooltipItem.yLabel);
+							        }
+							      }
+							    },
+							  }
+							});
+							
+							var mpc = document.getElementById("myPieChart");
+							var myPieChart = new Chart(mpc, {
+							  type: 'doughnut',
+							  data: {
+							    labels: typeArr,
+							    datasets: [{
+							      data: countArr,
+							      backgroundColor: ['#4e73df', '#0F3299', '#80E2FF','#FFD5BF','#CC6A52'],
+							      hoverBackgroundColor: ['#0B3DE0', '#536B99', '#24E4FF','#FF9163','#CC2508'],
+							      hoverBorderColor: "rgba(234, 236, 244, 1)",
+							    }],
+							  },
+							  options: {
+							    maintainAspectRatio: false,
+							    tooltips: {
+							      backgroundColor: "rgb(255,255,255)",
+							      bodyFontColor: "#858796",
+							      borderColor: '#dddfeb',
+							      borderWidth: 1,
+							      xPadding: 15,
+							      yPadding: 15,
+							      displayColors: false,
+							      caretPadding: 10,
+							    },
+							    legend: {
+							      display: false
+							    },
+							    cutoutPercentage: 80,
+							  },
+							});
+							
+							
+							
+							for(var key in data){
+								var $tr = $("<tr role='row' class='even' align='center'>");
+								
+								var $typeTd = $("<td>").text(data[key].type);
+								var $countTd = $("<td>").text(data[key].count + "건");
+								var $priceTd = $("<td>").text(data[key].price + "원");
+								var $profitTd = $("<td>").text(data[key].netProfit + "원");
+								
+								
+								$tr.append($typeTd);
+								$tr.append($countTd);
+								$tr.append($priceTd);
+								$tr.append($profitTd);
+								
+								$dataTable.append($tr);
+							}
+						}
+					})
+				};
+			
 			</script>
 			<script
 				src="<%=request.getContextPath()%>/resource/vendor/jquery/jquery.min.js"></script>
@@ -238,7 +429,9 @@
 			  }
 			  return s.join(dec);
 			}
-
+			
+			
+			
 			var ctx = document.getElementById("myBarChart");
 			var myBarChart = new Chart(ctx, {
 			  type: 'bar',
@@ -249,7 +442,9 @@
 			      backgroundColor: "#4e73df",
 			      hoverBackgroundColor: "#2e59d9",
 			      borderColor: "#4e73df",
-			      data: [<%=list.get(0).get("price")%>,<%=list.get(1).get("price")%>],
+			      data: [<%=list.get(0).get("price")%>,<%=list.get(1).get("price")%>,
+			    	  <%=list.get(2).get("price")%>,<%=list.get(3).get("price")%>,
+			    	  <%=list.get(4).get("price")%>],
 			    }],
 			  },
 			  options: {
@@ -279,7 +474,7 @@
 			      yAxes: [{
 			        ticks: {
 			          min: 0,
-			          max: <%=list.get(1).get("price")%> + 50000,
+			          max: 200000,
 			          maxTicksLimit: 5,
 			          padding: 10,
 			          callback: function(value, index, values) {
@@ -320,8 +515,43 @@
 			  }
 			});
 			</script>
-			<script
-				src="<%=request.getContextPath()%>/resource/js/demo/chart-pie-demo.js"></script>
+			<script>
+			Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+			Chart.defaults.global.defaultFontColor = '#858796';
+
+			var mpc = document.getElementById("myPieChart");
+			var myPieChart = new Chart(mpc, {
+			  type: 'doughnut',
+			  data: {
+			    labels: ["전자기기", "취미/레저", "패션뷰티", "유아동", "반려동물"],
+			    datasets: [{
+			      data: [<%=list.get(0).get("count")%>,<%=list.get(1).get("count")%>,
+			    	  <%=list.get(2).get("count")%>,<%=list.get(3).get("count")%>,
+			    	  <%=list.get(4).get("count")%>],
+			      backgroundColor: ['#4e73df', '#0F3299', '#80E2FF','#FFD5BF','#CC6A52'],
+			      hoverBackgroundColor: ['#0B3DE0', '#536B99', '#24E4FF','#FF9163','#CC2508'],
+			      hoverBorderColor: "rgba(234, 236, 244, 1)",
+			    }],
+			  },
+			  options: {
+			    maintainAspectRatio: false,
+			    tooltips: {
+			      backgroundColor: "rgb(255,255,255)",
+			      bodyFontColor: "#858796",
+			      borderColor: '#dddfeb',
+			      borderWidth: 1,
+			      xPadding: 15,
+			      yPadding: 15,
+			      displayColors: false,
+			      caretPadding: 10,
+			    },
+			    legend: {
+			      display: false
+			    },
+			    cutoutPercentage: 80,
+			  },
+			});
+			</script>
 </body>
 
 </html>
