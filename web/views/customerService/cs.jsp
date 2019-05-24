@@ -65,8 +65,136 @@ width:100%;
       width:80%;
       margin-left: 3%;
    }
+	<!--
+	
+	/** 배경 지정 */
+    body {
+        background: #252422;
+}
+
+    /** 목록 스타일 초기화 및 중앙 배치, 가로 폭 지정 */
+    ul {
+        padding: 0;
+        margin: 50px auto;
+        list-style: none;
+        width: 100%;
+}
+
+    /** 제목 영역의 초기화 처리 */
+    .title {
+        padding: 0;
+        margin: 0;
+        
+}
+
+    /** 링크의 클릭 영역 확대 및 배경 및 폰트 처리 */
+    .title > a {
+        display: block;
+        padding: 2px;
+        font-size: 14px;
+        font-weight: bold;
+        text-indent: 12px;
+        text-decoration: none;
+        color: black;
+        height: 32px;
+        line-height: 32px;
+        background: white;
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+        
+       
+    }
+    .title > a:hover {
+        display: block;
+        padding: 2px;
+        font-size: 14px;
+        font-weight: bold;
+        text-indent: 12px;
+        text-decoration: none;
+        color: black;
+        height: 32px;
+        line-height: 32px;
+        background: white;
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+        
+       
+    }
+
+    /** 현재 활성화된 요소에 적용할 배경이미지 지정 */
+    .selected {
+        background: #2288dd !important;
+        color: #fff !important;
+        
+        /*그라디언트 지정*/
+        background: linear-gradient(top, #6bb2ff 0%, #2288dd 100%) !important;
+        background: -moz-linear-gradient(top, #6bb2ff, #2288dd) !important; 
+        background: -webkit-gradient(linear, left top, left bottom, from(#6bb2ff), to(#2288dd)) !important;       
+    }
+    
+    /** 내용 영역 */
+    .content {
+        margin: 0;
+        background: #ececec;
+        padding: 10px;
+        height: 50px;
+        overflow-y: auto;
+        border-radius: 5px;
+        -webkit-border-radius: 5px;
+}
+	#queList{
+		display:block;
+      float:left;
+      width:100%;
+     
+}
+
+	
+	
+	
+	
 	
 </style>
+
+
+
+<!--  -->
+
+
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.8.3.min.js"></script>
+  <script>
+    $(document).ready(function(){
+        
+        /** 초기화 처리*/
+
+        // 첫 번재 항목이 펼쳐져 있도록 처리
+        $(".collapsible:eq(0) a").addClass("selected"); //첫번째 항목만 selected 클래스를 적용
+        $(".collapsible").not(":eq(0)").find(".content").hide(); //첫번째 항목 이외의 content를 숨김
+        
+        /** 링크에 대한 클릭 이벤트 처리 */
+        $(".collapsible .title a").click(function() {            
+            $(this).toggleClass("selected");
+            //클릭된 나 자신을 제외한 나머리 링크들은 slected 클래스를 무조건 제거
+            $(".collapsible .title a").not(this).removeClass("selected"); 
+
+            // 펼칠 내용 영역 선택
+            var target = $(this).parents(".collapsible").find(".content");
+
+            // 나머지 내용 영역을 선택
+            var other = $(".collapsible .title a").not(this)
+                                                  .parents(".collapsible").find(".content");
+
+            // 애니메이션으로 열고 닫기 처리
+            target.slideToggle(300);
+            other.slideUp(300);
+            
+            // 링크 페이지 이동 중지
+            return false;
+        });
+    });
+  </script>
+
+
 
 </head>
 <body>
@@ -148,7 +276,77 @@ width:100%;
 </div>
     
     
-    <div style="display:block; clear:left;">
+    <!--  -->
+    <div id="queList">
+     <ul>
+        <li class="collapsible">
+            <h2 class="title"><a href="#html5">어떤 물건을 등록 할 수 있나요?</a></h2>
+            <p class="content">안쓰는 물건 아무거나 가능</p>
+        </li>
+        <li class="collapsible">
+            <h2 class="title"><a href="#css3">배송 시스템은 어떻게 되나요?</a></h2>
+            <p class="content">빠르고 좋은 배송 시스템</p>
+        </li>
+        <li class="collapsible">
+            <h2 class="title"><a href="#api">보증금은 아무렇게나 적으면 되나요?</a></h2>
+            <p class="content">놉</p>
+        </li>
+        <li class="collapsible">
+            <h2 class="title"><a href="#api">결제는 카드만 되나요?</a></h2>
+            <p class="content">ㅇㅇ</p>
+        </li>
+        <li class="collapsible">
+            <h2 class="title"><a href="#api">물품 등록 어떻게 하나요?</a></h2>
+            <p class="content">이렇게 저렇게</p>
+        </li>
+        <li class="collapsible">
+            <h2 class="title"><a href="#api">판매자에게 연락은 어떻게 하나요?</a></h2>
+            <p class="content">못함</p>
+        </li>
+        <li class="collapsible">
+            <h2 class="title"><a href="#api">배송 예약도 가능한가요?</a></h2>
+            <p class="content">놉</p>
+        </li>
+        <li class="collapsible">
+            <h2 class="title"><a href="#api">물품 파손 시 보증금은 어떻게 되나요?</a></h2>
+            <p class="content">까임</p>
+        </li>
+        <li class="collapsible">
+            <h2 class="title"><a href="#api">판매 불가 항목에는 어떤게 있나요?</a></h2>
+            <p class="content">니가 찾아보세요</p>
+        </li>
+        <li class="collapsible">
+            <h2 class="title"><a href="#api">택배비용은 어떻게 되나요?</a></h2>
+            <p class="content">왕복 5000원</p>
+        </li>
+        
+    </ul>
+
+</div>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+   <!--  <div style="display:block; clear:left;">
     <table class="table" >
     <thead>
       <tr>
@@ -215,7 +413,9 @@ width:100%;
     
     </div>
 </div>
-
+ -->
+ 
+ 
 
 
 
@@ -236,5 +436,9 @@ function myQue(){
 }
 
 </script>
+<!-- 아코디언메뉴  -->
+<script type="text/javascript" src="../js/jquery-3.3.1.min.js"></script>
+
+
 </body>
 </html>
