@@ -277,53 +277,74 @@ public class CsDao {
 	   }
 
 	//병욱
-	public HashMap<String,Object> selectAdminList(Connection con) {
-		ArrayList<Cs> list = null;
-		HashMap<String,Object> hmap = new HashMap<>();
-		Statement stmt = null;
-		ResultSet rset = null;
-		
-		String query = prop.getProperty("selectAdminCs");
-		
-		try {
-			stmt = con.createStatement();
-			
-			rset = stmt.executeQuery(query);
-			
-			list = new ArrayList<Cs>();
-			
-			
-			while(rset.next()) {
-				Cs c = new Cs();
-				String userId = "";
-				c.setCno(rset.getInt("CS_NO"));
-				c.setPno(rset.getInt("PARENT_NO"));
-				c.setcDate(rset.getDate("CS_DATE"));
-				c.setcContent(rset.getString("CS_CONTENT"));
-				c.setcCategory(rset.getString("CS_CATEGORY"));
-				c.setcReply(rset.getString("CS_REPLY"));
-				userId = rset.getString("USER_ID");
-				c.setcType(rset.getString("CS_TYPE"));
-				c.setcCount(rset.getInt("CS_COUNT"));
-				
-				list.add(c);
-				hmap.put("list", list);
-				hmap.put("userId", userId);
-				
-				
-			}
-			System.out.println(list);
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			close(rset);
-			close(stmt);
-		}
-		
-		return hmap;
-	}
+	   public ArrayList<HashMap<String,Object>> selectAdminList(Connection con) {
+	      HashMap<String,Object> hmap = null;
+	      ArrayList<HashMap<String,Object>> list = null;
+	      Statement stmt = null;
+	      ResultSet rset = null;
+	      
+	      String query = prop.getProperty("selectAdminCs");
+	      
+	      try {
+	         stmt = con.createStatement();
+	         
+	         rset = stmt.executeQuery(query);
+	         list = new ArrayList<>();
+	         
+	         while(rset.next()) {
+	            hmap = new HashMap<>();
+	            hmap.put("cno",rset.getInt("CS_NO"));
+	            hmap.put("parentNo",rset.getInt("PARENT_NO"));
+	            hmap.put("csDate",rset.getDate("CS_DATE"));
+	            hmap.put("csContent",rset.getString("CS_CONTENT"));
+	            hmap.put("csCategory",rset.getString("CS_CATEGORY"));
+	            hmap.put("csReply",rset.getString("CS_REPLY"));
+	            hmap.put("userId",rset.getString("USER_ID"));
+	            hmap.put("csType",rset.getString("CS_TYPE"));
+	            hmap.put("csCount",rset.getInt("CS_COUNT"));
+	            
+	            list.add(hmap);
+	            
+	         }
+	         
+	      } catch (SQLException e) {
+	         // TODO Auto-generated catch block
+	         e.printStackTrace();
+	      } finally {
+	         close(rset);
+	         close(stmt);
+	      }
+	      
+	      return list;
+	   }
+	   public int selectListSize(Connection con) {
+	      Statement stmt = null;
+	      ResultSet rset = null;
+	      int listSize = 0;
+	      
+	      String query = null;
+	      
+	      query = prop.getProperty("selectListSize");
+	      
+	      try {
+	         stmt = con.createStatement();
+	         
+	         rset = stmt.executeQuery(query);
+	         
+	         while(rset.next()) {
+	            listSize = rset.getInt("COUNT(*)");
+	         }
+	         
+	            
+	      } catch (SQLException e) {
+	         e.printStackTrace();
+	      } finally {
+	         close(stmt);
+	         close(rset);   
+	      }
+	      System.out.println(listSize);
+	      return listSize;
+	   }
 
 }
 
