@@ -136,17 +136,24 @@ public class MemberService {
 	public int reportOk(String[] reportsNo) {
 		Connection con = getConnection();
 		
-		int result = new MemberDao().reportOk(con, reportsNo);
+		int result1 = new MemberDao().reportOk(con, reportsNo);
+		int result2 = 0;
 		
-		if(result > 0) {
-			commit(con);
+		if(result1 > 0) {
+			result2 = new MemberDao().updateMemberPenalty(con, reportsNo);
+			
+			if(result2 > 0) {
+				commit(con);
+			}else {
+				rollback(con);
+			}
 		}else {
 			rollback(con);
 		}
 		
 		close(con);
 		
-		return result;
+		return result2;
 	}
 	
 	//신고이력 상세보기용
@@ -269,6 +276,7 @@ public class MemberService {
 		return list;
 	}
 	
+	//수익금 환급 필터링
 	public ArrayList<HashMap<String, Object>> selectPaybackFilter(HashMap<String, Object> condition, PageInfo pi) {
 		Connection con = getConnection();
 		
@@ -279,6 +287,7 @@ public class MemberService {
 		return list;
 	}
 	
+	//수익금 환급 필터링 카운트
 	public int getPaybackFilterCount(HashMap<String, Object> condition) {
 		Connection con = getConnection();
 		
@@ -289,6 +298,7 @@ public class MemberService {
 		return listCount;
 	}
 	
+	//환불 필터링 카운트
 	public int getRefundFilterCount(HashMap<String, Object> condition) {
 		Connection con = getConnection();
 		
@@ -298,6 +308,7 @@ public class MemberService {
 		return listCount;
 	}
 	
+	//환불 필터링
 	public ArrayList<HashMap<String, Object>> selectRefundFilter(HashMap<String, Object> condition, PageInfo pi) {
 		Connection con = getConnection();
 		
@@ -308,6 +319,7 @@ public class MemberService {
 		return list;
 	}
 	
+	//다운로드용
 	public ArrayList<Payback> getDownloadList(String[] nums) {
 		Connection con = getConnection();
 		
@@ -316,6 +328,20 @@ public class MemberService {
 		close(con);
 		
 		return list;
+	}
+	
+	//어드민 메인용
+	public HashMap<String, Object> selectMoneySize() {
+		Connection con = getConnection();
+		HashMap<String,Object> result = new HashMap<String,Object>();
+		
+		int pb = new MemberDao().selectPaybackSize(con);
+		int rf = new MemberDao().selectRefundSize(con);
+		
+		result.put("pb", pb);
+		result.put("rf", rf);
+		
+		return result;
 	}
 	
 	
@@ -390,7 +416,12 @@ public class MemberService {
 	}
 
 	
-	
+	public String getBwriterPhone(int parentBno) {
+	      Connection con = getConnection();
+	      String phone = new MemberDao().getBwriterPhone(con, parentBno);
+	      close(con);
+	      return phone;
+	   }
 	
 	
 	
@@ -412,6 +443,8 @@ public class MemberService {
 	      
 	      return result;
 	   }
+
+	
 
 
 
