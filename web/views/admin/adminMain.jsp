@@ -89,25 +89,20 @@ html {
 						</div>
 						<div class="col-lg-6 mb-4">
 							<div class="card bg-info text-white shadow">
-								<div class="card-body">
+								<div class="card-body" id="cs">
 									<b>게시글 현황</b>
 									<hr color="white">
-									<div class="text-white-50 small">공지사항 00건</div>
-									<div class="text-white-50 small">1:1문의 00건</div>
 								</div>
 							</div>
 						</div>
 						<div class="col-lg-6 mb-4">
-							<div class="card bg-warning text-white shadow">
-								<div class="card-body">
-									<b>정산 현황</b>
-									<hr color="white">
-									<div class="text-white-50 small">회원 입금 대기 00건</div>
-									<div class="text-white-50 small">회원 환불 대기 00건</div>
-									<div class="text-white-50 small">기업 매출 50000원</div>
-								</div>
-							</div>
-						</div>
+		                     <div class="card bg-warning text-white shadow">
+		                        <div class="card-body" id="money">
+		                           <b>정산 현황</b>
+		                           <hr color="white">
+		                        </div>
+		                     </div>
+		                  </div>
 					</div>
 				</div>
 				<!-- 메인 콘텐트 영역 끝 -->
@@ -151,12 +146,14 @@ html {
 		
 		<script>
 		$(function(){
+			//대여관리 목록
 			$.ajax({
 				url:"<%=request.getContextPath()%>/selectReqSize.rt",
 				type:"get",
 				success:function(data){
-					var $approval_div = $("<h4><div").text("대여승인 " +data.approvalSize + " 건");
-					var $cancel_div = $("<h4><div").text("대여반품요청 " +data.returnSize + " 건");
+					console.log("1번 ");
+					var $approval_div = $("<h4><div>").text("대여승인 " +data.approvalSize + " 건");
+					var $cancel_div = $("<h4><div>").text("대여반품요청 " +data.returnSize + " 건");
 					var $return_div = $("<h4><div>").text("대여취소요청 " +data.cancelSize + " 건");
 					
 					
@@ -176,7 +173,43 @@ html {
 				$(this).parent().css({"cursor":"pointer"});
 			});
 			
+			//1:1문의 건수
+			$.ajax({
+				url:"<%=request.getContextPath()%>/selectReqSize.cs",
+				type:"get",
+				success:function(data){
+					console.log("2번 ");
+					var $cs_div = $("<h4><div").text("1:1문의 처리대기 " +data + " 건");
+					
+					
+					$("#cs").append($cs_div);
+				},
+				error:function(){
+					console.log("error");
+				}
+				
+			});
 			
+			$("#cs").click(function(){
+				location.href="<%=request.getContextPath()%>/selectAdminList.cs";
+			}).mouseenter(function(){
+				$(this).parent().css({"cursor":"pointer"});
+			});
+
+			$.ajax({
+	            url:"<%=request.getContextPath()%>/selectMoneySize.me",
+	            type:"get",
+	            success:function(data){
+	               var $payback_div = $("<h4><div id='payback'>").text("수익금 환급 대기 " +data.pb + " 건");
+	               var $refund_div = $("<h4><div id='refund'>").text("환불 대기 " +data.rf + " 건");
+	               
+	               $("#money").append($payback_div);
+	               $("#money").append($refund_div);
+	            },
+	            error:function(){
+	               console.log("error");
+	            }
+	         });
 			
 		});
 		</script>

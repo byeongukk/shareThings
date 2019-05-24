@@ -65,7 +65,7 @@
             <a class="collapse-item" href="<%= request.getContextPath() %>/selectRantalList.pd">대여조회</a>
             <a class="collapse-item" href="<%= request.getContextPath() %>/selectShpMngList.rt">발송관리</a>
             <a class="collapse-item" href="<%= request.getContextPath() %>/selectSendList.rt">배송조회</a>
-            <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/rental/returnReqList.jsp">반품요청관리</a>
+          <%--   <a class="collapse-item" href="<%= request.getContextPath() %>/views/admin/rental/returnReqList.jsp">반품요청관리</a> --%>
             <a class="collapse-item" href="<%= request.getContextPath() %>/selectReturnPdMngList.rt">수거관리</a>
 
           </div>
@@ -117,14 +117,6 @@
           <span>1:1문의 관리</span></a>
       </li>
 
-      <!-- Nav Item - Tables -->
-      <li class="nav-item">
-
-        <a class="nav-link" href="<%=request.getContextPath()%>/views/admin/notice/faqList.jsp">
-
-          <img src="<%=request.getContextPath()%>/resource/img/lotqna.png">
-          <span>자주 묻는 질문 관리</span></a>
-      </li>
       
        <!-- 구분선 -->
       <hr class="sidebar-divider">

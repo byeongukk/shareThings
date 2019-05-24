@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8" import="java.util.* , com.kh.st.customerService.model.vo.*"%>
+<%
+	ArrayList<HashMap<String,Object>> list  = (ArrayList<HashMap<String,Object>>)request.getAttribute("list");
+%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -56,7 +59,7 @@
 					<h1 class="h3 mb-2 text-gray-800">1:1 문의</h1>
 					<div class="card shadow mb-4">
 						<div class="card-header py-3">
-							<h6 class="m-0 font-weight-bold text-primary">00건</h6>
+							<h6 class="m-0 font-weight-bold text-primary"><%= list.size() %>건</h6>
 						</div>
 						<div class="card-body">
 							<div class="table-responsive">
@@ -64,11 +67,11 @@
 									class="dataTables_wrapper dt-bootstrap4">
 									<div class="row">
 										<div class="col-sm-12">
-											<table class="table table-bordered dataTable" id="dataTable"
+											<table class="table table-bordered dataTable" id="dataTable" 
 												width="100%" cellspacing="0" role="grid"
 												aria-describedby="dataTable_info" style="width: 100%;">
 												<thead>
-													<tr role="row">
+													<tr role="row" align="center">
 
 														<th class="sorting_asc" tabindex="0"
 															aria-controls="dataTable" rowspan="1" colspan="1"
@@ -77,11 +80,7 @@
 														<th class="sorting" tabindex="0" aria-controls="dataTable"
 															rowspan="1" colspan="1"
 															aria-label="Position: activate to sort column ascending"
-															style="width: 10px;">회원</th>
-														<th class="sorting" tabindex="0" aria-controls="dataTable"
-															rowspan="1" colspan="1"
-															aria-label="Office: activate to sort column ascending"
-															style="width: 10px;">연락처</th>
+															style="width: 10px;">회원아이디</th>
 														<th class="sorting" tabindex="0" aria-controls="dataTable"
 															rowspan="1" colspan="1"
 															aria-label="Age: activate to sort column ascending"
@@ -94,29 +93,33 @@
 												</thead>
 
 												<tbody>
-													<tr role="row" class="even">
-														<td class="sorting_1">01</td>
-														<td>user01</td>
-														<td>010-1234-5678</td>
-														<td>물품</td>
-														<td>처리대기</td>
-													</tr>
-													<tr role="row" class="even">
-														<td class="sorting_1">01</td>
-														<td>user01</td>
-														<td>010-1234-5678</td>
-														<td>배송</td>
-														<td>처리대기</td>
-													</tr>
-													<tr role="row" class="even">
-														<td class="sorting_1">01</td>
-														<td>user01</td>
-														<td>010-1234-5678</td>
-														<td>배송</td>
-														<td>처리완료</td>
-													</tr>
+													<% for(int i = 0; i<list.size(); i++){
+															HashMap<String, Object> hmap = list.get(i);	%> 
+																		
+														<tr class="even" role="row" align="center">
+															<td><%= hmap.get("cno") %></td>
+															<td><%= hmap.get("userId")%></td>
+															<td><%= hmap.get("csCategory")%></td>
+															<td>
+															<% 
+															if(hmap.get("csReply").equals("Y")){ %>
+																처리완료
+															<% }else {%>
+																처리대기
+															<% }  %></td> 
+														</tr> 
+														
+														<% } %> 
+												
 												</tbody>
 											</table>
+											<div id="result-null">
+												<% if(list.size() <= 0){ %>
+													<br><br><br><br><br><br>
+													<h3 align="center"> 조회 결과가 없습니다.</h3>
+													<br><br><br><br><br><br>
+												<% } %>
+											</div>
 										</div>
 									</div>
 								</div>

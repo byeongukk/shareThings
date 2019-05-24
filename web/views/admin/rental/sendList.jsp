@@ -83,12 +83,11 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 												<form id="filterArea">
 													<table class="col-lg-12" id="filter">
 														<tr>
-															<td width="10%">대여상태</td>
+															<td width="10%">배송상태</td>
 															<td width="15%"><select class="form-control">
-																	<option value="hidden">대여상태</option>
-																	<option value="0">대여요청</option>
-																	<option value="10">대여중</option>
-																	<option value="20">대여완료</option>
+																	<option value="hidden">배송상태</option>
+																	<option value="0">배송중</option>
+																	<option value="10">배송완료</option>
 															</select></td>
 															<td width="10%">상세조건</td>
 															<td width="15%"><select class="form-control">
@@ -154,7 +153,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 																aria-sort="ascending" rowspan="1" colspan="1">물품번호</th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 40px;"
-																rowspan="1" colspan="1">택배사코드</th>
+																rowspan="1" colspan="1">택배사</th>
 															<th tabindex="0" class="sorting"
 																aria-controls="dataTable" style="width: 67px;"
 																rowspan="1" colspan="1">송장번호</th>
@@ -204,7 +203,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 															<%-- <td><%= hmap.get("phone")%></td> --%>
 															<td><%= hmap.get("address")%></td>
 															<td><%= hmap.get("inOut")%></td>
-															<td class="tracking">운송장 번호 오류</td>
+															<td class="tracking"> </td>
 														</tr>
 														<% } %>
 													</tbody>
@@ -251,13 +250,9 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 		            dataType : "json",
 		            url:"http://info.sweettracker.co.kr/api/v1/companylist?t_key="+myKey,
 		            success:function(data){
-		            		console.log("첫번째 ajax");
-		                    console.log("data : " + data);
-		                    // 방법 1. JSON.parse 이용하기
 		                    var parseData = JSON.parse(JSON.stringify(data));
 		                     console.log(parseData.Company); // 그중 Json Array에 접근하기 위해 Array명 Company 입력
 		                    
-		                    // 방법 2. Json으로 가져온 데이터에 Array로 바로 접근하기
 		                    var CompanyArray = data.Company; // Json Array에 접근하기 위해 Array명 Company 입력
 		                    console.log(CompanyArray); 
 		                     
@@ -271,13 +266,19 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 				            var t_invoice = new Array();
 		                    
 		           			 $(".even").each(function(){
+		           				 
 		           				var t_code = $(this).find("td").eq(2).text();
-					            var t_invoice = $(this).find("td").eq(3).text();
-					            //var t_inovice = 348540216731;
-					            var $trackingTd = $(this).find("td").eq(9);
-					            
-		           				console.log(t_invoice);
 		           				console.log(t_code);
+		           				if(t_code == "대한통운") t_code = "04";
+		           				if(t_code == "우체국택배") t_code = "01";
+		           				if(t_code == "로젠택배") t_code = "06";
+		           				if(t_code == "CVSnet") t_code = "24";
+		           				if(t_code == "한진택배") t_code = "05";
+		           				console.log(t_code);
+		           					
+		           					
+					            var t_invoice = $(this).find("td").eq(3).text();
+					            var $trackingTd = $(this).find("td").eq(9);
 				            $.ajax({
 				                type:"GET",
 				                dataType : "json",
@@ -287,7 +288,7 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 				                    console.log(data);
 				                    console.log("data.result : " + data.result);
 				                    if(data.result == "N" || data.result =="" || data.status == false){
-				                        $trackingTd = $trackingTd.text("운송장번호오류");
+				                        $trackingTd = $trackingTd.text("배송 준비 중");
 				                    }else {
 				                    	switch(data.level){
 				                    	case 1 : $trackingTd = $trackingTd.text("배송준비중"); break;
@@ -298,22 +299,11 @@ input[type="number"]::-webkit-outer-spin-button, input[type="number"]::-webkit-i
 				                    	case 6 : $trackingTd = $trackingTd.text("배송 완료"); break;
 				                    	}
 				                    }
-				                    //$tr.append($trackingTd);
-			                    	//$dataTable.append($tr);
 				                }
 				            	});
 		           			});
 		           			
 		            }
-		        });
-		        $.ajax({
-		        	type:"GET",
-		            dataType : "json",
-		            url:"http://info.sweettracker.co.kr/api/v1/companylist?t_key="+myKey,
-		            success:function(data){
-						console.log("두번째 ajax");
-		            }
-		        	
 		        });
 		        // 배송정보와 배송추적 tracking-api
 		        $("#trackingNumBtn").click(function() {
