@@ -60,7 +60,7 @@ public class MemberJoinServlet extends HttpServlet {
 		String phone1 = request.getParameter("phone1");
 		String phone2 = request.getParameter("phone2");
 		String phone3 = request.getParameter("phone3");
-		String phone = "(" + phone0 + ")" + phone1 + "-" + phone2 + "-" + phone3;
+		String phone = "(" + phone0 + ")" + phone1 + phone2 + phone3;
 		String email = request.getParameter("email");
 		String zipCode = request.getParameter("zipCode");
 		String address1 = request.getParameter("address1");
@@ -74,7 +74,7 @@ public class MemberJoinServlet extends HttpServlet {
 		if(subPhone1.equals("") || subPhone2.equals("") || subPhone3.equals("")) {
 			subPhone = null;
 		}else {
-			subPhone = "(" + subPhone0 + ")" + subPhone1 + "-" + subPhone2 + "-" + subPhone3;
+			subPhone = "(" + subPhone0 + ")" + subPhone1 + subPhone2 + subPhone3;
 		}
 		String[] tnc = request.getParameterValues("TnC");
 		String optionCheck = "N";
@@ -101,7 +101,7 @@ public class MemberJoinServlet extends HttpServlet {
 		String page = "";
 		if(result > 0) {
 			
-			String host = "http://192.168.30.99:8888/st";
+			String host = "http://127.0.0.1:8888/st";
 			String from = "sharethings1224@gmail.com";
 			String to = newMember.getEmail();
 			String subject = "쉐어띵스 인증 메일입니다.";

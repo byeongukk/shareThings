@@ -1772,7 +1772,7 @@ public class MemberDao {
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, email);
 			rset = pstmt.executeQuery();
-			if(rset.next()) {
+			while(rset.next()) {
 				result = rset.getInt(1);
 			}
 
@@ -1816,7 +1816,7 @@ public class MemberDao {
 	public int setEmailChecked(Connection con, String userId) {
 		PreparedStatement pstmt = null;
 		int result = 0;
-		String query = prop.getProperty("emailCheck");
+		String query = prop.getProperty("setEmailChecked");
 		try {
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, userId);
@@ -1893,8 +1893,60 @@ public class MemberDao {
 	         close(rset);
 	      }
 	      return phone;
-	   }
 
+	}
+
+	
+	public String findIdwithPhone(Connection con, String userName, String phone) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String userId = "";
+		String query = prop.getProperty("findIdwithPhone");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, userName);
+			pstmt.setString(2, "%" + phone);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				userId = rset.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return userId;
+	}
+
+	public String findIdwithEmail(Connection con, String userName, String email) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		String userId = "";
+		String query = prop.getProperty("findIdwithEmail");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, userName);
+			pstmt.setString(2, email);
+			rset = pstmt.executeQuery();
+			if(rset.next()) {
+				userId = rset.getString(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return userId;
+	}
+
+
+	
+	
+	
+	
+	
 
 
 
@@ -1923,7 +1975,8 @@ public class MemberDao {
 		return result;
 	}
 
-	
+
+
 
 	
 

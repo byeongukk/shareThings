@@ -423,6 +423,30 @@ public class MemberService {
 	      return phone;
 	   }
 	
+
+	public String findIdwithPhone(String userName, String phone) {
+		Connection con = getConnection();
+		String userId = new MemberDao().findIdwithPhone(con, userName, phone);
+		close(con);
+		return userId;
+	}
+
+	public String findIdwithEmail(String userName, String email) {
+		Connection con = getConnection();
+		String userId = new MemberDao().findIdwithEmail(con, userName, email);
+		close(con);
+		return userId;
+	}
+
+
+
+	
+
+
+	
+	
+	
+	
 	
 	
 	
@@ -443,10 +467,6 @@ public class MemberService {
 	      
 	      return result;
 	   }
-
-	
-
-
 
 	
 

@@ -78,6 +78,7 @@ public class InsertBoardReviewServlet extends HttpServlet {
 			String parentBtitle = multiRequest.getParameter("bTitle");
 			String pno = multiRequest.getParameter("pno");
 			System.out.println("pno : " + pno);
+			int bLevel = Integer.parseInt(multiRequest.getParameter("bLevel"));
 			String reviewStar = multiRequest.getParameter("reviewStar");
 			System.out.println("reviewStar " + reviewStar);
 			
@@ -86,6 +87,7 @@ public class InsertBoardReviewServlet extends HttpServlet {
 			newReview.setbWriter(rvWriter);
 			newReview.setParentBno(Integer.parseInt(parentBno));
 			newReview.setPno(Integer.parseInt(pno));
+			newReview.setbLevel(bLevel);
 			newReview.setReviewStar(Integer.parseInt(reviewStar));
 			
 			ArrayList<Attachment> rvImgList = new ArrayList<Attachment>();
@@ -105,7 +107,8 @@ public class InsertBoardReviewServlet extends HttpServlet {
 				ArrayList<HashMap<String, Object>> reviewList = new BoardService().selectReviewList(Integer.parseInt(parentBno));
 				if(!reviewList.isEmpty()) {
 					String phone = new MemberService().getBwriterPhone(Integer.parseInt(parentBno));
-					new SendSMS().send(phone, parentBtitle, "대여 후기");
+					int index = phone.indexOf(")");
+					//new SendSMS().send(phone.substring(index + 1), parentBtitle, "대여 후기");
 					new Gson().toJson(reviewList, response.getWriter());
 				}else {
 					response.getWriter().append("List not found");

@@ -17,16 +17,16 @@ import com.kh.st.common.SendSMS;
 import com.kh.st.member.model.service.MemberService;
 
 /**
- * Servlet implementation class InsertBoardQnAServlet
+ * Servlet implementation class InsertReviewAnswerServlet
  */
-@WebServlet("/insertQnA.bo")
-public class InsertBoardQnAServlet extends HttpServlet {
+@WebServlet("/insertRvAns.bo")
+public class InsertReviewAnswerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public InsertBoardQnAServlet() {
+    public InsertReviewAnswerServlet() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -35,41 +35,35 @@ public class InsertBoardQnAServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String qnaContent = request.getParameter("qnaInput");
-		String qnaWriter = request.getParameter("qnaWriter");
+		String rvContent = request.getParameter("rvInput");
+		String rvWriter = request.getParameter("rvWriter");
 		int refBno = Integer.parseInt(request.getParameter("refBno"));
 		int parentBno = Integer.parseInt(request.getParameter("parentBno"));
 		int bLevel = Integer.parseInt(request.getParameter("bLevel"));
-		String parentBtitle = request.getParameter("parentBtitle");
 		int pno = Integer.parseInt(request.getParameter("pno"));
 		
-		Board newQnA = new Board();
-		newQnA.setbContent(qnaContent);
-		newQnA.setbWriter(qnaWriter);
-		newQnA.setParentBno(parentBno);
-		newQnA.setbLevel(bLevel);
-		newQnA.setPno(pno);
-		int result = new BoardService().insertQnA(newQnA);
+		Board newReview = new Board();
+		newReview.setbContent(rvContent);
+		newReview.setbWriter(rvWriter);
+		newReview.setParentBno(parentBno);
+		newReview.setbLevel(bLevel);
+		newReview.setPno(pno);
+		int result = new BoardService().insertRvAns(newReview);
 		
 		response.setContentType("application/json");
 		response.setCharacterEncoding("UTF-8");
 		if(result > 0) {
-			ArrayList<HashMap<String, Object>> qnaList = new BoardService().selectQnAList(refBno);
-			if(!qnaList.isEmpty()) {
-				if(bLevel == 0) {
-					String phone = new MemberService().getBwriterPhone(parentBno);
-					int index = phone.indexOf(")");
-					//new SendSMS().send(phone.substring(index + 1), parentBtitle, "Q&A");
-				}
-				new Gson().toJson(qnaList, response.getWriter());
+			ArrayList<HashMap<String, Object>> reviewList = new BoardService().selectReviewList(refBno);
+			if(!reviewList.isEmpty()) {
+				new Gson().toJson(reviewList, response.getWriter());
 			}else {
 				response.getWriter().append("List not found");
 			}
-		
+			
+			
 		}else {
 			response.getWriter().append("insert fail");
 		}
-		
 	}
 
 	/**
