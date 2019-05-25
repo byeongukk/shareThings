@@ -225,7 +225,7 @@ public class ProductDao {
 				p.setDeposite(rset.getInt("DEPOSIT"));
 				p.setDlFreeAmount(rset.getInt("DL_FREE_AMOUNT"));
 				p.setModel(rset.getString("MODEL"));
-				p.setCtgId(rset.getInt("CTG_ID"));
+				p.setCtgId(rset.getInt("CNO"));
 				p.setPurchaseDate(rset.getDate("PURCHASE_DATE"));
 				p.setPurchasePrice(rset.getInt("PURCHASE_PRICE"));
 				p.setAsHistory(rset.getString("ASHISTORY"));
@@ -264,13 +264,13 @@ public class ProductDao {
 			while(rset.next()) {
 				Product p = new Product();
 				
-				p.setpStartDate(rset.getDate("PSTART_DATE"));
-				p.setpEndDate(rset.getDate("PEND_DATE"));
+				p.setpStartDate(rset.getDate("RT_ST_DATE"));
+				p.setpEndDate(rset.getDate("RT_END_DATE"));
 				p.setDeposite(rset.getInt("DEPOSIT"));
 				p.setPrice(rset.getInt("PRICE"));
 				p.setDlFreeAmount(rset.getInt("DL_FREE_AMOUNT"));
 				p.setModel(rset.getString("BCONTENT"));
-				p.setCtgId(rset.getInt("CTG_ID"));
+				p.setCtgId(rset.getInt("CNO"));
 				p.setPurchaseDate(rset.getDate("PURCHASE_DATE"));
 				p.setPurchasePrice(rset.getInt("PURCHASE_PRICE"));
 				p.setAsHistory(rset.getString("CHANGE_NAME"));
@@ -338,6 +338,79 @@ public class ProductDao {
 		return list;
 	}
 
+	public int DeleteCart(Connection con, String[] statusarr) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = prop.getProperty("deletecart");
+		
+		for(int i = 0; i < statusarr.length; i++) {
+			try {
+				pstmt = con.prepareStatement(query);
+				pstmt.setInt(1, Integer.parseInt(statusarr[i]));
+				result = pstmt.executeUpdate();
+			} catch (NumberFormatException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				close(pstmt);
+			}
+			
+		}
+		commit(con);
+		
+		return result;
+	}
+
+	public Cart getProductNoinCart(Connection con, int parseInt) {
+		
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int result = 0;
+		String query = prop.getProperty("getPno");
+		Cart c = new Cart();
+	
+			try {
+				pstmt = con.prepareStatement(query);
+				pstmt.setInt(1, parseInt);
+				rset = pstmt.executeQuery();
+				
+				while(rset.next()) {
+					c.setPno(rset.getInt("PNO"));
+					c.setRtStartDate(rset.getDate("RT_ST_DATE"));
+					c.setRtEndDate(rset.getDate("RT_END_DATE"));
+				}
+			} catch (NumberFormatException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				close(pstmt);
+				close(rset);
+			}
+			
+		
+		
+		return c;
+	}
+	public int DeleteCart2(Connection con, int parseInt) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		String query = prop.getProperty("deletecart");
+			try {
+				pstmt = con.prepareStatement(query);
+				pstmt.setInt(1, parseInt);
+				result = pstmt.executeUpdate();
+			} catch (NumberFormatException | SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				close(pstmt);
+			}
+			
+	
+		commit(con);
+		
+		return result;
+	}
 		
 }
 

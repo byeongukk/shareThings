@@ -156,31 +156,36 @@
 			
 			<table align=center width="100%;" class="pdtlist">
 				<tr>
-					<td colspan=7 width="100%" align="left" style="border:1px solid lightgray; padding:5px; font-weight:bold; background:#ececec;">상품 리스트</td>
+					<td colspan=8 width="100%" align="left" style="border:1px solid lightgray; padding:5px; font-weight:bold; background:#ececec;">상품 리스트 
+						<input type="button" id="ok" value="선택 상품 삭제">
+					</td>
 				</tr>
 				<tr> <td>&nbsp;</td></tr>
 				
 				<tr style="border:1px solid lightgray; padding:5px; margin:100px 100px; background:#0CB6F4; color:white;">
-					<td>
+					<td width="10%;">
 						<input type="checkbox">
 					</td>
-					<td width="30%;">상품사진</td>
-					<td width="30%;">상품정보</td>
-					<td>대여기간</td>
-					<td>대여비용</td>
-					<td>배송비</td>
-					<td>선택</td>
+					<td width="20%;">상품사진</td>
+					<td width="20%;">상품정보</td>
+					<td width="15%;">대여기간</td>
+					<td width="10%;">대여비용</td>
+					<td width="10%;">배송비</td>
+					<td width="10%;">보증금</td>
+					<td width="15%;">상태</td>
 				</tr>
-				
+				<% int totalPrice = 0; int dlprice = 0; int price = 0; int depo = 0;%>
 				<%for(Product p : list) {%>
-				<tr style="text-align:center; height:100px; border-bottom:1px solid gray;">
-					<td><input type="checkbox" checked></td>
+				<tr style="text-align:center; height:100px; border-bottom:1px solid gray;" class="ctlist">
+					<td style="display:none;"><%= p.getCtgId() %></td>
+					<td><input type="checkbox" class="check"></td>
 					<td><img alt="" src="/st/attach_upload/<%= p.getAsHistory()%>" height="100px" width="auto"></td>
 					<td><%= p.getModel() %></td>
 					<td><%= p.getpStartDate() %> ~ <%= p.getpEndDate() %></td>
-					<td><%= (p.getPrice())%> 원</td>
-					<td>2,500</td>
-					<td><%= p.getSid() %></td>
+					<td><%= (p.getPrice())%> 원<% totalPrice += (p.getPrice() + 2500); price += p.getPrice();%></td>
+					<td>2,500<% dlprice += 2500; %></td>
+					<td><%= p.getDeposite() %> 원 <% depo += p.getDeposite(); totalPrice += depo;%></td>
+					<td><% if(p.getSid().equals("Y")) {%> 대여가능 <% }else { %> 대여불가 <%} %></td>
 					<td><% if(p.getSid().equals("등록 요청")) { %> <button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none;">취소</button><%}else{} %> </td>
 				</tr>
 				<%} %>
@@ -195,19 +200,23 @@
 				<tr>
 					<td>총 상품 금액</td>
 					<td>배송비</td>
+					<td>보증금</td>
 					<td>총 결제 금액</td>
 				</tr>
 				
 				<tr>
-					<td><h1 class="paywon">4,500</h1></td>
-					<td><h1 class="paywon">0</h1></td>
-					<td><h1 class="paywon">4,500</h1></td>
+					<td><h1 class="paywon"><%= price %></h1></td>
+					<td><h1 class="paywon"><%= dlprice %></h1></td>
+					<td><h1 class="paywon"><%= depo %></h1></td>
+					<td><h1 class="paywon"><%= totalPrice %></h1></td>
 				</tr>
 			</table>
 			<div style="margin:50px;" align="center">
 				<button style="background:#ececec; color:black; text-decoration:none; border-radius:10px; border:none; height:50px; width:120px;">이전</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none; height:50px; width:120px;">선택 상품 결제</button><br><br>
-			
+				<button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none; height:50px; width:120px;" onclick="nextpay()">상품 결제</button><br><br>
+				<%
+				session.setAttribute("loginUser", loginUser);
+				%>
 			</div>
 			
 		</div> <!-- end of 메인바디 -->
@@ -222,10 +231,34 @@
 	</div>
 	
 	
-
+	<script>
+	$(function() {
+		$(".even").click(function() {
+			var num = $(this).find("td").eq(0).text();
+			location = "<%= request.getContextPath()%>/adProductDetail.bo?num=" + num;
+			console.log(num);
+		});	
+	});
 	
+	</script>
+	<script>
+	$("#ok").click(function() {
+		var status = new Array();
+		$(".ctlist").each(function() {
+			if($(this).find(".check").is(":checked")) {	
+				console.log($(this).find("td").eq(0).text());
+				status.push($(this).find("td").eq(0).text());
+				location = "<%= request.getContextPath()%>/deleteCart.rt?status=" + status;
+			}
+		});
+	});
+	</script>
 	
-	
+	<script>
+		function nextpay(){
+			location = "<%= request.getContextPath()%>/cartlist2.rt";
+		}
+	</script>
 	
 </body>
 </html>

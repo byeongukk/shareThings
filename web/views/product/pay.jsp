@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="com.kh.st.product.model.vo.*, java.util.*, java.text.DecimalFormat"%>
+<%
+	ArrayList<Product> list = (ArrayList<Product>)request.getAttribute("list");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -160,33 +163,36 @@
 			
 			<table align=center width="100%;" class="pdtlist">
 				<tr>
-					<td colspan=7 width="100%" align="left" style="border:1px solid lightgray; padding:5px; font-weight:bold; background:#ececec;">결제 상품 리스트</td>
+					<td colspan=8 width="100%" align="left" style="border:1px solid lightgray; padding:5px; font-weight:bold; background:#ececec;">결제 상품 리스트</td>
 				</tr>
 					<tr> <td>&nbsp;</td></tr>
 				<tr style="border:1px solid lightgray; padding:5px; margin:100px 100px; background:#0CB6F4; color:white;">
-					<td>
+					<td width="10%;">
 						<input type="checkbox">
 					</td>
-					<td width="30%;">상품사진</td>
-					<td width="30%;">상품정보</td>
-					<td>대여기간</td>
-					<td>대여비용</td>
-					<td>배송비</td>
-					<td>합계</td>
+					<td width="20%;">상품사진</td>
+					<td width="20%;">상품정보</td>
+					<td width="15%;">대여기간</td>
+					<td width="10%;">대여비용</td>
+					<td width="10%;">배송비</td>
+					<td width="10%;">보증금</td>
+					<td width="15%;">상태</td>
 				</tr>
-				<tr >
-					<td>
-						<input type="checkbox">
-					</td>
-					<td><img src="../../resource/img/mypage/naninggu.PNG" class="listimg"></td>
-					<td>아저씨의 난닝구</td>
-					<td>94/02/26</td>
-					<td>2,600,000</td>
-					<td>3,500</td>
-					<td>
-					2,603,500
-					</td>
+				<% int totalPrice = 0; int dlprice = 0; int price = 0; int depo = 0;%>
+				<%for(Product p : list) {%>
+				<tr style="text-align:center; height:100px; border-bottom:1px solid gray;" class="ctlist">
+					<td style="display:none;"><%= p.getCtgId() %></td>
+					<td><input type="checkbox" class="check" checked></td>
+					<td><img alt="" src="/st/attach_upload/<%= p.getAsHistory()%>" height="100px" width="auto"></td>
+					<td><%= p.getModel() %></td>
+					<td><%= p.getpStartDate() %> ~ <%= p.getpEndDate() %></td>
+					<td><%= (p.getPrice())%> 원<% totalPrice += (p.getPrice() + 2500); price += p.getPrice();%></td>
+					<td>2,500<% dlprice += 2500; %></td>
+					<td><%= p.getDeposite() %> 원 <% depo += p.getDeposite(); totalPrice += depo;%></td>
+					<td><% if(p.getSid().equals("Y")) {%> 대여가능 <% }else { %> 대여불가 <%} %></td>
+					<td><% if(p.getSid().equals("등록 요청")) { %> <button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none;">취소</button><%}else{} %> </td>
 				</tr>
+				<%} %>
 				
 				
 				
@@ -206,7 +212,7 @@
 				<tr style="margin-bottom:50px;">
 					<td width="10%;" class="firsttd">배송지 선택</td>
 					<td style="border-right:1px solid lightgray;" colspan=2>
-						<input type="radio" id="defaultadd"> 기본 배송지
+						<input type="radio" id="defaultadd" checked> 기본 배송지
 					
 					</td>
 					<td colspan=2>
@@ -218,16 +224,21 @@
 					<td >수령인</td>
 					<td colspan=4 width="50%">
 					<div class="ui fluid input">
-					<input type="text" style="width:100%;" placeholder="수령인" name="dlName" id="dlName">
+					<input type="text" style="width:100%;" placeholder="수령인" name="dlName" id="dlName" value="<%= loginUser.getUserName()%>">
 					</div>
 					</td>
 					
 				</tr>
 				<tr>
+				<%
+					String add[] = loginUser.getAddress().split("[|]");
+					String zipCode =  add[0];
+					String address1 = add[1];
+					String address2 = add[2];%>
 								<td rowspan="3"><b>주소 *</b></td>
 								<td colspan="2">
 									<div class="ui fluid input">
-										<input type="text" placeholder="우편번호" name="zipCode" id="zipCode"
+										<input type="text" placeholder="우편번호" name="zipCode" value="<%= zipCode %>" id="zipCode"
 										class="mandatory">
 									</div>
 								</td>
@@ -239,7 +250,7 @@
 								<td colspan="6">
 									<div class="ui fluid input">
 										<input type="text" placeholder="기본주소" name="address1" id="address1"
-										class="mandatory">
+										class="mandatory"  value="<%= address1 %>">
 									</div>
 								</td>
 							</tr>
@@ -247,7 +258,7 @@
 								<td colspan="6">
 									<div class="ui fluid input">
 										<input type="text" placeholder="상세주소" name="address2" id="address2"
-										class="mandatory">
+										class="mandatory"  value="<%= address2 %>">
 									</div>
 								</td>
 							</tr>
@@ -256,7 +267,7 @@
 					<td >휴대전화</td>
 					<td colspan=4 width="50%">
 					<div class="ui fluid input">
-					<input type="text" style="width:100%;" placeholder="휴대전화" name="Phone" id="Phone">
+					<input type="text" style="width:100%;" placeholder="휴대전화" name="Phone" id="Phone" value="<%= loginUser.getPhone()%>">
 					</div>
 					</td>
 					
@@ -265,7 +276,8 @@
 					<td >번호(비상연락망)</td>
 					<td colspan=4 width="50%">
 					<div class="ui fluid input">
-					<input type="text" style="width:100%;" placeholder="휴대전화" name="dlPhone" id="dlPhone">
+					<% if(loginUser.getSubPhone() != null) { %> <input type="text" style="width:100%;" placeholder="휴대전화" name="dlPhone" id="dlPhone"> <% } else { %>
+					<input type="text" style="width:100%;" placeholder="비상 연락망" name="dlPhone" id="dlPhone"> <%} %>
 					</div>
 					</td>
 					
@@ -295,10 +307,17 @@
 					
 					<tr>
 						<td>적립금</td>
-						<td style="float:left;"><input type="text" >원 <label style="width:50%;">사용가능한 적립금()</label></td>
+						<td style="float:left;"><input type="text" value="<%= loginUser.getProfits()%>">원 <label style="width:50%;" id="point">사용가능한 적립금(<%= loginUser.getProfits() %>)</label></td>
 					</tr>
 					<tr> <td colspan=2>&nbsp;</td></tr>
 			</table>
+			<%
+			DecimalFormat form = new DecimalFormat("#,###"); 
+			 // 천단위로 콤마가 찍힙니다. 
+			totalPrice -= loginUser.getProfits();
+			%>
+			<p style="display:none;"><%= totalPrice %></p>
+			<h1 align="center"> 최종 결제 금액 : <label id="totalprice"><%= form.format(totalPrice) %></label> 원</h1>
 			
 			<div style="margin:50px;" align="center">
 				<button style="background:#ececec; color:black; text-decoration:none; border-radius:10px; border:none; height:50px; width:120px;">이전</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -371,7 +390,7 @@
 
 	<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
 <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
-
+<script>  </script>
 <script>
 function gopay(){
 	IMP.init('imp41924715');
@@ -380,22 +399,33 @@ function gopay(){
 	    pg : 'inicis', // version 1.1.0부터 지원.
 	    pay_method : 'card',
 	    merchant_uid : 'merchant_' + new Date().getTime(),
-	    name : '주문명:결제테스트',
-	    amount : 100, //판매 가격
-	    buyer_email : 'iamport@siot.do',
-	    buyer_name : '구매자이름',
-	    buyer_tel : '010-1234-5678',
-	    buyer_addr : '서울특별시 강남구 삼성동',
+	    name : '쉐어띵스 상품 결제',
+	    amount : <%-- <%= totalPrice %> --%>100, //판매 가격
+	    buyer_email : '<%= loginUser.getEmail()%>',
+	    buyer_name : '<%= loginUser.getUserName()%>',
+	    buyer_tel : '<%= loginUser.getPhone()%>',
+	    buyer_addr : '<%= loginUser.getAddress()%>',
 	    buyer_postcode : '123-456'
 	}, function(rsp) {
 	    if ( rsp.success ) {
 	        var msg = '결제가 완료되었습니다.';
+	        var price = rsp.paid_amount;
+	        var applynum = rsp.apply_num;
+	        var status = new Array();
+			$(".ctlist").each(function() {
+				if($(this).find(".check").is(":checked")) {	
+					console.log($(this).find("td").eq(0).text());
+					status.push($(this).find("td").eq(0).text());
+				}
+			});
+	        
 	        msg += '고유ID : ' + rsp.imp_uid;
 	        msg += '상점 거래ID : ' + rsp.merchant_uid;
 	        msg += '결제 금액 : ' + rsp.paid_amount;
 	        msg += '카드 승인번호 : ' + rsp.apply_num;
-	        location.href="/st/views/product/paycomplete.jsp";
-	      
+			location = "/st/paycomplete.rt?status=" + status + "&applynum=" + applynum + "&price=" +price;
+	        console.log(rsp.apply_num);
+	        
 
 
 	    } else {
@@ -405,10 +435,16 @@ function gopay(){
 	    /* alert(msg); */
 	});
 }
-
+	
 
 </script>
-	
+	<script>
+		$("#point").change(function(){
+			var pointinsert = $(this).val();
+			console.log(pointinsert);
+			$("#totalprice").html("<%= totalPrice%>");
+		})
+	</script>
 	
 </body>
 </html>
