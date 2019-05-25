@@ -87,7 +87,7 @@ public class StatDao {
 		try {
 			pstmt = con.prepareStatement(query);
 			if(startD.equals("")) {
-				pstmt.setString(1, "2019-04-01");
+				pstmt.setString(1, "2019-01-01");
 				pstmt.setString(2, "2020-01-01");
 			}else {
 				pstmt.setString(1, startD);
