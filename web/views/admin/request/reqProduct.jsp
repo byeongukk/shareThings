@@ -322,8 +322,11 @@
 												</div>
 												<h5>*택배사</h5>
 												<select id="delivery" name="delivery">
-													<option value="04">CJ대한통운</option>
-													<option value="05">로젠택배</option>
+													<option value="대한통운">CJ대한통운</option>
+													<option value="로젠택배">로젠택배</option>
+													<option value="우체국택배">우체국택배</option>
+													<option value="CVSnet">CVSnet 편의점택배</option>
+													<option value="한진택배">한진택배</optoin>
 												</select>
 												<h5>*송장번호</h5>
 												<textarea id="dNo" name="dNo" class="col-lg-12" placeholder="EX)송장번호 입력"></textarea>

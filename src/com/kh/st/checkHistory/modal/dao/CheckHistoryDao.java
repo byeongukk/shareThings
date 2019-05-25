@@ -515,7 +515,7 @@ public class CheckHistoryDao {
 			pstmt = con.prepareStatement(query);
 			pstmt.setInt(1, chkNo);
 			
-rset = pstmt.executeQuery();
+			rset = pstmt.executeQuery();
 			
 			list = new ArrayList<Attachment>();
 			hmap = new HashMap<String, Object>();

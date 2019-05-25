@@ -111,7 +111,7 @@
 											</select></td>
 											<td style="width: 90px">상세조건 :</td>
 											<td><select style="heigth: 30px; width: 20%;"
-											id="details" name="details" onchange = "detailsChg();">
+											id="details" name="details" onchange ="detailsChg();">
 													<option value="0">전체</option>
 													<option value="reqNo">요청번호</option>
 													<option value="name">등록자명</option>
@@ -359,8 +359,11 @@
 											<hr>
 											<h5>*택배사</h5>
 												<select id="delivery" name="delivery">
-													<option value="04">CJ대한통운</option>
-													<option value="05">로젠택배</option>
+													<option value="대한통운">CJ대한통운</option>
+													<option value="로젠택배">로젠택배</option>
+													<option value="우체국택배">우체국택배</option>
+													<option value="CVSnet">CVSnet 편의점택배</option>
+													<option value="한진택배">한진택배</optoin>
 												</select>
 											<h5>*송장번호</h5>
 												<textarea id="dNo" name="dNo" class="col-lg-12" placeholder="EX)송장번호 입력"></textarea>
@@ -780,7 +783,7 @@
 						for(var key in data.list) {
 							//data값 td에 입력
 							var $check = $("<td class='sorting_1'><input type='checkbox' class='check'>");
-							var $tr = $("<tr class='even' role='row' align='center id='check'>");
+							var $tr = $("<tr class='even' role='row' align='center' id='check'>");
 							
 							var $bNoTd = $("<td>").text(data.list[key].bNo);
 							var $reqNoTd = $("<td>").text(data.list[key].reqNo);

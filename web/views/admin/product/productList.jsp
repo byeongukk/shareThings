@@ -75,6 +75,7 @@
 						width="100%">
 					<div class="row" class="col-lg-12">
 						<div class="col-sm-12 col-lg-12">
+						<form action="#">
 							<div class="card shadow mb-4" id="filter" align="center">
 								<div class="card-header py-3">조회 필터</div>
 								<div class="card-body">
@@ -84,52 +85,49 @@
 												대분류 :
 											</td>
 											<td>
-												<select style="heigth: 30px; width: 40%;">
+												<select id="big" class="cc" style="heigth: 30px; width: 40%;">
+													<option>대분류</option>
 													<option>전자기기</option>
+													<option>취미/레저</option>
 													<option>유아동</option>
-													<option>취미레져</option>
+													<option>반려동물</option>
 												</select>
 												&nbsp;&nbsp;&nbsp;
-												<input type="text" name="userId" style="width: 40%">
 											</td>
 											<td style="width: 90px">
 												중분류 :
 											</td>
 											<td>
-												<select style="heigth: 30px; width: 40%;">
-													<option>디지털</option>
-													<option>가전</option>
-													<option>컴퓨터</option>
+												<select id="mid"class="cc" style="heigth: 30px; width: 40%;">
+													<option>중분류</option>
 											</select>
 											&nbsp;&nbsp;&nbsp;
-											<input type="text" name="userId" style="width: 40%">
 											</td>
 											<td style="width: 90px">
-												세분류 :
+												소분류 :
 											</td>
 											<td>
-												<select style="heigth: 30px; width: 40%;">
-													<option>노트북</option>
-													<option>데스크탑</option>
+												<select id="small"class="cc" style="heigth: 30px; width: 40%;">
+													<option>소분류</option>
 											</select>
-											&nbsp;&nbsp;&nbsp;
-											<input type="text" name="userId" style="width: 40%">
+											&nbsp;&nbsp;&nbsp;	
 											</td>
 										</tr>
 										<tr>
 											<td style="width: 70px">등록기간 :</td>
-											<td colspan="3"><input type="date" name="startD">&nbsp;&nbsp;&nbsp;
-												~ &nbsp;&nbsp;&nbsp; <input type="date" name="endD">
+											<td colspan="3"><input type="date" id="startD" name="startD">&nbsp;&nbsp;&nbsp;
+												~ &nbsp;&nbsp;&nbsp; <input type="date" id="endD"name="endD">
 											</td>
 										</tr>
 									</table>
 									<div>
-										<button>조회하기</button>
+										<button type="button" id="inquiry" onclick="filteringP(1)">조회하기</button>
 										&nbsp;&nbsp;&nbsp;
-										<button>초기화</button>
+										<button type="reset">초기화</button>
 									</div>
 								</div>
 							</div>
+						</form>
 				<div class="card shadow mb-4">
 					<div class="card-header py-3">
 									<h6 class="m-0 font-weight-bold text-primary" id="listSize"><%= listCount %>건</h6>
@@ -185,6 +183,13 @@
                                    <% } %>
                                     </tbody>
                                  </table>
+                                 <div id="result-null">
+									<% if(list.size() <= 0){ %>
+										<br><br><br><br><br><br>
+										<h3 align="center"> 조회 결과가 없습니다.</h3>
+										<br><br><br><br><br><br>
+									<% } %>
+								</div>
                               </div>
                            </div>
                            <div class="row">
@@ -339,17 +344,228 @@
 			<%@ include file="../common/logoutModal.jsp"%>
 
 			<script>
-		$(function() {
-			$(".even").click(function() {
-				var num = $(this).find("td").eq(0).text();
-				location = "<%= request.getContextPath()%>/adProductDetail.bo?num=" + num;
-				console.log(num);
-			});	
-		});
-
-			/* function ok() {
-				alert("정말 승인하시겠습니까?");
-			} */
+				$(function() {
+					$(".even").click(function() {
+						var num = $(this).find("td").eq(0).text();
+						location = "<%= request.getContextPath()%>/adProductDetail.bo?num=" + num;
+						console.log(num);
+					});	
+				});
+				
+				//카테고리 분류
+				$("#big").change(function() {
+					//대분류
+					var big = $(this).children("option:selected").val().replace("/", "");
+					console.log(big);
+					//중분류
+					var $mid = $("#mid");
+					$.ajax({
+						url:"<%= request.getContextPath() %>/categoryList.do",
+						data:{big:big},
+						type:"get",
+						success:function(data) {
+							console.log(data);
+							var options = "<option selected> 중분류</option>";
+							for(var i = 0; i < data.length; i++){
+				                 if(i == 0){
+				                    options += "<option value=\"" + data[i] + "\">" + data[i] + "</option>";
+				                 } else{
+				                    options += "<option value=\"" + data[i] + "\">" + data[i] + "</option>";
+				                 }
+				            }
+							$mid.html(options); 
+						},
+						error:function(data){
+				              console.log("서버 전송 실패!");
+				        }
+					});
+				});
+				
+				$("#mid").change(function(){
+			        var mid = $(this).children("option:selected").val(); // 중분류
+			        var $small = $("#small");  // 소분류
+			        $.ajax({
+			           url:"<%= request.getContextPath() %>/categoryList2.do",
+			           data:{mid:mid},
+			           type:"get",
+			           success:function(data){
+			              console.log(data);
+			               var options = "<option selected>소분류</option>"; 
+			               for(var i = 0; i < data.length; i++){
+			                 	if(i == 0){
+			                    	options += "<option value=\"" + data[i] + "\">" + data[i] + "</option>";
+			                 	} else{
+			                 	   options += "<option value=\"" + data[i] + "\">" + data[i] + "</option>";
+			                 	}
+			             	 }    
+			              	 $small.html(options);     
+			           },
+			           error:function(data){
+			              console.log("서버 전송 실패!");
+			           }
+			        });
+			     });
+				
+				 $("#small").change(function(){
+				       var small = $(this).children("option:selected").val(); // 소분류
+				       var $ctgId = $("#ctgId");  // 소분류번호
+				       $.ajax({
+				          url:"<%= request.getContextPath() %>/getCategoryId.do",
+				          data:{small:small},
+				          type:"get",
+				          success:function(data){
+				             console.log(data);   
+				             $ctgId.attr("value", data); 
+				             
+				             console.log(data);
+				          },
+				          error:function(data){
+				             console.log("서버 전송 실패!");
+				          }
+				       });
+				    });
+				 
+				 //조건 검색
+				 function filteringP(currentPage) {
+					 var category = $("#small").val();
+					 var startD = $("#startD").val();
+					 var endD = $("#endD").val();
+					 
+					//조회기간 잘못 설정
+						if(startD > endD || (endD !="" && startD=="")) {
+							alert("기간이 잘못되었습니다");
+							return false;
+						}
+					
+					console.log(category);
+					console.log(startD);
+					console.log(endD);
+					
+					$.ajax({
+						url:"<%= request.getContextPath() %>/selectAdProductListFilter.bo",
+						data:{
+							category:category,
+							startD:startD,
+							endD:endD,
+							currentPage:currentPage
+						},
+						type:"get",
+						success:function(data) {
+							console.log(data);
+							/* 기존 테이블 행 제거 */
+							$("#dataTable > tbody > tr").remove();
+							$("#dataTable_paginate > ul > li").remove();
+							
+							var $dataTable = $("#dataTable");
+							/* 조회된 값이 없을때 출력할 공간 */
+							var $resultNull = $("#result-null");
+							/* 조회된 건수 출력할 공간 */
+							var $listSize = $("#listSize");
+							/* 페이징 */
+							var $paging = $("#pagingUl");
+							
+							//값 넣을 공간 비우기
+							$resultNull.html('');
+							$listSize.prop("innerHTML", '');
+							
+							console.log(data.pi.currentPage);
+							console.log(data.pi);
+							console.log(data.list);
+							
+							if(data.list.length > 0) {
+								var currentPage = data.pi.currentPage;
+								var maxPage = data.pi.maxPage;
+								var startPage = data.pi.startPage;
+								var endPage = data.pi.endPage;
+							
+								var $firstLi = $("<li class='paginate_button page-item' id='dataTable_first'>");
+								var $firstA = $("<a onclick='filteringP(1)' aria-controls='dataTable' data-dt-idx='0' tabindex='0' class='page-link'>").text("first");
+								$firstLi.append($firstA);
+								$paging.append($firstLi);
+								
+								if(currentPage <= 1){
+									var $preLi = $("<li class='paginate_button page-item disabled' id='dataTable_previous'>");
+									var $preA = $("<a onclick='filteringP(" + (currentPage - 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage - 1) + "' tabindex='0' class='page-link'>").text("Previous");
+									$preLi.append($preA);
+									$paging.append($preLi);
+								}else{
+									var $preLi = $("<li class='paginate_button page-item' id='dataTable_previous'>");
+									var $preA = $("<a onclick='filteringP(" + (currentPage - 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage - 1) + "' tabindex='0' class='page-link'>").text("Previous");
+									$preLi.append($preA);
+									$paging.append($preLi);
+								}
+								
+								for(var p = startPage; p <= endPage; p++){
+									if(p == currentPage){
+										var $numLi = $("<li class='paginate_button page-item disabled'>");
+										var $numA = $("<a onclick='filteringP(" + p + ")' aria-controls='dataTable' data-dt-idx='" + p + "' tabindex='0' class='page-link'>").text(p);
+										$numLi.append($numA);
+										$paging.append($numLi);
+									}else{
+										var $numLi = $("<li class='paginate_button page-item'>");
+										var $numA = $("<a onclick='filteringP(" + p + ")' aria-controls='dataTable' data-dt-idx='" + p + "' tabindex='0' class='page-link'>").text(p);
+										$numLi.append($numA);
+										$paging.append($numLi);
+									}
+								}
+								
+								if(currentPage >= maxPage){
+									var $nextLi = $("<li class='paginate_button page-item disabled' id='dataTable_next'>");
+									var $nextA = $("<a onclick='filteringP(" + (currentPage + 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage + 1) + "' tabindex='0' class='page-link'>").text("Next");
+									$nextLi.append($nextA);
+									$paging.append($nextLi);
+								}else{
+									var $nextLi = $("<li class='paginate_button page-item' id='dataTable_next'>");
+									var $nextA = $("<a onclick='filteringP(" + (currentPage + 1) + ")' aria-controls='dataTable' data-dt-idx='" + (currentPage + 1) + "' tabindex='0' class='page-link'>").text("Next");
+									$nextLi.append($nextA);
+									$paging.append($nextLi);
+								}
+								
+								var $endLi = $("<li class='paginate_button page-item' id='dataTable_end'>");
+								var $endA = $("<a onclick='filteringP(" + maxPage + ")' aria-controls='dataTable' data-dt-idx='" + maxPage + "' tabindex='0' class='page-link'>").text("End");
+								$endLi.append($endA);
+								$paging.append($endLi);
+								
+							for(var key in data.list) {
+								//data값 td에 입력
+								var $tr = $("<tr class='even' role='row' align='center'>");
+								
+								var $pnoTd = $("<td>").text(data.list[key].pno);
+								var $userNameTd = $("<td>").text(data.list[key].userName);
+								var $modelTd = $("<td>").text(data.list[key].model);
+								var $pNameTd = $("<td>").text(data.list[key].pName);
+								var $periodTd = $("<td>").text(data.list[key].pstartD + " ~ " + data.list[key].pendD);
+								var $statusTd = $("<td>").text(data.list[key].status);
+								
+								$tr.append($pnoTd);
+								$tr.append($userNameTd);
+								$tr.append($modelTd);
+								$tr.append($pNameTd);
+								$tr.append($periodTd);
+								$tr.append($statusTd);
+								
+								//table에 tr추가
+								$dataTable.append($tr);
+							}
+						} else {
+							//조회결과 없을때
+							$resultNull.append("<br><br><br><br><br><br>");
+							$resultNull.append("<h3 align='center'> 조회 결과가 없습니다.</h3>");
+							$resultNull.append("<br><br><br><br><br><br>");
+						}
+							$listSize.prop("innerHTML", data.list.length+"건");
+							
+							$(".even").click(function() {
+								var num = $(this).find("td").eq(0).text();
+								location = "<%= request.getContextPath()%>/adProductDetail.bo?num=" + num;
+								console.log(num);
+							});
+						},
+						error:function(data) {
+							console.log("실패");
+						}
+					});
+				 }
 			</script>
 			<script
 				src="<%=request.getContextPath() %>/resource/vendor/jquery/jquery.min.js"></script>

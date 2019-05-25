@@ -1,9 +1,6 @@
 package com.kh.st.adProduct.model.service;
 
-import static com.kh.st.common.JDBCTemplate.close;
-import static com.kh.st.common.JDBCTemplate.commit;
-import static com.kh.st.common.JDBCTemplate.getConnection;
-import static com.kh.st.common.JDBCTemplate.rollback;
+import static com.kh.st.common.JDBCTemplate.*;
 
 import java.sql.Connection;
 import java.util.ArrayList;
@@ -99,5 +96,69 @@ public class AdProductService {
 		
 		close(con);
 		return ep;
+	}
+
+	//등록 만료 물품 반환
+	public int endProductDelivery(int pno, String dlocation, String delivery, String dNo) {
+		Connection con = getConnection();
+		int result = new AdProductDao().endProductDelivery(con, pno, dlocation, delivery, dNo);
+		
+		if(result > 0) {
+			//물품상태 업데이트
+			System.out.println("배송 인서트 성공");
+			int result1 = new AdProductDao().endProductSid(con, pno);
+			
+			if(result1 > 0) {
+				System.out.println("물품상태 업데이트 성공");
+				commit(con);
+			} else {
+				System.out.println("물품상태 업데이트 실패");
+				rollback(con);
+			}
+		} else {
+			System.out.println("배송 인서트 실패");
+			rollback(con);
+		}
+		
+		close(con);
+		return result;
+	}
+
+	//조건 검색 페이징 처리
+	public int getAdProductFilterCount(HashMap<String, Object> condition) {
+		Connection con = getConnection();
+		
+		int listCount = new AdProductDao().getAdProductFilterCount(con, condition);
+		
+		close(con);
+		return listCount;
+	}
+
+	//물품 조건 검색
+	public ArrayList<HashMap<String, Object>> selectAdProductFilter(HashMap<String, Object> condition, PageInfo pi) {
+		Connection con = getConnection();
+		
+		ArrayList<HashMap<String, Object>> list = 
+				new AdProductDao().selectAdProductFilter(con, condition, pi);
+		close(con);
+		return list;
+	}
+
+	//조건검색 페이징 처리
+	public int endProductFilterList(HashMap<String, Object> condition) {
+		Connection con = getConnection();
+		int listCount = new AdProductDao().endProductFilterList(con, condition);
+		
+		close(con);
+		return listCount;
+	}
+
+	//조건 검색 처리
+	public ArrayList<HashMap<String, Object>> selectEndProductFilter(HashMap<String, Object> condition, PageInfo pi) {
+		Connection con = getConnection();
+		ArrayList<HashMap<String, Object>> list = new AdProductDao().selectEndProductFilter(con, condition, pi);
+		
+		close(con);
+		return list;
 	}
 }

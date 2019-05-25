@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.kh.st.adProduct.model.service.AdProductService;
+
 /**
  * Servlet implementation class EndProductDeliveryServlet
  */
@@ -27,15 +29,29 @@ public class EndProductDeliveryServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		response.setCharacterEncoding("UTF-8");
+		response.setContentType("application/json");
 		
 		int pno = Integer.parseInt(request.getParameter("pno"));	//물품번호
 		String dlocation = request.getParameter("dlocation");	//배송지
 		String delivery = request.getParameter("delivery");	//택배사
-		String dno = request.getParameter("dno");	//송장번호
+		String dNo = request.getParameter("dNo");	//송장번호
 		
-		System.out.println(pno);
+		System.out.println("물품번호 : " + pno);
+		System.out.println("배송지 : " + dlocation);
+		System.out.println("택배사 : " + delivery);
+		System.out.println("송장번호 : " + dNo);
 		
+		int result = new AdProductService().endProductDelivery(pno, dlocation, delivery, dNo);
 		
+		String page = "";
+		if(result > 0) {
+			response.sendRedirect(request.getContextPath() + "/endProductList.bo");
+		} else {
+			page = "views/common/errorPage.jsp";
+			request.setAttribute("msg", "반환 처리 실패");
+			
+			request.getRequestDispatcher(page).forward(request, response);
+		}
 	}
 
 	/**
