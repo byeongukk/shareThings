@@ -8,6 +8,8 @@
 	int maxPage = pi.getMaxPage();
 	int startPage = pi.getStartPage();
 	int endPage = pi.getEndPage();
+	
+	
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -183,12 +185,13 @@
 															</tr>
 														</thead>
 														<tbody>
-															<% for(Refund r : list){ %>
+															<% for(Refund r : list){ 
+															int rendom = (int)(Math.random() * 20) + 1; %>
 																<tr align="center" class="even">
 																	<td class="sorting_1"><input type="checkbox" class="check"></td>
 																	<td><%= r.getRfNo() %></td>
 																	<td><%= r.getUserId() %></td>
-																	<td><%= r.getVerifyCode() %></td>
+																	<td>StdpayCARDINIpayTest<%= r.getVerifyCode() %><%= rendom %></td>
 																	<td><%= r.getRfReason() %></td>
 																	<td><%= r.getPrice() %></td>
 																	<td><%= r.getRfType() %></td>
