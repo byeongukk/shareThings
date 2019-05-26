@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8" import="com.kh.st.product.model.vo.*, java.util.*, java.text.DecimalFormat"%>
+<%
+	ArrayList<Product> list = (ArrayList<Product>)request.getAttribute("list");
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -153,33 +156,29 @@
 			
 			<table align=center width="100%;" class="pdtlist">
 				<tr>
-					<td colspan=7 width="100%" align="left" style="border:1px solid lightgray; padding:5px; font-weight:bold; background:#ececec;">결제 상품 리스트</td>
+					<td colspan=8 width="100%" align="left" style="border:1px solid lightgray; padding:5px; font-weight:bold; background:#ececec;">결제 상품 리스트</td>
 				</tr>
 					<tr> <td>&nbsp;</td></tr>
 				<tr style="border:1px solid lightgray; padding:5px; margin:100px 100px; background:#0CB6F4; color:white;">
 					<td>
 						<input type="checkbox">
-					</td>
+						</td>
 					<td width="30%;">상품사진</td>
 					<td width="30%;">상품정보</td>
-					<td>대여기간</td>
-					<td>대여비용</td>
-					<td>배송비</td>
-					<td>합계</td>
+					<td width="30%;">대여기간</td>
+					<td width="10%;">대여비용</td>
 				</tr>
-				<tr >
-					<td>
-						<input type="checkbox">
-					</td>
-					<td><img src="../../resource/img/mypage/naninggu.PNG" class="listimg"></td>
-					<td>아저씨의 난닝구</td>
-					<td>94/02/26</td>
-					<td>2,600,000</td>
-					<td>3,500</td>
-					<td>
-					2,603,500
-					</td>
+				<% int totalPrice = 0; int dlprice = 0; int price = 0; int depo = 0;%>
+				<%for(Product p : list) {%>
+				<tr style="text-align:center; height:100px; border-bottom:1px solid gray;" class="ctlist">
+					<td style="display:none;"><%= p.getCtgId() %></td>
+					<td><input type="checkbox" class="check" checked></td>
+					<td><img alt="" src="/st/attach_upload/<%= p.getAsHistory()%>" height="100px" width="auto"></td>
+					<td><%= p.getModel() %></td>
+					<td><%= p.getpStartDate() %> ~ <%= p.getpEndDate() %></td>
+					<td><%= (p.getPrice())%> 원<% totalPrice += (p.getPrice() + 2500); price += p.getPrice();%></td>
 				</tr>
+				<%} %>
 				
 				
 				
@@ -191,7 +190,7 @@
 		
 			<div style="margin:50px;" align="center">
 				
-				<button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none; height:50px; width:120px;">주문 내역 보기</button><br><br>
+				<button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none; height:50px; width:120px;" onclick="next();">주문 완료</button><br><br>
 			
 			</div>
 			
@@ -207,7 +206,19 @@
 	</div>
 	
 	
-
+<script>
+	function next(){
+		 var status = new Array();
+		$(".ctlist").each(function() {
+			if($(this).find(".check").is(":checked")) {	
+				console.log($(this).find("td").eq(0).text());
+				status.push($(this).find("td").eq(0).text());
+				location = "/st/paycomplete2.rt?status=" + status;
+			}
+		});
+	}
+	
+</script>
 	
 	
 	

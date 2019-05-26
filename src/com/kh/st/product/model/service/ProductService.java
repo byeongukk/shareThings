@@ -94,4 +94,31 @@ public class ProductService {
 		return list;
 	}
 
+	/*------------------ 장바구니 삭제 ------------------ */
+	public int DeleteCart(String[] statusarr) {
+		Connection con = getConnection();
+		
+		int result = new ProductDao().DeleteCart(con, statusarr);
+		
+		close(con);
+
+		return result;
+	}
+
+	public Cart getProductNoinCart(int parseInt) {
+		Connection con = getConnection();
+		Cart pno = new ProductDao().getProductNoinCart(con, parseInt);
+		/*int result = new ProductDao().DeleteCart2(con, parseInt);*/
+		close(con);
+
+		return pno;
+	}
+	public int getProductNoinCart2(int parseInt) {
+		Connection con = getConnection();
+		int result = new ProductDao().DeleteCart2(con, parseInt);
+		close(con);
+
+		return result;
+	}
+
 }

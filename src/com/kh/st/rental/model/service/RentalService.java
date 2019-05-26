@@ -318,6 +318,25 @@ public class RentalService {
 		      }
 		      return result;
 		   }
+		   
+		   
+		   
+		   
+		/*   ------------------ 렌탈신청--------*/
+		public int reqRental(Cart pno, int uno) {
+			Connection con = getConnection();
+			int result = new RentalDao().reqRental(con, pno, uno);
+			
+			if(result > 0) {
+				commit(con);
+				
+			}else {
+				rollback(con);
+			}
+			
+			close(con);
+			return result;
+		}
 		
 		
 

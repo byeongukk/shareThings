@@ -840,6 +840,31 @@ public class RentalDao {
 	      }
 	      return result;
 	   }
+
+	   //렌탈 신청 메소드
+	public int reqRental(Connection con, Cart pno, int uno) {
+	    PreparedStatement pstmt = null;
+	    int result = 0;
+	    String query = prop.getProperty("reqRental");
+	    
+	    try {
+	    	pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, pno.getPno());
+			pstmt.setInt(2, uno);
+			pstmt.setDate(3, pno.getRtStartDate());
+			pstmt.setDate(4, pno.getRtEndDate());
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+	    
+	    
+		return result;
+	}
 	   
 	
 	

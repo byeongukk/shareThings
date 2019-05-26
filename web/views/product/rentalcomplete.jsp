@@ -206,13 +206,21 @@ table {
 
 <hr>
 <div id="photo" >
-
+			<div class="title" style="text-align:center;">
+				<img src="/st/resource/img/cart/cart.png" width="15%;" style="text-align:center; margin-bottom:-20px;">
+				<h4 align="center" style="padding-bottom:0px; font-weight:bold;">모든 과정이 완료 되었습니다.</h4>
+			</div>
+			
+			<div class="payprocess" style="text-align:center;">
+				<img src="/st/resource/img/payprocess5.png" width="70%;" style="text-align:center;">
+				<hr>
+			</div>
 		<br><br>
 		
 		<i class="far fa-check-circle fa-8x"></i>
-		<h2 style="margin-bottom:20px;">물품 등록 신청 완료</h2>
-		<h6 style="color:red; font-weight:bold;">※ 등록한 제품이 14일 이내에 렌탈이 안될 시, 반납될 수 있습니다.</h6>
-		<h6 style="color:red; font-weight:bold; margin-bottom:100px;">※ 물품 검수 후, 불통과시 등록이 불가 할 수 있습니다. </h6>
+		<h2 style="margin-bottom:20px;">물품 대여 신청 완료</h2>
+		<h6 style="color:red; font-weight:bold;">※ 대여한 제품이 손상되거나 분실될 시, 불이익이 주어 질 수 있습니다.</h6>
+		<h6 style="color:red; font-weight:bold; margin-bottom:100px;">※ 물품 검수 후, 불통과시 반납이 불가 할 수 있습니다. </h6>
 			<div style="margin-bottom:50px;">
 		
 		<ul class="pager">
