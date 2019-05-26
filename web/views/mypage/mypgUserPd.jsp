@@ -117,7 +117,7 @@
 			 <a href="#" onclick="myUpPd();">내 등록 물품</a>
  			 <a href="#" onclick="myRtPd();">내 대여 현황</a>
   			<a href="#" onclick="myUserPd();" class="active">관심물품</a>
- 			 <a href="mypgPoint.jsp">적립금 현황</a>
+ 			 <a href="/st/views/mypage/mypgPoint.jsp">적립금 현황</a>
  			 <a href="mypgUser.jsp">내 문의 내역</a>
  			 
 			</div>
@@ -141,7 +141,7 @@
 			<table align="center" style="width:100%;">
 				<tr class="titletb" style="">
 					<td><input type="checkbox" checked></td>
-					<td width="10%;">날짜</td>
+					<td width="10%;">물품 등록 기간</td>
 					<td colspan=2 width="65%;">상품정보</td>
 					<td>상태</td>
 					<td>렌탈금액/주</td>
