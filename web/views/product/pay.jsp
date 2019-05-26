@@ -182,13 +182,20 @@
 				<%for(Product p : list) {%>
 				<tr style="text-align:center; height:100px; border-bottom:1px solid gray;" class="ctlist">
 					<td style="display:none;"><%= p.getCtgId() %></td>
-					<td><input type="checkbox" class="check" checked></td>
+					<td><input type="checkbox" class="check"></td>
 					<td><img alt="" src="/st/attach_upload/<%= p.getAsHistory()%>" height="100px" width="auto"></td>
 					<td><%= p.getModel() %></td>
-					<td><%= p.getpStartDate() %> ~ <%= p.getpEndDate() %></td>
-					<td><%= (p.getPrice())%> 원<% totalPrice += (p.getPrice() + 2500); price += p.getPrice();%></td>
+					<td><%= p.getpStartDate() %> ~ <%= p.getpEndDate() %>
+					
+					<%
+					double period = Math.ceil((p.getpEndDate().getTime() - p.getpStartDate().getTime() + 1) / (1000 * 60 * 60 * 24));
+					int ju = (int)((period) / 7) + 1;
+					%>
+					
+					</td>
+					<td><%= ju * p.getPrice()%> 원<% totalPrice += (ju * p.getPrice() + 2500); price += ju * p.getPrice();%></td>
 					<td>2,500<% dlprice += 2500; %></td>
-					<td><%= p.getDeposite() %> 원 <% depo += p.getDeposite(); totalPrice += depo;%></td>
+					<td><%= p.getDeposite() %> 원 <% depo = p.getDeposite(); totalPrice += depo;%></td>
 					<td><% if(p.getSid().equals("Y")) {%> 대여가능 <% }else { %> 대여불가 <%} %></td>
 					<td><% if(p.getSid().equals("등록 요청")) { %> <button style="background:#0CB6F4; color:white; text-decoration:none; border-radius:10px; border:none;">취소</button><%}else{} %> </td>
 				</tr>
