@@ -277,7 +277,9 @@ public class BoardDao {
 		try {
 			pstmt = con.prepareStatement(query);
 			pstmt.setString(1, "후기");
-			pstmt.setInt(2, uno);
+			pstmt.setString(2, "등록");
+			pstmt.setInt(3, uno);
+			pstmt.setString(4, "등록");
 			rset = pstmt.executeQuery();
 			if(rset.next()) {
 				bWritermap = new HashMap<String, Object>();
@@ -394,6 +396,7 @@ public class BoardDao {
 			pstmt.setString(3, newQnA.getbContent());
 			pstmt.setInt(4, Integer.parseInt(newQnA.getbWriter()));
 			pstmt.setInt(5, newQnA.getParentBno());
+			pstmt.setInt(6, newQnA.getbLevel());
 			
 			result = pstmt.executeUpdate();
 		
@@ -417,7 +420,8 @@ public class BoardDao {
 			pstmt.setInt(4, Integer.parseInt(newReview.getbWriter()));
 			pstmt.setString(5, "후기");
 			pstmt.setInt(6, newReview.getParentBno());
-			pstmt.setInt(7, newReview.getReviewStar());
+			pstmt.setInt(7, newReview.getbLevel());
+			pstmt.setInt(8, newReview.getReviewStar());
 			
 			result = pstmt.executeUpdate();
 		

@@ -40,7 +40,7 @@ public class GotoPayServlet extends HttpServlet {
 				Integer.parseInt(stArr[2])).getTimeInMillis());
 		
 		}
-		String[] endArr = st.split("-");
+		String[] endArr = end.split("-");
 		Date rtEndDate = null;
 		for(int i = 0; i < stArr.length; i++) {
 			rtEndDate = new Date(new GregorianCalendar(Integer.parseInt(endArr[0]), Integer.parseInt(endArr[1]) - 1,

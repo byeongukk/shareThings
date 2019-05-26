@@ -399,7 +399,12 @@
 									
 									%>
 									<tr>
-										<td><%= QnAList.get(i).get("qnaTitle") %></td>
+										<td><%= QnAList.get(i).get("qnaTitle") %>
+											<% if(loginUser != null && loginUser.getUno() == (int)bmap.get("uno") && QnAList.get(i).get("ansTitle") == null) { %>
+											<input type="hidden" value="<%= QnAList.get(i).get("qnaNo") %>">
+											<div class="ui green inverted button addReply qnaReply" data-toggle="modal" data-target="#replyModal">답글 입력</div>
+											<% } %>
+										</td>
 										<td><%= QnAList.get(i).get("qnaWriter") %>
 											<input type="hidden" name="qnaUno" value="<%= QnAList.get(i).get("qnaUno") %>">
 											<input type="hidden" value="<%= QnAList.get(i).get("qnaWriter") %>">
@@ -463,6 +468,7 @@
 								<input type="hidden" name="bno" value="<%= (int)bmap.get("bno") %>">
 								<input type="hidden" name="bTitle" value="<%= bmap.get("bTitle") %>">
 								<input type="hidden" name="pno" value="<%= (int)bmap.get("pno") %>">
+								<input type="hidden" name="bLevel" value="0">
 								<input type="hidden" name="reviewStar">
 								<textarea class="reviewInput" rows="5" style="width:100%" 
 								name="reviewInput" placeholder="후기를 입력해주세요"></textarea>
@@ -531,6 +537,10 @@
 											}
 									%>		
 											<%= reviewList.get(i).get("rvTitle") %>
+											<% if(loginUser != null && loginUser.getUno() == (int)bmap.get("uno") && reviewList.get(i).get("ansTitle") == null) { %>
+											<input type="hidden" value="<%= reviewList.get(i).get("rvNo") %>">
+											<div class="ui green inverted button addReply reviewReply" data-toggle="modal" data-target="#replyModal">답글 입력</div>
+											<% } %>
 										</td>
 										<td><%= reviewList.get(i).get("rvWriter") %>
 											<input type="hidden" name="rvUno" value="<%= reviewList.get(i).get("rvUno") %>">
@@ -662,6 +672,29 @@
 					</div>
 				</div>
 			</div> <!-- 신고 modal 끝 -->
+			
+			<div id="replyModal" class="modal fade replyModal" role="dialog">
+				<div class="modal-dialog modal-md">
+
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<h4 class="modal-title">답글입력</h4>
+						</div>
+						<div class="modal-body" align="center">
+						<div class="ref">
+						</div>
+						<textarea class="replyInput" rows="5" cols="70" placeholder="답변내용"></textarea>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="ui orange button" data-dismiss="modal">취소</button>
+							<button class="ui primary button" id="sendReplyBtn">확인</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			
 		</div> <!-- end of 메인바디 -->
 
 		<!-- 푸터 -->
@@ -704,6 +737,8 @@
 	 		$("input[name=targetName]").val(targetName);
 	 		<% } %>
 	 	});
+	 	
+	 	
 	 	
 	 	
 	 	$(".rvImageArea1").click(function() {
@@ -944,7 +979,7 @@
 			$.ajax({
 				url:"<%= request.getContextPath() %>/insertQnA.bo",
 				type:"post",
-				data:{qnaInput:qnaInput, qnaWriter:<%= loginUser.getUno() %>, parentBno:<%= bmap.get("bno") %>, pno:<%= bmap.get("pno") %>, parentBtitle:'<%= bmap.get("bTitle")%>'},
+				data:{qnaInput:qnaInput, qnaWriter:<%= loginUser.getUno() %>, refBno:<%= bmap.get("bno") %>, parentBno:<%= bmap.get("bno") %>, bLevel:0, pno:<%= bmap.get("pno") %>, parentBtitle:'<%= bmap.get("bTitle")%>'},
 				success:function(data) {
 					var $tbody = $("#QnAList>tbody");
 					$tbody.html("");
@@ -954,6 +989,15 @@
 						var $tr = $("<tr>");
 						var $titleTd = $("<td>").text(data[key].qnaTitle);
 						var $writerTd = $("<td>").text(data[key].qnaWriter);
+						<% if(loginUser.getUno() == (int)bmap.get("uno")) { %>
+						if(data[key].ansTitle == null) {
+							var $hiddenInput = $("<input type='hidden'>").val(data[key].qnaNo);
+							var $ansBtn = $("<div class='ui green inverted button addReply qnaReply' data-toggle='modal' data-target='#replyModal'>").text("답글 입력");
+							$titleTd.append($hiddenInput);
+							$titleTd.append($ansBtn);
+						}
+						<% } %>
+						
 						
 						var $qnaUnoHidden = $("<input type='hidden' name='qnaUno' value='" + data[key].qnaUno + "'>");
 						var $qnaWriterHidden = $("<input type='hidden' value='" + data[key].qnaWriter + "'>");
@@ -1075,6 +1119,14 @@
 								$titleTd.prepend($titleImg);
 							}
 						}
+						<% if(loginUser.getUno() == (int)bmap.get("uno")) { %>
+						if(data[key].ansTitle == null) {
+							var $hiddenInput = $("<input type='hidden'>").val(data[key].rvNo);
+							var $ansBtn = $("<div class='ui green inverted button addReply reviewReply' data-toggle='modal' data-target='#replyModal'>").text("답글 입력");
+							$titleTd.append($hiddenInput);
+							$titleTd.append($ansBtn);
+						}
+						<% } %>
 						var $writerTd = $("<td>").text(data[key].rvWriter);
 						var $rvUnoHidden = $("<input type='hidden' name='rvUno' value='" + data[key].rvUno + "'>");
 						var $rvWriterHidden = $("<input type='hidden' value='" + data[key].rvWriter + "'>");
@@ -1168,7 +1220,7 @@
 					alert("서버 전송 실패");
 				}
 				
-			})
+			});
 			<% 
 					}
 				} 
@@ -1276,6 +1328,234 @@
 			});
 			
 		});
+		
+		var replyType = "";
+		var parentBno = "";
+	 	$(".addReply").click(function() {
+	 		$(".ref").text("");
+	 		$(".replyInput").val("");
+	 		var writer = $(this).parent().next().text();
+	 		var date = $(this).parent().next().next().text();
+	 		var content = $(this).parent().parent().next().children().eq(0).text();
+	 		$(".ref").text(content + " / 작성자 : " + writer + " (" + date + " )");
+	 		if($(this).is(".qnaReply")) {
+		 		replyType = "qna";
+	 			parentQnaNo = $(this).prev().val();
+	 		}else {
+	 			replyType = "review";
+	 			var star = $(this).parent().parent().next().children().eq(1).html();
+	 			$(".ref").append(star);
+		 		parentRvNo = $(this).prev().val();
+	 		}
+	 		
+	 	});
+		
+		
+		$("#sendReplyBtn").click(function() {
+			var replyInput = $(".replyInput").val();
+
+			<% if(loginUser != null) { %>
+			if(replyType == "qna") {
+				$.ajax({
+					url:"<%= request.getContextPath() %>/insertQnA.bo",
+					type:"post",
+					data:{qnaInput:replyInput, qnaWriter:<%= loginUser.getUno() %>, refBno:<%= bmap.get("bno") %>, parentBno:parentQnaNo, bLevel:1, pno:<%= bmap.get("pno") %>, parentBtitle:'<%= bmap.get("bTitle")%>'},
+					success:function(data) {
+						var $tbody = $("#QnAList>tbody");
+						$tbody.html("");
+						var ctn = 0;
+						for(var key in data) {
+							ctn++;
+							var $tr = $("<tr>");
+							var $titleTd = $("<td>").text(data[key].qnaTitle);
+							var $writerTd = $("<td>").text(data[key].qnaWriter);
+							<% if(loginUser.getUno() == (int)bmap.get("uno")) { %>
+							if(data[key].ansTitle == null) {
+								var $hiddenInput = $("<input type='hidden'>").val(data[key].qnaNo);
+								var $ansBtn = $("<div class='ui green inverted button addReply qnaReply' data-toggle='modal' data-target='#replyModal'>").text("답글 입력");
+								$titleTd.append($hiddenInput);
+								$titleTd.append($ansBtn);
+							}
+							<% } %>
+							
+							
+							var $qnaUnoHidden = $("<input type='hidden' name='qnaUno' value='" + data[key].qnaUno + "'>");
+							var $qnaWriterHidden = $("<input type='hidden' value='" + data[key].qnaWriter + "'>");
+							$rpPuBtnDiv = $("<div class='ui mini basic icon button reportPuBtn' data-tooltip='해당 유저를 신고하시려면 클릭하세요' data-toggle='modal' data-target='#reportModal'>")
+							$icon = $("<i class='bullhorn icon' style='color:red'>");
+							$rpPuBtnDiv.append($icon);
+							$writerTd.append($qnaUnoHidden);
+							$writerTd.append($qnaWriterHidden);
+							if(data[key].qnaUno != <%= loginUser.getUno() %>) {
+								$writerTd.append($rpPuBtnDiv);
+							}
+							
+							
+							var $dateTd = $("<td>").text(data[key].qnaDate);
+							$tr.append($titleTd);
+							$tr.append($writerTd);
+							$tr.append($dateTd);
+							$tbody.append($tr);
+							
+							var $contentTr = $("<tr>");
+							var $contentTd = $("<td>").text(data[key].qnaContent);
+							var $emptyTd = $("<td colspan='2'>");
+							$contentTr.append($contentTd);
+							$contentTr.append($emptyTd);
+							$tbody.append($contentTr);
+
+							if(data[key].ansTitle != null) {
+								var $ansTr = $("<tr>");
+								var $ansTitleTd = $("<td style='color:orangered'>").text("  [답변 :]" + data[key].ansTitle);
+								var $ansWriterTd = $("<td>").text(data[key].ansWriter);
+								
+								var $ansUnoHidden = $("<input type='hidden' name='ansUno' value='" + data[key].ansUno + "'>");
+								var $ansWriterHidden = $("<input type='hidden' value='" + data[key].ansWriter + "'>");
+								var $rpPuBtnDiv = $("<div class='ui mini basic icon button reportPuBtn' data-tooltip='해당 유저를 신고하시려면 클릭하세요' data-toggle='modal' data-target='#reportModal'>")
+								var $icon = $("<i class='bullhorn icon' style='color:red'>");
+								$rpPuBtnDiv.append($icon);
+								$ansWriterTd.append($ansUnoHidden);
+								$ansWriterTd.append($ansWriterHidden);
+								if(data[key].ansUno != <%= loginUser.getUno() %>) {
+									$ansWriterTd.append($rpPuBtnDiv);
+								}
+								
+								
+								var $ansDateTd = $("<td>").text(data[key].ansDate);
+								$ansTr.append($ansTitleTd);
+								$ansTr.append($ansWriterTd);
+								$ansTr.append($ansDateTd);
+								$tbody.append($ansTr);
+		
+								var $ansContentTr = $("<tr>")
+								var $ansContentTd = $("<td>").text(data[key].ansContent);
+								var $emptyTd = $("<td colspan='2'>");
+								$ansContentTr.append($ansContentTd);
+								$ansContentTr.append($emptyTd);
+								$tbody.append($ansContentTr);
+								
+							}
+						}
+						hideContent();
+						$("#QnAHead").text("Q & A (" + ctn + ")");
+						alert("QnA 등록 완료");
+						$("#replyModal").modal("hide");
+					}, error:function(data) {
+						alert("서버 전송 실패");
+					}
+					
+				});
+				
+				
+				
+			}else if(replyType == "review") {
+				var replyInput = $(".replyInput").val();
+				
+				$.ajax({
+					url:"<%= request.getContextPath() %>/insertRvAns.bo",
+					type:"post",
+					data:{rvInput:replyInput, rvWriter:<%= loginUser.getUno() %>, refBno:<%= bmap.get("bno") %>, parentBno:parentRvNo, bLevel:1, pno:<%= bmap.get("pno") %>},
+					success:function(data) {
+						var $tbody = $("#reviewList>tbody");
+						$tbody.html("");
+						var ctn = 0;
+						for(var key in data) {
+							ctn++;
+							var $tr = $("<tr>");
+							var $titleTd = $("<td>").text(data[key].rvTitle);
+							for(var key2 in data[key].rvAttList) {
+								var rvAtt = data[key].rvAttList[key2];
+								if(rvAtt.fileLevel == 0) {
+									var $titleImg = $("<img src='/st/attach_upload/" + rvAtt.changeName + "' width='40px' height='40px'>");
+									$titleTd.prepend($titleImg);
+								}
+							}
+							<% if(loginUser.getUno() == (int)bmap.get("uno")) { %>
+							if(data[key].ansTitle == null) {
+								var $hiddenInput = $("<input type='hidden'>").val(data[key].rvNo);
+								var $ansBtn = $("<div class='ui green inverted button addReply reviewReply' data-toggle='modal' data-target='#replyModal'>").text("답글 입력");
+								$titleTd.append($hiddenInput);
+								$titleTd.append($ansBtn);
+							}
+							<% } %>
+							var $writerTd = $("<td>").text(data[key].rvWriter);
+							var $rvUnoHidden = $("<input type='hidden' name='rvUno' value='" + data[key].rvUno + "'>");
+							var $rvWriterHidden = $("<input type='hidden' value='" + data[key].rvWriter + "'>");
+							var $rpPuBtnDiv = $("<div class='ui mini basic icon button reportPuBtn' data-tooltip='해당 유저를 신고하시려면 클릭하세요' data-toggle='modal' data-target='#reportModal'>")
+							var $icon = $("<i class='bullhorn icon' style='color:red'>");
+							$rpPuBtnDiv.append($icon);
+							$writerTd.append($rvUnoHidden);
+							$writerTd.append($rvWriterHidden);
+							if(data[key].rvUno != <%= loginUser.getUno() %>) {
+								$writerTd.append($rpPuBtnDiv);
+							}	
+								
+							var $dateTd = $("<td>").text(data[key].rvDate);
+							$tr.append($titleTd);
+							$tr.append($writerTd);
+							$tr.append($dateTd);
+							$tbody.append($tr);
+							
+							var $contentTr = $("<tr>");
+							var $contentTd = $("<td>").text(data[key].rvContent);
+							for(var key2 in data[key].rvAttList) {
+								var rvAtt = data[key].rvAttList[key2];
+								var $imgs = $("<img src='/st/attach_upload/" + rvAtt.changeName + "' width='80px' height='80px'>");
+								$contentTd.append($imgs);
+							}
+							var $starTd = $("<td>");
+							var $starContent = $("<div class='ui star huge rating ratingContent' data-max-rating='5' data-rating='" + data[key].rvStar + "'>")
+							var $emptyTd = $("<td>");
+							$starTd.append($starContent);
+							$contentTr.append($contentTd);
+							$contentTr.append($starTd);
+							$contentTr.append($emptyTd);
+							$tbody.append($contentTr);
+
+							if(data[key].ansTitle != null) {
+								var $ansTr = $("<tr>");
+								var $ansTitleTd = $("<td style='color:orangered'>").text("  [답변 :]" + data[key].ansTitle);
+								var $ansWriterTd = $("<td>").text(data[key].ansWriter);
+								var $ansUnoHidden = $("<input type='hidden' name='ansUno' value='" + data[key].ansUno + "'>");
+								var $ansWriterHidden = $("<input type='hidden' value='" + data[key].ansWriter + "'>");
+								var $rpPuBtnDiv = $("<div class='ui mini basic icon button reportPuBtn' data-tooltip='해당 유저를 신고하시려면 클릭하세요' data-toggle='modal' data-target='#reportModal'>")
+								var $icon = $("<i class='bullhorn icon' style='color:red'>");
+								$rpPuBtnDiv.append($icon);
+								$ansWriterTd.append($ansUnoHidden);
+								$ansWriterTd.append($ansWriterHidden);
+								if(data[key].ansUno != <%= loginUser.getUno() %>) {
+									$ansWriterTd.append($rpPuBtnDiv);
+								}
+								var $ansDateTd = $("<td>").text(data[key].ansDate);
+								$ansTr.append($ansTitleTd);
+								$ansTr.append($ansWriterTd);
+								$ansTr.append($ansDateTd);
+								$tbody.append($ansTr);
+		
+								var $ansContentTr = $("<tr>")
+								var $ansContentTd = $("<td>").text(data[key].ansContent);
+								var $emptyTd = $("<td colspan='2'>");
+								$ansContentTr.append($ansContentTd);
+								$ansContentTr.append($emptyTd);
+								$tbody.append($ansContentTr);
+								
+							}
+						}
+						hideContent();
+						$("#reviewHead").text("대여 후기 (" + ctn + ")");
+						$("#userReviewCnt").text(ctn);
+						alert("대여 후기 등록 완료");
+						$("#replyModal").modal("hide");
+					}, error:function(data) {
+						alert("서버 전송 실패");
+					}
+				});
+				
+			}
+			<% } %>
+			
+		});
+		
 		
 	</script>
 	

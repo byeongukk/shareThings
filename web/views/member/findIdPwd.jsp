@@ -62,7 +62,6 @@
 				
 				<div class="tab-content">
 					<div id="findIdTab" class="tab-pane fade in active" align="center">
-						<form action="" method="post">
 							<table class="findIdTable">
 								<caption style="font-size:1.5em; ">
 									<i class="mobile alternate icon"></i>
@@ -72,7 +71,7 @@
 									<td width="25%"><b>이름</b></td>
 									<td colspan="2">
 										<div class="ui fluid input">
-											<input type="text" placeholder="이름" name="userName">
+											<input type="text" placeholder="이름" name="userName" id="idUserName1">
 										</div>
 									</td>
 								</tr>
@@ -80,7 +79,7 @@
 									<td><b>휴대폰 번호</b></td>
 									<td>
 										<div class="ui fluid input">
-											<input type="text" placeholder="-없이 입력" name="phone">
+											<input type="text" placeholder="-없이 입력" name="phone" id="idPhone">
 										</div>
 									</td>
 									<td width="25%">
@@ -91,23 +90,23 @@
 									<td><b>인증번호 </b></td>
 									<td colspan="2">
 										<div class="ui fluid input">
-											<input type="text" placeholder="인증번호 입력" name="verify">
+											<input type="text" placeholder="인증번호 입력" name="verify" id="codeInput1">
 										</div>
 									</td>
 								</tr>
 							</table>
 							<div>
-								<label style="font-size:0.7em;">입력하신 번호로 인증번호가 전송되었습니다. (남은시간 : </label>
-								<label> 5:00 </label>
-								<label style="font-size:0.7em;">)</label><br><br><br>
-								<button class="ui massive blue button">확인</button>
+								<div id="msg1" style="display:none">
+									<label style="font-size:0.7em;">입력하신 번호로 인증번호가 전송되었습니다. (남은시간 : </label>
+									<label class="min"> 2 </label>: <label class="sec"> 00 </label>
+									<label style="font-size:0.7em;">)</label><br><br><br>
+								</div>
+								<button class="ui massive blue button" id="submit1">확인</button>
 							</div>
-						</form>
 						
 						
 						<hr>
 						
-						<form action="" method="post">
 							<table class="findIdTable">
 								<caption style="font-size:1.5em; ">
 									<i class="envelope open outline icon"></i>
@@ -118,7 +117,7 @@
 									<td width="25%"><b>이름</b></td>
 									<td colspan="2">
 										<div class="ui fluid input">
-											<input type="text" placeholder="이름" name="userName">
+											<input type="text" placeholder="이름" name="userName" id="idUserName2">
 										</div>
 									</td>
 								</tr>
@@ -126,7 +125,7 @@
 									<td><b>이메일 주소</b></td>
 									<td>
 										<div class="ui fluid input">
-											<input type="text" placeholder="이메일 주소입력" name="email">
+											<input type="text" placeholder="이메일 주소입력" name="email" id="idEmail">
 										</div>
 									</td>
 									<td width="25%">
@@ -137,18 +136,19 @@
 									<td><b>인증번호 </b></td>
 									<td colspan="2">
 										<div class="ui fluid input">
-											<input type="text" placeholder="인증번호 입력" name="verify">
+											<input type="text" placeholder="인증번호 입력" name="verify" id="codeInput2">
 										</div>
 									</td>
 								</tr>
 							</table>
 							<div>
-								<label style="font-size:0.7em;">입력하신 이메일로 인증번호가 전송되었습니다. (남은시간 : </label>
-								<label> 5:00 </label>
-								<label style="font-size:0.7em;">)</label><br><br><br>
-								<button type="submit" class="ui massive blue button">확인</button>
+								<div id="msg2" style="display:none">
+									<label style="font-size:0.7em;">입력하신 이메일로 인증번호가 전송되었습니다. (남은시간 : </label>
+									<label class="min"> 2 </label>: <label class="sec"> 00 </label>
+									<label style="font-size:0.7em;">)</label><br><br><br>
+								</div>
+								<button type="submit" class="ui massive blue button" id="submit2">확인</button>
 							</div>
-						</form>
 						
 						
 						
@@ -165,7 +165,7 @@
 									<td width="25%"><b>아이디</b></td>
 									<td colspan="2">
 										<div class="ui fluid input">
-											<input type="text" placeholder="ID" name="userId">
+											<input type="text" placeholder="ID" name="userId" id="pwdUserId1">
 										</div>
 									</td>
 								</tr>
@@ -173,7 +173,7 @@
 									<td><b>휴대폰 번호</b></td>
 									<td>
 										<div class="ui fluid input">
-											<input type="text" placeholder="-없이 입력" name="phone">
+											<input type="text" placeholder="-없이 입력" name="phone" id="pwdPhone">
 										</div>
 									</td>
 									<td width="25%">
@@ -190,9 +190,11 @@
 								</tr>
 							</table>
 							<div>
-								<label style="font-size:0.7em;">입력하신 번호로 인증번호가 전송되었습니다. (남은시간 : </label>
-								<label> 5:00 </label>
-								<label style="font-size:0.7em;">)</label><br><br><br>
+								<div id="msg3" style="display:none">
+									<label style="font-size:0.7em;">입력하신 번호로 인증번호가 전송되었습니다. (남은시간 : </label>
+									<label class="min"> 2 </label>: <label class="sec"> 00 </label>
+									<label style="font-size:0.7em;">)</label><br><br><br>
+								</div>
 								<button class="ui massive blue button">확인</button>
 							</div>
 						</form>
@@ -210,7 +212,7 @@
 									<td width="25%"><b>아이디</b></td>
 									<td colspan="2">
 										<div class="ui fluid input">
-											<input type="text" placeholder="ID" name="userId">
+											<input type="text" placeholder="ID" name="userId" id="pwdUserId2">
 										</div>
 									</td>
 								</tr>
@@ -218,7 +220,7 @@
 									<td><b>이메일 주소</b></td>
 									<td>
 										<div class="ui fluid input">
-											<input type="text" placeholder="이메일 주소입력" name="email">
+											<input type="text" placeholder="이메일 주소입력" name="email" id="pwdEmail">
 										</div>
 									</td>
 									<td width="25%">
@@ -235,9 +237,11 @@
 								</tr>
 							</table>
 							<div>
-								<label style="font-size:0.7em;">입력하신 이메일로 인증번호가 전송되었습니다. (남은시간 : </label>
-								<label> 5:00 </label>
-								<label style="font-size:0.7em;">)</label><br><br><br>
+								<div id="msg4" style="display:none">
+									<label style="font-size:0.7em;">입력하신 이메일로 인증번호가 전송되었습니다. (남은시간 : </label>
+									<label class="min"> 2 </label>: <label class="sec"> 00 </label>
+									<label style="font-size:0.7em;">)</label><br><br><br>
+								</div>
 								<button type="submit" class="ui massive blue button">확인</button>
 							</div>
 						</form>
@@ -259,10 +263,119 @@
 	
 	
 	<script>
-		$("#sendIdFindText").click(function() {});
-		$("#sendIdFindEmail").click(function() {});
-		$("#sendPwdFindText").click(function() {});
-		$("#sendPwdFindEmail").click(function() {});
+		function setCount() {
+			
+			var min = 2;
+			var minCount = setInterval(function() {
+				min--;
+				$(".min").text(min);
+				setTimeout(function() {
+					clearInterval(minCount);
+				}, 180000);
+			}, 59000);
+			var second = 60;
+			var secCount = setInterval(function() {
+				second--;
+				if(second == 0) {
+					second = 59;
+				}
+				$(".sec").text(second);
+				setTimeout(function() {
+					clearInterval(secCount);
+				}, 180000);
+			}, 1000);
+		}
+	
+	
+		$("#sendIdFindText").click(function() {
+			alert("인증번호가 전송되었습니다. 시간 내에 입력해주세요");
+			var userName = $("#idUserName1").val();
+			var phone = $("#idPhone").val();
+			<% int ranNum = (int)(Math.random() * 900000) + 100000; %>
+			var num1 = <%= ranNum %>;
+			console.log(num1);
+			$("#msg1").show();
+			setCount();
+			$.ajax({
+				url:"<%= request.getContextPath() %>/findId.me",
+				type:"post",
+				data:{type:"phone", userName:userName, phone:phone, code:num1},
+				success:function(data) {
+					if(data != "fail") {
+						$("#submit1").click(function() {
+							var codeInput = $("#codeInput1").val();
+							if(codeInput == num1) {
+								alert("인증완료. 아이디 : " + data);
+							}else {
+								alert("인증실패. 인증번호를 다시 확인하세요.");
+							}
+						});
+					}else {
+						alert("입력하신 정보와 일치하는 회원을 찾지 못했습니다.");
+					}
+				}, error:function() {
+					alert("서버 전송 실패");
+				}
+			});
+			
+		});
+		
+		$("#sendIdFindEmail").click(function() {
+			alert("이메일로 인증번호가 전송되었습니다. 시간 내에 입력해주세요");
+			var userName = $("#idUserName2").val();
+			var email = $("#idEmail").val();
+			<% int ranNum2 = (int)(Math.random() * 900000) + 100000; %>
+			var num2 = <%= ranNum2 %>;
+			console.log(num2);
+			$("#msg2").show();
+			setCount();
+								
+			$.ajax({
+				url:"/st/findId.me",
+				type:"post",
+				data:{type:"email", userName:userName, email:email, code:num2},
+				success:function(data) {
+					if(data != "fail") {
+						$("#submit2").click(function() {
+							var codeInput = $("#codeInput2").val();
+							if(codeInput == num2) {
+								alert("인증완료. 아이디 : " + data);
+							}else {
+								alert("인증실패. 인증번호를 다시 확인하세요.");
+							}
+						});
+					}else {
+						alert("입력하신 정보와 일치하는 회원을 찾지 못했습니다.");
+					}
+				}, error:function() {
+					alert("서버 전송 실패");
+				}
+			});
+			
+		});
+		
+		
+		$("#sendPwdFindText").click(function() {
+			var userId = $("#pwdUserId1").val();
+			var phone = $("#pwdPhone").val();
+			<% int ranNum3 = (int)(Math.random() * 900000) + 100000; %>
+			var num3 = <%= ranNum3 %>;
+			console.log(num3);
+			$("#msg3").show();
+			setCount();
+			
+			
+		});
+		$("#sendPwdFindEmail").click(function() {
+			var userId = $("#pwdUserId2").val();
+			var email = $("#pwdEmail").val();
+			<% int ranNum4 = (int)(Math.random() * 900000) + 100000; %>
+			var num4 = <%= ranNum4 %>;
+			console.log(num4);
+			$("#msg4").show();
+			setCount();
+			
+		});
 	</script>
 </body>
 </html>

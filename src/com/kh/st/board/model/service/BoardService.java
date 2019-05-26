@@ -104,6 +104,9 @@ public class BoardService {
 		return result;
 	}
 
+
+	
+
 	public ArrayList<HashMap<String, Object>> selectQnAList(int parentBno) {
 		Connection con = getConnection();
 		ArrayList<HashMap<String, Object>> qnaList = new BoardDao().selectQnAList(con, parentBno);
@@ -132,6 +135,21 @@ public class BoardService {
 		close(con);
 		return result;
 	}
+	
+	
+	public int insertRvAns(Board newReview) {
+		Connection con = getConnection();
+		int result = new BoardDao().insertReview(con, newReview);
+		if(result > 0) {
+			commit(con);
+		}else {
+			rollback(con);
+		}
+		close(con);
+		return result;
+	}
+	
+	
 
 	public ArrayList<HashMap<String, Object>> selectReviewList(int parentBno) {
 		Connection con = getConnection();
@@ -234,6 +252,7 @@ public class BoardService {
 	      
 	      return result;
 	   }
+
 
 
 	
