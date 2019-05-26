@@ -258,8 +258,8 @@
 							    labels: typeArr,
 							    datasets: [{
 							      label: "매출",
-							      backgroundColor: "#4e73df",
-							      hoverBackgroundColor: "#2e59d9",
+							      backgroundColor: ['#4e73df', '#0F3299', '#80E2FF','#FFD5BF','#CC6A52'],
+							      hoverBackgroundColor: ['#0B3DE0', '#536B99', '#24E4FF','#FF9163','#CC2508'],
 							      borderColor: "#4e73df",
 							      data: priceArr,
 							    }],
@@ -439,8 +439,8 @@
 			    labels: ["전자기기", "취미/레저", "패션뷰티", "유아동", "반려동물"],
 			    datasets: [{
 			      label: "매출",
-			      backgroundColor: "#4e73df",
-			      hoverBackgroundColor: "#2e59d9",
+			      backgroundColor: ['#4e73df', '#0F3299', '#80E2FF','#FFD5BF','#CC6A52'],
+			      hoverBackgroundColor: ['#0B3DE0', '#536B99', '#24E4FF','#FF9163','#CC2508'],
 			      borderColor: "#4e73df",
 			      data: [<%=list.get(0).get("price")%>,<%=list.get(1).get("price")%>,
 			    	  <%=list.get(2).get("price")%>,<%=list.get(3).get("price")%>,
@@ -474,7 +474,7 @@
 			      yAxes: [{
 			        ticks: {
 			          min: 0,
-			          max: 200000,
+			          max: 180000,
 			          maxTicksLimit: 5,
 			          padding: 10,
 			          callback: function(value, index, values) {

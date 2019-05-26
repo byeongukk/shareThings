@@ -36,7 +36,9 @@ public class PaybackDownloadServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String no = request.getParameter("no");
 		String[] nums = no.split(",");
-		
+		for(int i = 0; i < nums.length; i++) {
+			System.out.println(nums[i]);
+		}
 		Workbook xlsWb = new HSSFWorkbook();
 		//Workbook xlsxWb = new XSSFWorkbook();
 		
@@ -67,6 +69,9 @@ public class PaybackDownloadServlet extends HttpServlet {
 		
 		ArrayList<Payback> list = new MemberService().getDownloadList(nums);
 		
+		for(int i = 0; i < list.size(); i++) {
+			System.out.println(list.get(i));
+		}
 		if(list != null) {
 			for(int i = 1; i <= list.size(); i++) {
 				row = sheet1.createRow(i);

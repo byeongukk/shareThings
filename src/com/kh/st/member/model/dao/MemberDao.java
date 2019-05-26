@@ -1576,7 +1576,7 @@ public class MemberDao {
 	public ArrayList<Payback> getDownloadList(Connection con, String[] nums) {
 		PreparedStatement pstmt = null;
 		ResultSet rset = null;
-		ArrayList<Payback> list = null;
+		ArrayList<Payback> list = new ArrayList<Payback>();
 		
 		String query = prop.getProperty("downloadList");
 		
@@ -1586,8 +1586,6 @@ public class MemberDao {
 				pstmt.setInt(1, Integer.parseInt(nums[i]));
 				
 				rset = pstmt.executeQuery();
-				
-				list = new ArrayList<Payback>();
 				
 				while(rset.next()) {
 					Payback p = new Payback();
