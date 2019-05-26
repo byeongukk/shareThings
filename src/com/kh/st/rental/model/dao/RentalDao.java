@@ -11,12 +11,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Properties;
-
-import org.apache.tomcat.dbcp.dbcp2.datasources.InstanceKeyDataSource;
 
 import com.kh.st.rental.model.vo.Cart;
 
@@ -536,11 +536,12 @@ public class RentalDao {
 			
 			while(rset.next()) {
 				hmap = new HashMap<String,Object>();
-		        Date stDate = rset.getDate("RT_ST_DATE");
+		        Calendar sysDate = new GregorianCalendar(Locale.KOREA);
+		        java.util.Date sDate = sysDate.getTime();
 		        Date endDate = rset.getDate("RT_END_DATE");
 		         
 		        // 시간차이를 시간,분,초를 곱한 값으로 나누면 하루 단위가 나옴
-		        long diff = endDate.getTime() - stDate.getTime();
+		        long diff = endDate.getTime() - sDate.getTime();
 		        long diffDays = diff / (24 * 60 * 60 * 1000);
 		        
 		        System.out.println(diffDays);
@@ -758,13 +759,13 @@ public class RentalDao {
 			while(rset.next()) {
 				hmap = new HashMap<String,Object>();
 		        Date stDate = rset.getDate("RT_ST_DATE");
+		        Calendar sysDate = new GregorianCalendar(Locale.KOREA);
+		        java.util.Date sDate = sysDate.getTime();
 		        Date endDate = rset.getDate("RT_END_DATE");
 		         
 		        // 시간차이를 시간,분,초를 곱한 값으로 나누면 하루 단위가 나옴
-		        long diff = endDate.getTime() - stDate.getTime();
+		        long diff = endDate.getTime() - sDate.getTime();
 		        long diffDays = diff / (24 * 60 * 60 * 1000);
-		        
-		        System.out.println(diffDays);
 				
 				hmap.put("rtNo", rset.getInt("RT_NO"));
 				hmap.put("pno", rset.getInt("PNO"));
