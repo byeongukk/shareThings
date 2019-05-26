@@ -5,11 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.kh.st.attachment.model.vo.Attachment;
-import com.kh.st.board.model.dao.BoardDao;
+import com.kh.st.customerService.model.service.*;
 import com.kh.st.customerService.model.dao.CsDao;
 import com.kh.st.customerService.model.vo.Cs;
 
-import static com.kh.st.common.JDBCTemplate.*;
 import static com.kh.st.common.JDBCTemplate.*;
 
 public class CsService {

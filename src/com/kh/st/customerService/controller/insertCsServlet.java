@@ -114,7 +114,7 @@ public class insertCsServlet extends HttpServlet {
 		         int cresult = new CsService().insertCsBoard(c, fileList);
 		         
 		         if(cresult > 0) {
-		            response.sendRedirect(request.getContextPath() + "/views/product/complete.jsp");
+		            response.sendRedirect(request.getContextPath() + "/views/product/complete2.jsp");
 		         }else {
 		            for(int i = 0; i < saveFiles.size(); i++) {
 		               File failedFile = new File(filePath + saveFiles.get(i));

@@ -280,7 +280,7 @@ table {
 <td colspan="3" id="title1">제목(*필수)</td>
 <td colspan="7" id="title2">
 
-<input class="tb" type="text" name="title" style="width:700px; 
+<input autocomplete="off" class="tb" type="text" name="title" style="width:700px; 
 height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 
 
@@ -326,12 +326,12 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 
 <td colspan="7" id="lental2">
 	<div class="ui left icon fluid input datePicker" style="margin-left:2.5%; width:30%; float:left;">
-											<input type="text" name="startDay" id="startDay" placeholder="대여 시작일">
+											<input autocomplete="off" type="text" name="startDay" id="startDay" placeholder="대여 시작일">
 											<i class="calendar alternate outline icon"></i>
 										</div>
 										
 										<div class="ui left icon fluid input datePicker" style="margin-left:2.5%; width:30%; float:left;">
-											<input type="text" name="endDay" id="endDay" placeholder="대여 종료일">
+											<input autocomplete="off" type="text" name="endDay" id="endDay" placeholder="대여 종료일">
 											<i class="calendar alternate outline icon"></i>
 										</div>
 </td>
@@ -423,7 +423,7 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 <td colspan="7" id="time2">
 <!-- <input class="tta" type="text" name="textfield" style="width:30%; height:30px; " placeholder="제품 구입 시기 입력"> -->
 <div class="ui left icon fluid input datePicker" style="margin-left:2.5%; width:30%; float:left;">
-											<input type="text" name="buyDay" id="buyDay" placeholder="구입시기">
+											<input autocomplete="off" type="text" name="buyDay" id="buyDay" placeholder="구입시기">
 											<i class="calendar alternate outline icon"></i>
 										</div>
 
@@ -437,7 +437,7 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 <td colspan="3" id="modelName1">모델명(*필수)</td>
 <td colspan="7" id="modelName2">
 
-<input class="mta"type="text" name="pmodel" style="width:30%; height:30px; " placeholder="모델명 입력">
+<input autocomplete="off" class="mta"type="text" name="pmodel" style="width:30%; height:30px; " placeholder="모델명 입력">
 </td>
 <td colspan="1"></td>
 </tr>
@@ -447,7 +447,7 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 <td colspan="3" id="purchasePrice1" style="text-align:center" >구입가</td>
 <td colspan="7" id="purchasePrice2" >
 
-<input name="purchasePrice" class="price" type="text" name="purchasePrice" style="width:30%; height:30px; ">
+<input autocomplete="off" name="purchasePrice" class="price" type="text" name="purchasePrice" style="width:30%; height:30px; ">
 <label>원</label>
 </td>
 <td colspan="1"></td>
@@ -471,7 +471,7 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 <td colspan="1"></td>
 <td colspan="3" id="as1" style="text-align:center">최근 A/S이력</td>
 <td colspan="7" id="as2">
-<input class="as3" type="text" name="asHistory" style="width:700px; 
+<input autocomplete="off" class="as3" type="text" name="asHistory" style="width:700px; 
 height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 
 
@@ -483,7 +483,7 @@ height:40px; left:0;" placeholder="  내용을 입력해주세욧">
 <td colspan="1"></td>
 <td colspan="3" id="rentPrice1" style="text-align:center">희망 렌탈비(주단위)(*필수)</td>
 <td colspan="7" id="rentPrice2">
-<input class="rentPrice3" type="text" name="rentPrice" style="width:200px; 
+<input autocomplete="off" class="rentPrice3" type="text" name="rentPrice" style="width:200px; 
 height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
 <label style="margin-left:2.5%; margin-top:2%;">※ 등록 물품 대비 금액이 너무 높으면 렌탈이 어려울 수 있음을 주의하십시오!</label>
 
@@ -498,7 +498,7 @@ height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
 <td colspan="1"></td>
 <td colspan="3" id="deposit1" style="text-align:center">보증금(*필수)</td>
 <td colspan="7" id="deposit2">
-<input class="deposit3" type="text" name="deposit" style="width:200px; 
+<input autocomplete="off" class="deposit3" type="text" name="deposit" style="width:200px; 
 height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
 <label style="margin-left:2.5%; margin-top:2%;">※ 희망 렌탈비 대비 보증금이 너무 높으면 렌탈이 어려울 수 있음을 주의하십시오!</label>
 
@@ -520,7 +520,7 @@ height:40px; left:0;" placeholder="  가격을 입력해주세욧"><br>
 		
 		<ul class="pager">
     <li><a href="" style="color:#F44A0C">이전</a></li>
-    <li><button onclick="pdInsert()" style="color:#0CB6F4">다음</button>
+    <li><a onclick="pdInsert()" style="color:#0CB6F4">다음</a></li>
    
   </ul>
 </div> <!-- 이전, 다음 버튼 -->

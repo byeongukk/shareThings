@@ -180,15 +180,15 @@ width:100%;
   
     <div class="form-group" style="width:40%" >
       <label for="csName">이름</label>
-      <input type="text" class="form-control" id="csName" placeholder="내용을 입력하세요" name="csName">
+      <input type="text" class="form-control" id="csName" value="<%= loginUser.getUserName() %>" readonly placeholder="내용을 입력하세요" name="csName">
     </div>
     <div class="form-group" style="width:40%">
       <label for="csPwd">연락처</label>
-      <input type="password" class="form-control" id="csPwd" placeholder="내용을 입력하세요" name="csPwd">
+      <input type="text" class="form-control" id="cs" value="<%= loginUser.getPhone() %>" readonly placeholder="내용을 입력하세요" name="csPwd">
     </div>
      <div class="form-group" style="width:70%">
       <label for="csEmail">이메일</label>
-      <input type="Email" class="form-control" id="csEmail" placeholder="내용을 입력하세요" name="csEmail">
+      <input type="Email" class="form-control" id="csEmail" value="<%= loginUser.getEmail() %>" readonly placeholder="내용을 입력하세요" name="csEmail">
     </div>
     
     
@@ -250,7 +250,7 @@ width:100%;
 										
 									</div>
 								</div>
-								<div class="ui large blue button" id="insertQue" onclick="mtminsert()">등록하기</div>
+								<div class="ui large blue button" id="insertQue" onclick="mtminsert()" style="margin-bottom:10%; ">등록하기</div>
 								
     <!-- <button type="submit" class="btn btn-default">Submit</button> -->
   </form>
