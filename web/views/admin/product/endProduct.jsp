@@ -94,7 +94,7 @@
 				<%@ include file="../common/header.jsp"%>
 				<!-- 컨텐츠바디 영역 실제 작성 영역 -->
 				<div class="container-fluid">
-					<h1 class="h3 mb-2 text-gray-800">등록현황 관리</h1>
+					<h1 class="h3 mb-2 text-gray-800">등록 반환 관리</h1>
 					<img src="<%=request.getContextPath()%>/resource/img/adminHr.png"
 						width="100%">
 					<div class="row" class="col-lg-12">
@@ -109,7 +109,7 @@
 											<td><select style="heigth: 30px; width: 20%;"
 											id="details" name="details" onchange = "detailsChg();">
 													<option value="0">전체</option>
-													<option value="reqNo">요청번호</option>
+													<option value="pno">물품번호</option>
 													<option value="name">등록자명</option>
 													<option value="reqName">물품명</option>
 											</select>&nbsp;&nbsp;&nbsp;
@@ -224,7 +224,7 @@
 						%>
 						<li class="paginate_button page-item disabled"
 							id="dataTable_previous"><a
-							href="<%=request.getContextPath()%>/reqOkProduct.bo?currentPage=<%=currentPage - 1%>"
+							href="<%=request.getContextPath()%>/endProductList.bo?currentPage=<%=currentPage - 1%>"
 							aria-controls="dataTable" data-dt-idx="0" tabindex="0"
 							class="page-link">Previous</a></li>
 						<%
@@ -232,7 +232,7 @@
 						%>
 						<li class="paginate_button page-item"
 							id="dataTable_previous"><a
-							href="<%=request.getContextPath()%>/reqOkProduct.bo?currentPage=<%=currentPage - 1%>"
+							href="<%=request.getContextPath()%>/endProductList.bo?currentPage=<%=currentPage - 1%>"
 							aria-controls="dataTable" data-dt-idx="0" tabindex="0"
 							class="page-link">Previous</a></li>
 						<%
@@ -242,13 +242,13 @@
 								for (int p = startPage; p <= endPage; p++) {
 								    if (p == currentPage) {
 						%>
-						<li class="paginate_button page-item disabled"><a href="<%=request.getContextPath()%>/reqOkProduct.bo?currentPage=<%=p%>"
+						<li class="paginate_button page-item disabled"><a href="<%=request.getContextPath()%>/endProductList.bo?currentPage=<%=p%>"
 							aria-controls="dataTable" data-dt-idx="1" tabindex="0"
 							class="page-link"><%=p%></a></li>
 						<%
 								} else {
 						%>
-						<li class="paginate_button page-item active"><a href="<%=request.getContextPath()%>/reqOkProduct.bo?currentPage=<%=p%>"
+						<li class="paginate_button page-item active"><a href="<%=request.getContextPath()%>/endProductList.bo?currentPage=<%=p%>"
 							aria-controls="dataTable" data-dt-idx="1" tabindex="0"
 							class="page-link"><%=p%></a></li>
 						<%
@@ -264,17 +264,17 @@
 								if (currentPage >= maxPage) {
 						%>
 						<li class="paginate_button page-item disabled" id="dataTable_next"><a
-							href="<%=request.getContextPath()%>/reqOkProduct.bo?currentPage=<%=currentPage + 1%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+							href="<%=request.getContextPath()%>/endProductList.bo?currentPage=<%=currentPage + 1%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
 							class="page-link">Next</a></li>
 						<%
 								} else {
 						%>
 						<li class="paginate_button page-item next" id="dataTable_next"><a
-							href="<%=request.getContextPath()%>/reqOkProduct.bo?currentPage=<%=currentPage + 1%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+							href="<%=request.getContextPath()%>/endProductList.bo?currentPage=<%=currentPage + 1%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
 							class="page-link">Next</a></li>
 						<%      }     %>
 						<li class="paginate_button page-item next" id="dataTable_end"><a
-							href="<%=request.getContextPath()%>/reqOkProduct.bo?currentPage=<%=maxPage%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
+							href="<%=request.getContextPath()%>/endProductList.bo?currentPage=<%=maxPage%>" aria-controls="dataTable" data-dt-idx="7" tabindex="0"
 							class="page-link">End</a></li>
 					</ul>
 				</div>
@@ -289,8 +289,7 @@
 				</div>
 			</div>
 					
-					<form action="<%= request.getContextPath() %>/endProductDelivery.bo" method="post"
-							encType="multipart/form-data">
+					<form action="<%= request.getContextPath() %>/endProductDelivery.bo" method="post">
 					<div class="modal fade" id="okModal" role="dialog">
 						<div class="modal-dialog">
 							<!-- Modal content-->
@@ -335,7 +334,7 @@
 												<textarea id="dNo" name="dNo" class="col-lg-12" placeholder="EX)송장번호 입력"></textarea>
 										</div>
 										<div class="modal-footer">
-											<button type="submit" class="btn btn-default">거절처리</button>
+											<button type="submit" class="btn btn-default">반환 처리</button>
 											<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 										</div>
 									</div>
@@ -372,15 +371,6 @@
 				}
 			});
 			
-			//체크박스 클릭해도 동작 X(해당 번호 가져옴)
-			$(".sorting_1").siblings().click(function() {
-				$(this).parent().each(function() {
-					console.log($(this).find("td").eq(2).text());
-					var reqNum = $(this).find("td").eq(2).text();
-					location = "<%= request.getContextPath()%>/confirmProductDetail.bo?reqNum=" + reqNum;
-				});
-			});
-			
 			//td클릭해도 체크되게
 			$(".sorting_1").click(function() {
 				$(this).parent().each(function() {
@@ -405,6 +395,10 @@
 					console.log(confirm);
 				}
 			});
+			if(num.length > 1) {
+				alert("한개만 선택하세요");
+				return false;
+			}
 			if(status.length > 1) {
 				alert("한개만 선택하세요");
 				return false;
@@ -447,7 +441,6 @@
 		
 		//조건 검색
 		function filteringP(currentPage) {
-			var okStatus = $("#okStatus").val();
 			var details = $("#details").val();
 			var filterContent = $("#filterContent").val();
 			var startD = $("#startD").val();
@@ -468,9 +461,8 @@
 			}
 			
 			$.ajax({
-				url:"<%= request.getContextPath()%>/selectConfirmFilter.bo",
+				url:"<%= request.getContextPath()%>/endProductFilter.bo",
 				data:{
-					okStatus:okStatus,
 					details:details,
 					filterContent:filterContent,
 					startD:startD,
@@ -557,24 +549,22 @@
 						for(var key in data.list) {
 							//data값 td에 입력
 							var $check = $("<td class='sorting_1'><input type='checkbox' class='check'>");
-							var $tr = $("<tr class='even' role='row' align='center id='check'>");
+							var $tr = $("<tr class='even' role='row' align='center' id='check'>");
 							
-							var $bNoTd = $("<td>").text(data.list[key].bNo);
-							var $reqNoTd = $("<td>").text(data.list[key].reqNo);
+							var $pnoTd = $("<td>").text(data.list[key].pno);
+							var $modelTd = $("<td>").text(data.list[key].model);
+							var $pNameTd = $("<td>").text(data.list[key].pName);
 							var $userNameTd = $("<td>").text(data.list[key].userName);
-							var $ctgNameTd = $("<td>").text(data.list[key].ctgName);
-							var $reqD = $("<td>").text(data.list[key].reqD);
-							var $bTitleTd = $("<td>").text(data.list[key].bTitle);
+							var $dDayTd = $("<td>").text(data.list[key].dDay + " 일 전 ");
 							var $statusTd = $("<td>").text(data.list[key].status);
 							
 							//tr에 td추가
 							$tr.append($check);
-							$tr.append($bNoTd);
-							$tr.append($reqNoTd);
+							$tr.append($pnoTd);
+							$tr.append($modelTd);
+							$tr.append($pNameTd);
 							$tr.append($userNameTd);
-							$tr.append($ctgNameTd);
-							$tr.append($reqD);
-							$tr.append($bTitleTd);
+							$tr.append($dDayTd);
 							$tr.append($statusTd);
 							
 							//table에 tr추가
@@ -587,14 +577,6 @@
 						$resultNull.append("<br><br><br><br><br><br>");
 					}
 					$listSize.prop("innerHTML", data.list.length + "건");
-					
-					$(".sorting_1").siblings().click(function() {
-						$(this).parent().each(function() {
-							console.log($(this).find("td").eq(2).text());
-							var reqNum = $(this).find("td").eq(2).text();
-							location = "<%= request.getContextPath()%>/confirmProductDetail.bo?reqNum=" + reqNum;
-						});
-					});
 				},
 				error:function(data) {
 					console.log("실패");

@@ -364,4 +364,443 @@ public class AdProductDao {
 		}
 		return ep;
 	}
+	
+	//등록 만료 물품 반환
+	public int endProductDelivery(Connection con, int pno, String dlocation, String delivery, String dNo) {
+		PreparedStatement pstmt = null;
+		String dType = "등록";
+		String out = "출고";
+		int result = 0;
+		
+		String query = prop.getProperty("endProductDelivery");
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setString(1, dNo);
+			pstmt.setString(2, delivery);
+			pstmt.setString(3, dType);
+			pstmt.setInt(4, pno);
+			pstmt.setString(5, out);
+			pstmt.setInt(6, pno);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	//물품상태 업데이트(등록 반환)
+	public int endProductSid(Connection con, int pno) {
+		PreparedStatement pstmt = null;
+		int result = 0;
+		
+		String query = prop.getProperty("endProductSid");
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			pstmt.setInt(1, pno);
+			
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+	
+	//ajax페이징 처리 개수
+	public int getAdProductFilterCount(Connection con, HashMap<String, Object> condition) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int listCount = 0;
+		ArrayList<String> queryArr = new ArrayList<String>();
+		ArrayList<Object> bindVal = new ArrayList<Object>();
+		String query = null;
+		boolean allViewsChk = false;
+		
+		//조건에 따른 query문 가져오기
+		if(condition.get("category").equals("소분류") &&
+				condition.get("startD").equals("")) {
+			allViewsChk = true;
+			queryArr.add(" 1 = ? ");
+			bindVal.add("1");
+			System.out.println("전체조회");
+		} else {
+			//조건검색
+			//카테고리 선택시
+			if(!condition.get("category").equals("소분류")) {
+				queryArr.add(" PC.CTG_NAME = ? ");
+				bindVal.add(condition.get("category"));
+			}
+			//날짜값 있을경우
+			if(!(condition).get("startD").equals("")) {
+				//날짜 2개 비교 인덱스 맞추기
+				queryArr.add(" P.PSTART_DATE BETWEEN ? ");
+				queryArr.add(" ? ");
+				bindVal.add(condition.get("startD"));
+				bindVal.add(condition.get("endD"));
+				System.out.println(condition.get("startD"));
+			}
+		}
+		query = prop.getProperty("AdProductFilterCount");
+		
+		if(allViewsChk == false) {
+			//추가된 쿼리만큼 더하기
+			for(int i = 0; i < queryArr.size(); i++) {
+				if(i==queryArr.size() - 1) {
+					query += queryArr.get(i) + ")";
+				} else {
+					query += queryArr.get(i) + " AND ";
+				}
+			}
+		} else {
+			//전제조회 쿼리
+			query += queryArr.get(0) + ")";
+		}
+		System.out.println(query);
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			for(int i = 0; i < bindVal.size(); i++) {
+				pstmt.setObject(i+1, bindVal.get(i));
+			}
+			
+			rset = pstmt.executeQuery();
+			
+			while(rset.next()) {
+				listCount = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return listCount;
+	}
+	
+	//물품 조건 검색
+	public ArrayList<HashMap<String, Object>> selectAdProductFilter(Connection con, HashMap<String, Object> condition,
+			PageInfo pi) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		HashMap<String, Object> hmap = null;
+		ArrayList<HashMap<String, Object>> list = null;
+		String query = null;
+		
+		ArrayList<String> queryArr = new ArrayList<String>();
+		ArrayList<Object> bindVal = new ArrayList<Object>();
+		ArrayList<String> rnumArr = new ArrayList<String>();
+		ArrayList<Object> rnumVal = new ArrayList<Object>();
+		boolean allViewsChk = false;
+		
+		int startRow = (pi.getCurrentPage() - 1) * pi.getLimit() + 1;
+		int endRow = startRow + pi.getLimit() - 1;
+		
+		//전체조회
+		if(condition.get("category").equals("소분류") &&
+				condition.get("startD").equals("")) {
+			allViewsChk = true;
+			queryArr.add(" 1 = ?)) ");
+			bindVal.add("1");
+			rnumArr.add(" WHERE RNUM BETWEEN ? ");
+			rnumArr.add(" AND ? ");
+			rnumVal.add(startRow);
+			rnumVal.add(endRow);
+			System.out.println("전체조회");
+		} else {
+			//조건검색
+			//물품별 검색
+			if(!condition.get("category").equals("소분류")) {
+				queryArr.add(" PC.CTG_NAME = ? ");
+				bindVal.add(condition.get("category"));
+			}
+			//날짜값 있을 경우
+			if(!(condition).get("startD").equals("")) {
+				//날짜 2개 비교 인덱스 맞추기
+				queryArr.add(" P.PSTART_DATE BETWEEN ? ");
+				queryArr.add(" ? ");
+				bindVal.add(condition.get("startD"));
+				bindVal.add(condition.get("endD"));
+				System.out.println(condition.get("startD"));
+			}
+			
+			rnumArr.add(" WHERE RNUM BETWEEN ? ");
+			rnumArr.add(" AND ? ");
+			rnumVal.add(startRow);
+			rnumVal.add(endRow);
+		}
+		
+		query = prop.getProperty("selectAdProductFilter");
+		
+		if(allViewsChk == false) {
+			//추가된 쿼리만큼 더하기
+			for(int i = 0; i < queryArr.size(); i++) {
+				if(i==queryArr.size() - 1) {
+					query += queryArr.get(i) + "))";
+					
+				} else {
+					query += queryArr.get(i) + "AND ";
+				}
+			}
+		} else {
+			//전제조회 쿼리
+			query += queryArr.get(0);
+		}
+		for(int i = 0; i < rnumArr.size(); i++) {
+			query += rnumArr.get(i);
+		}
+		
+		System.out.println(query);
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			for(int i = 0; i < bindVal.size(); i++) {
+				pstmt.setObject(i+1, bindVal.get(i));
+			}
+			for(int i = 0; i < rnumVal.size(); i++) {
+				pstmt.setObject(bindVal.size() + (i + 1), rnumVal.get(i));
+			}
+			rset = pstmt.executeQuery();
+			
+			list = new ArrayList<HashMap<String, Object>>();
+			
+			while(rset.next()) {
+				hmap = new HashMap<String, Object>();
+				
+				//물품번호, 등록자, 모델명, 물품명, 등록기간, 상태
+				hmap.put("pno", rset.getInt("PNO"));
+				hmap.put("userName", rset.getString("USER_NAME"));
+				hmap.put("model", rset.getString("MODEL"));
+				hmap.put("pName", rset.getString("CTG_NAME"));
+				hmap.put("pstartD", rset.getDate("PSTART_DATE"));
+				hmap.put("pendD", rset.getDate("PEND_DATE"));
+				hmap.put("status", rset.getString("STATUS"));
+				
+				list.add(hmap);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return list;
+	}
+	
+	//반환 물품 갯수
+	public int endProductFilterList(Connection con, HashMap<String, Object> condition) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		int listCount = 0;
+		ArrayList<String> queryArr = new ArrayList<String>();
+		ArrayList<Object> bindVal = new ArrayList<Object>();
+		String query = null;
+		boolean allViewsChk = false;
+		
+		//조건에 따른 query문 가져오기
+		HashMap<String, Object> detailsContent = (HashMap<String, Object>) condition.get("detailsContent");
+		
+		if(detailsContent.get("details").equals("0") &&
+						condition.get("startD").equals("")) {
+			allViewsChk = true;
+			queryArr.add(" 1 = ? ");
+			bindVal.add("1");
+			System.out.println("전체조회");
+		} else {
+			//조건 검색
+			//상세조건이 전체가 아닐때
+			if(!(detailsContent.get("details").equals("0"))) {
+				
+				//상세조건 별 쿼리문
+				if(detailsContent.get("details").equals("pno")) {
+					queryArr.add(" P.PNO = ? ");
+				} else if(detailsContent.get("details").equals("name")) {
+					queryArr.add(" M.USER_NAME = ? ");
+				} else if(detailsContent.get("details").equals("reqName")) {
+					queryArr.add(" PC.CTG_NAME = ? ");
+				}
+				bindVal.add(detailsContent.get("filterContent"));
+			}
+			//날짜값 있을 경우
+			if(!(condition).get("startD").equals("")) {
+				//날짜 2개 비교 인덱스 맞추기
+				queryArr.add(" P.PSTART_DATE BETWEEN ? ");
+				queryArr.add(" ? ");
+				bindVal.add(condition.get("startD"));
+				bindVal.add(condition.get("endD"));
+				System.out.println(condition.get("startD"));
+			}
+		}
+		
+		query = prop.getProperty("endProductFilterCount");
+		
+		if(allViewsChk == false) {
+			//추가된 쿼리만큼 더하기
+			for(int i = 0; i < queryArr.size(); i++) {
+				if(i==queryArr.size() - 1) {
+					query += queryArr.get(i) + ")";
+				} else {
+					query += queryArr.get(i) + " AND ";
+				}
+			}
+		} else {
+			//전제조회 쿼리
+			query += queryArr.get(0) + ")";
+		}
+		//등록 요청 상태, 요청번호 순으로 내림차순
+		query += " ORDER BY STATUS, PNO";
+		System.out.println(query);
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			for(int i = 0; i < bindVal.size(); i++) {
+				pstmt.setObject(i+1, bindVal.get(i));
+			}
+			
+			rset = pstmt.executeQuery();
+			
+			if(rset.next()) {
+				listCount = rset.getInt(1);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		System.out.println(listCount);
+		return listCount;
+	}
+	
+	//조건검색 반환 물품
+	public ArrayList<HashMap<String, Object>> selectEndProductFilter(Connection con, HashMap<String, Object> condition,
+			PageInfo pi) {
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		HashMap<String, Object> hmap = null;
+		ArrayList<HashMap<String, Object>> list = null;
+		String query = null;
+		
+		ArrayList<String> queryArr = new ArrayList<String>();
+		ArrayList<Object> bindVal = new ArrayList<Object>();
+		ArrayList<String> rnumArr = new ArrayList<String>();
+		ArrayList<Object> rnumVal = new ArrayList<Object>();
+		boolean allViewsChk = false;
+		
+		int startRow = (pi.getCurrentPage() - 1) * pi.getLimit() + 1;
+		int endRow = startRow + pi.getLimit() - 1;
+		
+		//조건에 따른 query문 가져오기
+		HashMap<String, Object> detailsContent = (HashMap<String, Object>) condition.get("detailsContent");
+		
+		//전체조회
+		if(detailsContent.get("details").equals("0") &&
+				condition.get("startD").equals("")) {
+			allViewsChk = true;
+			queryArr.add(" 1 = ? ");
+			bindVal.add("1");
+			rnumArr.add(" WHERE RNUM BETWEEN ? ");
+			rnumArr.add(" AND ? ");
+			rnumVal.add(startRow);
+			rnumVal.add(endRow);
+			System.out.println("전체조회");
+		} else {
+			//조건 검색
+			if(!(detailsContent.get("details").equals("0"))) {
+				//상세조건 별 쿼리문
+				//상세조건 별 쿼리문
+				if(detailsContent.get("details").equals("reqNo")) {
+					queryArr.add(" P.PNO = ? ");
+				} else if(detailsContent.get("details").equals("name")) {
+					queryArr.add(" M.USER_NAME = ? ");
+				} else if(detailsContent.get("details").equals("reqName")) {
+					queryArr.add(" PC.CTG_NAME = ? ");
+				}
+				bindVal.add(detailsContent.get("filterContent"));
+			}
+			//날짜값 있을 경우
+			if(!(condition).get("startD").equals("")) {
+				//날짜 2개 비교 인덱스 맞추기
+				queryArr.add(" P.PSTART_DATE BETWEEN ? ");
+				queryArr.add(" ? ");
+				bindVal.add(condition.get("startD"));
+				bindVal.add(condition.get("endD"));
+				System.out.println(condition.get("startD"));
+			}
+			
+			rnumArr.add(" WHERE RNUM BETWEEN ? ");
+			rnumArr.add(" AND ? ");
+			rnumVal.add(startRow);
+			rnumVal.add(endRow);
+		}
+		
+		query = prop.getProperty("selectEndProductFilter");
+		
+		if(allViewsChk == false) {
+			//추가된 쿼리만큼 더하기
+			for(int i = 0; i < queryArr.size(); i++) {
+				if(i==queryArr.size() - 1) {
+					query += queryArr.get(i);
+					query += "ORDER BY PEND_DATE, PNO))";
+					
+				} else {
+					query += queryArr.get(i) + "AND ";
+				}
+			}
+		} else {
+			//전제조회 쿼리
+			query += queryArr.get(0);
+			query += "ORDER BY PEND_DATE, PNO))";
+		}
+		for(int i = 0; i < rnumArr.size(); i++) {
+			query += rnumArr.get(i);
+		}
+		
+		System.out.println(query);
+		
+		try {
+			pstmt = con.prepareStatement(query);
+			
+			for(int i = 0; i < bindVal.size(); i++) {
+				pstmt.setObject(i+1, bindVal.get(i));
+			}
+			for(int i = 0; i < rnumVal.size(); i++) {
+				pstmt.setObject(bindVal.size() + (i + 1), rnumVal.get(i));
+			}
+			rset = pstmt.executeQuery();
+			
+			list = new ArrayList<HashMap<String, Object>>();
+			
+			while(rset.next()) {
+				hmap = new HashMap<String, Object>();
+				
+				Date sDate = rset.getDate("PEND_DATE");
+				Date sysDate = rset.getDate("SYSDATE");
+				
+				//시간차이를 하루단위로
+				long diff = sDate.getTime() - sysDate.getTime();
+				long dDay = diff/ (24 * 60 * 60 * 1000);
+				
+				//물품번호, 모델명, 물품명, 등록자, 만료날짜, 물품상태
+				hmap.put("pno", rset.getInt("PNO"));
+				hmap.put("model", rset.getString("MODEL"));
+				hmap.put("pName", rset.getString("CTG_NAME"));
+				hmap.put("userName", rset.getString("USER_NAME"));
+				hmap.put("dDay", dDay);
+				hmap.put("status", rset.getString("STATUS"));
+				
+				list.add(hmap);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			close(pstmt);
+			close(rset);
+		}
+		return list;
+	}
 }

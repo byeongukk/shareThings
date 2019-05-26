@@ -240,16 +240,23 @@
 	                    
 						//var t_invoice =  348540216731;
 	           			 $(".even").each(function(){
-	           				var t_code = /* $(this).find("td").eq(2).text(); */ 04;
-				            //var t_invoice = /* $(this).find("td").eq(3).text(); */ 348540216731;
-				            var t_inovice = 3485402167312;
+	           				var t_code = $(this).find("td").eq(2).text();
+	           				console.log(t_code);
+	           				if(t_code == "대한통운") t_code = "04";
+	           				if(t_code == "우체국택배") t_code = "01";
+	           				if(t_code == "로젠택배") t_code = "06";
+	           				if(t_code == "CVSnet") t_code = "24";
+	           				if(t_code == "한진택배") t_code = "05";
+	           				console.log(t_code);
+				           
+	           				var t_invoice = $(this).find("td").eq(3).text();
 				            var $trackingTd = $(this).find("td").eq(9);
 				            
 	           				console.log(t_invoice);
 			            $.ajax({
 			                type:"GET",
 			                dataType : "json",
-			                url:"http://info.sweettracker.co.kr/api/v1/trackingInfo?t_key="+myKey+"&t_code="+04+"&t_invoice="+3485402167312,
+			                url:"http://info.sweettracker.co.kr/api/v1/trackingInfo?t_key="+myKey+"&t_code="+t_code+"&t_invoice="+t_invoice,
 			                success:function(data){
 			                    var $dataTable = $(".dataTable");
 			                    console.log(data);
@@ -266,8 +273,6 @@
 			                    	case 6 : $trackingTd = $trackingTd.text("배송 완료"); break;
 			                    	}
 			                    }
-			                    //$tr.append($trackingTd);
-		                    	//$dataTable.append($tr);
 			                }
 			            	});
 	           			});

@@ -69,12 +69,10 @@ html {
 					<div class="row">
 						<div class="col-lg-6 mb-4">
 							<div class="card bg-primary text-white shadow">
-								<div class="card-body">
+								<div class="card-body" id="adProduct">
 									<b>등록관리</b>
 									<hr color="white">
-									<div class="text-white-50 small">등록요청 00건</div>
-									<div class="text-white-50 small">등록승인현황 00건</div>
-									<div class="text-white-50 small">미반품건 00건</div>
+						
 								</div>
 							</div>
 						</div>
@@ -211,6 +209,30 @@ html {
 	            }
 	         });
 			
+			//등록 업무 현황
+			$.ajax({
+				url:"<%= request.getContextPath() %>/selectReqProductList.bo",
+				type:"get",
+				success:function(data) {
+					var $reqList = $("<h4><div>").text("등록요청 " + data.reqList + " 건");
+					var $confirmList = $("<h4><div>").text("등록승인현황 " + data.confirmList + " 건");
+					var $adProduct = $("<h4><div>").text("등록물품 " + data.adProduct + " 건");
+					
+					$("#adProduct").append($reqList);
+					$("#adProduct").append($confirmList);
+					$("#adProduct").append($adProduct);
+				},
+				error:function() {
+					console.log("실패");
+				}
+			});
+			
+			//메인에서 클릭 이동
+			$("#adProduct").click(function() {
+				location = "<%= request.getContextPath() %>/reqProduct.bo";
+			}).mouseenter(function(){
+				$(this).css({"cursor":"pointer"});
+			});
 		});
 		</script>
 </body>

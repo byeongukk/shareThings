@@ -158,6 +158,22 @@ public class ReqService {
 		close(con);
 		return listCount;
 	}
+
+	//금임 업무량
+	public HashMap<String, Object> reqProductList() {
+		Connection con = getConnection();
+		HashMap<String, Object> result = new HashMap<String,Object>();
+		
+		int reqList = new ReqDao().reqProductSize(con);
+		int confirmList = new ReqDao().confirmSize(con);
+		int adProduct = new ReqDao().adProductSize(con);
+		
+		result.put("reqList", reqList);
+		result.put("confirmList", confirmList);
+		result.put("adProduct", adProduct);
+		
+		return result;
+	}
 	
 	
 }
