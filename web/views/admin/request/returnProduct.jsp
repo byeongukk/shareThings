@@ -262,7 +262,7 @@
 			                    console.log(data);
 			                    console.log("data.result : " + data.result);
 			                    if(data.result == "N" || data.result =="" || data.status == false){
-			                        $trackingTd = $trackingTd.text("운송장번호오류");
+			                        $trackingTd = $trackingTd.text("배송준비중");
 			                    }else {
 			                    	switch(data.level){
 			                    	case 1 : $trackingTd = $trackingTd.text("배송준비중"); break;

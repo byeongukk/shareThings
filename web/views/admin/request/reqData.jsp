@@ -571,8 +571,8 @@
 					var $productNameTd = $("<td>").text(data.productName);
 						
 					$tr.append($upNoTd);
-					$tr.append($bWriterTd);
 					$tr.append($productNameTd);
+					$tr.append($bWriterTd);
 						
 					$dataTables.append($tr);
 					$dataTables.append($hidden);
@@ -621,8 +621,8 @@
 					var $productNameTd = $("<td>").text(data.productName);
 						
 					$tr.append($upNoTd);
-					$tr.append($bWriterTd);
 					$tr.append($productNameTd);
+					$tr.append($bWriterTd);
 						
 					$dataTables.append($tr);
 					$dataTables.append($hidden);

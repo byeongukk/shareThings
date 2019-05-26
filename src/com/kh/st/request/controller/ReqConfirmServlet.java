@@ -38,7 +38,7 @@ public class ReqConfirmServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-response.setCharacterEncoding("UTF-8");
+		response.setCharacterEncoding("UTF-8");
 		
 		if(ServletFileUpload.isMultipartContent(request)) {
 			System.out.println("multipart로 request 요청");
