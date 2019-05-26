@@ -259,7 +259,7 @@ width:100%;
 
 
 	<div class="detail">
-<div class="btn-group btn-group-justified">
+<!-- <div class="btn-group btn-group-justified">
   <div class="btn-group">
     <button type="button" class="btn btn-primary" style="color:white; background:#0CB6F4;  border:1px solid #0CB6F4; ">TOP10</button>
   </div>
@@ -273,7 +273,7 @@ width:100%;
    <div class="btn-group">
     <button type="button" class="btn btn-primary" style="color:white; background:#0CB6F4; border:1px solid #0CB6F4;">판매 방법</button>
     </div>
-</div>
+</div> -->
     
     
     <!--  -->
@@ -281,11 +281,11 @@ width:100%;
      <ul>
         <li class="collapsible">
             <h2 class="title"><a href="#html5">어떤 물건을 등록 할 수 있나요?</a></h2>
-            <p class="content">안쓰는 물건 아무거나 가능</p>
+            <p class="content">구매 후 질려서 안쓰거나 맞지않는 제품들을 등록 할 수 있습니다.</p>
         </li>
         <li class="collapsible">
             <h2 class="title"><a href="#css3">배송 시스템은 어떻게 되나요?</a></h2>
-            <p class="content">빠르고 좋은 배송 시스템</p>
+            <p class="content">거래 안정성을 위해 등록자와 대여자 사이에 전문 물류 시스템을 통해서 배송합니다.</p>
         </li>
         <li class="collapsible">
             <h2 class="title"><a href="#api">보증금은 아무렇게나 적으면 되나요?</a></h2>
@@ -293,7 +293,7 @@ width:100%;
         </li>
         <li class="collapsible">
             <h2 class="title"><a href="#api">결제는 카드만 되나요?</a></h2>
-            <p class="content">ㅇㅇ</p>
+            <p class="content">카카오페이, 신용카드 됩니다.</p>
         </li>
         <li class="collapsible">
             <h2 class="title"><a href="#api">물품 등록 어떻게 하나요?</a></h2>
@@ -309,11 +309,11 @@ width:100%;
         </li>
         <li class="collapsible">
             <h2 class="title"><a href="#api">물품 파손 시 보증금은 어떻게 되나요?</a></h2>
-            <p class="content">까임</p>
+            <p class="content">까입니다</p>
         </li>
         <li class="collapsible">
             <h2 class="title"><a href="#api">판매 불가 항목에는 어떤게 있나요?</a></h2>
-            <p class="content">니가 찾아보세요</p>
+            <p class="content">왼쪽 메뉴바에 있는 이용안내에 들어가면 상세히 볼 수 있습니다.</p>
         </li>
         <li class="collapsible">
             <h2 class="title"><a href="#api">택배비용은 어떻게 되나요?</a></h2>
