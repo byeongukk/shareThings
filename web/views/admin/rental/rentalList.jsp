@@ -76,27 +76,31 @@
 													<table class="col-lg-12" id="filter">
 														<tr>
 															<td width="5%">대여상태</td>
-															<td width="5%"><select class="form-control" id="rentalStatus" name="rentalStatus">
-																	<option value="0">전체</option>
-																	<option value="RTS1">대여대기</option>
-																	<option value="RTS2">대여승인</option>
-																	<option value="RTS3">대여거절</option>
-																	<option value="RTS4">대여송장입력(발송대기)</option>
-																	<option value="RTS5">대여중</option>
-																	<option value="RTS6">수거종장입력(발송대기)</option>
-																	<option value="RTS7">수거중</option>
-																	<option value="RTS8">대여완료</option>
-																	<option value="RTS9">대여취소요청</option>
-																	<option value="RTS10">대여취소</option>  
-															</select></td>
+															<td width="5%">
+																<select class="form-control" id="rentalStatus" name="rentalStatus">
+																		<option value="0">전체</option>
+																		<option value="RTS1">대여대기</option>
+																		<option value="RTS2">대여승인</option>
+																		<option value="RTS3">대여거절</option>
+																		<option value="RTS4">대여송장입력(발송대기)</option>
+																		<option value="RTS5">대여중</option>
+																		<option value="RTS6">수거종장입력(발송대기)</option>
+																		<option value="RTS7">수거중</option>
+																		<option value="RTS8">대여완료</option>
+																		<option value="RTS9">대여취소요청</option>
+																		<option value="RTS10">대여취소</option>  
+																</select>
+															</td>
 															<td width="5%">상세조건</td>
-															<td width="25%"><select class="form-control" id="details" name="details" onchange = detailsChg();>
+															<td width="25%">
+															<select class="form-control" id="details" name="details" onchange = detailsChg();>
 																	<option value="0">전체</option>
 																	<option value="rtNo">대여주문번호</option>
 																	<option value="rtUserName">대여자이름</option>
 																	<option value="model">물품명</option>
 																	<option value="pno">물품번호</option>
-															</select></td>
+															</select>
+															</td>
 															<td width="30%">
 																<input type="text" class="form-control" placeholder="상세정보입력" disabled id="filterContent" name="filterContent">
 															</td>

@@ -85,6 +85,10 @@
 															rowspan="1" colspan="1"
 															aria-label="Age: activate to sort column ascending"
 															style="width: 10px;">카테고리</th>
+															<th class="sorting" tabindex="0" aria-controls="dataTable"
+															rowspan="1" colspan="1"
+															aria-label="Age: activate to sort column ascending"
+															style="width: 30px;">문의 내용</th>
 														<th class="sorting" tabindex="0" aria-controls="dataTable"
 															rowspan="1" colspan="1"
 															aria-label="Age: activate to sort column ascending"
@@ -100,6 +104,7 @@
 															<td><%= hmap.get("cno") %></td>
 															<td><%= hmap.get("userId")%></td>
 															<td><%= hmap.get("csCategory")%></td>
+															<td><%= hmap.get("csContent")%></td>
 															<td>
 															<% 
 															if(hmap.get("csReply").equals("Y")){ %>
