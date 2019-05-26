@@ -324,7 +324,7 @@
 											<hr>
 											<h5>*택배사</h5>
 												<select id="delivery" name="delivery">
-													<option value="CJ대한통운">CJ대한통운</option>
+													<option value="대한통운">CJ대한통운</option>
 													<option value="로젠택배">로젠택배</option>
 													<option value="우체국택배">우체국택배</option>
 													<option value="CVSnet">CVSnet 편의점택배</option>
