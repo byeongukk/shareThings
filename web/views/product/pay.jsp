@@ -182,7 +182,7 @@
 				<%for(Product p : list) {%>
 				<tr style="text-align:center; height:100px; border-bottom:1px solid gray;" class="ctlist">
 					<td style="display:none;"><%= p.getCtgId() %></td>
-					<td><input type="checkbox" class="check"></td>
+					<td><input type="checkbox" class="check" checked></td>
 					<td><img alt="" src="/st/attach_upload/<%= p.getAsHistory()%>" height="100px" width="auto"></td>
 					<td><%= p.getModel() %></td>
 					<td><%= p.getpStartDate() %> ~ <%= p.getpEndDate() %>

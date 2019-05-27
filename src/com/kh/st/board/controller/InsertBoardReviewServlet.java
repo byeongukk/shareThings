@@ -108,7 +108,7 @@ public class InsertBoardReviewServlet extends HttpServlet {
 				if(!reviewList.isEmpty()) {
 					String phone = new MemberService().getBwriterPhone(Integer.parseInt(parentBno));
 					int index = phone.indexOf(")");
-					//new SendSMS().send(phone.substring(index + 1), parentBtitle, "대여 후기");
+					new SendSMS().send(phone.substring(index + 1), parentBtitle, "대여 후기");
 					new Gson().toJson(reviewList, response.getWriter());
 				}else {
 					response.getWriter().append("List not found");

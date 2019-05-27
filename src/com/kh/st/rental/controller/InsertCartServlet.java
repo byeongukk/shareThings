@@ -44,7 +44,7 @@ public class InsertCartServlet extends HttpServlet {
 		}
 		Date endDate = null;
 		String end = request.getParameter("end");
-		String[] endArr = st.split("-");
+		String[] endArr = end.split("-");
 		for(int i = 0; i < endArr.length; i++) {
 			endDate = new Date(new GregorianCalendar(Integer.parseInt(endArr[0]), Integer.parseInt(endArr[1]) - 1,
 					Integer.parseInt(endArr[2])).getTimeInMillis());

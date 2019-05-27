@@ -59,7 +59,7 @@ public class InsertBoardQnAServlet extends HttpServlet {
 				if(bLevel == 0) {
 					String phone = new MemberService().getBwriterPhone(parentBno);
 					int index = phone.indexOf(")");
-					//new SendSMS().send(phone.substring(index + 1), parentBtitle, "Q&A");
+					new SendSMS().send(phone.substring(index + 1), parentBtitle, "Q&A");
 				}
 				new Gson().toJson(qnaList, response.getWriter());
 			}else {

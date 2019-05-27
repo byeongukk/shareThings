@@ -259,6 +259,7 @@ public class ProductDao {
 		try {
 			pstmt = con.prepareStatement(query);
 			pstmt.setInt(1, uno);
+			pstmt.setString(2, "등록");
 			rset = pstmt.executeQuery();
 			list = new ArrayList<Product>();
 			while(rset.next()) {
@@ -304,6 +305,7 @@ public class ProductDao {
 		try {
 			pstmt = con.prepareStatement(query);
 			pstmt.setInt(1, uno);
+			pstmt.setString(2, "등록");
 			rset = pstmt.executeQuery();
 			list = new ArrayList<Product>();
 			while(rset.next()) {
